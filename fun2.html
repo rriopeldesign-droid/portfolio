@@ -2,1164 +2,998 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <link rel="icon" type="image/png" href="/img/favicon.png" />
   <title>??? — Robert Riopel</title>
+  <meta name="robots" content="noindex" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --ink: #f4efe9;
+      --dim: rgba(244,239,233,0.42);
+      --faint: rgba(244,239,233,0.2);
+      --ember: #f97316;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { overflow: hidden; background: #000; cursor: none; font-family: 'Syne', sans-serif; }
-    canvas { display: block; }
+    html, body { height: 100%; background: #000; overflow: hidden; }
+    body {
+      font-family: 'Inter Tight', system-ui, sans-serif; color: var(--ink);
+      -webkit-font-smoothing: antialiased; cursor: none;
+      user-select: none; -webkit-user-select: none;
+    }
+    @media (pointer: coarse) { body { cursor: auto; } #cursor { display: none; } }
 
+    #void { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+
+    /* ── Chrome-less HUD ── */
+    .hud {
+      position: fixed; z-index: 5; font-size: 10px; letter-spacing: 0.22em; text-transform: lowercase;
+      color: var(--dim); transition: opacity 1.2s ease;
+    }
+    a.hud, button.hud {
+      color: inherit; text-decoration: none; background: none; border: 0; font-family: inherit;
+      cursor: none; padding: 6px 0; transition: color 0.3s;
+    }
+    @media (pointer: coarse) { a.hud, button.hud { cursor: pointer; } }
+    a.hud:hover, button.hud:hover { color: var(--ink); }
+    #back  { top: max(18px, env(safe-area-inset-top)); left: 22px; }
+    #sound { top: max(18px, env(safe-area-inset-top)); right: 22px; }
+    #readout {
+      bottom: max(20px, env(safe-area-inset-bottom)); left: 22px;
+      display: grid; grid-template-columns: auto auto; gap: 4px 16px; font-variant-numeric: tabular-nums;
+    }
+    #readout span:nth-child(odd) { color: var(--faint); }
+    #hint {
+      bottom: max(20px, env(safe-area-inset-bottom)); right: 22px; text-align: right;
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    #hint.out { opacity: 0; transform: translateY(6px); }
+    body.inside .hud { opacity: 0; pointer-events: none; }
+    body.boot .hud { opacity: 0; }
+
+    /* ── Whispers ── */
+    #whisper {
+      position: fixed; left: 50%; top: 86%; transform: translate(-50%, 0); z-index: 4;
+      font-size: 12px; letter-spacing: 0.34em; text-transform: lowercase; color: var(--ink);
+      white-space: nowrap; pointer-events: none; opacity: 0; filter: blur(8px);
+      transition: opacity 2.2s ease, filter 2.2s ease;
+    }
+    #whisper.show { opacity: 0.75; filter: blur(0); }
+
+    #typing {
+      position: fixed; left: 50%; top: 77%; transform: translateX(-50%); z-index: 4;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(18px, 3vw, 28px);
+      letter-spacing: 0.08em; color: var(--ink); white-space: pre; pointer-events: none;
+      text-shadow: 0 0 24px rgba(249,115,22,0.55);
+    }
+    #typing:not(:empty)::after {
+      content: ''; display: inline-block; width: 2px; height: 0.9em; margin-left: 4px; vertical-align: -0.1em;
+      background: var(--ember); animation: caret 1s steps(1) infinite;
+    }
+    #typing.launch { animation: launch 0.7s cubic-bezier(.6,0,.8,.4) forwards; }
+    @keyframes caret { 50% { opacity: 0; } }
+    @keyframes launch { to { transform: translate(-50%, -38vh) scale(0.3); opacity: 0; filter: blur(6px); letter-spacing: 0.4em; } }
+
+    #write {
+      display: none; position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom)); transform: translateX(-50%);
+      z-index: 5;
+    }
+    @media (pointer: coarse) {
+      #write { display: block; bottom: calc(max(20px, env(safe-area-inset-bottom)) + 44px); }
+      #whisper { top: 74%; }
+      #typing { top: 67%; }
+    }
+    #write-input { position: fixed; left: -9999px; top: 0; opacity: 0; }
+
+    /* ── Cursor ── */
     #cursor {
-      position: fixed; width: 20px; height: 20px;
-      border: 2px solid #fff; border-radius: 50%;
-      pointer-events: none; z-index: 10000;
-      mix-blend-mode: difference; transition: transform 0.1s;
+      position: fixed; left: 0; top: 0; width: 26px; height: 26px; margin: -13px 0 0 -13px; z-index: 20;
+      border: 1px solid rgba(244,239,233,0.55); border-radius: 50%; pointer-events: none;
+      transition: width 0.5s cubic-bezier(.2,.8,.2,1), height 0.5s cubic-bezier(.2,.8,.2,1), margin 0.5s cubic-bezier(.2,.8,.2,1), border-color 0.5s, box-shadow 0.5s;
     }
-    #cursor.clicked { transform: scale(3); border-color: #ff0055; }
+    #cursor::after {
+      content: ''; position: absolute; left: 50%; top: 50%; width: 3px; height: 3px; margin: -1.5px 0 0 -1.5px;
+      border-radius: 50%; background: var(--ink);
+    }
+    body.holding #cursor {
+      width: 8px; height: 8px; margin: -4px 0 0 -4px; border-color: var(--ember);
+      box-shadow: 0 0 18px rgba(249,115,22,0.7);
+    }
+    body.inside #cursor { opacity: 0.5; }
 
-    #glitch-overlay {
-      position: fixed; inset: 0; pointer-events: none;
-      z-index: 9999; mix-blend-mode: screen;
+    /* ── Inside the horizon ── */
+    #inside {
+      position: fixed; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center;
+      padding: 24px; pointer-events: none; opacity: 0; transition: opacity 1.4s ease;
     }
-    #scanlines {
-      position: fixed; inset: 0; pointer-events: none; z-index: 9998;
-      background: repeating-linear-gradient(0deg,
-        rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px,
-        rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
-      transition: background 0.5s;
+    body.inside #inside { opacity: 1; pointer-events: auto; }
+    .in-wrap { max-width: 520px; text-align: center; }
+    .in-line {
+      font-size: clamp(13px, 1.6vw, 15px); font-weight: 300; letter-spacing: 0.16em; text-transform: lowercase;
+      color: var(--ink); line-height: 2.1; opacity: 0; filter: blur(10px); transform: translateY(6px);
+      transition: opacity 2s ease, filter 2s ease, transform 2s ease;
     }
-    #vignette {
-      position: fixed; inset: 0; pointer-events: none; z-index: 9997;
-      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
-      transition: background 1s;
+    .in-line.dim { color: var(--dim); }
+    .in-line.show { opacity: 1; filter: blur(0); transform: none; }
+    .in-sign { margin-top: 42px; }
+    .in-sign .who {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(22px, 4vw, 34px);
+      letter-spacing: -0.01em; text-transform: none; color: var(--ink); line-height: 1.2;
     }
+    .in-sign .who em { font-style: normal; color: var(--ember); }
+    .in-actions { margin-top: 26px; display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; }
+    .in-actions a, .in-actions button {
+      font: inherit; font-size: 10px; letter-spacing: 0.26em; text-transform: lowercase; color: var(--dim);
+      background: none; border: 0; text-decoration: none; cursor: none; padding: 8px 0;
+      border-bottom: 1px solid var(--faint); transition: color 0.3s, border-color 0.3s;
+    }
+    @media (pointer: coarse) { .in-actions a, .in-actions button { cursor: pointer; } }
+    .in-actions a:hover, .in-actions button:hover { color: var(--ink); border-color: var(--ember); }
 
-    .void-text {
-      position: fixed; font-family: 'Syne', sans-serif; font-weight: 800;
-      color: #fff; pointer-events: none; z-index: 100;
-      mix-blend-mode: difference; opacity: 0;
-      animation: voidFade 8s ease-in-out forwards;
-      white-space: nowrap; text-transform: uppercase; letter-spacing: 0.15em;
+    #nogl {
+      display: none; position: fixed; inset: 0; align-items: center; justify-content: center; text-align: center;
+      font-size: 12px; letter-spacing: 0.22em; color: var(--dim); padding: 24px; line-height: 2;
     }
-    @keyframes voidFade {
-      0%   { opacity: 0; transform: scale(0.5) rotate(-5deg); filter: blur(10px); }
-      15%  { opacity: 1; filter: blur(0); }
-      70%  { opacity: 1; transform: scale(1) rotate(0deg); }
-      100% { opacity: 0; transform: scale(2) rotate(5deg); filter: blur(20px); }
-    }
-    @keyframes chromatic {
-      0%   { text-shadow: -2px 0 #ff0055, 2px 0 #00ffaa; }
-      25%  { text-shadow: 2px 0 #ff0055, -2px 0 #5500ff; }
-      50%  { text-shadow: -1px 2px #00ffaa, 1px -2px #ff0055; }
-      75%  { text-shadow: 1px -1px #5500ff, -1px 1px #ff9900; }
-      100% { text-shadow: -2px 0 #ff0055, 2px 0 #00ffaa; }
-    }
+    #nogl a { color: var(--ink); }
 
-    .coord {
-      position: fixed; font-family: 'Inter Tight', monospace; font-size: 10px;
-      color: rgba(255,255,255,0.3); z-index: 200;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      transition: transform 1s ease-in, opacity 1s ease-in;
+    @media (prefers-reduced-motion: reduce) {
+      #whisper, .in-line { transition-duration: 0.6s; }
+      #typing.launch { animation-duration: 0.3s; }
     }
-    .coord.tl { top: 20px; left: 20px; }
-    .coord.tr { top: 20px; right: 20px; text-align: right; }
-    .coord.bl { bottom: 20px; left: 20px; }
-    .coord.br { bottom: 20px; right: 20px; text-align: right; }
-
-    #back-link {
-      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-      z-index: 300; font-family: 'Inter Tight', sans-serif; font-size: 11px;
-      color: rgba(255,255,255,0.4); text-decoration: none;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      transition: color 0.3s; cursor: pointer; pointer-events: all;
-    }
-    #back-link:hover { color: #ff0055; }
-
-    #entropy {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      font-family: 'Inter Tight', monospace; font-size: 9px;
-      color: rgba(255,255,255,0.2); z-index: 200;
-      letter-spacing: 0.3em; white-space: nowrap;
-      transition: transform 1s ease-in, opacity 1s ease-in;
-    }
-
-    /* Screen tears */
-    .tear {
-      position: fixed; left: 0; right: 0; height: 4px;
-      background: #fff; pointer-events: none; z-index: 99000;
-      display: none; opacity: 0.9; transform: translateX(0px);
-    }
-
-    /* Fake Chrome "Page Unresponsive" dialog */
-    #chrome-dialog {
-      display: none; position: fixed; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 100000; width: 390px;
-      background: #fff; border-radius: 8px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.3);
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      overflow: hidden; cursor: default;
-    }
-    #chrome-dialog-bar {
-      background: #f1f3f4; padding: 10px 14px;
-      display: flex; align-items: center; gap: 8px;
-      border-bottom: 1px solid #dadce0; font-size: 12px; color: #5f6368;
-    }
-    #chrome-dialog-bar .dot { width: 12px; height: 12px; border-radius: 50%; }
-    #chrome-dialog-bar .dot.r { background: #ff5f57; }
-    #chrome-dialog-bar .dot.y { background: #febc2e; }
-    #chrome-dialog-bar .dot.g { background: #28c840; }
-    #chrome-dialog-body { padding: 22px 24px 16px; }
-    #chrome-dialog-body h3 { font-size: 14px; font-weight: 600; color: #202124; margin-bottom: 8px; }
-    #chrome-dialog-body p { font-size: 12px; color: #5f6368; line-height: 1.6; }
-    #chrome-dialog-btns {
-      padding: 10px 20px 18px; display: flex;
-      justify-content: flex-end; gap: 8px;
-    }
-    .chrome-btn {
-      padding: 7px 18px; border-radius: 4px;
-      font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid transparent;
-    }
-    .chrome-btn.secondary { background: transparent; color: #1a73e8; border-color: transparent; }
-    .chrome-btn.primary   { background: #1a73e8; color: #fff; }
-    .chrome-btn.primary:hover { background: #1765cc; }
-
-    /* Post-collapse overlay */
-    #post-collapse {
-      display: none; position: fixed; inset: 0;
-      z-index: 50000; background: #000;
-      pointer-events: none;
-    }
-    #post-collapse.active { display: block; pointer-events: all; cursor: crosshair; }
-
-    #pc-text-1, #pc-text-2, #pc-link {
-      position: fixed; left: 50%; transform: translateX(-50%);
-      font-family: 'Inter Tight', sans-serif; font-weight: 300;
-      letter-spacing: 0.35em; text-transform: lowercase;
-      white-space: nowrap; z-index: 50001;
-      color: rgba(255,255,255,0); transition: color 2.5s ease;
-    }
-    #pc-text-1 { bottom: 22%; font-size: 11px; }
-    #pc-text-2 { bottom: 17.5%; font-size: 9px; }
-    #pc-link   { bottom: 13%; font-size: 10px; text-decoration: none; pointer-events: none; transition: color 2s ease; }
-    #pc-text-1.show { color: rgba(255,255,255,0.55); }
-    #pc-text-2.show { color: rgba(255,255,255,0.28); }
-    #pc-link.show   { color: rgba(255,255,255,0.18); pointer-events: all; }
-    #pc-link:hover  { color: rgba(255,255,255,0.6); }
   </style>
 </head>
-<body>
+<body class="boot">
+  <canvas id="void" aria-label="A black hole. Move to orbit, hold to fall in, type to feed it words." role="img"></canvas>
 
+  <a class="hud" id="back" href="/fun.html">← back to the maze</a>
+  <button class="hud" id="sound" type="button" aria-pressed="false">sound off</button>
+  <div class="hud" id="readout" aria-hidden="true">
+    <span>r</span><span id="r-val">— rₛ</span>
+    <span>time</span><span id="t-val">×1.00</span>
+  </div>
+  <div class="hud" id="hint"></div>
+  <button class="hud" id="write" type="button">✎ whisper something</button>
+  <input id="write-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="24" aria-label="Whisper something into the void" />
+
+  <div id="whisper"></div>
+  <div id="typing" aria-live="polite"></div>
   <div id="cursor"></div>
-  <div id="glitch-overlay"></div>
-  <div id="scanlines"></div>
-  <div id="vignette"></div>
-  <a id="back-link" href="/fun.html">&larr; Return to reality</a>
-  <div class="coord tl" id="coord-tl">DIMENSION: NULL</div>
-  <div class="coord tr" id="coord-tr">ENTROPY: ∞</div>
-  <div class="coord bl" id="coord-bl">SIGNAL: LOST</div>
-  <div class="coord br" id="coord-br">TIMELINE: FRACTURED</div>
-  <div id="entropy">VOID STABILITY: ██████████ 100%</div>
 
-  <!-- Screen tears (3-5 divs, shown/animated in JS) -->
-  <div class="tear" id="tear0"></div>
-  <div class="tear" id="tear1"></div>
-  <div class="tear" id="tear2"></div>
-  <div class="tear" id="tear3"></div>
-  <div class="tear" id="tear4"></div>
-
-  <!-- Fake Chrome dialog -->
-  <div id="chrome-dialog">
-    <div id="chrome-dialog-bar">
-      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-      <span style="margin-left:4px;">riopel-design.github.io</span>
-    </div>
-    <div id="chrome-dialog-body">
-      <h3>Page Unresponsive</h3>
-      <p>The following page has become unresponsive. You can kill the page, or you can wait to see if it becomes responsive.</p>
-    </div>
-    <div id="chrome-dialog-btns">
-      <button class="chrome-btn secondary">Wait</button>
-      <button class="chrome-btn primary">Exit Page</button>
+  <div id="inside" aria-live="polite">
+    <div class="in-wrap">
+      <p class="in-line" id="in-1"></p>
+      <p class="in-line dim" id="in-2"></p>
+      <p class="in-line dim" id="in-3"></p>
+      <p class="in-line" id="in-4"></p>
+      <div class="in-line in-sign" id="in-5">
+        <p class="who">Robert Riopel <em>made this</em></p>
+        <p class="in-line show dim" style="line-height:1.8;margin-top:6px">because it seemed important at the time.</p>
+        <div class="in-actions">
+          <a href="mailto:rriopel.design@gmail.com?subject=I%20crossed%20the%20event%20horizon">say hello →</a>
+          <button type="button" id="climb">↑ climb back out</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Post-collapse -->
-  <div id="post-collapse">
-    <div id="pc-text-1">you broke it.</div>
-    <div id="pc-text-2">there is nothing left.</div>
-    <a id="pc-link" href="/fun.html">← start over</a>
-  </div>
-
-<script>
-// ═══════════════════════════════════════════════════════════
-// THE VOID  ·  fun2.html  ·  Three.js r128
-// ═══════════════════════════════════════════════════════════
-
-// ── Normal messages (phases 0-5) ──────────────────────────
-const normalMessages = [
-  "THIS IS NOT A WEBSITE","YOU WEREN'T SUPPOSED TO FIND THIS",
-  "THE DESIGNER HAS LEFT THE BUILDING","EVERY PIXEL IS LYING TO YOU",
-  "YOUR SCREEN IS A WINDOW","THE VOID STARES BACK","CTRL+Z WON'T SAVE YOU",
-  "DESIGN IS JUST ORGANIZED CHAOS","THE GRID HAS COLLAPSED",
-  "FIGMA CAN'T HELP YOU HERE","KERNING IS MEANINGLESS NOW",
-  "THE BRAND GUIDELINES HAVE BEEN VIOLATED","ALIGNMENT: CHAOTIC EVIL",
-  "YOUR MOCKUP HAS GAINED SENTIENCE","REVISION 847 OF 847",
-  "THE COMPONENTS HAVE ESCAPED","DESIGN SYSTEM: CORRUPTED",
-  "PIXEL PERFECT IS A PRISON","DO NOT CLICK AGAIN","THIS WAS A MISTAKE",
-];
-
-// ── State ─────────────────────────────────────────────────
-let scene, camera, renderer, clock;
-let mouseX = 0, mouseY = 0;
-let targetMouseX = 0, targetMouseY = 0;
-let objects = [], rings = [], voidCore, voidCore2 = null, particleSystem;
-let time = 0, glitchIntensity = 0, stability = 100;
-
-let clickCount = 0;
-let phase = 0; // 0..5 + collapsing
-let collapsing = false, collapsed = false;
-let collapseTime = 0, collapsePhaseIndex = 0;
-
-// Phase vars
-let jitterAmount = 0;
-let gravityStrength = 0;
-let cameraRoll = 0, cameraRollSpeed = 0;
-let shakeStrength = 0, constantShake = false;
-let eyeGroup = null, eyeIris = null, eyePupil = null, eyeOuter = null;
-let eyeBlinkTimer = 0, eyeBlinking = false;
-let coreOrbitAngle = 0;
-let msgIntervalMs = 3000, msgIntervalId = null;
-let vignetteInverted = false;
-let sceneFlipped = false, flipTimer = 3;
-let tearActive = false, tearConstant = false;
-let tearFlashTimer = 0;
-let dialogShown = false, dialogTimer = 0;
-let cursorLag = false;
-let mouseHistory = [];
-let accretionDisc = false;
-let realityFlashTimer = 0;
-let backLinkScrambleId = null;
-const tears = [0,1,2,3,4].map(i => document.getElementById('tear'+i));
-
-// Collapse refs
-let postScene = null, postCamera = null, postRenderer = null;
-let bloomSphere = null, finalKnot = null, postLights = [];
-let dustGeo = null, dustVelocities = null;
-
-// DOM refs
-const cursor        = document.getElementById('cursor');
-const glitchOverlay = document.getElementById('glitch-overlay');
-const scanlines     = document.getElementById('scanlines');
-const vignetteEl    = document.getElementById('vignette');
-const entropyEl     = document.getElementById('entropy');
-const backLink      = document.getElementById('back-link');
-const chromeDialog  = document.getElementById('chrome-dialog');
-
-// ── Mouse tracking ────────────────────────────────────────
-document.addEventListener('mousemove', e => {
-  targetMouseX = (e.clientX / window.innerWidth)  * 2 - 1;
-  targetMouseY = (e.clientY / window.innerHeight) * 2 - 1;
-  mouseHistory.push({ x: e.clientX, y: e.clientY, t: Date.now() });
-  if (mouseHistory.length > 60) mouseHistory.shift();
-
-  if (!cursorLag) {
-    cursor.style.left = e.clientX - 10 + 'px';
-    cursor.style.top  = e.clientY - 10 + 'px';
-  }
-});
-
-// ── Click handler ─────────────────────────────────────────
-document.addEventListener('mousedown', () => {
-  if (collapsed || collapsing) return;
-  cursor.classList.add('clicked');
-  glitchIntensity = 1.0;
-  spawnBurst();
-  setTimeout(() => cursor.classList.remove('clicked'), 300);
-
-  clickCount++;
-  stability = Math.max(0, 100 - clickCount * 10);
-  updateStabilityDisplay();
-  applyPhaseEscalation();
-
-  if (clickCount >= 10) triggerCollapse();
-});
-
-// ── Stability display ─────────────────────────────────────
-function updateStabilityDisplay() {
-  const bars   = Math.round(stability / 10);
-  const filled = '█'.repeat(bars);
-  const empty  = '░'.repeat(10 - bars);
-  const col    = clickCount >= 7 ? '#ff3333' : clickCount >= 4 ? '#ff6600' : 'rgba(255,255,255,0.2)';
-  entropyEl.style.color = col;
-  entropyEl.textContent = `VOID STABILITY: ${filled}${empty} ${stability.toFixed(0)}%`;
-}
-
-// ── Phase escalation ──────────────────────────────────────
-function applyPhaseEscalation() {
-  const c = clickCount;
-
-  // ── Phase 1: clicks 1-2 ──
-  if (c === 1) {
-    phase = 1;
-    jitterAmount = 0.08;
-    voidCore.material.emissiveIntensity = 0.8;
-    // Double scanline density
-    scanlines.style.background = 'repeating-linear-gradient(0deg,rgba(0,0,0,0) 0px,rgba(0,0,0,0) 1px,rgba(0,0,0,0.25) 1px,rgba(0,0,0,0.25) 2px)';
-    spawnMessage();
-  }
-  if (c === 2) {
-    jitterAmount = 0.18;
-    spawnMessage();
-    spawnMessage();
-  }
-
-  // ── Phase 2: clicks 3-4 ──
-  if (c === 3) {
-    phase = 2;
-    gravityStrength = 0.012;
-    cameraRollSpeed = 0.0003;
-    shakeStrength   = 1.0;
-    shiftToRed(0.3);
-    startScreenTears(false); // flash tears
-    if (msgIntervalId) clearInterval(msgIntervalId);
-    msgIntervalMs = 1500;
-    msgIntervalId = setInterval(spawnMessage, msgIntervalMs);
-    spawnMessage(); spawnMessage();
-  }
-  if (c === 4) {
-    gravityStrength = 0.025;
-    cameraRollSpeed = 0.0007;
-    shakeStrength   = 1.8;
-    shiftToRed(0.6);
-    spawnMessage(); spawnMessage(); spawnMessage();
-  }
-
-  // ── Phase 3: click 5 ──
-  if (c === 5) {
-    phase = 3;
-    gravityStrength = 0.05;
-    cameraRollSpeed = 0.0014;
-    constantShake   = true;
-    shakeStrength   = 3.0;
-    shiftToRed(1.0);
-    // Invert vignette
-    vignetteEl.style.background = 'radial-gradient(ellipse at center, rgba(255,255,255,0.12) 0%, transparent 60%)';
-    vignetteInverted = true;
-    // Split void core
-    splitVoidCore();
-    if (msgIntervalId) clearInterval(msgIntervalId);
-    msgIntervalId = setInterval(spawnMessage, 900);
-    for (let i = 0; i < 5; i++) setTimeout(spawnMessage, i * 160);
-  }
-
-  // ── Phase 4: clicks 6-7 ──
-  if (c === 6) {
-    phase = 4;
-    gravityStrength = 0.07;
-    shakeStrength   = 4.5;
-    cursorLag       = true;
-    assembleEye();
-    if (msgIntervalId) clearInterval(msgIntervalId);
-    msgIntervalId = setInterval(spawnEyeMessage, 600);
-    for (let i = 0; i < 5; i++) setTimeout(spawnEyeMessage, i * 120);
-  }
-  if (c === 7) {
-    shakeStrength = 6.0;
-    cameraRollSpeed = 0.002;
-    flipTimer = 1.5;
-    for (let i = 0; i < 6; i++) setTimeout(spawnEyeMessage, i * 100);
-  }
-
-  // ── Phase 5: clicks 8-9 ──
-  if (c === 8) {
-    phase = 5;
-    shakeStrength   = 9.0;
-    gravityStrength = 0.1;
-    tearConstant    = true;
-    accretionDisc   = true;
-    // Start back link text scramble
-    backLinkScrambleId = setInterval(scrambleBackLink, 120);
-    if (msgIntervalId) clearInterval(msgIntervalId);
-    msgIntervalId = setInterval(spawnEyeMessage, 350);
-    // Schedule first fake dialog
-    setTimeout(showChromeDialog, 800);
-  }
-  if (c === 9) {
-    shakeStrength = 14.0;
-    setTimeout(showChromeDialog, 600);
-    setTimeout(showChromeDialog, 2800);
-    for (let i = 0; i < 8; i++) setTimeout(spawnEyeMessage, i * 80);
-  }
-}
-
-// ── Init ──────────────────────────────────────────────────
-function init() {
-  clock = new THREE.Clock();
-  scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x000000, 0.012);
-
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 30;
-
-  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x000000);
-  document.body.appendChild(renderer.domElement);
-
-  // Void core
-  const knotGeo = new THREE.TorusKnotGeometry(4, 1.5, 200, 32, 3, 5);
-  const knotMat = new THREE.MeshStandardMaterial({
-    color: 0x000000, emissive: 0xff0055, emissiveIntensity: 0.3,
-    wireframe: true, transparent: true, opacity: 0.6,
-  });
-  voidCore = new THREE.Mesh(knotGeo, knotMat);
-  const innerCore = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(2, 2),
-    new THREE.MeshStandardMaterial({ color: 0x110011, emissive: 0x5500ff, emissiveIntensity: 0.8, metalness: 1, roughness: 0.2 })
-  );
-  voidCore.add(innerCore);
-  scene.add(voidCore);
-
-  // Rings
-  for (let i = 0; i < 5; i++) {
-    const ring = new THREE.Mesh(
-      new THREE.TorusGeometry(8 + i*3, 0.02 + Math.random()*0.05, 8, 200),
-      new THREE.MeshBasicMaterial({ color: new THREE.Color().setHSL(i*0.15, 1, 0.5), transparent: true, opacity: 0.4 })
-    );
-    ring.rotation.x = Math.random() * Math.PI;
-    ring.rotation.y = Math.random() * Math.PI;
-    ring.userData = { speed: 0.2 + Math.random()*0.5 };
-    rings.push(ring);
-    scene.add(ring);
-  }
-
-  // Floating objects
-  const geos = [
-    new THREE.TetrahedronGeometry(1, 0), new THREE.OctahedronGeometry(1, 0),
-    new THREE.DodecahedronGeometry(0.8, 0), new THREE.TorusGeometry(0.6, 0.2, 8, 6),
-    new THREE.ConeGeometry(0.5, 1.5, 3), new THREE.TorusKnotGeometry(0.5, 0.15, 64, 8, 2, 3),
-    new THREE.BoxGeometry(0.8, 0.8, 0.8), new THREE.SphereGeometry(0.5, 4, 2),
-    new THREE.CylinderGeometry(0, 0.8, 1.2, 3), new THREE.IcosahedronGeometry(0.6, 0),
-  ];
-  for (let i = 0; i < 120; i++) {
-    const hue = Math.random();
-    const mat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color().setHSL(hue, 0.8, 0.15),
-      emissive: new THREE.Color().setHSL(hue, 1, 0.3),
-      emissiveIntensity: 0.5 + Math.random()*0.5,
-      wireframe: Math.random() > 0.6, transparent: true,
-      opacity: 0.3 + Math.random()*0.5, metalness: Math.random(), roughness: Math.random(),
-    });
-    const mesh = new THREE.Mesh(geos[Math.floor(Math.random()*geos.length)], mat);
-    const theta = Math.random()*Math.PI*2, phi = Math.acos(2*Math.random()-1);
-    const r = 10 + Math.random()*40;
-    mesh.position.set(r*Math.sin(phi)*Math.cos(theta), r*Math.sin(phi)*Math.sin(theta), r*Math.cos(phi));
-    const s = 0.3 + Math.random()*1.5;
-    mesh.scale.set(s, s, s);
-    mesh.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
-    mesh.userData = {
-      orbitSpeed: (0.1 + Math.random()*0.4) * (Math.random()>0.5?1:-1),
-      orbitRadius: r, orbitOffset: Math.random()*Math.PI*2,
-      wobbleSpeed: 1+Math.random()*3, wobbleAmount: 0.5+Math.random()*2,
-      pulseSpeed: 0.5+Math.random()*2, originalScale: s,
-      phase: Math.random()*Math.PI*2,
-      jitterOffset: new THREE.Vector3(),
-      spaghetti: 0, glitching: false, glitchTimer: 0,
-    };
-    objects.push(mesh);
-    scene.add(mesh);
-  }
-
-  // Particles
-  const pCount = 3000;
-  const pGeo = new THREE.BufferGeometry();
-  const pPos = new Float32Array(pCount*3), pCol = new Float32Array(pCount*3);
-  for (let i = 0; i < pCount; i++) {
-    pPos[i*3]=(Math.random()-0.5)*200; pPos[i*3+1]=(Math.random()-0.5)*200; pPos[i*3+2]=(Math.random()-0.5)*200;
-    const c = new THREE.Color().setHSL(Math.random(), 0.5, 0.5);
-    pCol[i*3]=c.r; pCol[i*3+1]=c.g; pCol[i*3+2]=c.b;
-  }
-  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-  pGeo.setAttribute('color',    new THREE.BufferAttribute(pCol, 3));
-  particleSystem = new THREE.Points(pGeo, new THREE.PointsMaterial({
-    size: 0.15, vertexColors: true, transparent: true, opacity: 0.6,
-    blending: THREE.AdditiveBlending, depthWrite: false,
-  }));
-  scene.add(particleSystem);
-
-  // Lights
-  scene.add(new THREE.AmbientLight(0x111111));
-  const pl1 = new THREE.PointLight(0xff0055, 2, 80); pl1.position.set(10,10,10); scene.add(pl1);
-  const pl2 = new THREE.PointLight(0x5500ff, 2, 80); pl2.position.set(-10,-10,-10); scene.add(pl2);
-  const pl3 = new THREE.PointLight(0x00ffaa, 1.5, 60); pl3.position.set(0,15,-10); scene.add(pl3);
-
-  msgIntervalId = setInterval(spawnMessage, msgIntervalMs);
-  setTimeout(spawnMessage, 500);
-  setInterval(scrambleCoords, 2000);
-
-  window.addEventListener('resize', onResize);
-  animate();
-}
-
-// ── Message spawners ──────────────────────────────────────
-function spawnMessage() {
-  if (collapsing || collapsed) return;
-  const msg = normalMessages[Math.floor(Math.random()*normalMessages.length)];
-  const el = document.createElement('div');
-  el.className = 'void-text';
-  el.textContent = msg;
-  el.style.fontSize = (12 + Math.random()*35) + 'px';
-  el.style.left = (5 + Math.random()*80) + '%';
-  el.style.top  = (5 + Math.random()*80) + '%';
-  el.style.animationName = 'voidFade, chromatic';
-  el.style.animationDuration = `${5+Math.random()*6}s, 0.5s`;
-  el.style.animationIterationCount = '1, infinite';
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 11000);
-}
-
-function spawnEyeMessage() {
-  if (collapsing || collapsed) return;
-  const el = document.createElement('div');
-  el.className = 'void-text';
-  el.textContent = 'IT SEES YOU';
-  el.style.fontSize = (18 + Math.random()*60) + 'px';
-  el.style.left = (Math.random()*75) + '%';
-  el.style.top  = (Math.random()*75) + '%';
-  el.style.color = `hsl(${Math.random()*30},100%,55%)`;
-  el.style.animationName = 'voidFade, chromatic';
-  el.style.animationDuration = `${3+Math.random()*4}s, 0.2s`;
-  el.style.animationIterationCount = '1, infinite';
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 7000);
-}
-
-// ── Void core split ───────────────────────────────────────
-function splitVoidCore() {
-  voidCore2 = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(3.2, 1.2, 120, 20, 3, 5),
-    new THREE.MeshStandardMaterial({
-      color: 0x000000, emissive: 0x00ffaa, emissiveIntensity: 0.4,
-      wireframe: true, transparent: true, opacity: 0.5,
-    })
-  );
-  scene.add(voidCore2);
-}
-
-// ── Eye assembly ──────────────────────────────────────────
-function assembleEye() {
-  eyeGroup = new THREE.Group();
-
-  eyeOuter = new THREE.Mesh(
-    new THREE.TorusGeometry(3, 0.8, 16, 100),
-    new THREE.MeshStandardMaterial({ color: 0x220000, emissive: 0x660000, emissiveIntensity: 0.6, metalness: 0.5, roughness: 0.4 })
-  );
-  eyeIris = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(2, 1),
-    new THREE.MeshStandardMaterial({ color: 0x1a0000, emissive: 0xff1100, emissiveIntensity: 0.8, metalness: 0.3, roughness: 0.6 })
-  );
-  eyePupil = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 32, 32),
-    new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0x000000, metalness: 1, roughness: 0 })
-  );
-  eyePupil.position.z = 1.5;
-
-  eyeGroup.add(eyeOuter);
-  eyeGroup.add(eyeIris);
-  eyeGroup.add(eyePupil);
-  eyeGroup.scale.set(0.01, 0.01, 0.01);
-  scene.add(eyeGroup);
-}
-
-// ── Eye blink ─────────────────────────────────────────────
-function blinkEye() {
-  if (!eyeGroup || eyeBlinking) return;
-  eyeBlinking = true;
-  let t = 0;
-  const id = setInterval(() => {
-    t += 0.12;
-    const v = t < 0.5 ? 1 - t*2 : (t-0.5)*2;
-    if (eyeOuter) eyeOuter.scale.y = Math.max(0.01, v);
-    if (eyeIris)  eyeIris.scale.y  = Math.max(0.01, v);
-    if (t >= 1.0) { clearInterval(id); eyeBlinking = false; }
-  }, 28);
-}
-
-// ── Color palette → red ───────────────────────────────────
-function shiftToRed(amount) {
-  const r = amount * 0.18;
-  scene.fog.color.setRGB(r, 0, 0.005);
-  renderer.setClearColor(scene.fog.color);
-}
-
-// ── Screen tears ─────────────────────────────────────────
-function startScreenTears(constant) {
-  tearActive = true;
-  tearConstant = constant;
-}
-
-function updateTears(delta) {
-  if (!tearActive) return;
-  if (tearConstant) {
-    tears.forEach((t, i) => {
-      t.style.display = 'block';
-      t.style.top  = (15 + i * 17 + Math.sin(time * 3 + i) * 8) + '%';
-      t.style.transform = `translateX(${(Math.random()-0.5)*20}px)`;
-      t.style.height = (2 + Math.random()*5) + 'px';
-      t.style.opacity = (0.5 + Math.random()*0.5) + '';
-    });
-  } else {
-    tearFlashTimer -= delta;
-    if (tearFlashTimer <= 0) {
-      tearFlashTimer = 0.4 + Math.random()*1.5;
-      const idx = Math.floor(Math.random()*tears.length);
-      tears[idx].style.display = 'block';
-      tears[idx].style.top = (10 + Math.random()*80) + '%';
-      tears[idx].style.transform = `translateX(${(Math.random()-0.5)*40}px)`;
-      setTimeout(() => { tears[idx].style.display = 'none'; }, 60 + Math.random()*100);
-    }
-  }
-}
-
-// ── Chrome dialog ─────────────────────────────────────────
-function showChromeDialog() {
-  if (collapsed || collapsing) return;
-  chromeDialog.style.display = 'block';
-  setTimeout(() => { chromeDialog.style.display = 'none'; }, 1800 + Math.random()*800);
-}
-
-// ── Back link scramble ────────────────────────────────────
-const scrambleChars = '░▒▓█▄▀■□▪▫◄►▲▼◆○●×÷±∞';
-function scrambleBackLink() {
-  if (collapsed) { if (backLinkScrambleId) clearInterval(backLinkScrambleId); return; }
-  const orig = '← Return to reality';
-  backLink.textContent = orig.split('').map(ch =>
-    Math.random() > 0.55 ? scrambleChars[Math.floor(Math.random()*scrambleChars.length)] : ch
-  ).join('');
-  setTimeout(() => { if (!collapsed) backLink.textContent = orig; }, 120);
-}
-
-// ── Click burst ───────────────────────────────────────────
-function spawnBurst() {
-  for (let i = 0; i < 8; i++) {
-    const mesh = new THREE.Mesh(
-      new THREE.TetrahedronGeometry(0.3, 0),
-      new THREE.MeshBasicMaterial({ color: new THREE.Color().setHSL(Math.random(),1,0.5), wireframe: true, transparent: true, opacity: 1 })
-    );
-    const vec = new THREE.Vector3(targetMouseX, -targetMouseY, 0.5);
-    vec.unproject(camera); vec.sub(camera.position).normalize();
-    mesh.position.copy(camera.position).add(vec.multiplyScalar(15));
-    mesh.position.add(new THREE.Vector3((Math.random()-0.5)*5,(Math.random()-0.5)*5,(Math.random()-0.5)*5));
-    mesh.userData = { vel: new THREE.Vector3((Math.random()-0.5)*0.5,(Math.random()-0.5)*0.5,(Math.random()-0.5)*0.5), life: 1, decay: 0.01+Math.random()*0.01 };
-    scene.add(mesh);
-    const upd = () => {
-      mesh.position.add(mesh.userData.vel);
-      mesh.rotation.x += 0.05; mesh.rotation.y += 0.03;
-      mesh.userData.life -= mesh.userData.decay;
-      mesh.material.opacity = mesh.userData.life;
-      mesh.scale.multiplyScalar(1.02);
-      mesh.userData.life > 0 ? requestAnimationFrame(upd) : (scene.remove(mesh), mesh.geometry.dispose(), mesh.material.dispose());
-    };
-    upd();
-  }
-}
-
-// ── Coordinate scrambler ──────────────────────────────────
-const dims      = ['NULL','UNDEFINED','∅','NaN','VOID','∞','-∞','???','404','REDACTED','CORRUPTED'];
-const signals   = ['LOST','FADING','GONE','ECHO','STATIC','DEAD','GHOST','░░░░'];
-const timelines = ['FRACTURED','LOOPING','COLLAPSED','DIVERGENT','ERASED','BLEEDING','RECURSIVE'];
-let coordInterval = 2000, lastCoordScramble = 0;
-function scrambleCoords() {
-  if (collapsed) return;
-  document.getElementById('coord-tl').textContent = `DIMENSION: ${dims[Math.floor(Math.random()*dims.length)]}`;
-  document.getElementById('coord-tr').textContent = `ENTROPY: ${(Math.random()*99999).toFixed(0)}`;
-  document.getElementById('coord-bl').textContent = `SIGNAL: ${signals[Math.floor(Math.random()*signals.length)]}`;
-  document.getElementById('coord-br').textContent = `TIMELINE: ${timelines[Math.floor(Math.random()*timelines.length)]}`;
-}
-
-// ── Glitch effect ─────────────────────────────────────────
-function updateGlitch() {
-  if (glitchIntensity > 0.01) {
-    const r = Math.random();
-    if (r > 0.7)
-      glitchOverlay.style.background = `linear-gradient(${Math.random()*360}deg,rgba(255,0,85,${glitchIntensity*0.3}) ${Math.random()*30}%,transparent ${30+Math.random()*40}%,rgba(85,0,255,${glitchIntensity*0.3}) ${70+Math.random()*30}%)`;
-    else if (r > 0.4) {
-      const y = Math.random()*100, h = 2+Math.random()*10;
-      glitchOverlay.style.background = `linear-gradient(0deg,transparent ${y}%,rgba(255,255,255,${glitchIntensity*0.5}) ${y}%,rgba(255,255,255,${glitchIntensity*0.5}) ${y+h}%,transparent ${y+h}%)`;
-    } else glitchOverlay.style.background = 'none';
-    glitchIntensity *= 0.95;
-  } else {
-    glitchOverlay.style.background = 'none';
-    if (Math.random() > 0.997) glitchIntensity = 0.3 + Math.random()*0.5;
-  }
-}
-
-function onResize() {
-  if (postCamera && postRenderer) {
-    postCamera.aspect = window.innerWidth/window.innerHeight;
-    postCamera.updateProjectionMatrix();
-    postRenderer.setSize(window.innerWidth, window.innerHeight);
-  }
-  camera.aspect = window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-// ─────────────────────────────────────────────────────────
-// MAIN ANIMATE LOOP
-// ─────────────────────────────────────────────────────────
-function animate() {
-  if (collapsed) return;
-  requestAnimationFrame(animate);
-  const delta = clock.getDelta();
-  time += delta;
-
-  mouseX += (targetMouseX - mouseX) * 0.05;
-  mouseY += (targetMouseY - mouseY) * 0.05;
-
-  // ── Cursor lag (phase 4+) ─────────────────────────────
-  if (cursorLag && mouseHistory.length > 0) {
-    const now = Date.now();
-    const delayed = mouseHistory.find(h => now - h.t >= 200);
-    if (delayed) {
-      cursor.style.left = delayed.x - 10 + 'px';
-      cursor.style.top  = delayed.y - 10 + 'px';
-    }
-  }
-
-  // ── Collapse ─────────────────────────────────────────
-  if (collapsing) {
-    animateCollapse(delta);
-    return;
-  }
-
-  // ── Camera ───────────────────────────────────────────
-  cameraRoll += cameraRollSpeed * 100 * delta;
-  camera.up.set(Math.sin(cameraRoll), Math.cos(cameraRoll), 0);
-
-  // Phase 4: random flips
-  if (phase >= 4) {
-    flipTimer -= delta;
-    if (flipTimer <= 0) {
-      sceneFlipped = !sceneFlipped;
-      flipTimer = 1.2 + Math.random()*2.5;
-    }
-    if (sceneFlipped) camera.up.set(0, -1, 0);
-  }
-
-  const camTargetZ = 30 + Math.cos(time*0.1)*5;
-  camera.position.x += (Math.sin(time*0.1+mouseX*2)*camTargetZ - camera.position.x)*0.03;
-  camera.position.y += (Math.cos(time*0.08+mouseY*2)*(camTargetZ*0.5) - camera.position.y)*0.03;
-  camera.position.z += (camTargetZ - camera.position.z)*0.03;
-
-  if (constantShake || (shakeStrength>0 && glitchIntensity>0.05)) {
-    camera.position.x += (Math.random()-0.5)*shakeStrength*0.15;
-    camera.position.y += (Math.random()-0.5)*shakeStrength*0.15;
-  }
-  camera.lookAt(0, 0, 0);
-
-  // ── Void cores ───────────────────────────────────────
-  voidCore.rotation.x += 0.003 + mouseX*0.01;
-  voidCore.rotation.y += 0.005 + mouseY*0.01;
-  voidCore.rotation.z += 0.002;
-  const pulse = Math.sin(time*2)*0.2 + 1;
-  voidCore.scale.set(pulse, pulse, pulse);
-  voidCore.material.emissive.setHSL((time*0.05)%1, 1, 0.3);
-  if (voidCore.children[0]) voidCore.children[0].material.emissive.setHSL((time*0.05+0.5)%1, 1, 0.4);
-
-  if (voidCore2) {
-    coreOrbitAngle += delta*0.6;
-    const sep = 6;
-    voidCore.position.set(Math.cos(coreOrbitAngle)*sep, 0, Math.sin(coreOrbitAngle)*sep);
-    voidCore2.position.set(-Math.cos(coreOrbitAngle)*sep, 0, -Math.sin(coreOrbitAngle)*sep);
-    voidCore2.rotation.x -= 0.004; voidCore2.rotation.y += 0.007;
-    voidCore2.material.emissive.setHSL((time*0.05+0.33)%1, 1, 0.3);
-  }
-
-  // ── Rings ───────────────────────────────────────────
-  rings.forEach((ring, i) => {
-    const spd = 1 + clickCount*0.15;
-    ring.rotation.x += ring.userData.speed*delta*0.3*spd;
-    ring.rotation.y += ring.userData.speed*delta*0.2*spd;
-    ring.rotation.z += Math.sin(time+i)*0.002;
-    // Red shift on rings
-    if (phase >= 2) ring.material.color.setHSL(0, 1, 0.4+Math.sin(time*0.5+i)*0.1);
-    else            ring.material.color.setHSL((time*0.1+i*0.15)%1, 1, 0.5);
-    ring.material.opacity = 0.2 + Math.sin(time*0.5+i)*0.2;
-  });
-
-  // ── Objects ────────────────────────────────────────
-  const eyePos = eyeGroup ? eyeGroup.position : new THREE.Vector3(0,0,0);
-  const toRemove = [];
-
-  objects.forEach((obj, i) => {
-    const d = obj.userData;
-    const t = time * d.orbitSpeed + d.orbitOffset;
-
-    // Phase 1+: jitter
-    if (jitterAmount > 0) {
-      d.jitterOffset.set(
-        (Math.random()-0.5)*jitterAmount,
-        (Math.random()-0.5)*jitterAmount,
-        (Math.random()-0.5)*jitterAmount
-      );
-    }
-
-    // Phase 5: orbit eye; else orbit origin
-    const center = (phase >= 5 && eyeGroup) ? eyePos : new THREE.Vector3(0,0,0);
-
-    // Gravity
-    if (gravityStrength > 0) {
-      obj.position.lerp(center, gravityStrength);
-    } else {
-      const orbitR = d.orbitRadius + Math.sin(time*0.3+i)*3;
-      obj.position.x = Math.sin(t)*orbitR*Math.cos(d.phase+time*0.02);
-      obj.position.y = Math.cos(t*0.7)*orbitR*0.5 + Math.sin(time*d.wobbleSpeed+i)*d.wobbleAmount;
-      obj.position.z = Math.cos(t)*orbitR*Math.sin(d.phase+time*0.02);
-    }
-
-    // Add jitter on top
-    obj.position.x += d.jitterOffset.x;
-    obj.position.y += d.jitterOffset.y;
-    obj.position.z += d.jitterOffset.z;
-
-    // Phase 3 click 5: random teleport glitch
-    if (phase >= 3 && !eyeGroup && Math.random() > 0.995) {
-      d.glitching = true;
-      const savePos = obj.position.clone();
-      obj.position.set((Math.random()-0.5)*60,(Math.random()-0.5)*60,(Math.random()-0.5)*30);
-      setTimeout(() => { if(d.glitching){ obj.position.copy(savePos); d.glitching=false; } }, 80+Math.random()*120);
-    }
-
-    // Phase 4+: spaghettification when close to center
-    const distToCenter = obj.position.length();
-    if (phase >= 4 && distToCenter < 7 && d.spaghetti < 1) {
-      d.spaghetti += delta*0.4;
-      const s = d.spaghetti;
-      const xyScale = d.originalScale * Math.max(0.02, 1 - s*0.98);
-      const zScale  = d.originalScale * (1 + s*18);
-      obj.scale.set(xyScale, xyScale, zScale);
-      obj.lookAt(0, 0, 0);
-      if (d.spaghetti >= 1) toRemove.push(obj);
-      return;
-    }
-
-    obj.rotation.x += delta*d.wobbleSpeed*0.3;
-    obj.rotation.y += delta*d.wobbleSpeed*0.2;
-    const scl = d.originalScale*(1+Math.sin(time*d.pulseSpeed+i)*0.3);
-    obj.scale.set(scl, scl, scl);
-    if (obj.material.emissive) obj.material.emissive.setHSL((time*0.05+i*0.01)%1, 1, 0.3);
-    if (Math.random()>0.999) { obj.material.opacity=Math.random()*0.3; setTimeout(()=>{if(obj.material)obj.material.opacity=0.3+Math.random()*0.5;},150); }
-  });
-
-  toRemove.forEach(obj => { scene.remove(obj); objects.splice(objects.indexOf(obj),1); });
-
-  // ── Eye ─────────────────────────────────────────────
-  if (eyeGroup) {
-    // Grow in over ~2s
-    const eyeScale = Math.min(1, (eyeGroup.scale.x + delta*0.5));
-    eyeGroup.scale.set(eyeScale, eyeScale, eyeScale);
-    // Face camera
-    eyeGroup.lookAt(camera.position);
-    // Iris tracks mouse
-    if (eyeIris)  { eyeIris.position.x  = targetMouseX*0.4; eyeIris.position.y  = -targetMouseY*0.4; }
-    if (eyePupil) { eyePupil.position.x = targetMouseX*0.4; eyePupil.position.y = -targetMouseY*0.4; eyePupil.position.z = 1.5; }
-    if (eyeOuter) eyeOuter.material.emissive.setHSL(0, 1, 0.3+Math.sin(time*2)*0.1);
-
-    // Phase 5: blink
-    if (phase >= 5) {
-      eyeBlinkTimer -= delta;
-      if (eyeBlinkTimer <= 0) { eyeBlinkTimer = 2.5 + Math.random()*3; blinkEye(); }
-    }
-  }
-
-  // ── Particles ───────────────────────────────────────
-  if (accretionDisc) {
-    particleSystem.scale.y += (0.02 - particleSystem.scale.y) * 0.04;
-    particleSystem.rotation.y += delta*(0.1 + clickCount*0.03);
-  } else {
-    particleSystem.rotation.y += delta*0.02;
-    particleSystem.rotation.x += delta*0.01;
-  }
-
-  const pCols = particleSystem.geometry.attributes.color;
-  for (let i = 0; i < pCols.count; i+=40) {
-    const c = new THREE.Color().setHSL(phase>=2 ? (0.02+Math.random()*0.05) : (time*0.1+i*0.001)%1, 0.7, 0.5);
-    pCols.setXYZ(i,c.r,c.g,c.b);
-  }
-  pCols.needsUpdate = true;
-
-  // ── Fog ─────────────────────────────────────────────
-  if (phase < 2) {
-    scene.fog.color.setHSL((time*0.02)%1, 0.3, 0.02);
-    renderer.setClearColor(scene.fog.color);
-  }
-
-  // ── Reality flash (phase 5) ──────────────────────────
-  if (phase >= 5) {
-    realityFlashTimer -= delta;
-    if (realityFlashTimer <= 0) {
-      realityFlashTimer = 2+Math.random()*3;
-      renderer.setClearColor(0x111008);
-      setTimeout(()=>renderer.setClearColor(scene.fog.color), 80);
-    }
-  }
-
-  // ── Tears ───────────────────────────────────────────
-  updateTears(delta);
-
-  // ── Coord scramble speed ─────────────────────────────
-  if (phase >= 1) {
-    if (Math.random() > (phase >= 2 ? 0.94 : 0.97)) scrambleCoords();
-  }
-
-  updateGlitch();
-  renderer.render(scene, camera);
-}
-
-// ═══════════════════════════════════════════════════════════
-// THE COLLAPSE
-// ═══════════════════════════════════════════════════════════
-function triggerCollapse() {
-  collapsing = true;
-  if (msgIntervalId) clearInterval(msgIntervalId);
-  if (backLinkScrambleId) clearInterval(backLinkScrambleId);
-  chromeDialog.style.display = 'none';
-  document.querySelectorAll('.void-text').forEach(e=>e.remove());
-  tears.forEach(t => t.style.display='none');
-
-  // At 1s: suck UI elements to center
-  setTimeout(() => {
-    [entropyEl, ...document.querySelectorAll('.coord'), backLink].forEach(el => {
-      el.style.transition = 'all 0.8s cubic-bezier(0.7,0,1,0.7)';
-      el.style.transform  = 'translate(-50vw, 30vh) scaleX(0.01) scaleY(0.01)';
-      el.style.opacity    = '0';
-    });
-  }, 1000);
-
-  // At 2s: shockwave rings + black out renderer
-  setTimeout(() => {
-    spawnShockwaves();
-  }, 1800);
-
-  setTimeout(() => {
-    renderer.domElement.style.transition = 'opacity 0.4s';
-    renderer.domElement.style.opacity = '0';
-  }, 2200);
-
-  // At 2.5s: post-collapse scene
-  setTimeout(buildPostCollapse, 2500);
-}
-
-let collapseStarted = null;
-function animateCollapse(delta) {
-  if (!collapseStarted) collapseStarted = Date.now();
-  const elapsed = (Date.now() - collapseStarted) / 1000;
-  const t = Math.min(1, elapsed);
-
-  // Everything accelerates toward eye/center
-  const sink = t * t;
-  const center = eyeGroup ? eyeGroup.position.clone() : new THREE.Vector3(0,0,0);
-
-  objects.forEach(obj => {
-    obj.position.lerp(center, 0.08 + sink*0.4);
-    obj.rotation.x += delta*8*sink; obj.rotation.y += delta*8*sink;
-    const sc = Math.max(0.001, 1-sink*0.98);
-    obj.scale.multiplyScalar(sc);
-  });
-  rings.forEach(ring => {
-    ring.rotation.x += delta*(5+sink*20); ring.rotation.y += delta*(5+sink*20);
-    ring.scale.multiplyScalar(Math.max(0.001, 1-sink*0.04));
-  });
-
-  // Pupil expands
-  if (eyePupil) {
-    const ps = 1 + sink*8;
-    eyePupil.scale.set(ps, ps, ps);
-  }
-
-  // Violent shake
-  camera.position.x += (Math.random()-0.5)*20*sink;
-  camera.position.y += (Math.random()-0.5)*20*sink;
-  camera.lookAt(0,0,0);
-
-  particleSystem.scale.y += (0.01 - particleSystem.scale.y)*0.05;
-  particleSystem.rotation.y += delta*(2+sink*15);
-
-  updateGlitch();
-  renderer.render(scene, camera);
-}
-
-function spawnShockwaves() {
-  for (let i = 0; i < 6; i++) {
-    setTimeout(() => {
-      const geo = new THREE.TorusGeometry(0.1, 0.06, 8, 60);
-      const mat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending });
-      const ring = new THREE.Mesh(geo, mat);
-      scene.add(ring);
-      let age = 0;
-      const anim = () => {
-        age += 0.04;
-        const s = 1 + age*30;
-        ring.scale.set(s, s, 1);
-        ring.material.opacity = Math.max(0, 0.9 - age*0.9);
-        if (age < 1) requestAnimationFrame(anim);
-        else { scene.remove(ring); ring.geometry.dispose(); ring.material.dispose(); }
-      };
-      anim();
-    }, i * 180);
-  }
-}
-
-// ═══════════════════════════════════════════════════════════
-// POST-COLLAPSE
-// ═══════════════════════════════════════════════════════════
-function buildPostCollapse() {
-  collapsed = true;
-  renderer.domElement.style.display = 'none';
-
-  document.getElementById('post-collapse').classList.add('active');
-
-  postScene  = new THREE.Scene();
-  postCamera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 500);
-  postCamera.position.set(0, 0, 14);
-  postCamera.lookAt(0, 0, 0);
-
-  postRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-  postRenderer.setSize(window.innerWidth, window.innerHeight);
-  postRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  postRenderer.setClearColor(0x000000);
-  // Insert before the overlay so text sits on top
-  const overlay = document.getElementById('post-collapse');
-  document.body.insertBefore(postRenderer.domElement, overlay);
-
-  // ── Bloom sphere: starts tiny, blooms over 1s ──
-  bloomSphere = new THREE.Mesh(
-    new THREE.SphereGeometry(0.4, 32, 32),
-    new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 3, metalness: 0, roughness: 1 })
-  );
-  bloomSphere.scale.set(0.001, 0.001, 0.001);
-  postScene.add(bloomSphere);
-
-  // ── The final impossible object: (3,2) torus knot ──
-  finalKnot = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(3, 1, 200, 32, 3, 2),
-    new THREE.MeshStandardMaterial({
-      metalness: 1.0, roughness: 0.05,
-      color: new THREE.Color(0xaaaaaa),
-      emissive: new THREE.Color().setHSL(0, 1, 0.06),
-      emissiveIntensity: 1,
-    })
-  );
-  finalKnot.scale.set(0.001, 0.001, 0.001);
-  postScene.add(finalKnot);
-
-  // ── 3 color-cycling point lights ──
-  const lDist = 16;
-  [[lDist,6,4],[-lDist*0.7,-4,lDist*0.5],[0,-lDist,0]].forEach(pos => {
-    const l = new THREE.PointLight(0xffffff, 1.2, 60);
-    l.position.set(...pos);
-    postScene.add(l);
-    postLights.push(l);
-  });
-  postScene.add(new THREE.AmbientLight(0x080808, 1));
-
-  // ── Dust particles ──
-  const dCount = 800;
-  dustGeo = new THREE.BufferGeometry();
-  const dPos = new Float32Array(dCount*3), dCol = new Float32Array(dCount*3);
-  dustVelocities = new Float32Array(dCount*3);
-  for (let i = 0; i < dCount; i++) {
-    const r = 0.5 + Math.random()*1.5;
-    const theta = Math.random()*Math.PI*2, phi = Math.acos(2*Math.random()-1);
-    dPos[i*3]   = r*Math.sin(phi)*Math.cos(theta);
-    dPos[i*3+1] = r*Math.sin(phi)*Math.sin(theta);
-    dPos[i*3+2] = r*Math.cos(phi);
-    const spd = 0.003 + Math.random()*0.005;
-    dustVelocities[i*3]   = Math.sin(phi)*Math.cos(theta)*spd;
-    dustVelocities[i*3+1] = Math.sin(phi)*Math.sin(theta)*spd*(0.3+Math.random());
-    dustVelocities[i*3+2] = Math.cos(phi)*spd;
-    const c = new THREE.Color().setHSL(0.55+Math.random()*0.15, 0.3, 0.7);
-    dCol[i*3]=c.r; dCol[i*3+1]=c.g; dCol[i*3+2]=c.b;
-  }
-  dustGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
-  dustGeo.setAttribute('color',    new THREE.BufferAttribute(dCol, 3));
-  const dustSystem = new THREE.Points(dustGeo, new THREE.PointsMaterial({
-    size: 0.05, vertexColors: true, transparent: true, opacity: 0.4,
-    blending: THREE.AdditiveBlending, depthWrite: false,
-  }));
-  postScene.add(dustSystem);
-
-  // ── Text sequence ──
-  setTimeout(() => document.getElementById('pc-text-1').classList.add('show'), 2200);
-  setTimeout(() => document.getElementById('pc-text-2').classList.add('show'), 4800);
-  setTimeout(() => document.getElementById('pc-link').classList.add('show'),   7500);
-
-  // ── Start post-collapse render loop ──
-  let pt = 0;
-  function animatePost() {
-    requestAnimationFrame(animatePost);
-    pt += 0.006;
-
-    // Bloom sphere fades + knot blooms in
-    const bloomIn = Math.min(1, pt*0.6);
-    bloomSphere.scale.setScalar(bloomIn);
-    bloomSphere.material.emissiveIntensity = Math.max(0, 3 - pt*3);
-
-    const knotIn = Math.max(0, Math.min(1, (pt-0.4)*0.7));
-    finalKnot.scale.setScalar(knotIn);
-
-    // Slow, inevitable rotation
-    if (finalKnot.scale.x > 0.1) {
-      finalKnot.rotation.y += 0.003;
-      finalKnot.rotation.x += 0.001;
-      finalKnot.rotation.z += 0.0015;
-    }
-
-    // Chrome color cycle
-    const hue = (pt*0.03) % 1;
-    finalKnot.material.emissive.setHSL(hue, 1, 0.07);
-    finalKnot.material.color.setHSL(hue, 0.1, 0.65);
-
-    // Lights shift out of phase
-    postLights.forEach((l, i) => {
-      l.color.setHSL((hue + i*0.33) % 1, 0.75, 0.55);
-    });
-
-    // Dust drift
-    if (dustGeo) {
-      const dp = dustGeo.attributes.position.array;
-      for (let i = 0; i < 800; i++) {
-        dp[i*3]   += dustVelocities[i*3];
-        dp[i*3+1] += dustVelocities[i*3+1];
-        dp[i*3+2] += dustVelocities[i*3+2];
-        const d = Math.sqrt(dp[i*3]**2+dp[i*3+1]**2+dp[i*3+2]**2);
-        if (d > 28) { dp[i*3]*=0.02; dp[i*3+1]*=0.02; dp[i*3+2]*=0.02; }
-      }
-      dustGeo.attributes.position.needsUpdate = true;
-    }
-
-    // Almost imperceptible camera drift
-    postCamera.position.x = Math.sin(pt*0.05)*0.6;
-    postCamera.position.y = Math.cos(pt*0.04)*0.4;
-    postCamera.lookAt(0,0,0);
-
-    postRenderer.render(postScene, postCamera);
-  }
-  animatePost();
-}
-
-// ── GO ────────────────────────────────────────────────────
-init();
+  <div id="nogl">the void needs webgl2 to open.<br/><a href="/fun.html">← back to the maze</a></div>
+
+<!-- ═══════════════════════ SHADERS ═══════════════════════ -->
+<script type="x-shader/x-vertex" id="vs">#version 300 es
+in vec2 aPos;
+void main() { gl_Position = vec4(aPos, 0.0, 1.0); }
 </script>
-  <script src="/js/script.js" defer></script>
+
+<script type="x-shader/x-fragment" id="fs-scene">#version 300 es
+precision highp float;
+out vec4 fragColor;
+
+uniform vec2  uRes;
+uniform float uTime;
+uniform vec3  uCamPos, uCamR, uCamU, uCamF;
+uniform float uFov;
+uniform float uFish, uAng;
+uniform float uIntro;
+uniform float uPulse;
+uniform int   uSteps;
+uniform sampler2D uText;
+uniform float uTextOn, uTextSpan, uTextDist;
+uniform vec3  uBackR, uBackU, uBackF;
+
+#define RIN  2.6
+#define ROUT 13.0
+
+float hash13(vec3 p) {
+  p = fract(p * 0.1031);
+  p += dot(p, p.zyx + 31.32);
+  return fract((p.x + p.y) * p.z);
+}
+// Integer hash (pcg3d): no visible correlation between neighbouring star cells
+float hashStar(vec3 p) {
+  uvec3 v = uvec3(ivec3(p) + 32768);
+  v = v * 1664525u + 1013904223u;
+  v.x += v.y * v.z; v.y += v.z * v.x; v.z += v.x * v.y;
+  v ^= v >> 16u;
+  v.x += v.y * v.z; v.y += v.z * v.x; v.z += v.x * v.y;
+  return float(v.x) / 4294967295.0;
+}
+float noise(vec3 x) {
+  vec3 i = floor(x), f = fract(x);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(mix(hash13(i), hash13(i + vec3(1,0,0)), f.x),
+                 mix(hash13(i + vec3(0,1,0)), hash13(i + vec3(1,1,0)), f.x), f.y),
+             mix(mix(hash13(i + vec3(0,0,1)), hash13(i + vec3(1,0,1)), f.x),
+                 mix(hash13(i + vec3(0,1,1)), hash13(i + vec3(1,1,1)), f.x), f.y), f.z);
+}
+float fbm(vec3 p) {
+  float s = 0.0, a = 0.5;
+  for (int i = 0; i < 4; i++) { s += a * noise(p); p *= 2.07; a *= 0.5; }
+  return s;
+}
+
+vec3 sky(vec3 d) {
+  vec3 col = vec3(0.0);
+  for (int l = 0; l < 2; l++) {
+    float sc = l == 0 ? 80.0 : 210.0;
+    float th = l == 0 ? 0.991 : 0.982;
+    vec3 p = d * sc, id = floor(p);
+    float h = hashStar(id);
+    if (h > th) {
+      vec3 c = id + 0.5 + (vec3(hashStar(id + 7.0), hashStar(id + 3.0), hashStar(id + 11.0)) - 0.5) * 0.3;
+      float b = smoothstep(0.22, 0.0, length(p - c)) * (h - th) / (1.0 - th);
+      vec3 tint = mix(vec3(1.0, 0.82, 0.66), vec3(0.72, 0.82, 1.0), hashStar(id + 19.0));
+      col += tint * b * (l == 0 ? 4.0 : 2.0);
+    }
+  }
+  // A faint band of dust, like looking along a galaxy
+  float band = exp(-pow(d.y * 2.6 + 0.35 * sin(d.x * 2.0 + d.z), 2.0));
+  col += vec3(0.32, 0.16, 0.1) * band * pow(fbm(d * 5.0), 2.0) * 0.35;
+
+  return col;
+}
+
+// Emission + opacity of the accretion disk where a ray crosses its plane
+vec4 disk(vec3 c, vec3 rd) {
+  float r = length(c.xz);
+  float edge = smoothstep(RIN, RIN + 0.9, r) * (1.0 - smoothstep(4.0, ROUT, r));
+  if (edge <= 0.0) return vec4(0.0);
+
+  float a = atan(c.z, c.x) + uTime * pow(r, -1.5) * 1.6; // Keplerian shear
+  vec3 sp = vec3(cos(a) * r, sin(a) * r, 0.0);
+  float n = fbm(vec3(sp.xy * 0.75, r * 0.35));
+  float rings = 0.55 + 0.45 * sin(r * 5.3 + n * 6.0);
+  float dens = edge * (0.25 + 1.1 * n * n) * mix(0.7, 1.15, rings);
+
+  float T = clamp(pow(RIN / r, 0.8), 0.0, 1.0);
+  vec3 col = mix(vec3(0.42, 0.07, 0.015), vec3(1.0, 0.4, 0.1), smoothstep(0.08, 0.55, T));
+  col = mix(col, vec3(1.0, 0.9, 0.8), smoothstep(0.55, 1.0, T));
+
+  // Relativistic beaming: the side rushing toward you is brighter and bluer
+  float beta = sqrt(0.5 / (r - 1.0));
+  vec3 vel = normalize(vec3(-c.z, 0.0, c.x)) * beta;
+  float gamma = inversesqrt(1.0 - beta * beta);
+  float D = 1.0 / (gamma * (1.0 - dot(vel, -rd)));
+  float g = D * sqrt(max(0.0, 1.0 - 1.0 / r));
+  col *= mix(vec3(1.3, 0.72, 0.5), vec3(0.85, 0.95, 1.25), smoothstep(0.6, 1.5, g));
+  float I = pow(clamp(g, 0.0, 1.8), 2.6);
+
+  vec3 emit = col * I * dens * (0.25 + 2.0 * T * T) * uIntro * (1.0 + uPulse);
+  return vec4(emit, clamp(dens * (0.35 + 0.6 * T), 0.0, 0.95));
+}
+
+void main() {
+  vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / min(uRes.x, uRes.y);
+  vec3 v = normalize(uCamF + (uv.x * uCamR + uv.y * uCamU) * 2.0 * uFov);
+  if (uFish > 0.0) {
+    // Near the horizon the shadow swallows any normal lens; an equidistant fisheye
+    // shows what a falling observer sees: the whole sky squeezed into a bright ring
+    float lu = length(uv);
+    float th = lu * uAng;
+    vec2 dir = lu > 0.0 ? uv / lu : vec2(0.0);
+    vec3 fish = uCamF * cos(th) + (dir.x * uCamR + dir.y * uCamU) * sin(th);
+    v = normalize(mix(v, fish, uFish));
+  }
+  vec3 p = uCamPos;
+
+  // Photon geodesic in Schwarzschild spacetime (units of the event horizon radius)
+  vec3 hv = cross(p, v);
+  float h2 = dot(hv, hv);
+
+  vec3 col = vec3(0.0);
+  float trans = 1.0, glow = 0.0;
+  bool captured = false;
+
+  for (int i = 0; i < 260; i++) {
+    if (i >= uSteps) break;
+    float r = length(p);
+    if (r < 1.0) { captured = true; break; }
+    float dt = clamp(0.075 * r, 0.02, 3.0);
+    vec3 prev = p;
+    v += -1.5 * h2 * p / pow(r, 5.0) * dt;
+    p += v * dt;
+
+    if (prev.y * p.y < 0.0) {
+      vec3 c = mix(prev, p, prev.y / (prev.y - p.y));
+      vec4 d = disk(c, normalize(v));
+      col += trans * d.rgb;
+      trans *= 1.0 - d.a;
+      if (trans < 0.02) break;
+    }
+    glow += exp(-abs(r - 1.5) * 7.0) * dt;
+    if (r > 70.0 && dot(p, v) > 0.0) break;
+  }
+
+  if (!captured) {
+    vec3 d = normalize(v);
+    col += trans * sky(d);
+    // Words fed to the void sit on a plane a few radii behind it; follow the
+    // escaped ray's straight-line asymptote back to that plane
+    float dn = dot(d, uBackF);
+    if (uTextOn > 0.0 && dn > 0.05) {
+      vec3 X = p + d * (dot(uBackF * uTextDist - p, uBackF) / dn);
+      vec2 q = vec2(dot(X, uBackR), dot(X, uBackU));
+      vec2 tuv = vec2(q.x / (2.0 * uTextSpan) + 0.5, 0.5 - q.y / uTextSpan);
+      if (all(greaterThan(tuv, vec2(0.0))) && all(lessThan(tuv, vec2(1.0)))) {
+        col += trans * vec3(1.0, 0.78, 0.6) * texture(uText, tuv).r * 1.1;
+      }
+    }
+  }
+  col += vec3(1.0, 0.5, 0.2) * glow * 0.035 * uIntro * trans;
+
+  col = 1.0 - exp(-col * 1.1);
+  fragColor = vec4(pow(col, vec3(0.92)), 1.0);
+}
+</script>
+
+<script type="x-shader/x-fragment" id="fs-post">#version 300 es
+precision highp float;
+out vec4 fragColor;
+uniform sampler2D uScene;
+uniform vec2  uRes;
+uniform float uTime, uCA, uFlash, uFade, uGrain;
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / uRes;
+  vec2 dc = uv - 0.5;
+  float ca = uCA * dot(dc, dc);
+  vec3 c = vec3(
+    texture(uScene, uv - dc * ca).r,
+    texture(uScene, uv).g,
+    texture(uScene, uv + dc * ca).b
+  );
+  // Cheap bloom from the mip chain
+  vec3 b = textureLod(uScene, uv, 2.5).rgb * 0.3
+         + textureLod(uScene, uv, 4.0).rgb * 0.45
+         + textureLod(uScene, uv, 5.5).rgb * 0.55;
+  c += b * b * 1.1;
+  c *= 1.0 - dot(dc, dc) * 1.1;
+  uvec2 q = uvec2(gl_FragCoord.xy) * uvec2(1597334673u, 3812015801u);
+  uint hn = (q.x ^ q.y ^ (uint(uTime * 60.0) * 747796405u)) * 1597334673u;
+  float n = float(hn) / 4294967295.0;
+  c += (n - 0.5) * uGrain;
+  c = mix(c, vec3(1.0, 0.96, 0.92), uFlash);
+  c *= 1.0 - uFade;
+  fragColor = vec4(c, 1.0);
+}
+</script>
+
+<!-- ═══════════════════════ PROGRAM ═══════════════════════ -->
+<script>
+(() => {
+'use strict';
+
+const $ = id => document.getElementById(id);
+const canvas = $('void');
+const body = document.body;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const coarse = matchMedia('(pointer: coarse)').matches;
+
+function readLS(k) { try { return localStorage.getItem(k); } catch { return null; } }
+function writeLS(k, v) { try { localStorage.setItem(k, v); } catch { /* storage unavailable */ } }
+
+const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, powerPreference: 'high-performance' });
+if (!gl) {
+  $('nogl').style.display = 'flex';
+  body.classList.remove('boot');
+  return;
+}
+
+// ═══════ GL SETUP ═══════
+function compile(type, src) {
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src.trim());
+  gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+  return s;
+}
+function program(fsId) {
+  const p = gl.createProgram();
+  gl.attachShader(p, compile(gl.VERTEX_SHADER, $('vs').textContent));
+  gl.attachShader(p, compile(gl.FRAGMENT_SHADER, $(fsId).textContent));
+  gl.bindAttribLocation(p, 0, 'aPos');
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+  const u = {};
+  const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
+  for (let i = 0; i < n; i++) {
+    const name = gl.getActiveUniform(p, i).name;
+    u[name] = gl.getUniformLocation(p, name);
+  }
+  return { p, u };
+}
+
+let scene, post;
+try {
+  scene = program('fs-scene');
+  post = program('fs-post');
+} catch (err) {
+  console.error(err);
+  $('nogl').style.display = 'flex';
+  body.classList.remove('boot');
+  return;
+}
+
+const vao = gl.createVertexArray();
+gl.bindVertexArray(vao);
+gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+gl.enableVertexAttribArray(0);
+gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+const sceneTex = gl.createTexture();
+const fbo = gl.createFramebuffer();
+let sceneW = 0, sceneH = 0;
+
+const textCanvas = document.createElement('canvas');
+textCanvas.width = 1024;
+textCanvas.height = 512;
+const tctx = textCanvas.getContext('2d');
+const textTex = gl.createTexture();
+gl.bindTexture(gl.TEXTURE_2D, textTex);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textCanvas);
+
+// ═══════ SIZING & ADAPTIVE QUALITY ═══════
+let dpr = 1, W = 0, H = 0;
+let quality = coarse ? 0.45 : 0.6;   // fraction of device pixels the raymarch renders at
+const Q_MIN = 0.3, Q_MAX = coarse ? 0.6 : 0.85;
+const MAX_SCENE_PX = coarse ? 450e3 : 1.1e6;
+let steps = coarse ? 170 : 240;
+
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = Math.floor(innerWidth * dpr);
+  H = Math.floor(innerHeight * dpr);
+  canvas.width = W;
+  canvas.height = H;
+  allocScene();
+}
+function allocScene() {
+  let s = quality;
+  if (W * H * s * s > MAX_SCENE_PX) s = Math.sqrt(MAX_SCENE_PX / (W * H));
+  const w = Math.max(64, Math.floor(W * s)), h = Math.max(64, Math.floor(H * s));
+  if (w === sceneW && h === sceneH) return;
+  sceneW = w; sceneH = h;
+  gl.bindTexture(gl.TEXTURE_2D, sceneTex);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, sceneTex, 0);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+}
+resize();
+addEventListener('resize', resize);
+
+let frameAvg = 16, qualityTimer = 0;
+function adaptQuality(ms, dt) {
+  frameAvg = frameAvg * 0.92 + ms * 0.08;
+  qualityTimer += dt;
+  if (qualityTimer < 1) return;
+  qualityTimer = 0;
+  if (frameAvg > 24 && quality > Q_MIN) { quality = Math.max(Q_MIN, quality * 0.85); steps = Math.max(140, steps - 20); allocScene(); }
+  else if (frameAvg < 13 && quality < Q_MAX) { quality = Math.min(Q_MAX, quality * 1.08); allocScene(); }
+}
+
+// ═══════ SOUND (opt-in) ═══════
+const Sound = (() => {
+  let ac = null, master, osc1, osc2, filter, on = false;
+  function build() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    ac = new AC();
+    master = ac.createGain();
+    master.gain.value = 0;
+    filter = ac.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 260;
+    filter.Q.value = 6;
+    osc1 = ac.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = 55;
+    osc2 = ac.createOscillator(); osc2.type = 'sine'; osc2.frequency.value = 55.4;
+    const g1 = ac.createGain(); g1.gain.value = 0.12;
+    const g2 = ac.createGain(); g2.gain.value = 0.5;
+    osc1.connect(g1).connect(filter);
+    osc2.connect(g2).connect(filter);
+    filter.connect(master).connect(ac.destination);
+    osc1.start(); osc2.start();
+    return true;
+  }
+  return {
+    get on() { return on; },
+    toggle() {
+      if (!ac && !build()) return false;
+      on = !on;
+      if (ac.state === 'suspended') ac.resume();
+      master.gain.setTargetAtTime(on ? 0.22 : 0, ac.currentTime, 0.6);
+      return on;
+    },
+    // Deeper and more open as you fall: time itself is slowing down
+    fall(f) {
+      if (!on) return;
+      const t = ac.currentTime;
+      osc1.frequency.setTargetAtTime(55 * (1 - f * 0.55), t, 0.2);
+      osc2.frequency.setTargetAtTime(55.4 * (1 - f * 0.55), t, 0.2);
+      filter.frequency.setTargetAtTime(260 + f * 1600, t, 0.2);
+    },
+    tick() {
+      if (!on) return;
+      const o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime;
+      o.type = 'triangle';
+      o.frequency.value = 1400 + Math.random() * 500;
+      g.gain.setValueAtTime(0.03, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
+      o.connect(g).connect(master);
+      o.start(t); o.stop(t + 0.08);
+    },
+    swallow() {
+      if (!on) return;
+      const o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime;
+      o.type = 'sine';
+      o.frequency.setValueAtTime(420, t);
+      o.frequency.exponentialRampToValueAtTime(40, t + 1.4);
+      g.gain.setValueAtTime(0.18, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.5);
+      o.connect(g).connect(master);
+      o.start(t); o.stop(t + 1.6);
+    },
+    silence(v) {
+      if (!ac) return;
+      master.gain.setTargetAtTime(on && !v ? 0.22 : 0, ac.currentTime, v ? 0.4 : 1.2);
+    },
+  };
+})();
+
+$('sound').addEventListener('click', () => {
+  const on = Sound.toggle();
+  $('sound').textContent = on ? 'sound on' : 'sound off';
+  $('sound').setAttribute('aria-pressed', String(on));
+});
+
+// ═══════ STATE ═══════
+const HOME = 24;
+const S = {
+  t: 0,
+  dist: 60, az: 0.55, el: 0.13,
+  azOff: 0, elOff: 0, mx: 0, my: 0,
+  holding: false, holdT: 0,
+  mode: 'orbit',           // orbit | crossing | inside | escape
+  modeT: 0,
+  intro: 0, pulse: 0, flash: 0, fade: 0, shake: 0,
+  pastPhoton: false,
+};
+
+const visits = (parseInt(readLS('void-visits') || '0', 10) || 0) + 1;
+writeLS('void-visits', String(visits));
+let crossings = parseInt(readLS('void-crossings') || '0', 10) || 0;
+let lastWord = readLS('void-last-word');
+
+// ═══════ WORDS ═══════
+const words = [];
+let buffer = '';
+let bufferTimer = null;
+const typingEl = $('typing');
+
+function renderTyping() { typingEl.textContent = buffer; }
+
+function launch() {
+  clearTimeout(bufferTimer);
+  const text = buffer.trim();
+  buffer = '';
+  if (!text || S.mode !== 'orbit') { renderTyping(); return; }
+  typingEl.textContent = text;
+  typingEl.classList.remove('launch');
+  void typingEl.offsetWidth;
+  typingEl.classList.add('launch');
+  setTimeout(() => { typingEl.classList.remove('launch'); renderTyping(); }, 700);
+
+  const a = Math.random() * Math.PI * 2;
+  words.push({ text, t: -0.45, life: 6.5, r0: 5.2 + Math.random() * 0.8, a0: a, spin: (Math.random() < 0.5 ? -1 : 1) * 1.8 });
+  lastWord = text.toLowerCase();
+  writeLS('void-last-word', lastWord);
+  Sound.swallow();
+  advanceHint('typed');
+}
+
+function drawWords(dt) {
+  if (!words.length) return false;
+  tctx.clearRect(0, 0, 1024, 512);
+  tctx.textAlign = 'center';
+  tctx.textBaseline = 'middle';
+  const span = TEXT_SPAN;
+  for (let i = words.length - 1; i >= 0; i--) {
+    const w = words[i];
+    w.t += dt;
+    if (w.t >= w.life) {
+      words.splice(i, 1);
+      S.pulse = Math.min(1.2, S.pulse + 0.6);
+      continue;
+    }
+    if (w.t < 0) continue;
+    const p = w.t / w.life;
+    const fall = p * p * p;
+    const rad = w.r0 * (1 - fall);
+    const ang = w.a0 + w.spin * p * p;
+    const qx = Math.cos(ang) * rad * 1.2, qy = Math.sin(ang) * rad * 0.6;
+    const px = (qx / span * 0.5 + 0.5) * 1024;
+    const py = (0.5 - qy / span) * 512;
+    const size = 64 * (1 - p * 0.4);
+    tctx.save();
+    tctx.translate(px, py);
+    tctx.rotate(-ang * 0.15);
+    tctx.globalAlpha = Math.min(1, w.t * 2.5) * (1 - Math.pow(p, 6));
+    tctx.font = `800 ${size}px Syne, sans-serif`;
+    tctx.fillStyle = '#fff';
+    tctx.fillText(w.text, 0, 0);
+    tctx.restore();
+  }
+  gl.bindTexture(gl.TEXTURE_2D, textTex);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textCanvas);
+  return words.length > 0;
+}
+const TEXT_SPAN = 8;   // world units: the word plane spans ±8 × ±4
+
+addEventListener('keydown', e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (document.activeElement === $('write-input')) return;
+  if (S.mode !== 'orbit') return;
+  if (e.key === 'Enter') { launch(); return; }
+  if (e.key === 'Backspace') { buffer = buffer.slice(0, -1); renderTyping(); return; }
+  if (e.key === 'Escape') { buffer = ''; renderTyping(); return; }
+  if (e.key.length !== 1 || buffer.length >= 24) return;
+  if (e.key === ' ' && !buffer) { e.preventDefault(); return; }
+  e.preventDefault();
+  buffer += e.key;
+  renderTyping();
+  Sound.tick();
+  clearTimeout(bufferTimer);
+  bufferTimer = setTimeout(launch, 1800);
+});
+
+// Touch: a real input so the keyboard opens
+const writeInput = $('write-input');
+$('write').addEventListener('click', () => { writeInput.value = ''; writeInput.focus(); });
+writeInput.addEventListener('input', () => { buffer = writeInput.value.slice(0, 24); renderTyping(); });
+writeInput.addEventListener('keydown', e => { if (e.key === 'Enter') { writeInput.blur(); } });
+writeInput.addEventListener('blur', () => { if (buffer) launch(); });
+
+// ═══════ POINTER ═══════
+const cursorEl = $('cursor');
+let pointer = null;   // active pointer for touch drag/hold
+let moved = 0;
+
+addEventListener('pointermove', e => {
+  cursorEl.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+  if (e.pointerType === 'mouse') {
+    const nx = e.clientX / innerWidth * 2 - 1, ny = e.clientY / innerHeight * 2 - 1;
+    moved += Math.hypot(nx - S.mx, ny - S.my);
+    S.mx = nx; S.my = ny;
+    if (moved > 0.8) advanceHint('moved');
+  } else if (pointer && pointer.id === e.pointerId) {
+    const dx = (e.clientX - pointer.x) / innerWidth, dy = (e.clientY - pointer.y) / innerHeight;
+    pointer.x = e.clientX; pointer.y = e.clientY;
+    pointer.travel += Math.abs(dx) + Math.abs(dy);
+    if (!S.holding) {
+      S.mx = Math.max(-1, Math.min(1, S.mx + dx * 2.4));
+      S.my = Math.max(-1, Math.min(1, S.my + dy * 2.4));
+      if (pointer.travel > 0.15) advanceHint('moved');
+    }
+  }
+});
+
+canvas.addEventListener('pointerdown', e => {
+  if (S.mode !== 'orbit') return;
+  if (e.pointerType === 'mouse') { if (e.button === 0) setHolding(true); return; }
+  pointer = { id: e.pointerId, x: e.clientX, y: e.clientY, travel: 0 };
+  pointer.timer = setTimeout(() => { if (pointer && pointer.travel < 0.03) setHolding(true); }, 260);
+});
+function release(e) {
+  if (pointer && e.pointerId === pointer.id) { clearTimeout(pointer.timer); pointer = null; }
+  setHolding(false);
+}
+addEventListener('pointerup', release);
+addEventListener('pointercancel', release);
+addEventListener('blur', () => setHolding(false));
+canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+function setHolding(v) {
+  if (v && S.mode !== 'orbit') return;
+  S.holding = v;
+  body.classList.toggle('holding', v);
+  if (v) advanceHint('held');
+}
+
+// ═══════ HINTS & WHISPERS ═══════
+const hintEl = $('hint');
+const HINTS = {
+  move: coarse ? 'drag to orbit' : 'move to orbit',
+  hold: coarse ? 'press and hold to fall' : 'hold to fall',
+  type: coarse ? 'or whisper something to it' : 'or type something. it’s listening.',
+  deeper: 'all the way in.',
+  late: 'too late. nothing escapes from here.',
+};
+let hintStage = 'move';
+let hintLocked = 0;
+
+function setHint(text) {
+  if (hintEl.textContent === text && !hintEl.classList.contains('out')) return;
+  hintEl.classList.add('out');
+  setTimeout(() => {
+    hintEl.textContent = text;
+    hintEl.classList.toggle('out', !text);
+  }, 500);
+}
+function advanceHint(event) {
+  if (event === 'moved' && hintStage === 'move') { hintStage = 'hold'; setHint(HINTS.hold); }
+  else if (event === 'held' && (hintStage === 'hold' || hintStage === 'move')) { hintStage = 'type'; setTimeout(() => { if (hintStage === 'type') setHint(HINTS.type); }, 4000); }
+  else if (event === 'typed' && hintStage === 'type') { hintStage = 'done'; setHint(''); }
+}
+
+const whisperEl = $('whisper');
+function whisper(text, ms = 4200) {
+  whisperEl.textContent = text;
+  whisperEl.classList.add('show');
+  clearTimeout(whisper.t);
+  whisper.t = setTimeout(() => whisperEl.classList.remove('show'), ms);
+}
+
+function arrivalLine() {
+  if (lastWord && crossings > 0) return `it still remembers “${lastWord}”.`;
+  if (lastWord) return `it still remembers “${lastWord}”.`;
+  if (crossings > 0) return 'you came back. most things don’t.';
+  if (visits > 1) return 'you found it again.';
+  return 'you found the edge of the website.';
+}
+
+// ═══════ CROSSING THE HORIZON ═══════
+const inLines = ['in-1', 'in-2', 'in-3', 'in-4', 'in-5'].map($);
+
+function startCrossing() {
+  S.mode = 'crossing';
+  S.modeT = 0;
+  setHolding(false);
+  buffer = '';
+  renderTyping();
+  Sound.silence(true);
+}
+
+function enterInside() {
+  S.mode = 'inside';
+  S.modeT = 0;
+  crossings++;
+  writeLS('void-crossings', String(crossings));
+  body.classList.add('inside');
+
+  const lines = [
+    'you crossed the event horizon.',
+    'to anyone watching from outside, you’re frozen at the edge. slowly reddening. forever.',
+    crossings > 1 ? `in here, it’s just you again. visit no. ${crossings}.` : 'in here, it’s quiet.',
+    lastWord ? `it kept “${lastWord}”. it keeps everything.` : '',
+  ];
+  inLines.forEach((el, i) => {
+    el.classList.remove('show');
+    if (i < 4) el.textContent = lines[i];
+  });
+  const delays = reduceMotion ? [300, 900, 1500, 2100, 2800] : [900, 3200, 6200, 8200, 10200];
+  inLines.forEach((el, i) => {
+    if (i === 3 && !lines[3]) return;
+    setTimeout(() => { if (S.mode === 'inside') el.classList.add('show'); }, delays[i]);
+  });
+}
+
+$('climb').addEventListener('click', () => {
+  body.classList.remove('inside');
+  inLines.forEach(el => el.classList.remove('show'));
+  S.mode = 'escape';
+  S.modeT = 0;
+  S.dist = 1.35;
+  S.flash = 1;
+  S.fade = 0;
+  S.pastPhoton = false;
+  hintEl.textContent = '';
+  hintEl.classList.add('out');
+  Sound.silence(false);
+  setTimeout(() => whisper('that shouldn’t be possible.', 3800), 1400);
+});
+
+// ═══════ CAMERA ═══════
+function camera() {
+  const d = S.dist;
+  const el = S.el, az = S.az;
+  const pos = [d * Math.cos(el) * Math.sin(az), d * Math.sin(el), d * Math.cos(el) * Math.cos(az)];
+  let f = norm([-pos[0], -pos[1] * 0.92, -pos[2]]);
+  // Near the hole, look slightly off-center so the ring fills the view
+  const r0 = norm(cross(f, [0, 1, 0]));
+  let u0 = cross(r0, f);
+  const roll = S.fallF * S.fallF * 0.35 * Math.sin(S.t * 0.4) + (S.shake ? (Math.random() - 0.5) * S.shake * 0.02 : 0);
+  const cr = Math.cos(roll), sr = Math.sin(roll);
+  const r = [r0[0] * cr + u0[0] * sr, r0[1] * cr + u0[1] * sr, r0[2] * cr + u0[2] * sr];
+  const u = [u0[0] * cr - r0[0] * sr, u0[1] * cr - r0[1] * sr, u0[2] * cr - r0[2] * sr];
+  if (S.shake) {
+    const j = S.shake * 0.004;
+    f = norm([f[0] + (Math.random() - 0.5) * j, f[1] + (Math.random() - 0.5) * j, f[2] + (Math.random() - 0.5) * j]);
+  }
+  return { pos, f, r, u };
+}
+function norm(v) { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; }
+function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
+
+// ═══════ UPDATE ═══════
+const rVal = $('r-val'), tVal = $('t-val');
+S.fallF = 0;
+
+function update(dt) {
+  S.t += dt;
+  S.modeT += dt;
+  S.intro = Math.min(1, S.intro + dt / 3.2);
+  S.pulse = Math.max(0, S.pulse - dt * 0.8);
+  S.flash = Math.max(0, S.flash - dt * 0.7);
+
+  // Orbit: drift + follow the pointer
+  S.az += dt * (reduceMotion ? 0.008 : 0.025);
+  S.azOff += (S.mx * 0.55 - S.azOff) * Math.min(1, dt * 2.2);
+  S.elOff += (-S.my * 0.32 - S.elOff) * Math.min(1, dt * 2.2);
+  S.el = Math.max(-0.45, Math.min(0.62, 0.13 + S.elOff));
+
+  switch (S.mode) {
+    case 'orbit': {
+      if (S.dist > HOME + 0.05 && !S.holding) {
+        S.dist += (HOME - S.dist) * Math.min(1, dt * 0.7);   // arrival dolly
+      } else if (S.holding || S.pastPhoton) {
+        S.holdT += dt;
+        const k = 0.1 + S.holdT * 0.22;
+        S.dist += (1.05 - S.dist) * Math.min(1, dt * k);
+      } else {
+        S.holdT = Math.max(0, S.holdT - dt * 3);
+        S.dist += (HOME - S.dist) * Math.min(1, dt * 0.9);
+      }
+      // Inside the photon sphere there is no way back out
+      if (S.dist < 1.5 && !S.pastPhoton) {
+        S.pastPhoton = true;
+        setHint(HINTS.late);
+      }
+      if (!S.holding && !S.pastPhoton && S.holdT > 0 && S.dist < 8 && hintStage !== 'deeper-shown') {
+        setHint(HINTS.deeper);
+        hintStage = hintStage === 'done' ? 'deeper-shown' : hintStage;
+      }
+      if (S.dist < 1.18) startCrossing();
+      break;
+    }
+    case 'crossing':
+      S.dist += (1.0 - S.dist) * Math.min(1, dt * 2);
+      S.fade = Math.min(1, S.modeT / 1.1);
+      if (S.modeT > 1.4) enterInside();
+      break;
+    case 'inside':
+      S.fade = 1;
+      break;
+    case 'escape':
+      S.dist += (HOME - S.dist) * Math.min(1, dt * (0.4 + S.modeT * 0.9));
+      if (S.dist > HOME - 1.5) { S.mode = 'orbit'; S.holdT = 0; setHint(''); }
+      break;
+  }
+
+  S.fallF = Math.max(0, Math.min(1, 1 - (S.dist - 1) / (HOME - 1)));
+  S.shake = reduceMotion ? 0 : Math.pow(Math.max(0, 1 - (S.dist - 1) / 3), 2) * (S.mode === 'orbit' || S.mode === 'crossing' ? 1 : 0);
+  Sound.fall(S.fallF);
+
+  // Readouts
+  const r = S.dist;
+  if (S.mode === 'inside' || r <= 1.0005) {
+    rVal.textContent = '< 1 rₛ';
+    tVal.textContent = '×∞';
+  } else {
+    rVal.textContent = `${r.toFixed(2)} rₛ`;
+    const dil = 1 / Math.sqrt(1 - 1 / r);
+    tVal.textContent = dil > 999 ? '×∞' : `×${dil.toFixed(2)}`;
+  }
+}
+
+// ═══════ RENDER ═══════
+function render() {
+  const cam = camera();
+  const fov = 0.36 + Math.pow(S.fallF, 4) * 0.6;
+  const fishT = Math.max(0, Math.min(1, (S.fallF - 0.78) / 0.2));
+  const fish = fishT * fishT * (3 - 2 * fishT);
+  const skip = S.mode === 'inside';
+
+  if (!skip) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.viewport(0, 0, sceneW, sceneH);
+    gl.useProgram(scene.p);
+    const u = scene.u;
+    gl.uniform2f(u.uRes, sceneW, sceneH);
+    gl.uniform1f(u.uTime, S.t);
+    gl.uniform3fv(u.uCamPos, cam.pos);
+    gl.uniform3fv(u.uCamR, cam.r);
+    gl.uniform3fv(u.uCamU, cam.u);
+    gl.uniform3fv(u.uCamF, cam.f);
+    gl.uniform1f(u.uFov, fov);
+    gl.uniform1f(u.uFish, fish);
+    gl.uniform1f(u.uAng, 1.1 + fish * 2.3);
+    gl.uniform1f(u.uIntro, S.intro * S.intro * (3 - 2 * S.intro));
+    gl.uniform1f(u.uPulse, S.pulse);
+    gl.uniform1i(u.uSteps, steps);
+    gl.uniform1f(u.uTextOn, words.length ? 1 : 0);
+    gl.uniform1f(u.uTextSpan, TEXT_SPAN);
+    gl.uniform1f(u.uTextDist, 6);
+    gl.uniform3fv(u.uBackR, cam.r);
+    gl.uniform3fv(u.uBackU, cam.u);
+    gl.uniform3fv(u.uBackF, norm([-cam.pos[0], -cam.pos[1], -cam.pos[2]]));
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, textTex);
+    gl.uniform1i(u.uText, 1);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, sceneTex);
+    gl.generateMipmap(gl.TEXTURE_2D);
+  }
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.viewport(0, 0, W, H);
+  gl.useProgram(post.p);
+  const p = post.u;
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, sceneTex);
+  gl.uniform1i(p.uScene, 0);
+  gl.uniform2f(p.uRes, W, H);
+  gl.uniform1f(p.uTime, S.t);
+  gl.uniform1f(p.uCA, 0.012 + Math.pow(S.fallF, 3) * 0.09);
+  gl.uniform1f(p.uFlash, S.flash);
+  gl.uniform1f(p.uFade, S.fade);
+  gl.uniform1f(p.uGrain, reduceMotion ? 0.02 : 0.045);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+
+// ═══════ LOOP ═══════
+let last = performance.now();
+function frame(now) {
+  const dt = Math.max(0, Math.min(0.05, (now - last) / 1000));
+  const ms = now - last;
+  last = now;
+  update(dt);
+  drawWords(dt);
+  render();
+  if (S.mode === 'orbit' || S.mode === 'escape') adaptQuality(ms, dt);
+  requestAnimationFrame(frame);
+}
+
+// ═══════ GO ═══════
+document.fonts?.load('800 64px Syne').catch(() => {});
+requestAnimationFrame(frame);
+setTimeout(() => body.classList.remove('boot'), 2600);
+setTimeout(() => whisper(arrivalLine(), 4600), 1400);
+setTimeout(() => { if (hintStage === 'move') setHint(HINTS.move); }, 5200);
+
+})();
+</script>
 </body>
 </html>
