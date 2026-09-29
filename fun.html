@@ -27,203 +27,192 @@
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/js/script.js" defer></script>
   <style>
+    .maze-main { max-width: 680px; margin: 0 auto; padding: 24px 20px 0; }
+    .maze-head { text-align: center; margin-bottom: 14px; }
+    .maze-head h1 { font-size: 26px; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .maze-head p { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 0.12em; text-transform: uppercase; }
+
     #game-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    #game {
-      font-size: 0;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 60px rgba(0,0,0,0.5), inset 0 0 1px rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.06);
-      position: relative;
-    }
+
+    /* HUD */
     #hud {
-      display: flex; gap: 20px; align-items: center;
+      display: flex; gap: 18px; align-items: center; flex-wrap: wrap; justify-content: center;
       font-family: 'Inter Tight', monospace; font-size: 11px;
       color: rgba(255,255,255,0.4); letter-spacing: 0.15em; text-transform: uppercase;
     }
-    #hud .hud-val { color: rgba(255,255,255,0.8); font-weight: 600; }
-    #hud .hud-val.has-key { color: #facc15; text-shadow: 0 0 8px rgba(250,204,21,0.4); }
-    #hud .hud-val.has-powerup { color: #3b82f6; text-shadow: 0 0 8px rgba(59,130,246,0.4); }
+    .hud-item { display: flex; gap: 6px; align-items: baseline; }
+    .hud-val { color: rgba(255,255,255,0.85); font-weight: 600; font-variant-numeric: tabular-nums; display: inline-block; }
+    .hud-val.has-key { color: #facc15; text-shadow: 0 0 8px rgba(250,204,21,0.4); }
+    .hud-val.pop { animation: hudPop 0.45s cubic-bezier(.2,1.6,.4,1); }
+    @keyframes hudPop { 0% { transform: scale(1); } 40% { transform: scale(1.6); } 100% { transform: scale(1); } }
+    .heart { color: #f97316; text-shadow: 0 0 8px rgba(249,115,22,0.5); margin-right: 2px; transition: color 0.3s, text-shadow 0.3s; }
+    .heart.lost { color: rgba(255,255,255,0.12); text-shadow: none; }
+    .hud-actions { display: flex; gap: 6px; }
+    .hud-btn {
+      width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6);
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+    }
+    .hud-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); color: #fff; }
+    .hud-btn:disabled { opacity: 0.3; cursor: default; }
 
-    .cell {
-      display: inline-block; width: 100%; height: 100%;
-      background-size: 70% 70%; background-repeat: no-repeat; background-position: center;
-      transition: background-color 0.12s, box-shadow 0.12s, opacity 0.15s;
+    /* Stage */
+    #stage {
+      position: relative; border-radius: 14px; overflow: hidden;
+      box-shadow: 0 0 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+      touch-action: none; user-select: none; -webkit-user-select: none; background: #07090e;
     }
-    .cell-wall { background-color: #1e2433; box-shadow: inset 0 0 4px rgba(0,0,0,0.6); }
-    .cell-path { background-color: #2a3040; }
-    .cell-visited { background-color: #252b3a; }
-    .cell-player {
-      background-color: #C2410C; border-radius: 50%;
-      box-shadow: 0 0 12px rgba(194,65,12,0.6), 0 0 24px rgba(194,65,12,0.2);
-      animation: playerPulse 2s ease-in-out infinite;
-    }
-    .cell-player.powered {
-      background-color: #3b82f6 !important;
-      box-shadow: 0 0 16px rgba(59,130,246,0.8), 0 0 32px rgba(59,130,246,0.3) !important;
-      animation: playerPowered 0.4s ease-in-out infinite !important;
-    }
-    @keyframes playerPulse {
-      0%,100% { box-shadow: 0 0 12px rgba(194,65,12,0.6), 0 0 24px rgba(194,65,12,0.2); }
-      50% { box-shadow: 0 0 18px rgba(194,65,12,0.8), 0 0 36px rgba(194,65,12,0.3); }
-    }
-    @keyframes playerPowered {
-      0%,100% { box-shadow: 0 0 16px rgba(59,130,246,0.8), 0 0 32px rgba(59,130,246,0.3); }
-      50% { box-shadow: 0 0 24px rgba(59,130,246,1), 0 0 48px rgba(59,130,246,0.5); }
-    }
-    .cell-key { background-color: #2a3040; position: relative; }
-    .cell-key::after {
-      content: '🔑'; position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: clamp(8px, 1.8vw, 14px); animation: itemBob 2s ease-in-out infinite;
-    }
-    .cell-door {
-      background-color: #3b2a1a; border: 2px solid #8B6914;
-      box-shadow: inset 0 0 8px rgba(139,105,20,0.3);
-    }
-    .cell-door.unlocked { background-color: #2a3040; border-color: transparent; box-shadow: none; }
-    .cell-chest { background-color: #2a3040; position: relative; }
-    .cell-chest::after {
-      content: '✨'; position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: clamp(8px, 1.8vw, 14px); animation: itemBob 1.5s ease-in-out infinite;
-    }
-    .cell-powerup { background-color: #1a2340; position: relative; }
-    .cell-powerup::after {
-      content: '⚡'; position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: clamp(8px, 1.8vw, 14px); animation: itemBob 0.8s ease-in-out infinite;
-    }
-    .cell-enemy {
-      background-color: #7f1d1d; border-radius: 50%;
-      box-shadow: 0 0 10px rgba(220,38,38,0.5);
-      animation: enemyPulse 1s ease-in-out infinite;
-    }
-    .cell-enemy.scared {
-      background-color: #1d2d6f !important;
-      box-shadow: 0 0 10px rgba(59,130,246,0.5) !important;
-      animation: enemyScared 0.3s ease-in-out infinite !important;
-    }
-    @keyframes enemyPulse {
-      0%,100% { box-shadow: 0 0 10px rgba(220,38,38,0.5); }
-      50% { box-shadow: 0 0 16px rgba(220,38,38,0.8); }
-    }
-    @keyframes enemyScared {
-      0%,100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-    @keyframes itemBob {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-2px); }
-    }
-    .cell-fog { background-color: #0a0c12 !important; box-shadow: none !important; border-color: transparent !important; }
-    .cell-fog::after { display: none !important; }
-    .cell-dim { opacity: 0.35; }
+    #game-canvas { display: block; }
 
-    @keyframes shake {
-      0%,100% { transform: translate(0); }
-      20% { transform: translate(-4px, 3px); }
-      40% { transform: translate(4px, -3px); }
-      60% { transform: translate(-3px, -4px); }
-      80% { transform: translate(3px, 4px); }
+    #banner {
+      position: absolute; top: 12px; left: 50%; transform: translate(-50%, -8px);
+      padding: 7px 16px; border-radius: 999px; white-space: nowrap;
+      background: rgba(194,65,12,0.92); color: #fff;
+      font-family: 'Inter Tight', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.03em;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s cubic-bezier(.2,1.4,.4,1);
+      z-index: 5; box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     }
-    #game.shake { animation: shake 0.3s ease-out; }
+    #banner.show { opacity: 1; transform: translate(-50%, 0); }
+    #banner.blue { background: rgba(37,99,235,0.92); }
+    #banner.gold { background: rgba(202,138,4,0.95); }
 
-    #touch-controls { display: none; gap: 4px; }
-    @media (max-width: 768px) { #touch-controls { display: grid; } }
+    /* Overlays */
+    #overlay {
+      position: absolute; inset: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      background: rgba(7,9,14,0.72); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    #overlay[hidden] { display: none; }
+    #overlay.show { opacity: 1; }
+    #overlay.ov-intro { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; pointer-events: none; }
+
+    .ov-card { text-align: center; max-width: 340px; font-family: 'Inter Tight', sans-serif; }
+    #overlay.show .ov-card { animation: cardIn 0.5s cubic-bezier(.2,1.3,.4,1) both; }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(14px) scale(0.96); } to { opacity: 1; transform: none; } }
+    .ov-emoji { font-size: 44px; margin-bottom: 10px; }
+    .ov-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 30px; color: #fff; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .ov-sub { color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 6px; line-height: 1.5; }
+    .ov-sub strong { color: #fff; }
+    .ov-sub .gold, .gold { color: #facc15; }
+    .ov-fine { color: rgba(255,255,255,0.35); font-size: 11px; letter-spacing: 0.06em; margin-top: 12px; }
+    .ov-cta-lead { color: rgba(255,255,255,0.6); font-size: 14px; margin: 18px 0 10px; }
+    .ov-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 18px; }
+    .ov-rules { list-style: none; padding: 0; margin: 4px auto 22px; text-align: left; width: fit-content; }
+    .ov-rules li { color: rgba(255,255,255,0.7); font-size: 13px; padding: 5px 0; display: flex; align-items: center; gap: 10px; }
+    .rule-icon { width: 22px; text-align: center; }
+
+    .btn-primary {
+      display: inline-block; padding: 12px 30px; background: #C2410C; color: #fff; border: 0; border-radius: 10px;
+      font-family: 'Inter Tight', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.03em;
+      text-decoration: none; cursor: pointer; transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 0 24px rgba(194,65,12,0.35);
+    }
+    .btn-primary:hover { background: #a3360a; transform: translateY(-1px); }
+    .btn-ghost {
+      display: inline-block; margin-top: 14px; background: none; border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.55); padding: 8px 20px; border-radius: 8px; cursor: pointer;
+      font-family: 'Inter Tight', sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .ov-actions .btn-ghost { margin-top: 0; }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+
+    /* Level intro card */
+    .intro-card { text-align: center; text-shadow: 0 2px 20px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.8); }
+    .intro-tag {
+      font-family: 'Inter Tight', sans-serif; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: #fdba74; margin-bottom: 8px; animation: introDrop 0.5s 0.1s cubic-bezier(.2,1.3,.4,1) both;
+    }
+    .intro-name {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(28px, 7vw, 44px); color: #fff;
+      letter-spacing: -0.02em; line-height: 1; animation: introZoom 0.6s 0.2s cubic-bezier(.2,1.4,.4,1) both;
+    }
+    .intro-hint {
+      font-family: 'Inter Tight', sans-serif; font-size: 13px; color: rgba(255,255,255,0.75);
+      margin-top: 12px; max-width: 300px; animation: introFade 0.5s 0.55s ease both;
+    }
+    @keyframes introDrop { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: none; } }
+    @keyframes introZoom { from { opacity: 0; transform: scale(1.6); letter-spacing: 0.1em; } to { opacity: 1; transform: none; } }
+    @keyframes introFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* Touch controls */
+    #touch-controls { display: none; grid-template-columns: repeat(3, 58px); grid-template-rows: repeat(3, 58px); gap: 4px; margin-top: 4px; }
+    @media (pointer: coarse) { #touch-controls { display: grid; } #controls-hint { display: none; } }
     .touch-btn {
-      width: 56px; height: 56px; border-radius: 12px;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.5); font-size: 20px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; user-select: none; -webkit-user-select: none;
-      transition: all 0.15s; -webkit-tap-highlight-color: transparent;
+      border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.5); font-size: 20px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: none;
+      transition: background 0.12s, transform 0.12s; -webkit-tap-highlight-color: transparent;
     }
-    .touch-btn:active { background: rgba(194,65,12,0.3); border-color: rgba(194,65,12,0.5); transform: scale(0.92); }
+    .touch-btn.active { background: rgba(194,65,12,0.35); border-color: rgba(194,65,12,0.6); color: #fff; transform: scale(0.92); }
+    #controls-hint { font-family: 'Inter Tight', sans-serif; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
 
-    .toast {
-      position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px);
-      background: rgba(194,65,12,0.9); color: #fff; padding: 8px 20px; border-radius: 8px;
-      font-family: 'Inter Tight', sans-serif; font-size: 13px; font-weight: 600;
-      letter-spacing: 0.05em; z-index: 100; opacity: 0; pointer-events: none; transition: all 0.3s ease;
+    @media (max-width: 480px) {
+      .maze-main { padding-top: 16px; }
+      .maze-head { margin-bottom: 8px; }
+      .maze-head h1 { font-size: 22px; }
+      .maze-head p { display: none; }
+      #hud { gap: 8px 14px; }
+      .ov-title { font-size: 22px; margin-bottom: 6px; }
+      .ov-rules { margin-bottom: 14px; }
+      .ov-rules li { font-size: 12px; padding: 3px 0; }
+      .ov-emoji { font-size: 32px; margin-bottom: 4px; }
+      .ov-fine { margin-top: 8px; }
+      #touch-controls { grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(3, 50px); }
     }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    #level-flash {
-      position: fixed; inset: 0; background: #C2410C; z-index: 200;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    @media (prefers-reduced-motion: reduce) {
+      .intro-tag, .intro-name, .intro-hint, #overlay.show .ov-card, .hud-val.pop { animation: none; }
     }
-    #level-flash.active { opacity: 1; pointer-events: all; }
-    #level-flash h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 48px; color: #fff; }
 
-    #void-teaser {
-      text-align: center;
-      padding: 30px 20px 50px;
-    }
+    #void-teaser { text-align: center; padding: 30px 20px 50px; }
     #void-teaser p {
-      font-size: 10px;
-      color: rgba(255,255,255,0.15);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      font-family: 'Inter Tight', sans-serif;
+      font-size: 10px; color: rgba(255,255,255,0.15); letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 10px; font-family: 'Inter Tight', sans-serif;
     }
     #void-teaser a {
-      font-family: 'Inter Tight', sans-serif; font-size: 11px;
-      color: rgba(255,255,255,0.12); text-decoration: none;
-      letter-spacing: 0.25em; text-transform: uppercase; transition: all 0.5s;
-      display: inline-block;
-      padding: 10px 24px;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 8px;
+      font-family: 'Inter Tight', sans-serif; font-size: 11px; color: rgba(255,255,255,0.12); text-decoration: none;
+      letter-spacing: 0.25em; text-transform: uppercase; transition: all 0.5s; display: inline-block;
+      padding: 10px 24px; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px;
     }
     #void-teaser a:hover {
-      color: #ff0055;
-      letter-spacing: 0.4em;
-      text-shadow: 0 0 20px rgba(255,0,85,0.4);
-      border-color: rgba(255,0,85,0.2);
-      background: rgba(255,0,85,0.03);
-    }
-
-    /* Score popup */
-    .score-pop {
-      position: fixed; pointer-events: none; z-index: 150;
-      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 24px;
-      color: #facc15; text-shadow: 0 0 20px rgba(250,204,21,0.6);
-      animation: scorePop 1s ease-out forwards;
-    }
-    .score-pop.ghost-kill { color: #3b82f6; text-shadow: 0 0 20px rgba(59,130,246,0.6); font-size: 32px; }
-    @keyframes scorePop {
-      0% { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-60px) scale(1.5); }
+      color: #ff0055; letter-spacing: 0.4em; text-shadow: 0 0 20px rgba(255,0,85,0.4);
+      border-color: rgba(255,0,85,0.2); background: rgba(255,0,85,0.03);
     }
   </style>
 </head>
 
 <body class="bg-ink text-surface font-body">
   <div id="nav-placeholder"></div>
-  <div id="level-flash"><h2 id="level-text"></h2></div>
-
-  <main style="max-width:640px;margin:0 auto;padding:24px 20px 0">
-    <div style="text-align:center;margin-bottom:12px">
-      <h1 class="font-display" style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.02em;margin-bottom:4px">Escape the Maze</h1>
-      <p style="font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.12em;text-transform:uppercase">Key → Door → Chest · Avoid ghosts · Grab ⚡ to hunt them</p>
+  <main class="maze-main">
+    <div class="maze-head">
+      <h1 class="font-display">Escape the Maze</h1>
+      <p>Key → Door → Chest · Dodge the ghosts · Grab ⚡ to hunt them</p>
     </div>
     <div id="game-wrapper">
       <div id="hud">
-        <div>Lvl <span class="hud-val" id="hud-level">1</span></div>
-        <div>Moves <span class="hud-val" id="hud-moves">0</span></div>
-        <div>Key <span class="hud-val" id="hud-key">✗</span></div>
-        <div>Time <span class="hud-val" id="hud-time">0:00</span></div>
-        <div>Score <span class="hud-val" id="hud-score">0</span></div>
+        <div class="hud-item">Lvl <span class="hud-val" id="hud-level">1/6</span></div>
+        <div class="hud-item">Score <span class="hud-val" id="hud-score">0</span></div>
+        <div class="hud-item">Lives <span class="hud-val" id="hud-lives"></span></div>
+        <div class="hud-item">Key <span class="hud-val" id="hud-key">—</span></div>
+        <div class="hud-item">Time <span class="hud-val" id="hud-time">0:00</span></div>
+        <div class="hud-actions">
+          <button id="btn-sound" class="hud-btn" type="button" aria-label="Toggle sound"></button>
+          <button id="btn-pause" class="hud-btn" type="button" aria-label="Pause"></button>
+        </div>
       </div>
-      <div id="game"></div>
-      <div id="touch-controls" style="grid-template-columns:repeat(3,56px);grid-template-rows:repeat(3,56px);margin-top:8px">
+      <div id="stage">
+        <canvas id="game-canvas" role="img" aria-label="Escape the Maze game board"></canvas>
+        <div id="banner" aria-live="polite"></div>
+        <div id="overlay" hidden></div>
+      </div>
+      <div id="touch-controls">
         <div></div><div class="touch-btn" data-dir="up">↑</div><div></div>
         <div class="touch-btn" data-dir="left">←</div><div></div><div class="touch-btn" data-dir="right">→</div>
         <div></div><div class="touch-btn" data-dir="down">↓</div><div></div>
       </div>
+      <p id="controls-hint">Arrows / WASD to move · P to pause · M for sound</p>
     </div>
   </main>
 
