@@ -38,6 +38,6 @@
 
 - [About](https://robertriopel.ca/about.html): Background, capabilities, and contact.
 - [Work](https://robertriopel.ca/work.html): All projects with outcomes.
-- [The End of Figma](https://robertriopel.ca/town-hall/): A presentation on AI and the future of design tools.
+- [The End of Figma](https://robertriopel.ca/death-of-figma/): A presentation on AI and the future of design tools.
 - [Deutsch](https://robertriopel.ca/de/): Summary in German.
 - [Français](https://robertriopel.ca/fr/): Summary in French.

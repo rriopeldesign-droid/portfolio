@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The End of Figma — Robert Riopel | AI and the Future of Design Tools</title>
+  <meta name="description" content="A researched presentation by Senior Product Designer Robert Riopel: how AI tools like Claude Design, Claude Code and Google Stitch are reshaping product design, what happened to Figma, and why taste matters more than any tool." />
+  <meta name="keywords" content="Robert Riopel, Figma, end of Figma, death of Figma, AI design tools, Claude Design, Claude Code, Google Stitch, Figma Make, v0, Tailwind CSS, shadcn/ui, future of product design, vibe coding, Senior Product Designer Ottawa, Senior Product Designer Vienna" />
+  <meta name="author" content="Robert Riopel" />
+  <link rel="canonical" href="https://robertriopel.ca/death-of-figma/" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://robertriopel.ca/death-of-figma/" />
+  <meta property="og:title" content="The End of Figma — Robert Riopel" />
+  <meta property="og:description" content="How AI is reshaping product design, what happened to Figma, and why taste is becoming more valuable than any software. A researched presentation by Robert Riopel." />
+  <meta property="og:image" content="https://robertriopel.ca/img/og-image.png" />
+  <meta property="og:site_name" content="Robert Riopel — Senior Product Designer" />
+  <meta property="og:locale" content="en_CA" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The End of Figma — Robert Riopel" />
+  <meta name="twitter:description" content="How AI is reshaping product design, what happened to Figma, and why taste is becoming more valuable than any software. A researched presentation by Robert Riopel." />
+  <meta name="twitter:image" content="https://robertriopel.ca/img/og-image.png" />
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "https://robertriopel.ca/death-of-figma/#article",
+        "headline": "The End of Figma — AI and the Future of Design Tools",
+        "description": "A researched presentation by Senior Product Designer Robert Riopel: how AI tools like Claude Design, Claude Code and Google Stitch are reshaping product design, what happened to Figma, and why taste matters more than any tool.",
+        "url": "https://robertriopel.ca/death-of-figma/",
+        "mainEntityOfPage": "https://robertriopel.ca/death-of-figma/",
+        "inLanguage": "en",
+        "image": "https://robertriopel.ca/img/figma-stock.png",
+        "datePublished": "2026-03-31",
+        "dateModified": "2026-10-05",
+        "author": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "keywords": "Figma, AI design tools, Claude Design, Claude Code, Google Stitch, Figma Make, future of product design",
+        "citation": [
+          "https://www.cnbc.com/2023/12/18/adobe-and-figma-call-off-20-billion-merger.html",
+          "https://www.sec.gov/Archives/edgar/data/796343/000079634323000254/adbe-20231217.htm",
+          "https://www.theregister.com/2024/01/31/adobe_no_plans_to_invest/",
+          "https://www.figma.com/blog/ipo-pricing/",
+          "https://www.anthropic.com/news/claude-4",
+          "https://www.figma.com/blog/figma-2025-ai-report-perspectives/",
+          "https://www.figma.com/blog/config-2025-recap/",
+          "https://blog.collinsdictionary.com/language-lovers/collins-word-of-the-year-2025-ai-meets-authenticity-as-society-shifts/",
+          "https://www.cnbc.com/2026/03/19/figma-stock-drops-11percent-after-google-releases-vibe-design-product-stitch.html",
+          "https://venturebeat.com/technology/anthropic-just-launched-claude-design-an-ai-tool-that-turns-prompts-into-prototypes-and-challenges-figma",
+          "https://www.fool.com/investing/2026/07/10/why-figma-stock-lost-52-in-the-first-half-of-2026/",
+          "https://vercel.com/blog/announcing-v0-generative-ui"
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://robertriopel.ca/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "The End of Figma",
+            "item": "https://robertriopel.ca/death-of-figma/"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0e0e0e;
+      --bg-2: #141414;
+      --text: #f0ebe1;
+      --muted: #6b6560;
+      --accent: #e8a830;
+      --accent-dim: rgba(232, 168, 48, 0.12);
+      --border: rgba(240, 235, 225, 0.08);
+      --font-display: 'Playfair Display', serif;
+      --font-mono: 'DM Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      background: linear-gradient(to bottom, rgba(14,14,14,0.95), transparent);
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .nav-scenes {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-scenes a {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-scenes a:hover,
+    .nav-scenes a.active { color: var(--accent); }
+
+    /* ── SCENES ── */
+    .scene {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 2.5rem 5rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .scene-inner {
+      max-width: 820px;
+    }
+
+    .scene-number {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .scene-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 6vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s;
+    }
+
+    .scene-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .scene-body {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s;
+    }
+
+    .scene-body p {
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      line-height: 1.75;
+      color: #c8c2b8;
+      max-width: 640px;
+      margin-bottom: 1.5rem;
+    }
+
+    .scene-body p:last-child { margin-bottom: 0; }
+
+    .scene-body strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* visible state */
+    .scene.in-view .scene-number,
+    .scene.in-view .scene-title,
+    .scene.in-view .scene-body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── SCENE 1 SPECIFICS ── */
+    #scene-1 {
+      background: var(--bg);
+    }
+
+    .figma-word {
+      display: inline-block;
+      position: relative;
+    }
+
+    .figma-word::after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease 0.8s;
+    }
+
+    .scene.in-view .figma-word::after {
+      transform: scaleX(1);
+    }
+
+    .callout {
+      margin-top: 2.5rem;
+      padding: 1.5rem 2rem;
+      border-left: 2px solid var(--accent);
+      background: var(--accent-dim);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .callout p {
+      font-size: 0.95rem !important;
+      font-family: var(--font-mono);
+      color: var(--text) !important;
+      line-height: 1.6 !important;
+    }
+
+    /* ── STUB SCENES ── */
+    .scene-stub .scene-title {
+      color: var(--muted);
+      opacity: 0.4 !important;
+    }
+
+    /* ── SCENE 1 BG DECORATION ── */
+    .bg-glyph {
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-display);
+      font-size: 28vw;
+      font-weight: 900;
+      color: rgba(240, 235, 225, 0.018);
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+
+    /* ── HERO SCENE (0) ── */
+    #scene-0 {
+      min-height: 100vh;
+      justify-content: flex-end;
+      padding-bottom: 6rem;
+    }
+
+    #scene-0 .scene-number {
+      font-size: 0.7rem;
+      margin-bottom: 1.5rem;
+    }
+
+    #scene-0 .scene-title {
+      font-size: clamp(3.5rem, 9vw, 9rem);
+      margin-bottom: 1.5rem;
+    }
+
+    #scene-0 .scene-body p {
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    .scroll-hint {
+      margin-top: 4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.2s forwards;
+    }
+
+    .scroll-hint-line {
+      width: 32px;
+      height: 1px;
+      background: var(--muted);
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(8px); }
+    }
+
+    /* Hero immediate reveal */
+    #scene-0 .scene-number { animation: fadeUp 0.7s ease 0.2s forwards; }
+    #scene-0 .scene-title  { animation: fadeUp 0.8s ease 0.35s forwards; }
+    #scene-0 .scene-body   { animation: fadeUp 0.8s ease 0.55s forwards; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3rem 2.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    /* ── WORKFLOW DIAGRAM ── */
+    .workflow-diagram {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .workflow-step {
+      padding: 1.25rem 1.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-2);
+      min-width: 120px;
+      text-align: center;
+      transition: border-color 0.3s;
+    }
+
+    .workflow-step:hover {
+      border-color: var(--accent);
+    }
+
+    .workflow-step--dim {
+      opacity: 0.45;
+    }
+
+    .step-label {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .step-sub {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .workflow-arrow {
+      color: var(--accent);
+      font-size: 1.5rem;
+      font-weight: 300;
+    }
+
+    /* ── PROJECT CARDS ── */
+    .project-card {
+      margin-top: 2.5rem;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg-2);
+      transition: border-color 0.3s;
+    }
+
+    .project-card:hover {
+      border-color: rgba(232, 168, 48, 0.3);
+    }
+
+    .project-card--dim {
+      opacity: 0.55;
+    }
+
+    .project-card--dim:hover {
+      opacity: 0.8;
+      border-color: var(--border);
+    }
+
+    .project-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .project-body {
+      font-size: 0.975rem !important;
+      line-height: 1.75 !important;
+      color: #b0aaa0 !important;
+      margin-bottom: 0.85rem !important;
+    }
+
+    /* ── FINAL STATEMENT ── */
+    .final-statement {
+      margin-top: 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .final-statement span {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--muted);
+    }
+
+    .final-statement span:last-child {
+      color: var(--accent);
+    }
+
+    /* ── DEMO CTA ── */
+    .demo-cta {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(232, 168, 48, 0.3);
+      padding-bottom: 2px;
+      transition: border-color 0.2s, opacity 0.2s;
+    }
+
+    .demo-cta:hover {
+      border-color: var(--accent);
+      opacity: 0.8;
+    }
+
+    /* ── STOCK CHART ── */
+    .stock-chart {
+      margin-top: 2.5rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      max-width: 640px;
+    }
+
+    .stock-chart img {
+      width: 100%;
+      display: block;
+      opacity: 0.9;
+    }
+
+    .stock-chart figcaption {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.75rem 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── REVEAL SCENE ── */
+    .scene-reveal {
+      justify-content: center;
+    }
+
+    .scene-reveal .scene-title {
+      font-size: clamp(4rem, 12vw, 11rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .reveal-sub {
+      font-family: var(--font-mono) !important;
+      font-size: 0.85rem !important;
+      color: var(--muted) !important;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── CODE VIEWER ── */
+    .code-viewer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 700px) {
+      .code-viewer { grid-template-columns: 1fr; }
+    }
+
+    .code-panel {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg-2);
+    }
+
+    .code-panel-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+    }
+
+    .code-block {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      line-height: 1.7;
+      color: #9a9490;
+      padding: 1.25rem 1rem;
+      overflow-x: auto;
+      white-space: pre;
+      margin-bottom: 0 !important;
+    }
+
+    .code-key { color: var(--text); }
+    .code-comment { color: var(--muted); }
+    /* ── NO-JS: never hide content from crawlers or readers without JavaScript ── */
+    html:not(.js) .scene-number,
+    html:not(.js) .scene-title,
+    html:not(.js) .scene-body { opacity: 1; transform: none; }
+
+    /* ── NAV BACK LINK ── */
+    a.nav-logo { display: inline-flex; align-items: center; gap: 0.6rem; transition: color 0.2s; }
+    a.nav-logo:hover { color: var(--accent); }
+    .nav-logo .nav-arrow { color: var(--accent); transition: transform 0.2s; }
+    a.nav-logo:hover .nav-arrow { transform: translateX(-3px); }
+    .nav-home {
+      font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted);
+      letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: color 0.2s;
+    }
+    .nav-home:hover { color: var(--accent); }
+    @media (max-width: 600px) { nav { padding: 1rem 1.25rem; } .nav-logo, .nav-home { font-size: 0.62rem; } }
+
+    /* ── HERO META ── */
+    .hero-meta {
+      margin-top: 1.75rem;
+      font-family: var(--font-mono) !important; font-size: 0.68rem !important;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted) !important;
+    }
+
+    /* ── CITATIONS ── */
+    sup.cite { font-family: var(--font-mono); font-size: 0.6em; line-height: 0; margin-left: 0.12em; }
+    sup.cite a { color: var(--accent); text-decoration: none; padding: 0 0.1em; }
+    sup.cite a:hover { text-decoration: underline; }
+    sup.cite + sup.cite { margin-left: 0; }
+    sup.cite + sup.cite::before { content: ","; color: var(--accent); }
+
+    /* ── TIMELINE ── */
+    .timeline { list-style: none; margin: 2.5rem 0 2rem; border-left: 1px solid var(--border); }
+    .timeline li { position: relative; padding: 0 0 1.6rem 1.75rem; }
+    .timeline li::before {
+      content: ''; position: absolute; left: -4px; top: 0.45rem; width: 7px; height: 7px;
+      border-radius: 50%; background: var(--bg); border: 1px solid var(--accent);
+    }
+    .timeline li.tl-key::before { background: var(--accent); }
+    .tl-date {
+      display: block; font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent);
+      letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.35rem;
+    }
+    .tl-text { font-size: 1rem; line-height: 1.65; color: #c8c2b8; max-width: 620px; }
+    .tl-text strong { color: var(--text); font-weight: 500; }
+
+    /* ── TOOLKIT ── */
+    .toolkit { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
+    @media (max-width: 760px) { .toolkit { grid-template-columns: 1fr; } }
+    .tool-stage {
+      padding: 1.6rem 1.6rem 1.4rem; border: 1px solid var(--border); border-radius: 10px;
+      background: var(--bg-2); transition: border-color 0.3s;
+    }
+    .tool-stage:hover { border-color: rgba(232, 168, 48, 0.3); }
+    .tool-stage--dim { opacity: 0.6; }
+    .tool-kicker {
+      font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent);
+      letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.6rem;
+    }
+    .tool-names { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 0.75rem; }
+    .tool-desc { font-size: 0.93rem !important; line-height: 1.7 !important; color: #b0aaa0 !important; margin-bottom: 0 !important; }
+
+    /* ── SOURCES ── */
+    .sources { padding: 6rem 2.5rem 5rem; border-bottom: 1px solid var(--border); }
+    .sources .scene-number, .sources .scene-title { opacity: 1; transform: none; }
+    .sources .scene-title { font-size: clamp(2rem, 4vw, 3rem); }
+    .source-list { list-style: none; counter-reset: src; max-width: 820px; }
+    .source-list li {
+      counter-increment: src; display: grid; grid-template-columns: 2.25rem 1fr; gap: 0.5rem;
+      padding: 0.9rem 0; border-top: 1px solid var(--border); scroll-margin-top: 6rem;
+    }
+    .source-list li::before { content: counter(src, decimal-leading-zero); font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); padding-top: 0.2rem; }
+    .source-list li:target { background: var(--accent-dim); }
+    .src-pub { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .source-list a { display: block; margin-top: 0.2rem; color: var(--text); text-decoration: none; font-size: 0.98rem; line-height: 1.5; }
+    .source-list a:hover { color: var(--accent); }
+    .sources-note { margin-top: 2rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="/" aria-label="Back to robertriopel.ca"><span class="nav-arrow" aria-hidden="true">&larr;</span>Robert Riopel &middot; 2026</a>
+    <a class="nav-home" href="/work.html">See the work</a>
+  </nav>
+
+  <!-- SCENE 0: HERO -->
+  <section class="scene" id="scene-0">
+    <div class="bg-glyph">F</div>
+    <div class="scene-inner">
+      <div class="scene-number">A presentation by Robert Riopel</div>
+      <h1 class="scene-title">The End<br>of <em>Figma.</em></h1>
+      <div class="scene-body">
+        <p>What design tools taught us, why they're disappearing, and what comes next.</p>
+        <p class="hero-meta">Updated October 2026 &middot; 12 sources &middot; ~8 min read</p>
+      </div>
+      <div class="scroll-hint">
+        <span class="scroll-hint-line"></span>
+        Scroll to begin
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 1: WHAT IS FIGMA -->
+  <section class="scene" id="scene-1">
+    <div class="scene-inner">
+      <div class="scene-number">01 — What is Figma</div>
+      <h2 class="scene-title">Let me tell you about <span class="figma-word">Figma.</span></h2>
+      <div class="scene-body">
+        <p>
+          Figma launched in 2016 and changed everything. It was browser-based, real-time and
+          collaborative, and it replaced the clunky, file-on-your-hard-drive tools designers had
+          been fighting with for years.
+        </p>
+        <p>
+          Its real breakthrough wasn&rsquo;t a drawing tool. It was multiplayer: designers, product
+          managers and engineers in the same file, at the same time. Design stopped being a
+          handoff and became a shared workspace.
+        </p>
+        <p>
+          If you worked in product design between 2017 and 2023, knowing Figma deeply was a
+          career skill. It was the tool that separated designers who knew what they were doing
+          from designers who didn&rsquo;t.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 2: THE ADOBE MOMENT -->
+  <section class="scene" id="scene-2">
+    <div class="scene-inner">
+      <div class="scene-number">02 — The Adobe Moment</div>
+      <h2 class="scene-title">Adobe tried to buy it<br>for <em>$20 billion.</em></h2>
+      <div class="scene-body">
+        <p>
+          In September 2022, Adobe announced it would acquire Figma for roughly $20 billion, one of
+          the largest software acquisitions ever announced. Fifteen months later the deal was dead.
+          Facing objections from regulators in the UK and the European Union, the two companies
+          called it off in December 2023,<sup class="cite"><a href="#src-1" aria-label="Source 1">1</a></sup> and Adobe paid Figma a $1 billion termination fee.<sup class="cite"><a href="#src-2" aria-label="Source 2">2</a></sup>
+        </p>
+        <p>
+          Adobe had decades of dominance with Photoshop and Illustrator, and its own Figma
+          competitor in XD, and still felt the need to spend $20 billion to neutralize a startup.
+          After the deal collapsed, Adobe said it had no plans to invest further in XD.<sup class="cite"><a href="#src-3" aria-label="Source 3">3</a></sup>
+        </p>
+        <p>
+          Figma went public on its own instead, pricing its IPO at $33 a share in July 2025<sup class="cite"><a href="#src-4" aria-label="Source 4">4</a></sup>
+          and soaring on its first day of trading. Then the line started to bend the other way.
+        </p>
+        <figure class="stock-chart">
+          <img src="/img/figma-stock.png" alt="Figma (NYSE: FIG) share price since its July 2025 IPO" loading="lazy" />
+          <figcaption>Figma (NYSE: FIG) — share price since IPO<sup class="cite"><a href="#src-4" aria-label="Source 4">4</a></sup><sup class="cite"><a href="#src-11" aria-label="Source 11">11</a></sup></figcaption>
+        </figure>
+        <div class="callout">
+          <p>BUT the real threat to Figma was never Adobe. It was something else entirely.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 3: THE AI REVEAL -->
+  <section class="scene scene-reveal" id="scene-3">
+    <div class="scene-inner">
+      <div class="scene-number">03 — The Real Threat</div>
+      <h2 class="scene-title"><em>Artificial<br>Intelligence.</em></h2>
+      <div class="scene-body">
+        <p class="reveal-sub">The thing Adobe couldn't buy its way out of.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 4: THE TIMELINE -->
+  <section class="scene" id="scene-timeline">
+    <div class="scene-inner">
+      <div class="scene-number">04 — The Timeline</div>
+      <h2 class="scene-title">Then it happened<br><em>fast.</em></h2>
+      <div class="scene-body">
+        <p>
+          For most of a decade, the threat to a design tool was another design tool. Over the last
+          eighteen months, the threat stopped being a tool at all.
+        </p>
+        <ol class="timeline">
+          <li><span class="tl-date">April 2025</span><span class="tl-text">Figma&rsquo;s own survey of 2,500 designers and developers: <strong>78%</strong> say AI significantly improves their efficiency, but only <strong>32%</strong> say they can rely on its output.<sup class="cite"><a href="#src-5" aria-label="Source 5">5</a></sup></span></li>
+          <li><span class="tl-date">May 2025</span><span class="tl-text">Anthropic makes <strong>Claude Code</strong> generally available: an agentic tool that writes and changes real software from plain-language instructions.<sup class="cite"><a href="#src-6" aria-label="Source 6">6</a></sup></span></li>
+          <li class="tl-key"><span class="tl-date">May 2025</span><span class="tl-text">At Config, Figma launches <strong>Figma Make</strong>, its own prompt-to-code tool. The incumbent starts building the thing that threatens it.<sup class="cite"><a href="#src-7" aria-label="Source 7">7</a></sup></span></li>
+          <li><span class="tl-date">July 2025</span><span class="tl-text">Figma goes public at <strong>$33 a share</strong>.<sup class="cite"><a href="#src-4" aria-label="Source 4">4</a></sup></span></li>
+          <li><span class="tl-date">November 2025</span><span class="tl-text"><strong>&ldquo;Vibe coding&rdquo;</strong>, building software by describing it to AI, is named Collins Dictionary&rsquo;s Word of the Year.<sup class="cite"><a href="#src-8" aria-label="Source 8">8</a></sup></span></li>
+          <li><span class="tl-date">March 2026</span><span class="tl-text">Google ships a &ldquo;vibe design&rdquo; update to <strong>Stitch</strong>. Figma&rsquo;s stock falls 12% in two days.<sup class="cite"><a href="#src-9" aria-label="Source 9">9</a></sup></span></li>
+          <li class="tl-key"><span class="tl-date">April 2026</span><span class="tl-text">Anthropic launches <strong>Claude Design</strong>, turning conversations into designs, interactive prototypes and decks.<sup class="cite"><a href="#src-10" aria-label="Source 10">10</a></sup></span></li>
+          <li class="tl-key"><span class="tl-date">First half of 2026</span><span class="tl-text">Figma shares fall <strong>51.6%</strong> in six months, while revenue grows <strong>46%</strong> year over year.<sup class="cite"><a href="#src-11" aria-label="Source 11">11</a></sup></span></li>
+        </ol>
+        <div class="callout">
+          <p>Read that last line again. The business was growing. The market was pricing in what comes next.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 5: WHAT I BUILT -->
+  <section class="scene" id="scene-4">
+    <div class="scene-inner">
+      <div class="scene-number">05 — Two Things I Built</div>
+      <h2 class="scene-title">Here's what<br><em>I shipped.</em></h2>
+      <div class="scene-body">
+        <p>
+          Here are two things I've shipped at RVezy that didn't exist in a designer's
+          toolkit two years ago.
+        </p>
+
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-num">01</span>
+            <h3 class="project-title">The Email Builder</h3>
+          </div>
+          <p class="project-body">
+            Our email production workflow was: design in Figma, export with Emailify
+            (the worst plugin ever built), hand off to Braze, fix everything that broke.
+          </p>
+          <p class="project-body">
+            In just a few days I built an internal Next.js tool that replaced the entire
+            chain — pick a template, configure blocks, preview in dark and light mode,
+            copy the HTML. No Figma. No code.
+          </p>
+          <a class="demo-cta" href="https://rvezy-email-builder.vercel.app/" target="_blank">→ Live Demo</a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-num">02</span>
+            <h3 class="project-title">The Figma Plugin — and the Brain Behind It</h3>
+          </div>
+          <p class="project-body">
+            I built an AI-powered Figma plugin that generates production-ready Vue and
+            Tailwind components pulled directly from our design system.
+          </p>
+          <p class="project-body">
+            The brain behind it is those two files — the design system doc and the color
+            registry. The plugin is just the hands.
+          </p>
+          <div class="code-viewer">
+            <div class="code-panel">
+              <div class="code-panel-label">rvezy-design-system.md</div>
+              <pre class="code-block"><span class="code-comment"># RVezy Design System v2.0</span>
+<span class="code-comment"># Vue 3 + Tailwind CSS v4</span>
+
+<span class="code-key">## Button</span>
+Variants: default | highlight | secondary
+Sizes: sm (h-9) | md (h-11) | lg (h-13)
+Always: rounded-full, border-2, font-semibold
+
+default:   bg-primary-950 text-white
+highlight: bg-secondary text-white
+secondary: bg-white text-primary-950
+
+<span class="code-key">## Badge</span>
+success: bg-green-100 text-green-700
+warning: bg-orange-100 text-orange-700
+error:   bg-red-100 text-red-700</pre>
+            </div>
+            <div class="code-panel">
+              <div class="code-panel-label">colors-rgb.json</div>
+              <pre class="code-block"><span class="code-comment">// Brand colors as RGB values</span>
+<span class="code-comment">// readable by any tool or model</span>
+
+<span class="code-key">"primary"</span>: {
+  "500": { "r": 0.184, "g": 0.706, "b": 1.0 },
+  "600": { "r": 0.153, "g": 0.427, "b": 0.973 },
+  "950": { "r": 0.075, "g": 0.145, "b": 0.345 }
+},
+<span class="code-key">"semantic"</span>: {
+  "secondary": { "r": 0.153, "g": 0.427, "b": 0.973 },
+  "white":     { "r": 1.0,   "g": 1.0,   "b": 1.0 },
+  "black":     { "r": 0.0,   "g": 0.0,   "b": 0.0 }
+}</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 6: HOW I WORK NOW -->
+  <section class="scene" id="scene-5">
+    <div class="scene-inner">
+      <div class="scene-number">06 — How I Work Now</div>
+      <h2 class="scene-title">Figma is the<br><em>last step.</em></h2>
+      <div class="scene-body">
+        <p>
+          Two years ago, every idea I had started as a rectangle on a Figma canvas. Today, by the
+          time I open Figma, the idea has already been explored, built in real code and tested
+          against real data. This is the toolkit I reach for first, and the one I&rsquo;d expect
+          any senior designer to be fluent in.
+        </p>
+
+        <div class="toolkit">
+          <div class="tool-stage">
+            <div class="tool-kicker">01 &middot; Language</div>
+            <div class="tool-names">Tailwind CSS &amp; shadcn/ui</div>
+            <p class="tool-desc">Before I design anything, I decide what it&rsquo;s made of. Tailwind gives design and engineering one shared vocabulary of tokens, spacing and type. shadcn/ui gives me accessible, well-built primitives to compose from, instead of redrawing buttons from scratch.</p>
+          </div>
+          <div class="tool-stage">
+            <div class="tool-kicker">02 &middot; Explore</div>
+            <div class="tool-names">Claude Design &amp; Google Stitch</div>
+            <p class="tool-desc">This is where ideas are born now. I describe the problem, not the pixels, and get several genuinely different directions in minutes, from layouts to clickable prototypes I can critique.<sup class="cite"><a href="#src-10" aria-label="Source 10">10</a></sup><sup class="cite"><a href="#src-9" aria-label="Source 9">9</a></sup> The tools generate; my job is knowing which direction is right, and why.</p>
+          </div>
+          <div class="tool-stage">
+            <div class="tool-kicker">03 &middot; Prove</div>
+            <div class="tool-names">Claude Code &amp; v0</div>
+            <p class="tool-desc">The fastest way to end a debate is a working prototype. With Claude Code I build the idea against our real codebase and real data, so I&rsquo;m testing behaviour and edge cases, not a picture of them.<sup class="cite"><a href="#src-6" aria-label="Source 6">6</a></sup> For quick standalone experiments, v0 turns a prompt into a React and shadcn/ui prototype.<sup class="cite"><a href="#src-12" aria-label="Source 12">12</a></sup> This page, and the site it lives on, were built the same way.</p>
+          </div>
+          <div class="tool-stage tool-stage--dim">
+            <div class="tool-kicker">04 &middot; Polish</div>
+            <div class="tool-names">Figma</div>
+            <p class="tool-desc">Figma is still in the workflow. It&rsquo;s where I refine the craft, document decisions and align the team. Tellingly, Figma is moving the same way: Figma Make turns prompts into working prototypes.<sup class="cite"><a href="#src-7" aria-label="Source 7">7</a></sup></p>
+          </div>
+        </div>
+
+        <div class="workflow-diagram">
+          <div class="workflow-step">
+            <div class="step-label">Tailwind</div>
+            <div class="step-sub">Design language</div>
+          </div>
+          <div class="workflow-arrow">&rarr;</div>
+          <div class="workflow-step">
+            <div class="step-label">Claude Design</div>
+            <div class="step-sub">Exploration</div>
+          </div>
+          <div class="workflow-arrow">&rarr;</div>
+          <div class="workflow-step">
+            <div class="step-label">Claude Code</div>
+            <div class="step-sub">Real prototype</div>
+          </div>
+          <div class="workflow-arrow">&rarr;</div>
+          <div class="workflow-step workflow-step--dim">
+            <div class="step-label">Figma</div>
+            <div class="step-sub">Final polish</div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <p>Figma is still there. It&rsquo;s just no longer where ideas are born. It&rsquo;s where they&rsquo;re finished.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 7: SO IS DESIGN DEAD? -->
+  <section class="scene" id="scene-6">
+    <div class="scene-inner">
+      <div class="scene-number">07 — So Is Design Dead?</div>
+      <h2 class="scene-title">The tool was<br>never the <em>skill.</em></h2>
+      <div class="scene-body">
+        <p>
+          A designer's career has historically been built on being very good at specific
+          software — Figma, Photoshop before that, XD in between.
+        </p>
+        <p>
+          So when I say Figma is losing relevance, I'm saying it as someone whose
+          identity was tied to it.
+        </p>
+        <p>
+          The designers who are thriving right now aren't the ones who resisted these
+          tools — they're the ones who recognized what actually made them good in the
+          first place. It was never really about the software.
+        </p>
+        <div class="callout">
+          <p>AI can generate a UI in seconds, but it cannot tell you whether that UI respects your user. That part still requires a human.</p>
+        </div>
+        <p style="margin-top: 1.5rem;">
+          In a world flooded with AI-generated interfaces, taste is becoming rarer
+          and more valuable, not less. I'm not watching this shift from the outside —
+          I'm building inside it, at RVezy, every day.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOURCES -->
+  <section class="sources" id="sources">
+    <div class="scene-inner">
+      <div class="scene-number">Sources &amp; further reading</div>
+      <h2 class="scene-title">The research.</h2>
+      <ol class="source-list">
+        <li id="src-1"><div><span class="src-pub">CNBC &middot; Dec 18, 2023</span><a href="https://www.cnbc.com/2023/12/18/adobe-and-figma-call-off-20-billion-merger.html" target="_blank" rel="noopener">Adobe and Figma call off $20 billion acquisition after regulatory scrutiny</a></div></li>
+        <li id="src-2"><div><span class="src-pub">Adobe Inc. (SEC Form 8-K) &middot; Dec 2023</span><a href="https://www.sec.gov/Archives/edgar/data/796343/000079634323000254/adbe-20231217.htm" target="_blank" rel="noopener">Termination of the Figma merger agreement and $1 billion termination fee</a></div></li>
+        <li id="src-3"><div><span class="src-pub">The Register &middot; Jan 31, 2024</span><a href="https://www.theregister.com/2024/01/31/adobe_no_plans_to_invest/" target="_blank" rel="noopener">Adobe: “No plans” to invest in XD despite its Figma failure</a></div></li>
+        <li id="src-4"><div><span class="src-pub">Figma &middot; Jul 30, 2025</span><a href="https://www.figma.com/blog/ipo-pricing/" target="_blank" rel="noopener">Figma announces pricing of initial public offering</a></div></li>
+        <li id="src-5"><div><span class="src-pub">Figma &middot; Apr 24, 2025</span><a href="https://www.figma.com/blog/figma-2025-ai-report-perspectives/" target="_blank" rel="noopener">Figma’s 2025 AI report: Perspectives from designers and developers</a></div></li>
+        <li id="src-6"><div><span class="src-pub">Anthropic &middot; May 22, 2025</span><a href="https://www.anthropic.com/news/claude-4" target="_blank" rel="noopener">Introducing Claude 4 (including Claude Code general availability)</a></div></li>
+        <li id="src-7"><div><span class="src-pub">Figma &middot; May 2025</span><a href="https://www.figma.com/blog/config-2025-recap/" target="_blank" rel="noopener">Config 2025: Pushing design further</a></div></li>
+        <li id="src-8"><div><span class="src-pub">Collins Dictionary &middot; Nov 6, 2025</span><a href="https://blog.collinsdictionary.com/language-lovers/collins-word-of-the-year-2025-ai-meets-authenticity-as-society-shifts/" target="_blank" rel="noopener">Collins’ Word of the Year 2025: AI meets authenticity as society shifts</a></div></li>
+        <li id="src-9"><div><span class="src-pub">CNBC &middot; Mar 19, 2026</span><a href="https://www.cnbc.com/2026/03/19/figma-stock-drops-11percent-after-google-releases-vibe-design-product-stitch.html" target="_blank" rel="noopener">Figma’s stock drops 12% in two days after Google releases “vibe design” product</a></div></li>
+        <li id="src-10"><div><span class="src-pub">VentureBeat &middot; Apr 17, 2026</span><a href="https://venturebeat.com/technology/anthropic-just-launched-claude-design-an-ai-tool-that-turns-prompts-into-prototypes-and-challenges-figma" target="_blank" rel="noopener">Anthropic just launched Claude Design, an AI tool that turns prompts into prototypes and challenges Figma</a></div></li>
+        <li id="src-11"><div><span class="src-pub">The Motley Fool &middot; Jul 10, 2026</span><a href="https://www.fool.com/investing/2026/07/10/why-figma-stock-lost-52-in-the-first-half-of-2026/" target="_blank" rel="noopener">Why Figma stock lost 52% in the first half of 2026</a></div></li>
+        <li id="src-12"><div><span class="src-pub">Vercel &middot; Oct 2023</span><a href="https://vercel.com/blog/announcing-v0-generative-ui" target="_blank" rel="noopener">Announcing v0: Generative UI</a></div></li>
+      </ol>
+      <p class="sources-note">Research compiled October 2026. Market figures as reported at time of publication.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>The End of Figma — Robert Riopel, Senior Product Designer · Ottawa &amp; Vienna</span>
+    <a href="https://robertriopel.ca">robertriopel.ca</a>
+  </footer>
+
+  <script>
+    // Intersection observer for scroll reveals
+    const scenes = document.querySelectorAll('.scene:not(#scene-0)');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, { threshold: 0.05 });
+
+    scenes.forEach(s => observer.observe(s));
+
+    // Active nav highlight
+    const navLinks = document.querySelectorAll('.nav-scenes a');
+    const allSections = document.querySelectorAll('.scene[id]');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector(`.nav-scenes a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.5 });
+
+    allSections.forEach(s => navObserver.observe(s));
+  </script>
+</body>
+</html>
