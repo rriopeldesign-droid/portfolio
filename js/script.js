@@ -1,32 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-  injectComponent('nav-placeholder', '/components/nav.html', () => {
-    highlightActiveNavLink();
-    enableMobileToggle();
-  });
-  injectComponent('hero-placeholder', '/components/hero.html', () => {
-    initScrollReveal();
-  });
+  highlightActiveNavLink();
+  enableMobileToggle();
   initScrollReveal();
 });
-
-function injectComponent(targetId, path, callback) {
-  const target = document.getElementById(targetId);
-  if (!target) return;
-
-  fetch(path)
-    .then(res => {
-      if (!res.ok) throw new Error(`Failed to load ${path}: ${res.status}`);
-      return res.text();
-    })
-    .then(html => {
-      target.innerHTML = html;
-      if (callback) requestAnimationFrame(callback);
-    })
-    .catch(err => {
-      console.warn(`[inject] ${err.message}`);
-      target.style.display = 'none';
-    });
-}
 
 function highlightActiveNavLink() {
   const path = window.location.pathname;

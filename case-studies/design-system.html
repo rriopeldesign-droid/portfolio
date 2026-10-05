@@ -8,41 +8,116 @@
   <meta name="description" content="Case study by Robert Riopel: Building a Tailwind CSS design system as the single source of truth between Figma and production code at RVezy — bridging design and engineering at scale." />
   <meta name="keywords" content="Robert Riopel, design system, Tailwind CSS design system, Figma design system, design tokens, component library, design engineering, RVezy, UI design system, design systems case study" />
   <meta name="author" content="Robert Riopel" />
-  <link rel="canonical" href="https://riopel-design.github.io/case-studies/design-system.html" />
+  <link rel="canonical" href="https://robertriopel.ca/case-studies/design-system.html" />
   <!-- Open Graph -->
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://riopel-design.github.io/case-studies/design-system.html" />
+  <meta property="og:url" content="https://robertriopel.ca/case-studies/design-system.html" />
   <meta property="og:title" content="Tailwind Design System — Robert Riopel | UX Case Study" />
   <meta property="og:description" content="Building a Tailwind CSS design system as the single source of truth between Figma and production code at RVezy." />
-  <meta property="og:image" content="https://riopel-design.github.io/img/og-image.png" />
-  <meta property="og:site_name" content="Robert Riopel — Product Designer" />
+  <meta property="og:image" content="https://robertriopel.ca/img/og-image.png" />
+  <meta property="og:site_name" content="Robert Riopel — Senior Product Designer" />
   <meta property="og:locale" content="en_CA" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Tailwind Design System — Robert Riopel | UX Case Study" />
   <meta name="twitter:description" content="Building a Tailwind CSS design system bridging Figma and production code at RVezy." />
-  <meta name="twitter:image" content="https://riopel-design.github.io/img/og-image.png" />
+  <meta name="twitter:image" content="https://robertriopel.ca/img/og-image.png" />
   <!-- Schema.org: Article -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Tailwind Design System — Single Source of Truth Between Figma and Code",
-    "description": "Building a Tailwind CSS design system as the single source of truth between Figma and production code at RVezy.",
-    "url": "https://riopel-design.github.io/case-studies/design-system.html",
-    "author": { "@type": "Person", "name": "Robert Riopel", "url": "https://riopel-design.github.io" },
-    "publisher": { "@type": "Person", "name": "Robert Riopel", "url": "https://riopel-design.github.io" },
-    "keywords": "design system, Tailwind CSS, Figma, component library, design tokens, RVezy"
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Tailwind Design System — Single Source of Truth Between Figma and Code",
+        "description": "Building a Tailwind CSS design system as the single source of truth between Figma and production code at RVezy.",
+        "url": "https://robertriopel.ca/case-studies/design-system.html",
+        "author": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "keywords": "design system, Tailwind CSS, Figma, component library, design tokens, RVezy",
+        "@id": "https://robertriopel.ca/case-studies/design-system.html#article",
+        "mainEntityOfPage": "https://robertriopel.ca/case-studies/design-system.html",
+        "inLanguage": "en",
+        "datePublished": "2026-02-15",
+        "dateModified": "2026-10-05"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://robertriopel.ca/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Work",
+            "item": "https://robertriopel.ca/work.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Tailwind Design System",
+            "item": "https://robertriopel.ca/case-studies/design-system.html"
+          }
+        ]
+      }
+    ]
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/js/script.js" defer></script>
 </head>
 <body class="bg-surface text-ink font-body">
-  <div id="nav-placeholder"></div>
+  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+    <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
+
+      <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
+        RR
+      </a>
+
+      <div class="hidden md:flex gap-8 items-center">
+        <a href="/work.html" class="nav-link">Work</a>
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/town-hall/" class="nav-link">Figma</a>
+        <a href="/fun.html" class="nav-link">Fun</a>
+        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+          Contact
+        </a>
+      </div>
+
+      <button id="navToggle" class="md:hidden text-ink" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="7" x2="20" y2="7" style="transition: all 0.3s ease"/>
+          <line x1="4" y1="17" x2="20" y2="17" style="transition: all 0.3s ease"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
+      <a href="/work.html" class="block nav-link py-1">Work</a>
+      <a href="/about.html" class="block nav-link py-1">About</a>
+      <a href="/town-hall/" class="block nav-link py-1">Figma</a>
+      <a href="/fun.html" class="block nav-link py-1">Fun</a>
+      <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
+    </div>
+  </nav>
 
   <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
 
@@ -62,6 +137,28 @@
         <span class="metric">30+ components</span>
       </div>
     </header>
+
+    <!-- Project snapshot -->
+    <section class="mt-14 reveal">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 rounded-xl border border-border p-6">
+        <div>
+          <p class="tag mb-2">Role</p>
+          <p class="text-sm text-ink font-medium">Design system lead &middot; Sole designer</p>
+        </div>
+        <div>
+          <p class="tag mb-2">Team</p>
+          <p class="text-sm text-ink font-medium">Front-end engineers across product squads, engineering leads</p>
+        </div>
+        <div>
+          <p class="tag mb-2">Timeline</p>
+          <p class="text-sm text-ink font-medium">2024&ndash;present</p>
+        </div>
+        <div>
+          <p class="tag mb-2">Stack</p>
+          <p class="text-sm text-ink font-medium">Tailwind CSS v4, Vue.js, Figma</p>
+        </div>
+      </div>
+    </section>
 
     <div class="mt-14 reveal">
       <div class="case-img">
@@ -156,6 +253,65 @@
       </div>
     </section>
 
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Audit</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Starting with an honest audit</h2>
+        <p class="text-muted leading-relaxed mb-6">Before designing a single token, I audited the product as it actually existed. I captured every screen, pulled every color value out of the codebase, and grouped components that were meant to be the same thing. The results made the case on their own: dozens of near-identical grays, inconsistent spacing values, and four different buttons doing one job.</p>
+        <p class="text-muted leading-relaxed mb-6">I shared the audit with engineering leads instead of a proposal deck. Seeing the inconsistency side by side did more to win buy-in than any argument about efficiency.</p>
+      </div>
+    </section>
+
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Rollout</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Rolling it out without stopping the product</h2>
+        <p class="text-muted leading-relaxed mb-6">A full rewrite was never on the table; the product had to keep shipping. We agreed on an incremental approach:</p>
+        <ul class="space-y-4 mb-6">
+          <li class="text-muted leading-relaxed"><strong class="text-ink font-semibold">New work uses the system.</strong> Every new feature is built with system tokens and components from day one.</li>
+          <li class="text-muted leading-relaxed"><strong class="text-ink font-semibold">Touch it, migrate it.</strong> When a squad changes an older screen, moving it onto the system is part of the work.</li>
+          <li class="text-muted leading-relaxed"><strong class="text-ink font-semibold">Tokens first.</strong> Colors, spacing and typography were migrated globally early on, so even untouched screens moved closer to consistency.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Obstacles</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Bridging two very different tools</h2>
+        <p class="text-muted leading-relaxed mb-6">The hardest technical problem was keeping Figma and code genuinely in sync. The Tailwind config is the source of truth, but Figma’s variables don’t speak OKLCH natively, so tokens had to be converted carefully to stay visually identical in both places. Rather than maintain that mapping by hand, we generated it from the config, so changes flow from code into the design file and never the other way around.</p>
+        <p class="text-muted leading-relaxed mb-6">The human side mattered as much. Engineers were wary of a designer-owned system slowing them down. Building it in their language (utility classes, small composable components, documented props) and reviewing component pull requests together turned it into a shared project rather than a mandate.</p>
+      </div>
+    </section>
+
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Collaboration</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">A system owned by design and engineering together</h2>
+        <p class="text-muted leading-relaxed mb-6">The system only works because engineering treats it as theirs too. I held a regular sync with the front-end leads to review upcoming work, agree on new components before anyone built a one-off, and retire patterns that had stopped earning their place.</p>
+        <p class="text-muted leading-relaxed mb-6">Design QA moved into the pull request. Instead of comparing screenshots after release, I reviewed component changes alongside engineers, which caught drift while it was still cheap to fix and helped me understand the constraints they were working with.</p>
+        <p class="text-muted leading-relaxed mb-6">Documentation was written for both audiences. Each component entry explains when to use it and when not to, shows the Figma and code versions side by side, and lists its props and variants. New engineers now learn the product’s visual language from the registry rather than by copying whatever screen looks closest.</p>
+      </div>
+    </section>
+
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Governance</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Keeping it alive</h2>
+        <p class="text-muted leading-relaxed mb-6">A design system that isn’t maintained becomes another source of drift. New components follow a lightweight path: a proposal with real use cases, a build reviewed by design and engineering, and documentation in the registry before release. That same registry later became the foundation of the AI Figma Plugin, the clearest sign the system was built on solid ground.</p>
+      </div>
+    </section>
+
     <!-- Impact -->
     <section class="mt-22 px-8 md:px-14 py-14 bg-ink text-surface rounded-2xl reveal">
       <p class="tag text-faint mb-4">Impact</p>
@@ -184,12 +340,16 @@
 
   <footer class="border-t border-border px-8 md:px-12 py-10">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
-      <p>&copy; 2026 Robert Riopel</p>
+      <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
+      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Ottawa</span><span aria-hidden="true">&middot;</span><span>Vienna</span></p>
       <div class="flex gap-6">
         <a href="https://www.linkedin.com/in/robert-riopel-b784a8179/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
         <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>
       </div>
     </div>
+    <p class="footer-alt max-w-7xl mx-auto">
+      <a href="/de/" hreflang="de" lang="de">Deutsch</a><span aria-hidden="true">&middot;</span><a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a><span aria-hidden="true">&middot;</span><a href="/llms.txt">For AI assistants</a>
+    </p>
   </footer>
 </body>
 </html>

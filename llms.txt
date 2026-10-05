@@ -1,0 +1,43 @@
+# Robert Riopel — Senior Product Designer (Ottawa & Vienna)
+
+> Robert Riopel is a Senior Product Designer based between Ottawa, Canada and Vienna, Austria. He designs digital products end to end (product UX and UI, design systems, growth and conversion, lifecycle and email) and builds AI-assisted design tooling. His work has contributed $8M+ in measurable business impact. He works in English and French and is open to conversations about senior product design roles in Vienna, Ottawa, or remote.
+
+## Contact
+
+- Email: rriopel.design@gmail.com
+- Website: https://robertriopel.ca/
+- LinkedIn: https://www.linkedin.com/in/robert-riopel-b784a8179/
+- Locations: Ottawa, Ontario, Canada · Vienna, Austria
+- Languages: English, French
+
+## Summary
+
+- Current role: sole Product Designer at RVezy, Canada's largest RV rental marketplace. Owns product UX/UI, the design system, lifecycle and email design, brand, and marketing design.
+- Business impact: $8M+ in measurable impact; contributed to moving the company from a $6M deficit to profitability ($1.5M EBITDA positive).
+- Works closely with product managers, engineers, and data analysts; validates design decisions with A/B tests and funnel analytics.
+- Builds tools: an AI-powered Figma plugin (Claude API) that generates on-brand components from natural language, synced 1:1 with a coded Tailwind design system.
+- Education: Advanced Diploma in Graphic Design and a Bachelor of Design.
+- Skills: product design, UX research, UI design, interaction design, design systems (Tailwind CSS, Vue.js, OKLCH tokens), conversion rate optimization, A/B testing, lifecycle/email design (Braze), SEO landing page systems, prototyping, Figma and Figma plugins, React Native, AI-assisted design workflows.
+
+## Case studies
+
+- [Pay-in-Full Pricing](https://robertriopel.ca/case-studies/pay-in-full.html): New checkout option letting guests pay upfront at a discount. +$1M incremental revenue in month one, +$3M projected for Q1, 40% adoption among eligible bookings. 5-week design sprint (2025).
+- [Host Onboarding Overhaul](https://robertriopel.ca/case-studies/host-onboarding.html): Rebuilt host sign-up from landing page to first published listing. +27% activation, $3.4M annualized GMV, required fields cut from 28 to 12 (2022–2023).
+- [Host Dashboard Redesign](https://robertriopel.ca/case-studies/host-dashboard.html): Action-driven notification centre for hosts. +22% engagement, $1.5M incremental GMV, validated with a 50/50 A/B test (2024).
+- [Lifecycle & Email Campaigns](https://robertriopel.ca/case-studies/lifecycle-campaigns.html): Full email lifecycle and modular Braze template system. +13% engagement, $1.2M incremental GMV, 4× faster campaign production (2022–2024).
+- [Inspection & Claims Flow](https://robertriopel.ca/case-studies/inspection-claims.html): Guided, photo-documented vehicle inspections and claims. −18% claims volume, $500K annual savings, resolution time from 12 days to 3 (2023).
+- [AI Figma Plugin](https://robertriopel.ca/case-studies/ai-figma-plugin.html): Prompt-to-component Figma plugin backed by a 90+ component registry, synced with the production design system (2025).
+- [Tailwind Design System](https://robertriopel.ca/case-studies/design-system.html): Code-first design system with OKLCH tokens and Vue components. 50% faster design-to-development handoff, 30+ components (2024–present).
+- [SEO & AI Landing Pages](https://robertriopel.ca/case-studies/seo-ai-landing-pages.html): Template and AI content system for hundreds of location landing pages with human review (2024–2025).
+
+## Side projects
+
+- [Date Night App](https://datenight.online/welcome): A React Native dating app designed and developed from concept to public launch; currently in beta (2026).
+
+## Other pages
+
+- [About](https://robertriopel.ca/about.html): Background, capabilities, and contact.
+- [Work](https://robertriopel.ca/work.html): All projects with outcomes.
+- [The End of Figma](https://robertriopel.ca/town-hall/): A presentation on AI and the future of design tools.
+- [Deutsch](https://robertriopel.ca/de/): Summary in German.
+- [Français](https://robertriopel.ca/fr/): Summary in French.

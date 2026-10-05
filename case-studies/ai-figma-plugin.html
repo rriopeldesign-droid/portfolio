@@ -8,42 +8,117 @@
   <meta name="description" content="Case study by Robert Riopel: Building an AI-powered Figma plugin that generates production-ready Vue and Tailwind components from natural language prompts, synced with the live RVezy design system." />
   <meta name="keywords" content="Robert Riopel, AI Figma plugin, Figma plugin case study, AI design tools, design system automation, Vue Tailwind components, natural language UI generation, UX case study, product designer, RVezy" />
   <meta name="author" content="Robert Riopel" />
-  <link rel="canonical" href="https://riopel-design.github.io/case-studies/ai-figma-plugin.html" />
+  <link rel="canonical" href="https://robertriopel.ca/case-studies/ai-figma-plugin.html" />
   <!-- Open Graph -->
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://riopel-design.github.io/case-studies/ai-figma-plugin.html" />
+  <meta property="og:url" content="https://robertriopel.ca/case-studies/ai-figma-plugin.html" />
   <meta property="og:title" content="AI Figma Plugin — Robert Riopel | UX Case Study" />
   <meta property="og:description" content="Building an AI-powered Figma plugin that generates production-ready Vue and Tailwind components from natural language prompts, synced with the live design system." />
-  <meta property="og:image" content="https://riopel-design.github.io/img/case-studies/figma-plugin05.png" />
-  <meta property="og:site_name" content="Robert Riopel — Product Designer" />
+  <meta property="og:image" content="https://robertriopel.ca/img/case-studies/figma-plugin05.png" />
+  <meta property="og:site_name" content="Robert Riopel — Senior Product Designer" />
   <meta property="og:locale" content="en_CA" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AI Figma Plugin — Robert Riopel | UX Case Study" />
   <meta name="twitter:description" content="Building an AI-powered Figma plugin that generates production-ready Vue and Tailwind components from natural language prompts." />
-  <meta name="twitter:image" content="https://riopel-design.github.io/img/case-studies/figma-plugin05.png" />
+  <meta name="twitter:image" content="https://robertriopel.ca/img/case-studies/figma-plugin05.png" />
   <!-- Schema.org: Article -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "AI Figma Plugin — Building a Design System-Aware Component Generator",
-    "description": "Building an AI-powered Figma plugin that generates production-ready Vue and Tailwind components from natural language prompts, synced with the live RVezy design system.",
-    "url": "https://riopel-design.github.io/case-studies/ai-figma-plugin.html",
-    "image": "https://riopel-design.github.io/img/case-studies/figma-plugin05.png",
-    "author": { "@type": "Person", "name": "Robert Riopel", "url": "https://riopel-design.github.io" },
-    "publisher": { "@type": "Person", "name": "Robert Riopel", "url": "https://riopel-design.github.io" },
-    "keywords": "AI design tools, Figma plugin, design systems, Vue, Tailwind CSS, UX design"
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "AI Figma Plugin — Building a Design System-Aware Component Generator",
+        "description": "Building an AI-powered Figma plugin that generates production-ready Vue and Tailwind components from natural language prompts, synced with the live RVezy design system.",
+        "url": "https://robertriopel.ca/case-studies/ai-figma-plugin.html",
+        "image": "https://robertriopel.ca/img/case-studies/figma-plugin05.png",
+        "author": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "keywords": "AI design tools, Figma plugin, design systems, Vue, Tailwind CSS, UX design",
+        "@id": "https://robertriopel.ca/case-studies/ai-figma-plugin.html#article",
+        "mainEntityOfPage": "https://robertriopel.ca/case-studies/ai-figma-plugin.html",
+        "inLanguage": "en",
+        "datePublished": "2026-02-15",
+        "dateModified": "2026-10-05"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://robertriopel.ca/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Work",
+            "item": "https://robertriopel.ca/work.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "AI Figma Plugin",
+            "item": "https://robertriopel.ca/case-studies/ai-figma-plugin.html"
+          }
+        ]
+      }
+    ]
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/js/script.js" defer></script>
 </head>
 <body class="bg-surface text-ink font-body">
-  <div id="nav-placeholder"></div>
+  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+    <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
+
+      <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
+        RR
+      </a>
+
+      <div class="hidden md:flex gap-8 items-center">
+        <a href="/work.html" class="nav-link">Work</a>
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/town-hall/" class="nav-link">Figma</a>
+        <a href="/fun.html" class="nav-link">Fun</a>
+        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+          Contact
+        </a>
+      </div>
+
+      <button id="navToggle" class="md:hidden text-ink" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="7" x2="20" y2="7" style="transition: all 0.3s ease"/>
+          <line x1="4" y1="17" x2="20" y2="17" style="transition: all 0.3s ease"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
+      <a href="/work.html" class="block nav-link py-1">Work</a>
+      <a href="/about.html" class="block nav-link py-1">About</a>
+      <a href="/town-hall/" class="block nav-link py-1">Figma</a>
+      <a href="/fun.html" class="block nav-link py-1">Fun</a>
+      <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
+    </div>
+  </nav>
 
   <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
 
@@ -63,6 +138,28 @@
         <span class="metric">Designed + Developed</span>
       </div>
     </header>
+
+    <!-- Project snapshot -->
+    <section class="mt-14 reveal">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 rounded-xl border border-border p-6">
+        <div>
+          <p class="tag mb-2">Role</p>
+          <p class="text-sm text-ink font-medium">Designer &amp; developer</p>
+        </div>
+        <div>
+          <p class="tag mb-2">Users</p>
+          <p class="text-sm text-ink font-medium">PMs, engineers, marketing</p>
+        </div>
+        <div>
+          <p class="tag mb-2">Timeline</p>
+          <p class="text-sm text-ink font-medium">2025</p>
+        </div>
+        <div>
+          <p class="tag mb-2">Stack</p>
+          <p class="text-sm text-ink font-medium">Figma Plugin API, TypeScript, Claude API</p>
+        </div>
+      </div>
+    </section>
 
     <div class="mt-14 reveal flex flex-col md:flex-row gap-4">
       <div class="case-img" style="flex:1">
@@ -184,6 +281,63 @@
       </div>
     </section>
 
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Why Build</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Why build instead of buy</h2>
+        <p class="text-muted leading-relaxed mb-6">There are plenty of AI design tools. None of them knew our design system. They produce generic interfaces that look plausible but would need to be redrawn with our tokens, components and patterns before anyone could use them. The value wasn’t AI generation in general; it was generation constrained to our system.</p>
+        <p class="text-muted leading-relaxed mb-6">Building it myself also meant the tool could evolve as fast as the system did, without waiting on a vendor’s roadmap.</p>
+      </div>
+    </section>
+
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Prompt UX</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Designing the prompt experience</h2>
+        <p class="text-muted leading-relaxed mb-6">For non-designers, a blank prompt box is intimidating. I designed the plugin around examples: starter prompts for common needs, suggestions based on the current selection, and output that lands on the canvas as normal, editable layers. If a result is close but not right, people iterate in plain language instead of starting over.</p>
+      </div>
+    </section>
+
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Obstacles</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Teaching AI to stay on-system</h2>
+        <ul class="space-y-4 mb-6">
+          <li class="text-muted leading-relaxed"><strong class="text-ink font-semibold">Invented components.</strong> Early versions occasionally made up components or colors that didn’t exist. Constraining generation to the registry, and validating every response against it before rendering, solved most of this.</li>
+          <li class="text-muted leading-relaxed"><strong class="text-ink font-semibold">Figma’s API realities.</strong> Fonts have to load before text can render, and auto-layout behaves differently when built programmatically. Much of the engineering time went into making output feel hand-built rather than generated.</li>
+          <li class="text-muted leading-relaxed"><strong class="text-ink font-semibold">Keeping the registry current.</strong> A stale registry produces stale designs. Deriving it from the same Tailwind config that powers production means the plugin updates when the system does.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Rollout</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Getting the team to actually use it</h2>
+        <p class="text-muted leading-relaxed mb-6">A tool nobody opens doesn’t scale anything. I introduced the plugin through short live demos with product managers and engineers, using real requests from their backlogs rather than toy examples, so the first thing people saw was a component they genuinely needed.</p>
+        <p class="text-muted leading-relaxed mb-6">For the first few weeks I ran informal office hours and kept a running list of prompts that failed. Those failures were the most valuable feedback in the project: each one pointed to a gap in the registry, a missing variant, or an instruction that needed to be more explicit. Fixing them improved the plugin and the design system at the same time.</p>
+        <p class="text-muted leading-relaxed mb-6">We also agreed on a simple guardrail. Anything generated with the plugin that was headed for production still came through design review. The plugin removed the waiting, not the judgement, which made it much easier for the team to trust it.</p>
+      </div>
+    </section>
+
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Reflection</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">What I learned</h2>
+        <p class="text-muted leading-relaxed mb-6">The project changed how I think about my role. As the only designer, my leverage comes less from the screens I make and more from the systems that let other people make good decisions without me. A design system documents those decisions; this plugin puts them in everyone’s hands.</p>
+      </div>
+    </section>
+
     <!-- Impact -->
     <section class="mt-22 px-8 md:px-14 py-14 bg-ink text-surface rounded-2xl reveal">
       <p class="tag text-faint mb-4">Impact</p>
@@ -211,12 +365,16 @@
 
   <footer class="border-t border-border px-8 md:px-12 py-10">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
-      <p>&copy; 2026 Robert Riopel</p>
+      <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
+      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Ottawa</span><span aria-hidden="true">&middot;</span><span>Vienna</span></p>
       <div class="flex gap-6">
         <a href="https://www.linkedin.com/in/robert-riopel-b784a8179/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
         <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>
       </div>
     </div>
+    <p class="footer-alt max-w-7xl mx-auto">
+      <a href="/de/" hreflang="de" lang="de">Deutsch</a><span aria-hidden="true">&middot;</span><a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a><span aria-hidden="true">&middot;</span><a href="/llms.txt">For AI assistants</a>
+    </p>
   </footer>
 </body>
 </html>
