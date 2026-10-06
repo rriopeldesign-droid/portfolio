@@ -61,10 +61,11 @@
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
 </head>
 <body class="bg-surface text-ink font-body">
 
-  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+  <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
       <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
@@ -76,7 +77,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent">
           Contact
         </a>
       </div>
@@ -153,50 +154,50 @@
       </div>
       <p class="text-muted text-sm mb-6 reveal">Die ausführlichen Fallstudien sind auf Englisch verfügbar.</p>
       <div class="reveal-group">
-        <a href="/case-studies/pay-in-full.html" hreflang="en" class="project-row reveal-child">
+        <a href="/case-studies/pay-in-full.html" hreflang="en" data-preview="/img/case-studies/pay-in-full01.png" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2025</span>
           <div>
-            <p class="project-title">Pay-in-Full Pricing</p>
+            <p class="project-title" style="view-transition-name: cs-title-pay-in-full">Pay-in-Full Pricing</p>
             <p class="text-muted text-sm mt-1.5">Neue Zahlungsoption im Checkout mit sofortigem Umsatz</p>
           </div>
           <div class="hidden md:flex gap-4">
             <span class="metric">+1 Mio. $</span>
           </div>
         </a>
-        <a href="/case-studies/host-onboarding.html" hreflang="en" class="project-row reveal-child">
+        <a href="/case-studies/host-onboarding.html" hreflang="en" data-preview="/img/case-studies/host-lp01.jpg" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2022–23</span>
           <div>
-            <p class="project-title">Host Onboarding Overhaul</p>
+            <p class="project-title" style="view-transition-name: cs-title-host-onboarding">Host Onboarding Overhaul</p>
             <p class="text-muted text-sm mt-1.5">Neu gestaltetes Onboarding für Vermieter, +27 % Aktivierung</p>
           </div>
           <div class="hidden md:flex gap-4">
             <span class="metric">+3,4 Mio. $</span>
           </div>
         </a>
-        <a href="/case-studies/host-dashboard.html" hreflang="en" class="project-row reveal-child">
+        <a href="/case-studies/host-dashboard.html" hreflang="en" data-preview="/img/case-studies/host-dashboard01.png" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2024</span>
           <div>
-            <p class="project-title">Host Dashboard Redesign</p>
+            <p class="project-title" style="view-transition-name: cs-title-host-dashboard">Host Dashboard Redesign</p>
             <p class="text-muted text-sm mt-1.5">Handlungsorientiertes Dashboard, +22 % Engagement</p>
           </div>
           <div class="hidden md:flex gap-4">
             <span class="metric">+1,5 Mio. $</span>
           </div>
         </a>
-        <a href="/case-studies/ai-figma-plugin.html" hreflang="en" class="project-row reveal-child">
+        <a href="/case-studies/ai-figma-plugin.html" hreflang="en" data-preview="/img/case-studies/figma-plugin08.png" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2025</span>
           <div>
-            <p class="project-title">AI Figma Plugin</p>
+            <p class="project-title" style="view-transition-name: cs-title-ai-figma-plugin">AI Figma Plugin</p>
             <p class="text-muted text-sm mt-1.5">Komponenten aus natürlicher Sprache, synchron mit dem Designsystem</p>
           </div>
           <div class="hidden md:flex gap-4">
             <span class="metric">KI → Figma</span>
           </div>
         </a>
-        <a href="/case-studies/design-system.html" hreflang="en" class="project-row reveal-child">
+        <a href="/case-studies/design-system.html" hreflang="en" data-preview="/img/og/og-design-system.png" class="project-row reveal-child">
           <span class="tag self-center">2024–</span>
           <div>
-            <p class="project-title">Tailwind Design System</p>
+            <p class="project-title" style="view-transition-name: cs-title-design-system">Tailwind Design System</p>
             <p class="text-muted text-sm mt-1.5">Eine gemeinsame Quelle für Design und Code</p>
           </div>
           <div class="hidden md:flex gap-4">

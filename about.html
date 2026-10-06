@@ -126,12 +126,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="css/style.css" />
-  <script src="js/script.js" defer></script>
+  <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
 </head>
 
 <body class="bg-surface text-ink font-body">
 
-  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+  <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
       <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
@@ -143,7 +144,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent">
           Contact
         </a>
       </div>
@@ -278,16 +279,20 @@
       </p>
       <div class="flex flex-wrap gap-4">
         <a href="mailto:rriopel.design@gmail.com"
-           class="group inline-flex items-center gap-3 bg-ink text-surface text-sm font-semibold uppercase tracking-widest py-3.5 px-8 rounded-full hover:bg-accent transition-colors duration-300">
+           class="btn-magnetic group inline-flex items-center gap-3 bg-ink text-surface text-sm font-semibold uppercase tracking-widest py-3.5 px-8 rounded-full hover:bg-accent">
           Send an email
           <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 8h10M9 4l4 4-4 4"/>
           </svg>
         </a>
         <a href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener"
-           class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-ink border border-border py-3.5 px-8 rounded-full hover:border-ink transition-colors duration-300">
+           class="btn-magnetic inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-ink border border-border py-3.5 px-8 rounded-full hover:border-ink">
           LinkedIn
         </a>
+        <button type="button" hidden data-copy-email="rriopel.design@gmail.com"
+           class="btn-magnetic inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-muted py-3.5 px-6 rounded-full hover:text-ink">
+          Copy email
+        </button>
       </div>
     </div>
   </section>

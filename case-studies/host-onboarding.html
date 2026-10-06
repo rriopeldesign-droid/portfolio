@@ -84,9 +84,10 @@
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="bg-surface text-ink font-body">
-  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+<body class="case-study bg-surface text-ink font-body">
+  <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
       <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
@@ -98,7 +99,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent">
           Contact
         </a>
       </div>
@@ -128,7 +129,7 @@
     </div>
 
     <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl">Host Onboarding Overhaul</h1>
+      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-host-onboarding">Host Onboarding Overhaul</h1>
       <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
         Rebuilding the host sign-up experience from landing page to first published listing. Reducing friction at every step and establishing the onboarding framework still in use today.
       </p>
@@ -163,7 +164,7 @@
 
     <div class="mt-14 reveal">
       <div class="case-img">
-        <img src="/img/case-studies/host-lp01.jpg" alt="Onboarding flow overview" loading="lazy" />
+        <img class="cs-hero-img" src="/img/case-studies/host-lp01.jpg" alt="Onboarding flow overview" loading="lazy" />
       </div>
     </div>
 
@@ -304,17 +305,22 @@
       <h2 class="font-display text-section text-surface mb-10">After the redesign.</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">+27%</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">+27%</p>
           <p class="text-surface/60 text-sm mt-2">Increase in visitor-to-published-listing activation rate</p>
         </div>
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">$&nbsp;3.4M</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">$&nbsp;3.4M</p>
           <p class="text-surface/60 text-sm mt-2">Annualized GMV from incremental new host listings</p>
         </div>
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">2.3&times;</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">2.3&times;</p>
           <p class="text-surface/60 text-sm mt-2">First-month booking rate for hosts who used smart pricing</p>
         </div>
+      </div>
+      <div class="viz" role="img" aria-label="Landing page to sign-up conversion rose from 34% to 52%.">
+        <p class="viz-title">Landing page to sign-up conversion</p>
+        <div class="viz-row"><span class="viz-label">Before</span><span class="viz-track"><span class="viz-bar" style="--w:34%"></span></span><span class="viz-value">34%</span></div>
+        <div class="viz-row is-after"><span class="viz-label">After</span><span class="viz-track"><span class="viz-bar" style="--w:52%"></span></span><span class="viz-value">52%</span></div>
       </div>
     </section>
 

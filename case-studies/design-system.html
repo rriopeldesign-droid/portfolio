@@ -83,9 +83,10 @@
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="bg-surface text-ink font-body">
-  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+<body class="case-study bg-surface text-ink font-body">
+  <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
       <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
@@ -97,7 +98,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent">
           Contact
         </a>
       </div>
@@ -127,7 +128,7 @@
     </div>
 
     <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl">Tailwind Design System</h1>
+      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-design-system">Tailwind Design System</h1>
       <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
         A Tailwind CSS design system that eliminates the gap between Figma and production &mdash; OKLCH color tokens, Vue components, and shared scales that make design-to-dev handoff feel like a non-event.
       </p>
@@ -318,17 +319,22 @@
       <h2 class="font-display text-section text-surface mb-10">System-level leverage.</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">50%</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">50%</p>
           <p class="text-surface/60 text-sm mt-2">Faster design-to-development handoff</p>
         </div>
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">30+</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">30+</p>
           <p class="text-surface/60 text-sm mt-2">Components documented and maintained</p>
         </div>
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">0</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">0</p>
           <p class="text-surface/60 text-sm mt-2">"Which version is right?" conversations since launch</p>
         </div>
+      </div>
+      <div class="viz" role="img" aria-label="The design system made handoff 50% faster.">
+        <p class="viz-title">Design-to-development handoff time</p>
+        <div class="viz-row"><span class="viz-label">Before</span><span class="viz-track"><span class="viz-bar" style="--w:100%"></span></span><span class="viz-value">100%</span></div>
+        <div class="viz-row is-after"><span class="viz-label">With system</span><span class="viz-track"><span class="viz-bar" style="--w:50%"></span></span><span class="viz-value">50% faster</span></div>
       </div>
     </section>
 

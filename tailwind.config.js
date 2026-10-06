@@ -3,7 +3,8 @@ module.exports = {
   content: [
     "./*.html",
     "./case-studies/**/*.html",
-    "./components/**/*.html",
+    "./de/**/*.html",
+    "./fr/**/*.html",
     "./js/**/*.js"
   ],
   theme: {

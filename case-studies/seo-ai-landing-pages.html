@@ -83,9 +83,10 @@
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="bg-surface text-ink font-body">
-  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+<body class="case-study bg-surface text-ink font-body">
+  <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
       <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
@@ -97,7 +98,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent">
           Contact
         </a>
       </div>
@@ -127,7 +128,7 @@
     </div>
 
     <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl">SEO &amp; AI Landing Pages</h1>
+      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-seo-ai-landing-pages">SEO &amp; AI Landing Pages</h1>
       <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
         Building a scalable system to generate high-quality SEO landing pages using AI &mdash; combining design templates, structured data, and content workflows to capture organic demand across hundreds of locations.
       </p>

@@ -84,9 +84,10 @@
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="bg-surface text-ink font-body">
-  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+<body class="case-study bg-surface text-ink font-body">
+  <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
       <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
@@ -98,7 +99,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent">
           Contact
         </a>
       </div>
@@ -128,7 +129,7 @@
     </div>
 
     <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl">Lifecycle &amp; Email Campaigns</h1>
+      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-lifecycle-campaigns">Lifecycle &amp; Email Campaigns</h1>
       <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
         Designing the full email lifecycle from welcome sequences to re-engagement campaigns. Building scalable templates in Braze and establishing a visual language that drove measurable retention.
       </p>
@@ -190,7 +191,7 @@
     <section class="mt-18 space-y-6">
       <div class="reveal">
         <div class="case-img">
-          <img src="/img/case-studies/lifecycle03.png" alt="Booking confirmation email" loading="lazy" />
+          <img class="cs-hero-img" src="/img/case-studies/lifecycle03.png" alt="Booking confirmation email" loading="lazy" />
         </div>
       </div>
     </section>
@@ -300,17 +301,22 @@
       <h2 class="font-display text-section text-surface mb-10">Emails that earn.</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">+13%</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">+13%</p>
           <p class="text-surface/60 text-sm mt-2">Overall email engagement rate improvement</p>
         </div>
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">$&nbsp;1.2M</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">$&nbsp;1.2M</p>
           <p class="text-surface/60 text-sm mt-2">Incremental GMV attributed to lifecycle campaigns</p>
         </div>
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">4&times;</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">4&times;</p>
           <p class="text-surface/60 text-sm mt-2">Faster campaign production with the template system</p>
         </div>
+      </div>
+      <div class="viz" role="img" aria-label="The template system made campaign production four times faster.">
+        <p class="viz-title">Time to produce a campaign</p>
+        <div class="viz-row"><span class="viz-label">Before</span><span class="viz-track"><span class="viz-bar" style="--w:100%"></span></span><span class="viz-value">1&times;</span></div>
+        <div class="viz-row is-after"><span class="viz-label">With system</span><span class="viz-track"><span class="viz-bar" style="--w:25%"></span></span><span class="viz-value">4&times; faster</span></div>
       </div>
     </section>
 

@@ -83,9 +83,10 @@
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="bg-surface text-ink font-body">
-  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+<body class="case-study bg-surface text-ink font-body">
+  <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
       <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
@@ -97,7 +98,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent">
           Contact
         </a>
       </div>
@@ -127,7 +128,7 @@
     </div>
 
     <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl">Inspection &amp; Claims Flow</h1>
+      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-inspection-claims">Inspection &amp; Claims Flow</h1>
       <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
         Creating a structured inspection and claims process that protects both hosts and guests &mdash; replacing a chaotic email-based system with a guided, photo-documented workflow.
       </p>
@@ -303,17 +304,22 @@
       <h2 class="font-display text-section text-surface mb-10">Less drama, more trust.</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">&minus;18%</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">&minus;18%</p>
           <p class="text-surface/60 text-sm mt-2">Reduction in total claims volume</p>
         </div>
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">$&nbsp;500K</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">$&nbsp;500K</p>
           <p class="text-surface/60 text-sm mt-2">Annual savings from reduced claims processing and payouts</p>
         </div>
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">3 days</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">3 days</p>
           <p class="text-surface/60 text-sm mt-2">Average resolution time, down from 12 days</p>
         </div>
+      </div>
+      <div class="viz" role="img" aria-label="Average claim resolution time fell from 12 days to 3 days.">
+        <p class="viz-title">Average claim resolution time</p>
+        <div class="viz-row"><span class="viz-label">Before</span><span class="viz-track"><span class="viz-bar" style="--w:100%"></span></span><span class="viz-value">12 days</span></div>
+        <div class="viz-row is-after"><span class="viz-label">After</span><span class="viz-track"><span class="viz-bar" style="--w:25%"></span></span><span class="viz-value">3 days</span></div>
       </div>
     </section>
 

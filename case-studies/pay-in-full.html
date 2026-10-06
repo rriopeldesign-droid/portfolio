@@ -84,9 +84,10 @@
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="bg-surface text-ink font-body">
-  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+<body class="case-study bg-surface text-ink font-body">
+  <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
       <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
@@ -98,7 +99,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent">
           Contact
         </a>
       </div>
@@ -128,7 +129,7 @@
     </div>
 
     <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl">Pay-in-Full Pricing</h1>
+      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-pay-in-full">Pay-in-Full Pricing</h1>
       <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
         A new checkout option that lets guests pay everything upfront at a discount. Converting price-sensitive browsers into confirmed bookings and generating +$&nbsp;1M in month one.
       </p>
@@ -164,7 +165,7 @@
     <!-- Hero image -->
     <div class="mt-14 reveal">
       <div class="case-img">
-        <img src="/img/case-studies/pay-in-full01.png" alt="Checkout flow with pay-in-full option" class="w-full h-auto" loading="lazy" />
+        <img class="cs-hero-img" src="/img/case-studies/pay-in-full01.png" alt="Checkout flow with pay-in-full option" class="w-full h-auto" loading="lazy" />
       </div>
     </div>
 
@@ -314,21 +315,26 @@
       <h2 class="font-display text-section text-surface mb-10">+$&nbsp;1M in 30 days.</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">+$&nbsp;1M</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">+$&nbsp;1M</p>
           <p class="text-surface/60 text-sm mt-2">Incremental revenue in the first month from pay-in-full bookings</p>
         </div>
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">+$&nbsp;3M</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">+$&nbsp;3M</p>
           <p class="text-surface/60 text-sm mt-2">Projected Q1 revenue based on adoption rate</p>
         </div>
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">40%</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">40%</p>
           <p class="text-surface/60 text-sm mt-2">Of eligible bookings chose pay-in-full in the first month</p>
         </div>
         <div>
-          <p class="font-display text-4xl font-extrabold text-accent">0</p>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">0</p>
           <p class="text-surface/60 text-sm mt-2">Payment-related support tickets in the first 30 days</p>
         </div>
+      </div>
+      <div class="viz" role="img" aria-label="Pay-in-full drove an incremental $1M in month one, with $3M projected for Q1.">
+        <p class="viz-title">Revenue from pay-in-full bookings</p>
+        <div class="viz-row"><span class="viz-label">Month one</span><span class="viz-track"><span class="viz-bar" style="--w:33%"></span></span><span class="viz-value">+$1M</span></div>
+        <div class="viz-row is-after"><span class="viz-label">Q1 projected</span><span class="viz-track"><span class="viz-bar" style="--w:100%"></span></span><span class="viz-value">+$3M</span></div>
       </div>
     </section>
 

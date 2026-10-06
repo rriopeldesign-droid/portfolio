@@ -147,12 +147,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="css/style.css" />
-  <script src="js/script.js" defer></script>
+  <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
 </head>
 
 <body class="bg-surface text-ink font-body">
 
-  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+  <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
       <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
@@ -164,7 +165,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent">
           Contact
         </a>
       </div>
@@ -185,16 +186,17 @@
       <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
     </div>
   </nav>
-  <section class="relative px-6 md:px-10 pt-16 sm:pt-22 md:pt-30 pb-20 sm:pb-26 md:pb-30">
+  <section class="hero relative px-6 md:px-10 pt-16 sm:pt-22 md:pt-30 pb-20 sm:pb-26 md:pb-30">
+    <div class="hero-glow" aria-hidden="true"></div>
     <div class="max-w-7xl mx-auto">
 
       <div class="reveal">
         <p class="tag mb-6 md:mb-8">Robert Riopel — Senior Product Designer · Ottawa &amp; Vienna</p>
       </div>
 
-      <h1 class="reveal font-display text-hero max-w-5xl">
-        I design products<br />
-        that move <span class="italic text-accent">metrics.</span>
+      <h1 class="font-display text-hero max-w-5xl">
+        <span class="hero-word" style="--i:0">I</span> <span class="hero-word" style="--i:1">design</span> <span class="hero-word" style="--i:2">products</span><br />
+        <span class="hero-word" style="--i:3">that</span> <span class="hero-word" style="--i:4">move</span> <span class="hero-word shimmer italic" style="--i:5">metrics.</span>
       </h1>
 
       <div class="reveal mt-10 md:mt-14 max-w-xl">
@@ -221,6 +223,48 @@
     </div>
   </section>
 
+  <!-- ====== Impact ====== -->
+  <section class="px-6 md:px-10 pb-22 md:pb-26">
+    <div class="max-w-7xl mx-auto reveal">
+      <div class="flex flex-wrap items-end justify-between gap-6 mb-8">
+        <div>
+          <p class="tag mb-3">Measured impact</p>
+          <p class="font-display text-section"><span class="count-up">$8M+</span></p>
+        </div>
+        <p class="text-muted text-sm max-w-sm leading-relaxed">$7.6M of it from these five projects alone, each measured as revenue, GMV, or savings.</p>
+      </div>
+      <div class="impact-bar" role="img" aria-label="Impact by project: Host Onboarding $3.4M, Host Dashboard $1.5M, Lifecycle Email $1.2M, Pay-in-Full $1M, Inspection and Claims $500K.">
+        <span class="impact-seg" style="--v:3.4;--c:#C2410C;--i:0"></span>
+        <span class="impact-seg" style="--v:1.5;--c:#D2582A;--i:1"></span>
+        <span class="impact-seg" style="--v:1.2;--c:#DF7449;--i:2"></span>
+        <span class="impact-seg" style="--v:1.0;--c:#EA9468;--i:3"></span>
+        <span class="impact-seg" style="--v:0.5;--c:#F2B48F;--i:4"></span>
+      </div>
+      <div class="impact-legend mt-8">
+        <a href="/case-studies/host-onboarding.html" class="impact-item" style="--c:#C2410C">
+          <span class="impact-val"><span class="impact-dot" aria-hidden="true"></span>$3.4M</span>
+          <span class="impact-name">Host Onboarding</span>
+        </a>
+        <a href="/case-studies/host-dashboard.html" class="impact-item" style="--c:#D2582A">
+          <span class="impact-val"><span class="impact-dot" aria-hidden="true"></span>$1.5M</span>
+          <span class="impact-name">Host Dashboard</span>
+        </a>
+        <a href="/case-studies/lifecycle-campaigns.html" class="impact-item" style="--c:#DF7449">
+          <span class="impact-val"><span class="impact-dot" aria-hidden="true"></span>$1.2M</span>
+          <span class="impact-name">Lifecycle Email</span>
+        </a>
+        <a href="/case-studies/pay-in-full.html" class="impact-item" style="--c:#EA9468">
+          <span class="impact-val"><span class="impact-dot" aria-hidden="true"></span>+$1M</span>
+          <span class="impact-name">Pay-in-Full</span>
+        </a>
+        <a href="/case-studies/inspection-claims.html" class="impact-item" style="--c:#F2B48F">
+          <span class="impact-val"><span class="impact-dot" aria-hidden="true"></span>$500K</span>
+          <span class="impact-name">Inspection &amp; Claims</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ====== Selected Work ====== -->
   <section class="px-6 md:px-10 pb-26 md:pb-30">
     <div class="max-w-7xl mx-auto">
@@ -242,10 +286,10 @@
           </div>
         </a>
 
-        <a href="/case-studies/ai-figma-plugin.html" class="project-row reveal-child">
+        <a href="/case-studies/ai-figma-plugin.html" data-preview="/img/case-studies/figma-plugin08.png" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2025</span>
           <div>
-            <p class="project-title">AI Figma Plugin</p>
+            <p class="project-title" style="view-transition-name: cs-title-ai-figma-plugin">AI Figma Plugin</p>
             <p class="text-muted text-sm mt-1.5">Prompt-to-component generation synced with the live design system</p>
           </div>
           <div class="hidden md:flex gap-4">
@@ -253,10 +297,10 @@
           </div>
         </a>
 
-        <a href="/case-studies/pay-in-full.html" class="project-row reveal-child">
+        <a href="/case-studies/pay-in-full.html" data-preview="/img/case-studies/pay-in-full01.png" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2025</span>
           <div>
-            <p class="project-title">Pay-in-Full Pricing</p>
+            <p class="project-title" style="view-transition-name: cs-title-pay-in-full">Pay-in-Full Pricing</p>
             <p class="text-muted text-sm mt-1.5">New payment model unlocking immediate revenue at checkout</p>
           </div>
           <div class="hidden md:flex gap-4">
@@ -265,10 +309,10 @@
           </div>
         </a>
 
-        <a href="/case-studies/host-dashboard.html" class="project-row reveal-child">
+        <a href="/case-studies/host-dashboard.html" data-preview="/img/case-studies/host-dashboard01.png" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2024</span>
           <div>
-            <p class="project-title">Host Dashboard Redesign</p>
+            <p class="project-title" style="view-transition-name: cs-title-host-dashboard">Host Dashboard Redesign</p>
             <p class="text-muted text-sm mt-1.5">Surfacing actionable data to drive host engagement and revenue</p>
           </div>
           <div class="hidden md:flex gap-4">

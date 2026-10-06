@@ -100,11 +100,12 @@
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
 </head>
 
 <body class="bg-surface text-ink font-body">
 
-  <nav class="sticky top-0 z-50 bg-surface/95 backdrop-blur-sm border-b border-border/50">
+  <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
       <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
@@ -116,7 +117,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent transition-colors duration-300">
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-accent">
           Contact
         </a>
       </div>
@@ -160,10 +161,10 @@
       <div class="reveal-group">
 
         <!-- Pay-in-Full -->
-        <a id="pay-in-full" href="/case-studies/pay-in-full.html" class="project-row reveal-child">
+        <a id="pay-in-full" href="/case-studies/pay-in-full.html" data-preview="/img/case-studies/pay-in-full01.png" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2025</span>
           <div>
-            <p class="project-title">Pay-in-Full Pricing</p>
+            <p class="project-title" style="view-transition-name: cs-title-pay-in-full">Pay-in-Full Pricing</p>
             <p class="text-muted text-sm mt-1.5 max-w-lg">
               Designed a new checkout flow letting guests pay upfront at a discount. Mapped edge cases across deposits, insurance, and cancellation.
             </p>
@@ -175,10 +176,10 @@
         </a>
 
         <!-- Host Dashboard -->
-        <a id="host-dashboard" href="/case-studies/host-dashboard.html" class="project-row reveal-child">
+        <a id="host-dashboard" href="/case-studies/host-dashboard.html" data-preview="/img/case-studies/host-dashboard01.png" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2024</span>
           <div>
-            <p class="project-title">Host Dashboard Redesign</p>
+            <p class="project-title" style="view-transition-name: cs-title-host-dashboard">Host Dashboard Redesign</p>
             <p class="text-muted text-sm mt-1.5 max-w-lg">
               Rebuilt the host portal from a static summary into a data-rich dashboard surfacing booking trends, earnings, and optimization levers. Designed end-to-end from research through shipped product.
             </p>
@@ -190,10 +191,10 @@
         </a>
 
         <!-- Host Onboarding -->
-        <a id="onboarding" href="/case-studies/host-onboarding.html" class="project-row reveal-child">
+        <a id="onboarding" href="/case-studies/host-onboarding.html" data-preview="/img/case-studies/host-lp01.jpg" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2022–23</span>
           <div>
-            <p class="project-title">Host Onboarding Overhaul</p>
+            <p class="project-title" style="view-transition-name: cs-title-host-onboarding">Host Onboarding Overhaul</p>
             <p class="text-muted text-sm mt-1.5 max-w-lg">
               Redesigned the host sign-up funnel from landing page through first listing. Reduced friction, improved listing quality, and established the framework still in use today.
             </p>
@@ -205,10 +206,10 @@
         </a>
 
         <!-- HIDDEN: Inspection & Claims
-        <a id="inspections" href="/case-studies/inspection-claims.html" class="project-row reveal-child">
+        <a id="inspections" href="/case-studies/inspection-claims.html" data-preview="/img/og/og-inspection-claims.png" class="project-row reveal-child">
           <span class="tag self-center">2023</span>
           <div>
-            <p class="project-title">Inspection & Claims Flow</p>
+            <p class="project-title" style="view-transition-name: cs-title-inspection-claims">Inspection & Claims Flow</p>
             <p class="text-muted text-sm mt-1.5 max-w-lg">
               Designed photo-based vehicle inspections and a structured claims process. Reduced disputes, cut claims volume, and saved $500K annually in operational costs.
             </p>
@@ -235,10 +236,10 @@
       <div class="reveal-group">
 
         <!-- HIDDEN: Design System
-        <a id="design-system" href="/case-studies/design-system.html" class="project-row reveal-child">
+        <a id="design-system" href="/case-studies/design-system.html" data-preview="/img/og/og-design-system.png" class="project-row reveal-child">
           <span class="tag self-center">2024–now</span>
           <div>
-            <p class="project-title">Tailwind Design System</p>
+            <p class="project-title" style="view-transition-name: cs-title-design-system">Tailwind Design System</p>
             <p class="text-muted text-sm mt-1.5 max-w-lg">
               Built a Tailwind CSS design system that acts as a single source of truth across Figma and production code. OKLCH color tokens, shared scales, and Vue components.
             </p>
@@ -250,10 +251,10 @@
         -->
 
         <!-- Figma Plugin -->
-        <a id="figma-plugin" href="/case-studies/ai-figma-plugin.html" class="project-row reveal-child">
+        <a id="figma-plugin" href="/case-studies/ai-figma-plugin.html" data-preview="/img/case-studies/figma-plugin08.png" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2025–26</span>
           <div>
-            <p class="project-title">AI Figma Plugin</p>
+            <p class="project-title" style="view-transition-name: cs-title-ai-figma-plugin">AI Figma Plugin</p>
             <p class="text-muted text-sm mt-1.5 max-w-lg">
               Designed and built a plugin that generates production-ready components from natural language prompts. Synced 1:1 with the coded design system so anyone can design on-brand without touching Figma.
             </p>
@@ -292,10 +293,10 @@
         </a>
 
         <!-- Lifecycle -->
-        <a id="lifecycle" href="/case-studies/lifecycle-campaigns.html" class="project-row reveal-child">
+        <a id="lifecycle" href="/case-studies/lifecycle-campaigns.html" data-preview="/img/case-studies/lifecycle01.png" data-vt-img="1" class="project-row reveal-child">
           <span class="tag self-center">2022–24</span>
           <div>
-            <p class="project-title">Lifecycle & Email Campaigns</p>
+            <p class="project-title" style="view-transition-name: cs-title-lifecycle-campaigns">Lifecycle & Email Campaigns</p>
             <p class="text-muted text-sm mt-1.5 max-w-lg">
               Designed retention emails, re-engagement campaigns, and transactional templates across the booking lifecycle. Built scalable systems in Braze with marketing.
             </p>
@@ -307,10 +308,10 @@
         </a>
 
         <!-- HIDDEN: SEO
-        <a id="seo" href="/case-studies/seo-ai-landing-pages.html" class="project-row reveal-child">
+        <a id="seo" href="/case-studies/seo-ai-landing-pages.html" data-preview="/img/og/og-seo-ai-landing-pages.png" class="project-row reveal-child">
           <span class="tag self-center">2024–25</span>
           <div>
-            <p class="project-title">SEO & AI Landing Pages</p>
+            <p class="project-title" style="view-transition-name: cs-title-seo-ai-landing-pages">SEO & AI Landing Pages</p>
             <p class="text-muted text-sm mt-1.5 max-w-lg">
               Led design for SEO landing pages and built AI-powered content workflows to generate optimized pages at scale.
             </p>
