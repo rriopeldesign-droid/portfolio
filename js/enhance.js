@@ -20,6 +20,9 @@ function initCounters() {
     if (!target) return;
     const decimals = (num.split(".")[1] || "").length;
     const render = (v) => { el.textContent = prefix + v.toFixed(decimals) + suffix; };
+    // Lock the final width first so counting never nudges the text around it
+    el.style.display = "inline-block";
+    el.style.minWidth = `${el.getBoundingClientRect().width}px`;
     render(0);
     inView(el, () => {
       const gen = spring({ keyframes: [0, target], stiffness: 70, damping: 20 });
@@ -95,50 +98,6 @@ function initHeroGlow() {
     ty = ((e.clientY - r.top) / r.height) * 100;
     if (!raf) raf = requestAnimationFrame(loop);
   });
-}
-
-// ── Work list: a preview image that follows the cursor ───────────────────────
-// Images load only on first hover, so the list itself stays light.
-function initRowPreview() {
-  const rows = document.querySelectorAll(".project-row[data-preview]");
-  if (!rows.length || !finePointer || reduceMotion) return;
-  const box = document.createElement("div");
-  box.className = "row-preview";
-  box.setAttribute("aria-hidden", "true");
-  const img = document.createElement("img");
-  img.alt = "";
-  img.decoding = "async";
-  box.appendChild(img);
-  document.body.appendChild(box);
-
-  let tx = 0, ty = 0, x = 0, y = 0, raf = 0, current = null;
-  const loop = () => {
-    x += (tx - x) * 0.16; y += (ty - y) * 0.16;
-    box.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    raf = current || Math.abs(tx - x) + Math.abs(ty - y) > 0.3 ? requestAnimationFrame(loop) : 0;
-  };
-  const place = (e) => {
-    tx = Math.min(e.clientX + 28, innerWidth - box.offsetWidth - 16);
-    ty = Math.max(16, Math.min(e.clientY - box.offsetHeight / 2, innerHeight - box.offsetHeight - 16));
-  };
-  rows.forEach((row) => {
-    row.addEventListener("pointerenter", (e) => {
-      current = row;
-      if (img.getAttribute("src") !== row.dataset.preview) img.src = row.dataset.preview;
-      place(e);
-      if (!box.classList.contains("on")) { x = tx; y = ty; }
-      box.classList.add("on");
-      if (!raf) raf = requestAnimationFrame(loop);
-    });
-    row.addEventListener("pointermove", place);
-    row.addEventListener("pointerleave", () => { current = null; box.classList.remove("on"); });
-    // If this case study opens with the same image, let it glide into the header.
-    row.addEventListener("click", () => {
-      if (row.dataset.vtImg && box.classList.contains("on")) img.style.viewTransitionName = "cs-hero-img";
-    });
-  });
-  // Clean up when coming back via the back/forward cache
-  addEventListener("pageshow", () => { img.style.viewTransitionName = ""; box.classList.remove("on"); current = null; });
 }
 
 // ── Case studies: reading progress + section index ────────────────────────────
@@ -217,4 +176,4 @@ function initCopyEmail() {
   });
 }
 
-[initCounters, initMagnetic, initNavIndicator, initHeroGlow, initRowPreview, initReading, initCopyEmail].forEach(ready);
+[initCounters, initMagnetic, initNavIndicator, initHeroGlow, initReading, initCopyEmail].forEach(ready);

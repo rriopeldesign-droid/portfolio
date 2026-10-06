@@ -15,7 +15,7 @@
     --spring-soft: linear(0, 0.0479, 0.1509, 0.2708, 0.3883, 0.4948, 0.5871, 0.665, 0.7295, 0.7825, 0.8255, 0.8603, 0.8883, 0.9107, 0.9287, 0.9431, 0.9547, 0.9638, 0.9712, 0.977, 0.9817, 0.9854, 0.9884, 0.9907, 0.9926, 0.9941, 0.9953, 0.9963, 0.997, 0.9976, 0.9981, 0.9985, 1);
     --spring-snappy: linear(0, 0.041, 0.138, 0.2612, 0.3908, 0.5145, 0.6253, 0.72, 0.7979, 0.8599, 0.9076, 0.9431, 0.9688, 0.9865, 0.9981, 1.0052, 1.0091, 1.0107, 1.0109, 1.0102, 1.009, 1.0076, 1.0062, 1.0049, 1.0037, 1.0027, 1.0019, 1.0013, 1.0009, 1.0005, 1.0003, 1);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-    --dur-reveal: 1s;
+    --dur-reveal: 0.8s;
     --dur-ui: 0.5s;
     --shadow-soft:
       0 1px 2px rgba(20, 18, 17, 0.04),
@@ -77,7 +77,7 @@
   /* --- Scroll reveal (only when JS runs, so crawlers and no-JS readers see everything) --- */
   .js .reveal {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(10px);
     transition: opacity var(--dur-reveal) var(--spring-soft),
                 transform var(--dur-reveal) var(--spring-soft);
   }
@@ -93,7 +93,7 @@
   }
   .js .reveal-child {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(8px);
     transition: opacity var(--dur-reveal) var(--spring-soft),
                 transform var(--dur-reveal) var(--spring-soft);
   }
@@ -188,8 +188,8 @@
     box-shadow: var(--shadow-soft), inset 0 0 0 1px rgba(255, 255, 255, 0.35);
   }
   /* Images settle into place as they reveal: the mat lands, the photo inside eases from a hair larger */
-  .js .reveal .case-img { transform: scale(0.975); transition: transform 1.2s var(--spring-soft); }
-  .js .reveal .case-img img { transform: scale(1.035); transition: transform 1.6s var(--spring-soft); }
+  .js .reveal .case-img { transform: scale(0.985); transition: transform 1s var(--spring-soft); }
+  .js .reveal .case-img img { transform: scale(1.02); transition: transform 1.2s var(--spring-soft); }
   .js .reveal.visible .case-img,
   .js .reveal.visible .case-img img { transform: none; }
   .case-img img {
@@ -202,9 +202,9 @@
 
   /* --- Glass nav --- */
   .nav-glass {
-    background: rgba(245, 240, 235, 0.72);
-    -webkit-backdrop-filter: saturate(1.6) blur(14px);
-    backdrop-filter: saturate(1.6) blur(14px);
+    background: rgba(245, 240, 235, 0.86);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     border-bottom: 1px solid rgba(214, 206, 198, 0.55);
     view-transition-name: site-nav;
   }
@@ -297,17 +297,6 @@
   .section-index a:hover { color: #141211; }
   .section-index a.active { color: #141211; border-left-color: #C2410C; }
 
-  /* --- Work list: cursor-following preview --- */
-  .row-preview {
-    position: fixed; left: 0; top: 0; width: 340px; aspect-ratio: 16 / 10; z-index: 30;
-    border-radius: 14px; overflow: hidden; pointer-events: none; opacity: 0;
-    box-shadow: var(--shadow-soft); background: #ece6df;
-    transition: opacity 0.35s ease, scale 0.6s var(--spring-snappy);
-    scale: 0.92;
-  }
-  .row-preview.on { opacity: 1; scale: 1; }
-  .row-preview img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
-
   /* --- Copy email + toast --- */
   .toast {
     position: fixed; left: 50%; bottom: 2rem; z-index: 70; padding: 0.65rem 1.1rem;
@@ -365,20 +354,20 @@
    TEXTURE — a whisper of paper grain
    ============================ */
 body::after {
-  content: ''; position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  content: ''; position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: 0.05;
+  background: url("/img/grain.png") repeat; background-size: 96px 96px;
+  transform: translateZ(0); /* its own layer: never repainted while scrolling */
 }
 
 /* ============================
    PAGE TRANSITIONS — native cross-document View Transitions.
-   Project titles (and the hovered preview image) glide into the case study header.
+   Project titles glide into the case study header; the nav stays put.
    ============================ */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition { navigation: auto; }
 }
 ::view-transition-group(*) { animation-duration: 0.7s; animation-timing-function: var(--spring-soft); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.35s; animation-timing-function: ease; }
-::view-transition-old(cs-hero-img), ::view-transition-new(cs-hero-img) { height: 100%; object-fit: cover; object-position: top center; }
 .cs-hero-img { view-transition-name: cs-hero-img; }
 
 /* ============================
@@ -392,6 +381,6 @@ body::after {
   }
   .shimmer { background-position: 0 0; }
   .btn-magnetic, .project-row { transform: none !important; }
-  .row-preview, .hero-glow { display: none !important; }
+  .hero-glow { display: none !important; }
   html { scroll-behavior: auto; }
 }
