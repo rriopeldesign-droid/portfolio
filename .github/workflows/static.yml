@@ -36,6 +36,9 @@ jobs:
           fetch-depth: 0
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Stamp sitemap dates
+        # Each page's <lastmod> becomes the date it last changed in git
+        run: python3 .github/scripts/sitemap_lastmod.py
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
