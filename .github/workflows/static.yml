@@ -31,6 +31,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history so the IndexNow step can see which pages changed in this push
+          fetch-depth: 0
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
@@ -41,3 +44,14 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Notify search engines (IndexNow)
+        # Lets Bing (and other IndexNow engines) know about changed pages right away.
+        # Never blocks or fails the deploy.
+        continue-on-error: true
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          sleep 30  # give the Pages CDN a moment to serve the new files
+          python3 .github/scripts/indexnow.py
