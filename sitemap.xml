@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://robertriopel.ca/</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://robertriopel.ca/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://robertriopel.ca/de/" />
@@ -11,62 +11,62 @@
   </url>
   <url>
     <loc>https://robertriopel.ca/work.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://robertriopel.ca/about.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://robertriopel.ca/case-studies/pay-in-full.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://robertriopel.ca/case-studies/host-dashboard.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://robertriopel.ca/case-studies/host-onboarding.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://robertriopel.ca/case-studies/ai-figma-plugin.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://robertriopel.ca/case-studies/design-system.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://robertriopel.ca/case-studies/lifecycle-campaigns.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://robertriopel.ca/case-studies/inspection-claims.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://robertriopel.ca/case-studies/seo-ai-landing-pages.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://robertriopel.ca/death-of-figma/</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://robertriopel.ca/de/</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://robertriopel.ca/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://robertriopel.ca/de/" />
@@ -75,7 +75,7 @@
   </url>
   <url>
     <loc>https://robertriopel.ca/fr/</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://robertriopel.ca/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://robertriopel.ca/de/" />
@@ -84,7 +84,7 @@
   </url>
   <url>
     <loc>https://robertriopel.ca/fun.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <priority>0.3</priority>
   </url>
 </urlset>

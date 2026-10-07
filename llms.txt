@@ -16,7 +16,7 @@
 - Business impact: $8M+ in measurable impact; contributed to moving the company from a $6M deficit to profitability ($1.5M EBITDA positive).
 - Works closely with product managers, engineers, and data analysts; validates design decisions with A/B tests and funnel analytics.
 - Builds tools: an AI-powered Figma plugin (Claude API) that generates on-brand components from natural language, synced 1:1 with a coded Tailwind design system.
-- Education: Advanced Diploma in Graphic Design and a Bachelor of Design.
+- Education: MSc in Technical Management, Bachelor of Design, and an Advanced Diploma in Graphic Design.
 - Skills: product design, UX research, UI design, interaction design, design systems (Tailwind CSS, Vue.js, OKLCH tokens), conversion rate optimization, A/B testing, lifecycle/email design (Braze), SEO landing page systems, prototyping, Figma and Figma plugins, React Native, AI-assisted design workflows.
 
 ## Case studies
@@ -32,7 +32,7 @@
 
 ## Side projects
 
-- [Date Night App](https://datenight.online/welcome): A React Native dating app designed and developed from concept to public launch; currently in beta (2026).
+- [DateNight](https://datenight.online/welcome): Co-founder. A React Native dating app designed and built from concept to public launch; currently in beta (2026).
 
 ## Other pages
 
