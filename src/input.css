@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 /* ============================
-   BASE — the ground rules
+   BASE: the ground rules
    ============================ */
 @layer base {
 
   /* ============================
-     MOTION TOKENS — one shared feel for the whole site.
+     MOTION TOKENS: one shared feel for the whole site.
      Spring curves are sampled from Motion's spring physics by scripts/spring-easing.mjs.
      ============================ */
   :root {
@@ -44,7 +44,7 @@
 }
 
 /* ============================
-   COMPONENTS — reusable pieces
+   COMPONENTS: reusable pieces
    ============================ */
 @layer components {
 
@@ -178,7 +178,7 @@
     background: #D6CEC6;
   }
 
-  /* --- Case study image — museum paper mat --- */
+  /* --- Case study image: museum paper mat --- */
   .case-img {
     background: rgba(255, 255, 255, 0.55);
     padding: 18px;
@@ -351,7 +351,7 @@
 
 
 /* ============================
-   TEXTURE — a whisper of paper grain
+   TEXTURE: a whisper of paper grain
    ============================ */
 body::after {
   content: ''; position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: 0.05;
@@ -360,7 +360,7 @@ body::after {
 }
 
 /* ============================
-   PAGE TRANSITIONS — native cross-document View Transitions.
+   PAGE TRANSITIONS: native cross-document View Transitions.
    Project titles glide into the case study header; the nav stays put.
    ============================ */
 @media (prefers-reduced-motion: no-preference) {
@@ -371,7 +371,7 @@ body::after {
 .cs-hero-img { view-transition-name: cs-hero-img; }
 
 /* ============================
-   REDUCED MOTION — everything simply appears
+   REDUCED MOTION: everything simply appears
    ============================ */
 @media (prefers-reduced-motion: reduce) {
   .js .reveal, .js .reveal-child, .js .hero-word, .js .shimmer,

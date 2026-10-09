@@ -1,4 +1,4 @@
-// game.js — Escape the Maze
+// game.js: Escape the Maze
 // Canvas renderer, smooth grid movement, ghost AI, fog of war with explored memory,
 // animated level transitions, particles, and synthesized sound.
 // ═══════════════════════════════════════════════════════════════
@@ -467,7 +467,7 @@ function lockedBump() {
   player.bumped = true;
   Sound.locked();
   addShake(0.25);
-  showBanner('🔒 Locked — find the key first');
+  showBanner('🔒 Locked. Find the key first.');
 }
 
 function openDoor() {
@@ -489,7 +489,7 @@ function takeKey() {
   burst(L.key.x, L.key.y, C.gold, 26, 4);
   ring(L.key.x, L.key.y, C.gold);
   addScore(100, L.key.x, L.key.y);
-  showBanner('🔑 Key found — now find the door');
+  showBanner('🔑 Key found. Now find the door.');
   hudKey.textContent = '🔑';
   hudKey.classList.add('has-key');
   pop(hudKey);
@@ -504,7 +504,7 @@ function takePower(p) {
   ring(p.x, p.y, C.blue, 3);
   burst(p.x, p.y, '#93c5fd', 20, 4);
   addScore(50, p.x, p.y, '#93c5fd');
-  showBanner('⚡ Power up — hunt them!', 'blue');
+  showBanner('⚡ Power up. Hunt them!', 'blue');
   ghosts.forEach(g => {
     if (g.mode === 'normal') { g.mode = 'scared'; reverse(g); }
   });
@@ -1331,7 +1331,7 @@ const ICON_MUTE = '<svg viewBox="0 0 16 16" width="15" height="15" fill="none" s
 
 function renderHud() {
   hudLevel.textContent = `${levelIdx + 1}/${LEVELS.length}`;
-  hudKey.textContent = '—';
+  hudKey.textContent = '✗';
   hudKey.classList.remove('has-key');
   hudTime.textContent = '0:00';
   updatePlay.lastSecs = 0;

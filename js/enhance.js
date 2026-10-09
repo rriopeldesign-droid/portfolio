@@ -1,4 +1,4 @@
-// enhance.js — progressive enhancements layered on top of a page that already works without them.
+// enhance.js: progressive enhancements layered on top of a page that already works without them.
 // Every feature checks for support, respects reduced motion, and fails silently.
 import { animate, spring, inView } from "./vendor/motion.js";
 
