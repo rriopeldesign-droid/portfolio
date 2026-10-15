@@ -11,7 +11,7 @@ window.PLANNED_DATA = {
     hotels: "Belvédère, Maison Nord",
     currency: "CAD"
   },
-  planner: { name: "Maya", fullName: "Maya Chen", role: "Executive Assistant to the VP Product" },
+  planner: { name: "Maya", fullName: "Maya Chen", role: "Executive Assistant to the VP Product", email: "maya.chen@fernway.example" },
   supplier: { name: "Sophie", fullName: "Sophie Tremblay", venue: "The Foundry Loft", site: "thefoundryloft.example" },
 
   // Flow A: planner intake
@@ -25,12 +25,15 @@ window.PLANNED_DATA = {
     { id: "board", label: "Board meeting", icon: "board", title: "Board meeting" },
     { id: "other", label: "Something else", icon: "other", title: "Product team event" }
   ],
-  originCities: [
-    { id: "tor", label: "Toronto", count: 10 },
-    { id: "mtl", label: "Montreal", count: 8 },
-    { id: "nyc", label: "New York", count: 6 }
+  // Who's coming: default group, Montreal is the largest so "Help me choose" points there
+  defaultOrigins: [
+    { name: "Montreal", count: 10 },
+    { name: "Toronto", count: 8 },
+    { name: "New York", count: 6 }
   ],
-  extraCity: { id: "ott", label: "Ottawa", count: 0 },
+  // Mock place search (stands in for a real places API)
+  places: ["Montreal, QC", "Laval, QC", "Longueuil, QC", "Brossard, QC", "Saint-Laurent, QC", "Westmount, QC", "Mont-Tremblant, QC", "Quebec City, QC", "Ottawa, ON", "Toronto, ON", "New York, NY", "Boston, MA"],
+  headcountRange: [2, 5000],
   flexibility: ["Exact dates", "± 1 week", "Any time that month"],
   durations: [
     { id: "half", label: "Half day", days: 0.5 },
@@ -38,16 +41,19 @@ window.PLANNED_DATA = {
     { id: "2", label: "2 days", days: 2 },
     { id: "3", label: "3 days", days: 3 }
   ],
-  destinations: [
-    { id: "mtl", label: "Montreal", travel: "1h 20m", note: "Recommended: shortest average travel", art: "city" },
-    { id: "tor", label: "Toronto", travel: "1h 35m", note: "", art: "rooftop" },
-    { id: "ott", label: "Ottawa", travel: "1h 50m", note: "", art: "historic" }
-  ],
-  feelPairs: [
-    { id: "style", a: { id: "historic", label: "Historic character" }, b: { id: "modern", label: "Modern minimal" } },
-    { id: "setting", a: { id: "city", label: "City buzz" }, b: { id: "retreat", label: "Quiet retreat" } },
-    { id: "pace", a: { id: "structured", label: "Structured agenda" }, b: { id: "social", label: "Loose and social" } },
-    { id: "view", a: { id: "rooftop", label: "Rooftop views" }, b: { id: "lakeside", label: "Lakeside" } }
+  // Calendar covers Jan 2026 to Dec 2027. Dates are keyed as year * 10000 + monthIndex * 100 + day.
+  today: 20260915,
+  defaultDates: { start: 20261018, end: 20261019 },
+  typicalPerDay: [350, 450],
+  vibes: [
+    { id: "oldworld", label: "Old-world charm", art: "historic" },
+    { id: "modern", label: "Clean and modern", art: "modern" },
+    { id: "city", label: "Big-city energy", art: "city" },
+    { id: "offgrid", label: "Off the grid", art: "retreat" },
+    { id: "focus", label: "Heads-down focus", art: "structured" },
+    { id: "hang", label: "Good hang", art: "social" },
+    { id: "rooftop", label: "Rooftop views", art: "rooftop" },
+    { id: "water", label: "By the water", art: "lakeside" }
   ],
   mustHaves: ["Meeting room", "Group dinner", "Team activity", "Overnight rooms", "AV and screens", "Breakout rooms"],
   dietary: ["Vegetarian", "Vegan", "Gluten-free", "Halal", "Kosher", "Nut allergy"],
@@ -59,8 +65,8 @@ window.PLANNED_DATA = {
   ranges: { start: "$9k–$38k", budget: "$15k–$21k", feel: "$16k–$19.5k" },
 
   building: [
-    "Applying Fernway's event policy",
-    "Matching 14 venues in Montreal",
+    "Reading your answers",
+    "Matching 14 venues in {city}",
     "Checking live rates and availability",
     "Pairing catering and an activity",
     "Fitting it to your budget"
@@ -77,7 +83,8 @@ window.PLANNED_DATA = {
       id: "best", label: "Best match", venue: "The Foundry Loft",
       components: [
         { kind: "Venue", art: "loft", name: "The Foundry Loft", detail: "Old Montreal · boardroom for 24, main hall for the workshop", price: 5800, status: "bookable",
-          why: "Historic character, fits 24 boardroom-style, 25 min from the airport",
+          why: "Old-world charm, fits 24 boardroom-style, 25 min from the airport", vibe: "oldworld",
+          whyNoVibe: "Fits 24 boardroom-style, main hall for the workshop, 25 min from the airport",
           alts: [
             { art: "modern", name: "Atelier 19", detail: "Griffintown · modern loft, one room", price: 3900, status: "bookable", why: "Lower cost, one shared room for both days" },
             { art: "historic", name: "Salle Bonsecours", detail: "Old Port · former bank hall", price: 6400, status: "estimate", why: "Grand historic hall, 10 min walk from the hotel" }
@@ -101,7 +108,7 @@ window.PLANNED_DATA = {
             { art: "social", name: "Atelier Céramique", detail: "Pottery workshop, 2 hours", price: 2160, status: "bookable", why: "Calm and creative, everyone takes a piece home" }
           ] },
         { kind: "Rooms", art: "hotel", name: "Hôtel Belvédère", detail: "10 rooms × 1 night", price: 2490, status: "bookable",
-          why: "For the 16 travelling guests; Fernway-preferred brand",
+          why: "For the {n} travelling guests, an 8 min walk from the venue", whyPolicy: "For the {n} travelling guests; Fernway-preferred brand",
           alts: [
             { art: "hotel", name: "Maison Nord", detail: "10 rooms × 1 night", price: 2290, status: "bookable", why: "Fernway-preferred, 12 min walk to the venue" },
             { art: "historic", name: "Le Saint-Paul", detail: "10 rooms × 1 night", price: 3150, status: "estimate", why: "Boutique hotel next door to the venue" }
@@ -116,7 +123,7 @@ window.PLANNED_DATA = {
         { kind: "Catering", art: "catering", name: "Petit Four Catering", detail: "2 days of breakfast and lunch", price: 3980, status: "bookable", why: "Covers 3 vegetarian and 1 gluten-free guests", alts: [] },
         { kind: "Group dinner", art: "dinner", name: "Taverne du Port", detail: "Long table, family style", price: 2160, status: "bookable", why: "Loose and social, close to the venue", alts: [] },
         { kind: "Activity", art: "city", name: "Old Montreal food walk", detail: "Guided, 2 hours", price: 1670, status: "bookable", why: "Gets the team outside after the workshop", alts: [] },
-        { kind: "Rooms", art: "hotel", name: "Hôtel Belvédère", detail: "10 rooms × 1 night", price: 2490, status: "bookable", why: "For the 16 travelling guests; Fernway-preferred brand", alts: [] },
+        { kind: "Rooms", art: "hotel", name: "Hôtel Belvédère", detail: "10 rooms × 1 night", price: 2490, status: "bookable", why: "For the {n} travelling guests, an 8 min walk from the venue", whyPolicy: "For the {n} travelling guests; Fernway-preferred brand", alts: [] },
         { kind: "AV", art: "av", name: "Screen and speakerphone", detail: "Supplied by the venue", price: 0, status: "included", why: "", alts: [] }
       ]
     },
@@ -160,10 +167,8 @@ window.PLANNED_DATA = {
     ],
     moneyRange: [1000, 100000],
     percentRange: [0, 50],
-    // Availability preview covers November and December 2026 (month index 10 and 11).
-    // Dates are keyed as month * 100 + day. Pre-blocked: two private events and a holiday closure.
-    availabilityMonths: [10, 11],
-    unavailable: [1007, 1014, 1028, 1124, 1125, 1126, 1127, 1128, 1129, 1130, 1131],
+    // Pre-blocked dates: three private events and a holiday closure (same date keys as above).
+    unavailable: [20261007, 20261014, 20261028, 20261124, 20261125, 20261126, 20261127, 20261128, 20261129, 20261130, 20261131],
     cancellation: ["Flexible", "Moderate", "Strict", "Custom"],
     cancellationNotes: {
       Flexible: "Full refund up to 7 days before the event.",

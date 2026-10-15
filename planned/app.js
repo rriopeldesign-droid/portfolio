@@ -3,28 +3,31 @@
   const D = window.PLANNED_DATA;
   const $ = (s, r) => (r || document).querySelector(s);
   const app = $("#app");
-  const STORE = "planned-concept-v1";
+  const STORE = "planned-concept-v2";
   const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const PLANNER_STEPS = ["Welcome", "What are you planning?", "Who's coming?", "When?", "Where?", "Budget", "The feel", "What matters most?", "Building your plan", "Your plan", "Confirm and pay", "Success"];
+  const PLANNER_STEPS = ["Welcome", "What are you planning?", "Who's coming?", "When?", "Where?", "Budget", "What's the vibe?", "What matters most?", "Building your plan", "Your plan", "Confirm and pay", "Success"];
   const SUPPLIER_STEPS = ["Intro", "Claim your listing", "Spaces", "Pricing and availability", "Policies and getting paid", "Team and response", "Review your listing", "Submitted for review", "After approval: you're live"];
 
   function defaults() {
     return {
       a: {
-        type: "offsite", headcount: 24, cities: { tor: true, mtl: true, nyc: true, ott: false }, cityAdded: false, execs: false,
-        month: 10, start: 18, flex: 0, duration: "2", whereMode: "help", dest: "mtl", pp: 400,
-        feel: { style: "historic", setting: "city", pace: "structured", view: "rooftop" },
+        type: "offsite", otherText: "",
+        headcount: 24, origins: D.defaultOrigins.map(o => Object.assign({}, o)), execs: false,
+        start: D.defaultDates.start, end: D.defaultDates.end, half: false, flex: 0,
+        whereMode: "help", destName: "Montreal", whereNote: "",
+        pp: 400, vibes: [],
         must: { "Meeting room": true, "Group dinner": true, "Team activity": true, "Overnight rooms": true, "AV and screens": true, "Breakout rooms": false },
         diet: { Vegetarian: true, "Gluten-free": true }, access: { "Step-free access": true },
-        ranking: D.priorities.slice(), option: "best", swaps: {}, approval: false, terms: false, invited: false
+        ranking: D.priorities.slice(), option: "best", swaps: {},
+        policy: false, approval: false, payMethod: "now", po: "", terms: false, invited: false
       },
       b: { drafted: false, instant: false, prices: Object.fromEntries(D.listing.pricing.map(f => [f.id, f.value])), unavailable: D.listing.unavailable.slice(), confirmed: false, deposit: 30, cancel: "Moderate", teammate: false, email: true, sms: true, promise: true }
     };
   }
 
   let state = load();
-  const ui = { sheet: false, reading: 0, termsError: false, submitError: false, priceErrors: {}, rangeStart: null, rangeEnd: null };
+  const ui = { sheet: false, reading: 0, termsError: false, submitError: false, priceErrors: {}, rangeStart: null, rangeEnd: null, pick: false, calView: {}, adder: null, adderIdx: -1, hcError: "" };
   let timers = [];
   let lastRoute = "";
 
@@ -38,23 +41,52 @@
   // ---------- helpers ----------
   const money = (n) => "$" + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const num = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const parseNum = (v) => { const n = Number(String(v).replace(/[$,%\s]/g, "")); return String(v).trim() === "" || isNaN(n) ? NaN : n; };
   const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const MONTHS_LONG = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const eventType = () => D.eventTypes.find(t => t.id === state.a.type) || D.eventTypes[0];
-  const duration = () => D.durations.find(d => d.id === state.a.duration) || D.durations[2];
-  const spanDays = () => Math.max(1, Math.ceil(duration().days));
-  const daysInMonth = (m) => new Date(2026, m + 1, 0).getDate();
-  function dateLabel(withYear) {
-    const a = state.a, m = MONTHS[a.month], n = spanDays();
-    const end = Math.min(a.start + n - 1, daysInMonth(a.month));
-    const y = withYear ? ", 2026" : "";
-    return n === 1 || end === a.start ? `${m} ${a.start}${y}` : `${m} ${a.start}–${end}${y}`;
+  const listText = (arr) => arr.length <= 1 ? (arr[0] || "") : arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
+
+  // Dates are keyed as year * 10000 + monthIndex * 100 + day, so plain comparisons keep calendar order
+  const toOrd = (d) => d.getFullYear() * 10000 + d.getMonth() * 100 + d.getDate();
+  const fromOrd = (o) => new Date(Math.floor(o / 10000), Math.floor(o / 100) % 100, o % 100);
+  const addDays = (o, n) => { const d = fromOrd(o); d.setDate(d.getDate() + n); return toOrd(d); };
+  const daysBetween = (a, b) => Math.round((fromOrd(b) - fromOrd(a)) / 864e5);
+  const ymOf = (o) => [Math.floor(o / 10000), Math.floor(o / 100) % 100];
+  const daysInMonth = (y, m) => new Date(y, m + 1, 0).getDate();
+  const viewOf = (o) => { const [y, m] = ymOf(o); return (y - 2026) * 12 + m; };
+  const MAX_VIEW = 22; // the second month shown is then December 2027
+  const ordLabel = (o, year) => { const [y, m] = ymOf(o); return `${MONTHS[m]} ${o % 100}${year ? `, ${y}` : ""}`; };
+  function rangeLabel(lo, hi, year) {
+    if (lo === hi) return ordLabel(lo, year);
+    const [y1, m1] = ymOf(lo), [y2, m2] = ymOf(hi);
+    if (y1 !== y2) return `${ordLabel(lo, true)}–${ordLabel(hi, true)}`;
+    const tail = year ? `, ${y1}` : "";
+    return m1 === m2 ? `${MONTHS[m1]} ${lo % 100}–${hi % 100}${tail}` : `${MONTHS[m1]} ${lo % 100}–${MONTHS[m2]} ${hi % 100}${tail}`;
   }
-  const dest = () => D.destinations.find(d => d.id === state.a.dest) || { label: cityName(state.a.dest) };
-  const cityName = (id) => ({ mtl: "Montreal", tor: "Toronto", ott: "Ottawa", qc: "Quebec City", nyc: "New York" })[id] || "Montreal";
+
+  // ---------- planner model ----------
+  const policy = () => state.a.policy;
+  const eventType = () => D.eventTypes.find(t => t.id === state.a.type) || D.eventTypes[0];
+  const spanDays = () => daysBetween(state.a.start, state.a.end) + 1;
+  function duration() {
+    if (state.a.half) return { label: "Half day", days: 0.5 };
+    const n = spanDays();
+    return { label: n === 1 ? "1 day" : `${n} days`, days: n };
+  }
+  const dateLabel = (year) => rangeLabel(state.a.start, state.a.end, year);
+  const cityShort = (name) => String(name).split(",")[0].trim();
+  const placed = () => state.a.origins.reduce((s, o) => s + (o.count || 0), 0);
+  function topOrigin() {
+    const o = state.a.origins.slice().sort((x, y) => y.count - x.count)[0];
+    return o && o.count > 0 ? o : null;
+  }
+  const dest = () => state.a.whereMode === "help" ? (topOrigin() ? cityShort(topOrigin().name) : "Montreal") : cityShort(state.a.destName);
+  const travellers = () => state.a.origins.filter(o => cityShort(o.name) !== dest()).reduce((s, o) => s + (o.count || 0), 0);
   const budgetTotal = () => state.a.pp * state.a.headcount * duration().days;
-  const travellers = () => D.originCities.concat(state.a.cityAdded ? [D.extraCity] : []).filter(c => state.a.cities[c.id] && c.id !== state.a.dest).reduce((s, c) => s + c.count, 0);
+  const limit = () => policy() ? D.company.policyLimit : budgetTotal();
+  const selectedKeys = (obj) => Object.keys(obj).filter(k => obj[k]);
 
   function option() { return D.options.find(o => o.id === state.a.option) || D.options[0]; }
   function choices(opt, i) {
@@ -65,7 +97,15 @@
   }
   function picked(opt) { return opt.components.map((c, i) => choices(opt, i)[state.a.swaps[opt.id + i] || 0] || c); }
   const total = (opt) => picked(opt).reduce((s, c) => s + c.price, 0);
-  const overPolicy = (opt) => total(opt) > D.company.policyLimit;
+  // "Why we picked this" lines follow the answers
+  function whyFor(c, kind) {
+    if (kind === "Catering") {
+      const diets = selectedKeys(state.a.diet).map(d => d.toLowerCase());
+      return diets.length ? `Covers ${listText(diets)} needs` : "Flexible menu you can adjust later";
+    }
+    let w = (policy() && c.whyPolicy) || (c.vibe && !state.a.vibes.includes(c.vibe) && c.whyNoVibe) || c.why || "";
+    return w.replace("{n}", travellers());
+  }
 
   function tipFor(c) {
     if (c.status === "bookable") return c.kind === "Venue" ? "This venue shares live pricing and availability" : "This supplier shares live pricing and availability";
@@ -102,7 +142,11 @@
     const r = route();
     const key = r.flow + "/" + r.step;
     const changed = key !== lastRoute;
-    if (changed) { timers.forEach(clearTimeout); timers = []; ui.sheet = false; ui.termsError = false; ui.submitError = false; ui.rangeStart = ui.rangeEnd = null; if (r.flow !== "supplier" || r.step !== 1) ui.reading = 0; }
+    if (changed) {
+      timers.forEach(clearTimeout); timers = [];
+      Object.assign(ui, { sheet: false, termsError: false, submitError: false, rangeStart: null, rangeEnd: null, pick: false, calView: {}, adder: null, adderIdx: -1, hcError: "" });
+      if (r.flow !== "supplier" || r.step !== 1) ui.reading = 0;
+    }
     const focusKey = document.activeElement && document.activeElement.getAttribute("data-k");
     const headingFocused = document.activeElement && document.activeElement.tagName === "H1";
 
@@ -147,13 +191,13 @@
       }, 150 + i * 760));
       timers.push(setTimeout(() => go("planner", 9), 4200));
     }
-    if (r.flow === "supplier" && r.step === 6 && !reduced()) {
+    if (r.flow === "supplier" && r.step === 8 && !reduced()) {
       const c = $(".celebrate", app); if (c) c.classList.add("play");
     }
   }
 
   // ---------- shared pieces ----------
-  function topbar(flow, step, label, pct) {
+  function topbar(label, pct) {
     return `<div class="topbar">
       <button class="btn-ghost" data-act="back" data-k="back">${icon("back", 18)}<span>Back</span></button>
       <div class="progress" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct)}"><span style="transform:scaleX(${pct / 100})"></span></div>
@@ -176,7 +220,7 @@
   const primary = (label, act, k, extra) => `<button class="btn btn-primary" data-act="${act}" data-k="${k || act}" ${extra || ""}>${label}</button>`;
   const actions = (inner) => `<div class="actions">${inner}</div>`;
   function chip(label, pressed, act, val, k) {
-    return `<button class="chip" aria-pressed="${!!pressed}" data-act="${act}" data-v="${val}" data-k="${k || act + ":" + val}">${pressed ? icon("check", 16) : ""}<span>${label}</span></button>`;
+    return `<button class="chip" aria-pressed="${!!pressed}" data-act="${act}" data-v="${esc(val)}" data-k="${esc(k || act + ":" + val)}">${pressed ? icon("check", 16) : ""}<span>${label}</span></button>`;
   }
   function seg(name, opts, current, act) {
     return `<div class="seg" role="radiogroup" aria-label="${name}">${opts.map((o, i) => {
@@ -192,9 +236,91 @@
     </div>`;
   }
 
+  // "+ Add" button that opens a text field, with optional place suggestions
+  const ADDERS = {
+    origin: { label: "Add city", placeholder: "Start typing a city", places: true },
+    dest: { label: "Choose a different city", placeholder: "Start typing a city", places: true },
+    must: { label: "Add your own", placeholder: "For example: a stage for 2 speakers" },
+    diet: { label: "Add your own", placeholder: "For example: lactose-free" },
+    access: { label: "Add your own", placeholder: "For example: sign language interpreter" }
+  };
+  function adder(id) {
+    const cfg = ADDERS[id];
+    if (ui.adder !== id) return `<button class="chip chip-add" data-act="adder-open" data-v="${id}" data-k="adder:${id}">${icon("plus", 16)}<span>${cfg.label}</span></button>`;
+    return `<div class="adder">
+      <div class="adder-row">
+        <span class="adder-in">${cfg.places ? icon("pin", 16) : icon("plus", 16)}<input id="adder-${id}" data-adder="${id}" data-k="adder-in:${id}" placeholder="${cfg.placeholder}" autocomplete="off" aria-label="${cfg.label}"
+          ${cfg.places ? `role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="adder-list-${id}"` : ""}></span>
+        <button class="btn-small dark" data-act="adder-add" data-v="${id}" data-k="adder-add:${id}">Add</button>
+        <button class="btn-small ghost" data-act="adder-cancel" data-v="${id}" data-k="adder-cancel:${id}">Cancel</button>
+      </div>
+      ${cfg.places ? `<ul class="adder-list" id="adder-list-${id}" role="listbox" aria-label="Suggested places" hidden></ul>` : ""}
+    </div>`;
+  }
+  const norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  function suggestions(q) {
+    const n = norm(q.trim());
+    return n ? D.places.filter(p => norm(p).includes(n)).slice(0, 6) : D.places.slice(0, 6);
+  }
+  function renderSuggestions(input) {
+    const id = input.dataset.adder, list = $(`#adder-list-${id}`, app);
+    if (!list) return;
+    const items = suggestions(input.value);
+    ui.adderIdx = Math.min(ui.adderIdx, items.length - 1);
+    list.innerHTML = items.map((p, i) => `<li role="option" id="opt-${id}-${i}" data-place="${esc(p)}" aria-selected="${i === ui.adderIdx}">${icon("pin", 14)}<span>${esc(p)}</span></li>`).join("")
+      + `<li class="adder-foot" aria-hidden="true">Demo place search</li>`;
+    list.hidden = !items.length;
+    input.setAttribute("aria-expanded", String(!!items.length));
+    if (ui.adderIdx >= 0) input.setAttribute("aria-activedescendant", `opt-${id}-${ui.adderIdx}`); else input.removeAttribute("aria-activedescendant");
+  }
+  function commitAdder(id, value) {
+    const v = String(value || "").trim();
+    if (!v) { const i = $(`#adder-${id}`, app); if (i) i.focus(); return; }
+    set(s => {
+      const a = s.a;
+      if (id === "origin") { if (!a.origins.some(o => norm(cityShort(o.name)) === norm(cityShort(v)))) a.origins.push({ name: cityShort(v), count: 1 }); }
+      else if (id === "dest") a.destName = cityShort(v);
+      else a[id][v.charAt(0).toUpperCase() + v.slice(1)] = true;
+      ui.adder = null; ui.adderIdx = -1;
+    });
+    const b = app.querySelector(`[data-k="adder:${id}"]`); if (b) b.focus();
+  }
+
+  // Two-month calendar with arrows, January 2026 to December 2027
+  function rangeCal(id, cell, anchor) {
+    const v = Math.max(0, Math.min(MAX_VIEW, ui.calView[id]));
+    const month = (vi) => {
+      const y = 2026 + Math.floor(vi / 12), m = vi % 12, first = new Date(y, m, 1).getDay();
+      let cells = "";
+      for (let i = 0; i < first; i++) cells += `<span></span>`;
+      for (let d = 1; d <= daysInMonth(y, m); d++) {
+        const o = y * 10000 + m * 100 + d, past = o < D.today, c = past ? { cls: [] } : cell(o);
+        const cls = c.cls.concat(past ? ["past"] : []).filter(Boolean).join(" ");
+        cells += `<button class="${cls}" data-act="${id}-day" data-v="${o}" data-o="${o}" data-k="${id}-day:${o}" ${past ? "disabled" : ""} aria-pressed="${!!c.pressed}" aria-label="${MONTHS_LONG[m]} ${d}, ${y}${c.label ? `, ${c.label}` : ""}">${d}</button>`;
+      }
+      return `<div class="cal"><p class="cal-title">${MONTHS_LONG[m]} ${y}</p><div class="cal-head" aria-hidden="true">${DAYS.map(x => `<span>${x[0]}</span>`).join("")}</div><div class="cal-grid">${cells}</div></div>`;
+    };
+    return `<div class="rcal" data-cal="${id}" ${anchor != null ? `data-anchor="${anchor}"` : ""}>
+      <div class="rcal-nav">
+        <button class="icon-btn" data-act="calnav" data-cal="${id}" data-v="-1" data-k="calnav:${id}:-1" aria-label="Previous month" ${v <= 0 ? "disabled" : ""}>${icon("left", 18)}</button>
+        <button class="icon-btn" data-act="calnav" data-cal="${id}" data-v="1" data-k="calnav:${id}:1" aria-label="Next month" ${v >= MAX_VIEW ? "disabled" : ""}>${icon("right", 18)}</button>
+      </div>
+      <div class="rcal-months">${month(v)}${month(v + 1)}</div>
+    </div>`;
+  }
+  // Hover shows the range you're about to select
+  app.addEventListener("mouseover", (e) => {
+    const btn = e.target.closest && e.target.closest(".rcal [data-o]");
+    if (!btn) return;
+    const cal = btn.closest(".rcal"), anchor = cal.dataset.anchor;
+    if (anchor == null) return;
+    const h = +btn.dataset.o, lo = Math.min(h, +anchor), hi = Math.max(h, +anchor);
+    cal.querySelectorAll("[data-o]").forEach(x => { const o = +x.dataset.o; x.classList.toggle("hover", o >= lo && o <= hi); });
+  });
+
   // ---------- home ----------
   function home() {
-    const rows = [["Headcount", "Capacity per space and layout"], ["Dates and flexibility", "Availability and blackout dates"], ["Budget", "Pricing rules"], ["The feel", "Photos and style tags"], ["Must-haves", "Amenities and AV"], ["Dietary and accessibility needs", "Catering and accessibility features"], ["Where people travel from", "Location"]];
+    const rows = [["Headcount", "Capacity per space and layout"], ["Dates and flexibility", "Availability and blackout dates"], ["Budget", "Pricing rules"], ["The vibe", "Photos and style tags"], ["Must-haves", "Amenities and AV"], ["Dietary and accessibility needs", "Catering and accessibility features"], ["Where people travel from", "Location"]];
     return `<div class="wrap home">
       <p class="eyebrow">Onboarding concept</p>
       <h1 tabindex="-1">Two onboardings. One data model.</h1>
@@ -205,7 +331,7 @@
         <li><strong>The payoff</strong><span>A planner lands on an event that is ready to book, and a venue's complete listing is ready for review in minutes.</span></li>
       </ul>
       <div class="entries">
-        <a class="entry" href="#planner/0">
+        <a class="entry" href="#planner/0" data-act="enter-planner">
           <span class="entry-art">${art("structured")}</span>
           <span class="entry-body"><span class="entry-kicker">Flow A · Planner</span><span class="entry-title">Plan an event</span><span class="entry-sub">As Maya, Executive Assistant at Fernway</span></span>
           <span class="entry-go">${icon("arrow", 20)}</span>
@@ -231,37 +357,80 @@
   }
 
   // ---------- Flow A: planner ----------
+  const policyBanner = () => policy() ? `<div class="policy-banner">${icon("shield", 18)}<span><strong>Company policy preview.</strong> How this looks once Fernway adds an event policy and an approver.</span><button class="btn-small" data-act="policy-exit" data-k="policy-exit">Exit preview</button></div>` : "";
+
+  function budgetStatus(t) {
+    if (policy()) {
+      const over = t > D.company.policyLimit;
+      return { ok: !over, text: over ? "Needs sign-off from Jordan Lee (Finance)" : "Within Fernway policy" };
+    }
+    return null;
+  }
+
+  // Grouped data sheet that fills in as Maya answers
   function planPreview(step) {
     const a = state.a, n = Math.max(0, Math.min(step - 1, 7));
     const count = D.venueCounts[n];
     const range = n >= 6 ? D.ranges.feel : n >= 5 ? D.ranges.budget : D.ranges.start;
-    const chips = [];
-    const add = (s, label) => { if (step >= s) chips.push(`<li class="${step === s ? "live" : ""}">${label}</li>`); };
-    add(1, eventType().label);
-    add(2, `${a.headcount} people`);
-    add(2, `From ${D.originCities.concat(a.cityAdded ? [D.extraCity] : []).filter(c => a.cities[c.id]).map(c => c.label).join(", ") || "anywhere"}`);
-    if (a.execs) add(2, "Executives attending");
-    add(3, `${dateLabel()} · ${duration().label}`);
-    if (a.flex) add(3, D.flexibility[a.flex]);
-    add(4, a.whereMode === "help" ? `${dest().label} · shortest travel` : dest().label);
-    add(5, `${money(a.pp)} pp/day`);
-    if (step >= 6) D.feelPairs.forEach(p => add(6, (a.feel[p.id] === p.a.id ? p.a : p.b).label));
-    add(6, `${Object.values(a.must).filter(Boolean).length} must-haves`);
-    add(7, `Priority: ${a.ranking[0]}`);
-    const over = step >= 5 && budgetTotal() > D.company.policyLimit;
+    const not = `<span class="faint">Not set yet</span>`;
+    const row = (s, k, v) => `<div class="sheet-row ${step === s ? "live" : ""}"><dt>${k}</dt><dd>${step >= s ? v : not}</dd></div>`;
+    const sec = (title, rows) => `<div class="sheet-sec"><p class="sheet-h">${title}</p><dl>${rows}</dl></div>`;
+    const typeVal = a.type === "other" && a.otherText.trim() ? `Something else: ${esc(a.otherText.trim())}` : eventType().label;
+    const from = a.origins.filter(o => o.count > 0).map(o => `${esc(cityShort(o.name))} ${o.count}`).join(" · ") || "Not added";
+    const vibes = a.vibes.map(id => (D.vibes.find(v => v.id === id) || {}).label).filter(Boolean);
+    const needs = (obj) => selectedKeys(obj).map(esc).join(", ") || "None";
+    const st = step >= 5 ? budgetStatus(budgetTotal()) : null;
     return `<div class="preview">
       <p class="aside-kicker">Plan preview</p>
       <div class="pcard">
-        <span class="pcard-art">${art(step >= 6 ? a.feel.style : "structured")}</span>
-        <div class="pcard-body"><p class="pcard-title">${eventType().title}</p><p class="muted small">${step >= 3 ? dateLabel() + " · " : ""}${step >= 4 ? dest().label + " · " : ""}${a.headcount} people</p></div>
+        <span class="pcard-art">${art(vibes.length ? D.vibes.find(v => v.id === a.vibes[0]).art : "structured")}</span>
+        <div class="pcard-body"><p class="pcard-title">${eventType().title}</p><p class="muted small">${step >= 3 ? dateLabel() + " · " : ""}${step >= 4 ? esc(dest()) + " · " : ""}${num(a.headcount)} people</p></div>
       </div>
       <div class="stats">
         <div><span class="stat-num" aria-live="polite">${num(count)}</span><span class="stat-label">matching venues</span></div>
         <div><span class="stat-num">${range}</span><span class="stat-label">estimated total</span></div>
       </div>
-      ${step >= 5 ? `<p class="policy ${over ? "warn" : "ok"}">${icon(over ? "user" : "shield", 16)}${over ? "Jordan Lee (Finance) will approve this" : "Within Fernway policy"}</p>` : ""}
-      ${chips.length ? `<ul class="pchips" aria-label="Your answers">${chips.join("")}</ul>` : `<p class="muted small">Your answers appear here as you go.</p>`}
+      ${st ? `<p class="policy ${st.ok ? "ok" : "warn"}">${icon(st.ok ? "shield" : "user", 16)}${st.text}</p>` : ""}
+      <div class="sheet">
+        ${sec("Event", row(1, "Type", typeVal))}
+        ${sec("Who", row(2, "Headcount", `${num(a.headcount)} people`) + row(2, "Travelling from", from) + row(2, "Executives", a.execs ? "Yes" : "No"))}
+        ${sec("When", row(3, "Dates", dateLabel(true)) + row(3, "Length", duration().label) + row(3, "Flexibility", D.flexibility[a.flex]))}
+        ${sec("Where", row(4, "City", a.whereMode === "help" ? `${esc(dest())}, suggested` : esc(dest())) + (a.whereNote.trim() && step >= 4 ? row(4, "Notes", esc(a.whereNote.trim())) : ""))}
+        ${sec("Budget", row(5, "Per person", `${money(a.pp)} a day`) + row(5, "Total", `About ${money(budgetTotal())}`))}
+        ${sec("Vibe", row(6, "Feel", vibes.join(", ") || "Open to anything"))}
+        ${sec("Needs", row(6, "Must-haves", needs(a.must)) + row(6, "Dietary", needs(a.diet)) + row(6, "Accessibility", needs(a.access)))}
+        ${sec("Priorities", row(7, "Top priority", a.ranking[0]))}
+      </div>
     </div>`;
+  }
+  function previewBar(step) {
+    const n = Math.max(0, Math.min(step - 1, 7));
+    const range = n >= 6 ? D.ranges.feel : n >= 5 ? D.ranges.budget : D.ranges.start;
+    return `<strong>${num(D.venueCounts[n])}</strong> venues · ${range}`;
+  }
+  function refreshPreview() {
+    const r = route(); if (r.flow !== "planner" || r.step > 8) return;
+    const body = $(".aside-body", app), bar = $(".sheet-bar-text", app);
+    if (body) body.innerHTML = planPreview(r.step);
+    if (bar) bar.innerHTML = previewBar(r.step);
+  }
+
+  function placedLine() {
+    const p = placed(), h = state.a.headcount;
+    if (p === h) return `<p class="placed ok" id="placed">${icon("check", 16)}All ${num(h)} people placed</p>`;
+    if (p < h) return `<p class="placed" id="placed">${num(p)} of ${num(h)} people placed. Rough numbers are fine.</p>`;
+    return `<p class="placed warn" id="placed">${num(p)} people placed, but your headcount is ${num(h)}</p>`;
+  }
+  function budgetNote() {
+    const a = state.a, t = budgetTotal(), [lo, hi] = D.typicalPerDay;
+    if (policy()) {
+      const over = t > D.company.policyLimit;
+      return `<p class="explain-line">${icon("shield", 16)}<span>Fernway's event policy: events up to ${money(D.company.policyLimit)} book without approval. Above that, Jordan Lee in Finance signs off before anything is booked.</span></p>
+        <p class="policy ${over ? "warn" : "ok"}">${icon(over ? "user" : "check", 16)}<span>${over ? `About ${money(t - D.company.policyLimit)} over the limit. Jordan Lee will be asked to sign off.` : "Within Fernway policy. No sign-off needed."}</span></p>`;
+    }
+    const where = a.pp < lo ? "Below typical. You'll see fewer options." : a.pp > hi ? "Above typical. Room for something special." : "Right in the typical range.";
+    return `<p class="explain-line">${icon("spark", 16)}<span>Typical for a ${state.a.half ? "half-day" : `${spanDays()}-day`} ${eventType().label.toLowerCase()} for ${num(a.headcount)} in ${esc(dest())}: ${money(lo)} to ${money(hi)} per person per day.</span></p>
+      <p class="policy ${a.pp < lo ? "warn" : "ok"}">${icon(a.pp < lo ? "alert" : "check", 16)}<span>${where}</span></p>`;
   }
 
   function planner(step) {
@@ -269,16 +438,15 @@
     if (step === 9) return reveal();
     if (step === 10) return pay();
     if (step === 11) return success();
-    const intake = step >= 1 && step <= 7;
-    const head = step === 0 ? "" : topbar("planner", step, step <= 7 ? `Step ${step} of 7` : "Almost there", step <= 7 ? (step / 7) * 100 : 100);
+    const head = policyBanner() + (step === 0 ? "" : topbar(step <= 7 ? `Step ${step} of 7` : "Almost there", step <= 7 ? (step / 7) * 100 : 100));
     let body = "";
     switch (step) {
-      case 0: body = `
+      case 0: body = policy() ? `
         <p class="eyebrow">Planned · Fernway workspace</p>
         <h1 tabindex="-1">Welcome to Planned, Maya.</h1>
-        <p class="lede">Fernway runs all its events here. Let's plan your first one. It takes about 2 minutes.</p>
+        <p class="lede">Fernway runs its events here. Let's plan your first one. It takes about 2 minutes.</p>
         <div class="setup">
-          <p class="setup-title">${icon("check", 18)} Already set up for you</p>
+          <p class="setup-title">${icon("check", 18)} Already set up by your company</p>
           <ul>
             <li><span>Event policy</span><strong>Up to ${money(D.company.policyLimit)} CAD books without approval</strong></li>
             <li><span>Approver</span><strong>Jordan Lee, Finance</strong></li>
@@ -287,81 +455,133 @@
           </ul>
           <p class="muted small">You don't need to know the rules. We apply them for you.</p>
         </div>
-        ${actions(primary("Start planning", "next", "start"))}`; break;
+        ${actions(primary("Start planning", "next", "start"))}` : `
+        <p class="eyebrow">Your first event</p>
+        <h1 tabindex="-1">Welcome to Planned, Maya.</h1>
+        <p class="lede">Tell us about your event and we'll put together a plan you can book. It takes about 2 minutes.</p>
+        <ol class="how">
+          <li><span class="how-n">1</span><span><strong>Answer a few questions</strong><span class="muted small">Who, when, where and what it should feel like.</span></span></li>
+          <li><span class="how-n">2</span><span><strong>We build your plan</strong><span class="muted small">Real venues, live prices and an agenda that fits.</span></span></li>
+          <li><span class="how-n">3</span><span><strong>Review and book</strong><span class="muted small">Swap anything you like, then book in one step.</span></span></li>
+        </ol>
+        ${actions(primary("Start planning", "next", "start") + `<button class="btn btn-secondary" data-act="marketplace" data-k="marketplace">Browse the venue marketplace</button>`)}`; break;
       case 1: body = `
         <h1 tabindex="-1">What are you planning?</h1>
         <p class="lede">Pick the closest one. We'll set sensible defaults for the rest.</p>
         <div class="types">${D.eventTypes.map(t => `<button class="opt" aria-pressed="${a.type === t.id}" data-act="type" data-v="${t.id}" data-k="type:${t.id}">
           <span class="opt-ic">${icon(t.icon, 28)}</span><span class="opt-label">${t.label}</span>${a.type === t.id ? `<span class="opt-check">${icon("check", 14)}</span>` : ""}</button>`).join("")}</div>
+        ${a.type === "other" ? `<div class="field">
+          <label class="field-label" for="other-text">Please specify</label>
+          <textarea id="other-text" class="textarea" data-text="otherText" data-k="other-text" rows="3" placeholder="For example: a product launch for 200 customers, with a keynote and drinks after">${esc(a.otherText)}</textarea>
+          <p class="helper">${icon("spark", 16)} The more you tell us, the better your plan.</p></div>` : ""}
         ${actions(primary("Continue", "next"))}`; break;
-      case 2: body = `
+      case 2: {
+        const [lo, hi] = D.headcountRange;
+        body = `
         <h1 tabindex="-1">Who's coming?</h1>
         <div class="field">
-          <span class="field-label" id="hc-l">Headcount</span>
-          <div class="stepper" role="group" aria-labelledby="hc-l">
-            <button data-act="hc" data-v="-1" aria-label="Fewer people" data-k="hc-">${icon("minus", 18)}</button>
-            <output aria-live="polite">${a.headcount}</output>
-            <button data-act="hc" data-v="1" aria-label="More people" data-k="hc+">${icon("plus", 18)}</button>
+          <label class="field-label" for="hc">Headcount</label>
+          <div class="hc">
+            <button class="icon-btn bordered" data-act="hc" data-v="-1" aria-label="Fewer people" data-k="hc-">${icon("minus", 18)}</button>
+            <input id="hc" class="hc-in ${ui.hcError ? "invalid" : ""}" inputmode="numeric" autocomplete="off" value="${a.headcount}" data-hc data-k="hc-in" aria-describedby="hc-hint hc-err" ${ui.hcError ? 'aria-invalid="true"' : ""}>
+            <button class="icon-btn bordered" data-act="hc" data-v="1" aria-label="More people" data-k="hc+">${icon("plus", 18)}</button>
+            <span class="muted small" id="hc-hint">people, ${num(lo)} to ${num(hi)}</span>
           </div>
+          <p class="err" id="hc-err" ${ui.hcError ? "" : "hidden"}>${ui.hcError}</p>
         </div>
         <div class="field">
-          <span class="field-label">Where are people travelling from?</span>
-          <div class="chips">${D.originCities.concat(a.cityAdded ? [D.extraCity] : []).map(c => chip(`${c.label}${c.count ? ` <span class="chip-n">${c.count}</span>` : ""}`, a.cities[c.id], "city", c.id)).join("")}
-          ${a.cityAdded ? "" : `<button class="chip chip-add" data-act="addcity" data-k="addcity">${icon("plus", 16)}<span>Add city</span></button>`}</div>
+          <span class="field-label" id="origins-l">Where are people travelling from?</span>
+          <ul class="origins" aria-labelledby="origins-l">${a.origins.map((o, i) => `<li>
+            <span class="origin-name">${icon("pin", 16)}${esc(cityShort(o.name))}</span>
+            <label class="origin-count"><span class="sr-only">People from ${esc(cityShort(o.name))}</span><input inputmode="numeric" autocomplete="off" value="${o.count}" data-origin="${i}" data-k="origin:${i}"></label>
+            <span class="muted small">people</span>
+            <button class="icon-btn" data-act="origin-remove" data-v="${i}" data-k="origin-remove:${i}" aria-label="Remove ${esc(cityShort(o.name))}">${icon("close", 16)}</button>
+          </li>`).join("")}</ul>
+          ${adder("origin")}
+          ${placedLine()}
         </div>
         <div class="field">${toggle("Any executives attending?", a.execs, "execs", "We'll favour private rooms and quieter venues.")}</div>
         ${actions(primary("Continue", "next"))}`; break;
-      case 3: body = `
+      }
+      case 3: {
+        const flexLo = a.flex === 1 ? addDays(a.start, -7) : null, flexHi = a.flex === 1 ? addDays(a.end, 7) : null;
+        const months = [ymOf(a.start).join("-"), ymOf(a.end).join("-")];
+        if (ui.calView.plan == null) ui.calView.plan = Math.min(MAX_VIEW, viewOf(a.start));
+        const cal = rangeCal("plan", (o) => {
+          const sel = o >= a.start && o <= a.end;
+          const flex = !sel && (a.flex === 1 ? o >= flexLo && o <= flexHi : a.flex === 2 ? months.includes(ymOf(o).join("-")) : false);
+          return { cls: [sel && "sel", sel && o === a.start && "s", sel && o === a.end && "e", flex && "flex"], pressed: sel, label: sel ? "selected" : flex ? "within your flexible window" : "" };
+        }, ui.pick ? a.start : null);
+        const n = spanDays(), custom = !a.half && n > 3;
+        body = `
         <h1 tabindex="-1">When?</h1>
-        <div class="field"><span class="field-label">Month</span>
-          ${seg("Month", [{ v: 9, l: "October 2026" }, { v: 10, l: "November 2026" }, { v: 11, l: "December 2026" }], a.month, "month")}</div>
-        <div class="field"><span class="field-label">Dates · <strong>${dateLabel(true)}</strong></span>${calendar(a.month, (d) => {
-          const end = a.start + spanDays() - 1;
-          return { sel: d >= a.start && d <= end, start: d === a.start, end: d === end, act: "start" };
-        })}</div>
+        <div class="field">
+          <div class="field-label-row"><span class="field-label">Dates</span><strong class="date-sum" aria-live="polite">${dateLabel(true)}</strong></div>
+          ${cal}
+          <div class="cal-foot">
+            <p class="helper">${ui.pick ? `<strong>From ${ordLabel(a.start)}.</strong> Now tap an end date.` : "Tap a start date, then an end date."}</p>
+            <div class="avail-legend small muted"><span><i class="lg lg-sel"></i>Your dates</span>${a.flex ? `<span><i class="lg lg-flex"></i>${a.flex === 1 ? "Within a week either side" : "Any time that month"}</span>` : ""}</div>
+          </div>
+        </div>
+        <div class="field"><span class="field-label">How long?</span><div class="chips">${D.durations.map(d => chip(d.label, d.id === "half" ? a.half : !a.half && n === +d.id, "dur", d.id)).join("")}${custom ? chip(`Custom · ${n} days`, true, "dur", "custom") : ""}</div></div>
         <div class="field"><span class="field-label">How flexible are you?</span>${seg("Flexibility", D.flexibility, a.flex, "flex")}
           <p class="helper">Flexible dates usually open up more options.</p></div>
-        <div class="field"><span class="field-label">How long?</span><div class="chips">${D.durations.map(d => chip(d.label, a.duration === d.id, "dur", d.id)).join("")}</div></div>
         ${actions(primary("Continue", "next"))}`; break;
-      case 4: body = `
+      }
+      case 4: {
+        const top = topOrigin(), max = Math.max(1, ...a.origins.map(o => o.count));
+        const total = placed();
+        body = `
         <h1 tabindex="-1">Where?</h1>
         ${seg("Where", [{ v: "help", l: "Help me choose" }, { v: "know", l: "I know where" }], a.whereMode, "wmode")}
         ${a.whereMode === "help" ? `
-          <p class="lede small-lede">Average travel time for your group of ${a.headcount}, from Toronto, Montreal and New York.</p>
-          <div class="cities">${D.destinations.map(c => `<button class="city" aria-pressed="${a.dest === c.id}" data-act="dest" data-v="${c.id}" data-k="dest:${c.id}">
-            <span class="city-art">${art(c.art)}</span>
-            <span class="city-body"><span class="city-name">${c.label}</span><span class="city-time">${icon("clock", 16)} ${c.travel} average</span>
-            ${c.note ? `<span class="badge badge-success">${c.note}</span>` : ""}</span>
-            ${a.dest === c.id ? `<span class="opt-check">${icon("check", 14)}</span>` : ""}</button>`).join("")}</div>`
+          <p class="lede small-lede">We'll find the best place to host, based on where your group is and how far everyone has to travel.</p>
+          ${top ? `<div class="panel where">
+            <p class="field-label">Where your group is coming from</p>
+            <ul class="bars">${a.origins.filter(o => o.count > 0).sort((x, y) => y.count - x.count).map(o => `<li><span class="bar-name">${esc(cityShort(o.name))}</span><span class="bar-track"><span class="bar-fill" style="width:${(o.count / max) * 100}%"></span></span><span class="bar-n">${o.count}</span></li>`).join("")}</ul>
+            <p class="where-rec">${icon("spark", 16)}<span>Most of your group is already in ${esc(cityShort(top.name))} (${top.count} of ${total}), so hosting there means the fewest people travel. We'll check it against travel times and venue availability for everyone, and recommend the best fit in your plan.</span></p>
+          </div>` : `<p class="helper">Add where people are travelling from and we'll weigh travel time for everyone. <button class="link inline" data-act="goto" data-v="2">Go to Who's coming</button></p>`}`
           : `<p class="lede small-lede">Pick a city. We'll still check travel time for everyone.</p>
-          <div class="chips">${["mtl", "tor", "ott", "qc", "nyc"].map(id => chip(cityName(id), a.dest === id, "dest", id)).join("")}</div>`}
-        ${actions(primary("Continue", "next"))}`; break;
-      case 5: {
-        const t = budgetTotal(), over = t > D.company.policyLimit;
-        body = `
-        <h1 tabindex="-1">What's the budget?</h1>
-        <p class="lede">Prefilled from Fernway's policy. Adjust if you need to.</p>
-        <div class="budget">
-          <p class="budget-big"><span id="b-pp">${money(a.pp)}</span> <span class="muted">per person per day</span></p>
-          <p class="muted">About <strong id="b-total">${money(t)}</strong> total for ${a.headcount} people over ${duration().label.toLowerCase()}</p>
-          <label class="sr-only" for="pp">Budget per person per day</label>
-          <input id="pp" type="range" min="250" max="600" step="10" value="${a.pp}" data-k="pp" aria-valuetext="${money(a.pp)} per person per day">
-          <div class="range-ends muted small"><span>$250</span><span>$600</span></div>
-          <p class="policy ${over ? "warn" : "ok"}" id="b-note" aria-live="polite">${icon(over ? "user" : "shield", 16)}<span>${over ? "Jordan Lee (Finance) will approve this" : "Within Fernway policy. No approval needed."}</span></p>
+          <div class="chips">${chip(esc(cityShort(a.destName)), true, "noop", "dest")}${adder("dest")}</div>`}
+        <div class="field">
+          <label class="field-label" for="where-note">Anything we should know? <span class="muted">Optional</span></label>
+          <textarea id="where-note" class="textarea" data-text="whereNote" data-k="where-note" rows="2" placeholder="For example: near the airport, or outside the city">${esc(a.whereNote)}</textarea>
         </div>
         ${actions(primary("Continue", "next"))}`; break;
       }
-      case 6: body = `
-        <h1 tabindex="-1">What should it feel like?</h1>
-        <p class="lede">Tap the one that fits better. No wrong answers.</p>
-        <div class="pairs">${D.feelPairs.map(p => `<div class="pair" role="radiogroup" aria-label="${p.a.label} or ${p.b.label}">
-          ${[p.a, p.b].map(o => `<button class="pick" role="radio" aria-checked="${a.feel[p.id] === o.id}" data-act="feel" data-p="${p.id}" data-v="${o.id}" data-k="feel:${o.id}">
-            <span class="pick-art">${art(o.id)}</span><span class="pick-label">${o.label}</span>${a.feel[p.id] === o.id ? `<span class="opt-check">${icon("check", 14)}</span>` : ""}</button>`).join(`<span class="or" aria-hidden="true">or</span>`)}
-        </div>`).join("")}</div>
-        <div class="field"><span class="field-label">Must-haves</span><div class="chips">${D.mustHaves.map(m => chip(m, a.must[m], "must", m)).join("")}</div></div>
-        <div class="field"><span class="field-label">Dietary needs</span><div class="chips">${D.dietary.map(m => chip(m, a.diet[m], "diet", m)).join("")}</div></div>
-        <div class="field"><span class="field-label">Accessibility</span><div class="chips">${D.access.map(m => chip(m, a.access[m], "access", m)).join("")}</div></div>
+      case 5: {
+        const [tlo, thi] = D.typicalPerDay, pos = (v) => ((v - 250) / 350) * 100;
+        body = `
+        <h1 tabindex="-1">What's the budget?</h1>
+        <p class="lede">${policy() ? "Prefilled from Fernway's event policy. Adjust if you need to." : "We've suggested a starting point based on similar events. Adjust if you need to."}</p>
+        <div class="budget">
+          <p class="budget-big"><span id="b-pp">${money(a.pp)}</span> <span class="muted">per person per day</span></p>
+          <p class="muted">About <strong id="b-total">${money(budgetTotal())}</strong> total for ${num(a.headcount)} people over ${duration().label.toLowerCase()}</p>
+          <div class="range-wrap">
+            <span class="typical-band" style="left:${pos(tlo)}%;width:${pos(thi) - pos(tlo)}%" aria-hidden="true"><span>Typical</span></span>
+            <label class="sr-only" for="pp">Budget per person per day</label>
+            <input id="pp" type="range" min="250" max="600" step="10" value="${a.pp}" data-k="pp" aria-valuetext="${money(a.pp)} per person per day">
+          </div>
+          <div class="range-ends muted small"><span>$250</span><span>$600</span></div>
+          <div id="b-note" aria-live="polite">${budgetNote()}</div>
+        </div>
         ${actions(primary("Continue", "next"))}`; break;
+      }
+      case 6: {
+        const group = (title, key, list) => {
+          const custom = Object.keys(a[key]).filter(k => !list.includes(k));
+          return `<div class="field"><span class="field-label">${title}</span><div class="chips">${list.concat(custom).map(m => chip(esc(m), a[key][m], key, m)).join("")}${adder(key)}</div></div>`;
+        };
+        body = `
+        <h1 tabindex="-1">What's the vibe?</h1>
+        <p class="lede">Pick as many as you like, or skip it. It helps us shortlist places that feel right.</p>
+        <div class="vibes">${D.vibes.map(v => { const on = a.vibes.includes(v.id); return `<button class="pick" aria-pressed="${on}" data-act="vibe" data-v="${v.id}" data-k="vibe:${v.id}">
+          <span class="pick-art">${art(v.art)}</span><span class="pick-label">${v.label}</span>${on ? `<span class="opt-check">${icon("check", 14)}</span>` : ""}</button>`; }).join("")}</div>
+        ${group("Must-haves", "must", D.mustHaves)}
+        ${group("Dietary needs", "diet", D.dietary)}
+        ${group("Accessibility", "access", D.access)}
+        ${actions(primary("Continue", "next"))}`; break;
+      }
       case 7: body = `
         <h1 tabindex="-1">What matters most?</h1>
         <p class="lede">Drag to rank, or use the arrows. We'll weigh the plan the same way.</p>
@@ -372,43 +592,30 @@
             <button data-act="rank" data-v="${i}:1" aria-label="Move ${p} down" data-k="rank-down:${p}" ${i === a.ranking.length - 1 ? "disabled" : ""}>${icon("down", 18)}</button>
           </span></li>`).join("")}</ol>
         ${actions(primary("Build my plan", "next", "build"))}`; break;
-      case 8: body = `
+      case 8: {
+        const lines = D.building.slice();
+        if (policy()) lines[0] = "Applying Fernway's event policy";
+        body = `
         <h1 tabindex="-1">Building your plan</h1>
         <p class="lede">This takes a few seconds.</p>
-        <ul class="build" aria-live="polite">${D.building.map(b => `<li><span class="build-ic">${icon("check", 14)}</span><span>${b.replace("Montreal", dest().label)}</span></li>`).join("")}</ul>`; break;
+        <ul class="build" aria-live="polite">${lines.map(b => `<li><span class="build-ic">${icon("check", 14)}</span><span>${b.replace("{city}", esc(dest()))}</span></li>`).join("")}</ul>`; break;
+      }
     }
     const main = `${head}<section class="screen">${body}</section>`;
-        return layout(main, planPreview(step), { title: "Plan preview", bar: previewBar(step) });
-  }
-  function previewBar(step) {
-    const n = Math.max(0, Math.min(step - 1, 7));
-    const range = n >= 6 ? D.ranges.feel : n >= 5 ? D.ranges.budget : D.ranges.start;
-    return `<strong>${num(D.venueCounts[n])}</strong> venues · ${range}`;
-  }
-
-  function calendar(month, cellFn) {
-    const first = new Date(2026, month, 1).getDay(), n = daysInMonth(month);
-    let cells = "";
-    for (let i = 0; i < first; i++) cells += `<span></span>`;
-    for (let d = 1; d <= n; d++) {
-      const c = cellFn(d);
-      const cls = [c.sel && "sel", c.start && "s", c.end && "e", c.block && "block"].filter(Boolean).join(" ");
-      cells += `<button class="${cls}" data-act="${c.act}" data-v="${d}" data-k="${c.act}:${d}" aria-pressed="${!!(c.sel || c.block)}" aria-label="${MONTHS_LONG[month]} ${d}${c.block ? ", blocked" : ""}${c.label || ""}">${d}</button>`;
-    }
-    return `<div class="cal" role="group" aria-label="${MONTHS_LONG[month]} 2026"><div class="cal-head">${DAYS.map(d => `<span>${d[0]}</span>`).join("")}</div><div class="cal-grid">${cells}</div></div>`;
+    return layout(main, planPreview(step), { title: "Plan preview", bar: previewBar(step) });
   }
 
   function reveal() {
-    const a = state.a, opt = option(), items = picked(opt), t = total(opt), over = t > D.company.policyLimit;
+    const a = state.a, opt = option(), items = picked(opt), t = total(opt), lim = limit(), over = t > lim;
     const title = eventType().title;
-    const start = new Date(2026, a.month, a.start);
-    const dayLabel = (i) => { const d = new Date(start); d.setDate(d.getDate() + i); return `Day ${i + 1} · ${DAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}`; };
+    const dayLabel = (i) => { const d = fromOrd(addDays(a.start, i)); return `Day ${i + 1} · ${DAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}`; };
+    const status = policy() ? (over ? "Needs sign-off" : "Within Fernway policy") : (over ? "Over your budget" : "Within your budget");
     const main = `
-      ${topbar("planner", 9, "Plan ready", 100)}
+      ${policyBanner()}${topbar("Plan ready", 100)}
       <section class="screen">
         <p class="eyebrow ok-text">${icon("check", 16)} Your plan is ready</p>
         <h1 tabindex="-1">Your ${title.charAt(0).toLowerCase() + title.slice(1)}, planned.</h1>
-        <p class="lede">${dateLabel()} · ${dest().label} · ${a.headcount} people · ${money(t)} · ${over ? "Needs approval" : "Within Fernway policy"}</p>
+        <p class="lede">${dateLabel()} · ${esc(dest())} · ${num(a.headcount)} people · ${money(t)} · ${status}</p>
         <div class="tabs" role="tablist" aria-label="Plan options">${D.options.map(o => `<button role="tab" aria-selected="${o.id === opt.id}" tabindex="${o.id === opt.id ? 0 : -1}" data-act="opt" data-v="${o.id}" data-k="opt:${o.id}" aria-controls="plan-panel">
           <span class="tab-label">${o.label}</span><span class="tab-price">${money(total(o))}</span><span class="tab-venue">${o.venue}</span></button>`).join("")}</div>
         <div id="plan-panel" role="tabpanel" aria-label="${opt.label}">
@@ -416,15 +623,15 @@
           <div class="agenda">${D.agenda.slice(0, Math.max(1, Math.min(2, spanDays()))).map((d, i) => `<div class="day"><p class="day-title">${dayLabel(i)}</p><ol>${d.items.map(it => `<li><span class="t">${it[0]}</span><span>${it[1]}</span></li>`).join("")}</ol></div>`).join("")}</div>
           <h2 class="h2">What's in the plan</h2>
           <ul class="comps">${items.map((c, i) => {
-            const ch = choices(opt, i);
+            const ch = choices(opt, i), kind = opt.components[i].kind, why = whyFor(c, kind);
             return `<li class="comp">
               <span class="comp-art">${art(c.art)}</span>
               <div class="comp-body">
-                <p class="comp-kind">${opt.components[i].kind}</p>
+                <p class="comp-kind">${kind}</p>
                 <p class="comp-name">${c.name}</p>
                 <p class="muted small">${c.detail}</p>
-                ${c.why ? `<p class="why"><span>Why we picked this</span> ${c.why}</p>` : ""}
-                <div class="comp-meta">${badge(Object.assign({ kind: opt.components[i].kind }, c), true)}</div>
+                ${why ? `<p class="why"><span>Why we picked this</span> ${why}</p>` : ""}
+                <div class="comp-meta">${badge(Object.assign({ kind }, c), true)}</div>
               </div>
               <div class="comp-side">
                 <p class="comp-price">${c.price ? money(c.price) : "Included"}</p>
@@ -435,63 +642,86 @@
         </div>
         <div class="mobile-only">${breakdownCtas(over)}</div>
       </section>`;
+    const statusLine = policy()
+      ? (over ? `${money(t - lim)} over Fernway policy. Jordan Lee signs off before booking.` : "Within Fernway policy")
+      : (over ? `${money(t - lim)} over your budget of ${money(lim)}` : `Within your budget of ${money(lim)}`);
     const aside = `<div class="breakdown">
       <p class="aside-kicker">Price breakdown · CAD</p>
       <ul>${items.map((c, i) => `<li><span>${opt.components[i].kind}</span><span>${c.price ? money(c.price) : "Included"}</span></li>`).join("")}</ul>
       <p class="bd-total"><span>Total</span><strong>${money(t)}</strong></p>
-      <p class="policy ${over ? "warn" : "ok"}">${icon(over ? "user" : "shield", 16)}<span>${over ? `${money(t - D.company.policyLimit)} over Fernway policy. Jordan Lee approves.` : "Within Fernway policy"}</span></p>
+      <p class="policy ${over ? "warn" : "ok"}">${icon(over ? (policy() ? "user" : "alert") : "check", 16)}<span>${statusLine}</span></p>
       <div class="desktop-only">${breakdownCtas(over)}</div>
     </div>`;
-    return layout(main, aside, { title: "Price breakdown", bar: `<strong>${money(t)}</strong> · ${over ? "Needs approval" : "Within policy"}` });
+    return layout(main, aside, { title: "Price breakdown", bar: `<strong>${money(t)}</strong> · ${status}` });
   }
   function breakdownCtas(over) {
+    const main = policy() && over ? primary("Send for approval to Jordan Lee", "approve", "cta-main") : primary("Book now", "book", "cta-main");
     return `<div class="stack">
-      ${over ? primary("Send for approval to Jordan Lee", "approve", "cta-main") : primary("Book now", "book", "cta-main")}
-      <button class="btn btn-secondary" data-act="specialist" data-k="specialist">Talk to a specialist</button>
+      ${main}
+      <button class="btn btn-secondary" data-act="share" data-k="share">${icon("share", 16)}Share for sign-off</button>
+      <button class="link" data-act="specialist" data-k="specialist">Talk to a specialist</button>
     </div>`;
   }
 
   function pay() {
-    const opt = option(), items = picked(opt), t = total(opt);
+    const a = state.a, opt = option(), items = picked(opt), t = total(opt);
+    const method = policy() ? `
+        <div class="panel rows">
+          <div class="row">${icon("card", 20)}<div><span class="muted small">Payment</span><p>${D.company.card}</p></div><span class="badge badge-neutral">${icon("lock", 14)}Set by Fernway</span></div>
+          <div class="row">${icon("file", 20)}<div><span class="muted small">Cost centre</span><p>${D.company.costCentre}</p></div><span class="badge badge-neutral">Auto-filled</span></div>
+        </div>` : `
+        <div class="field">
+          <span class="field-label">How would you like to pay?</span>
+          ${seg("Payment method", [{ v: "now", l: "Pay now" }, { v: "invoice", l: "Invoice me" }], a.payMethod, "paymethod")}
+          <div class="panel rows">${a.payMethod === "now"
+            ? `<div class="row">${icon("card", 20)}<div><span class="muted small">Card payment</span><p>Pay ${money(t)} today on Planned's secure payment page</p></div><span class="badge badge-neutral">${icon("lock", 14)}Secure</span></div>`
+            : `<div class="row">${icon("file", 20)}<div><span class="muted small">Invoice · due in 30 days</span><p>Billed to Fernway, sent to ${D.planner.email}</p></div></div>
+               <div class="row po-row"><label for="po" class="muted small">PO number <span class="faint">Optional</span></label><input id="po" class="po-in" data-text="po" data-k="po" autocomplete="off" placeholder="For example: PO-20418" value="${esc(a.po)}"></div>`}
+          </div>
+        </div>`;
+    const cta = policy() || a.payMethod === "invoice" ? "Confirm booking" : `Pay ${money(t)} and book`;
     const main = `
-      ${topbar("planner", 10, "Confirm", 100)}
+      ${policyBanner()}${topbar("Confirm", 100)}
       <section class="screen">
         <h1 tabindex="-1">Confirm and pay</h1>
-        <p class="lede">${eventType().title} · ${dateLabel(true)} · ${dest().label} · ${state.a.headcount} people</p>
+        <p class="lede">${eventType().title} · ${dateLabel(true)} · ${esc(dest())} · ${num(a.headcount)} people</p>
         <div class="panel">
           <ul class="summary">${items.map((c, i) => `<li><span><span class="muted small">${opt.components[i].kind}</span><br>${c.name}</span><span>${c.price ? money(c.price) : "Included"}</span></li>`).join("")}</ul>
           <p class="bd-total"><span>Total</span><strong>${money(t)} CAD</strong></p>
         </div>
-        <div class="panel rows">
-          <div class="row">${icon("card", 20)}<div><span class="muted small">Payment</span><p>${D.company.card}</p></div><span class="badge badge-neutral">${icon("lock", 14)}Set by Fernway</span></div>
-          <div class="row">${icon("file", 20)}<div><span class="muted small">Cost centre</span><p>${D.company.costCentre}</p></div><span class="badge badge-neutral">Auto-filled</span></div>
-        </div>
-        <p class="note">${icon("shield", 16)} Planned pays each supplier for you. You'll get one invoice.</p>
-        <label class="check ${ui.termsError ? "error" : ""}"><input type="checkbox" data-act="terms" data-k="terms" ${state.a.terms ? "checked" : ""} ${ui.termsError ? 'aria-invalid="true" aria-describedby="terms-err"' : ""}><span>I accept the booking terms and each supplier's cancellation policy.</span></label>
+        ${method}
+        <p class="note">${icon("shield", 16)} Planned pays each supplier for you. ${policy() || a.payMethod === "invoice" ? "You'll get one invoice." : "One payment covers everything."}</p>
+        <label class="check ${ui.termsError ? "error" : ""}"><input type="checkbox" data-act="terms" data-k="terms" ${a.terms ? "checked" : ""} ${ui.termsError ? 'aria-invalid="true" aria-describedby="terms-err"' : ""}><span>I accept the booking terms and each supplier's cancellation policy.</span></label>
         ${ui.termsError ? `<p class="err" id="terms-err" role="alert">Please accept the terms to confirm.</p>` : ""}
-        ${actions(primary("Confirm booking", "confirm"))}
+        ${actions(primary(cta, "confirm"))}
       </section>`;
     return layout(main);
   }
 
   function success() {
-    const a = state.a, appr = a.approval, t = total(option());
+    const a = state.a, appr = policy() && a.approval, t = total(option());
+    const payLine = policy()
+      ? `<li>${icon("file", 18)}<span><strong>One invoice, auto-tagged to ${D.company.costCentre}.</strong> Nothing to file.</span></li>`
+      : a.payMethod === "invoice"
+        ? `<li>${icon("file", 18)}<span><strong>Invoice sent to ${D.planner.email}.</strong> Due in 30 days${a.po.trim() ? `, reference ${esc(a.po.trim())}` : ""}.</span></li>`
+        : `<li>${icon("card", 18)}<span><strong>Paid in full.</strong> Your receipt is in your inbox.</span></li>`;
     const main = `
+      ${policyBanner()}
       <section class="screen center">
         <span class="done-mark ${appr ? "pending" : ""}">${icon(appr ? "clock" : "check", 30)}</span>
         <h1 tabindex="-1">${appr ? "Sent to Jordan Lee for approval" : "You're booked."}</h1>
-        <p class="lede">${eventType().title} · ${dateLabel()} · ${dest().label} · ${a.headcount} people · ${money(t)}</p>
+        <p class="lede">${eventType().title} · ${dateLabel()} · ${esc(dest())} · ${num(a.headcount)} people · ${money(t)}</p>
         ${appr ? `<ol class="timeline" aria-label="Approval status">
             <li class="done"><span class="dot"></span><span><strong>Sent</strong><span class="muted small">Just now</span></span></li>
             <li class="active"><span class="dot"></span><span><strong>Reviewing</strong><span class="muted small">Jordan usually replies within a day</span></span></li>
             <li><span class="dot"></span><span><strong>Booked automatically once approved</strong><span class="muted small">Nothing else for you to do</span></span></li>
           </ol>` : `<ul class="next">
             <li>${icon("check", 18)}<span><strong>Supplier confirmations are arriving.</strong> Two are in, three to go.</span></li>
-            <li>${icon("file", 18)}<span><strong>One invoice, auto-tagged to ${D.company.costCentre}.</strong> Nothing to file.</span></li>
+            ${payLine}
           </ul>`}
         <div class="stack narrow">
           ${a.invited ? `<div class="stub">${icon("spark", 18)}<span>Next: Registration builds your event page and invites from this plan.</span></div>`
-            : `<button class="btn btn-primary" data-act="invite" data-k="invite">Invite your ${a.headcount} attendees ${icon("arrow", 18)}</button>`}
+            : `<button class="btn btn-primary" data-act="invite" data-k="invite">Invite your ${num(a.headcount)} attendees ${icon("arrow", 18)}</button>`}
           <a class="link" href="#supplier/0">See how The Foundry Loft got listed ${icon("arrow", 16)}</a>
         </div>
       </section>`;
@@ -499,7 +729,6 @@
   }
 
   // ---------- Flow B: supplier ----------
-  const parseNum = (v) => { const n = Number(String(v).replace(/[$,%\s]/g, "")); return String(v).trim() === "" || isNaN(n) ? NaN : n; };
   function priceError(f, raw) {
     const n = parseNum(raw);
     if (f.unit === "percent") {
@@ -539,53 +768,38 @@
     if (bar) bar.innerHTML = meterBar(r.step);
   }
 
-  // Availability preview: two months, select a range, then mark it
-  const ordLabel = (o) => `${MONTHS[Math.floor(o / 100)]} ${o % 100}`;
-  function monthOrds(m) { return Array.from({ length: daysInMonth(m) }, (_, i) => m * 100 + i + 1); }
-  const allOrds = () => D.listing.availabilityMonths.flatMap(monthOrds);
+  // Availability preview: select a range, then mark it
   function selection() {
     const a = ui.rangeStart, b = ui.rangeEnd;
     if (a == null) return null;
     const lo = b == null ? a : Math.min(a, b), hi = b == null ? a : Math.max(a, b);
-    return { lo, hi, done: b != null, ords: allOrds().filter(o => o >= lo && o <= hi) };
+    const ords = []; for (let o = lo; o <= hi; o = addDays(o, 1)) ords.push(o);
+    return { lo, hi, done: b != null, ords };
   }
   function availability() {
     const sel = selection(), un = state.b.unavailable;
-    const months = D.listing.availabilityMonths.map(m => {
-      const first = new Date(2026, m, 1).getDay();
-      let cells = "";
-      for (let i = 0; i < first; i++) cells += `<span></span>`;
-      monthOrds(m).forEach(o => {
-        const d = o % 100, off = un.includes(o), inSel = sel && o >= sel.lo && o <= sel.hi;
-        const cls = [off && "off", inSel && "sel", sel && o === sel.lo && "s", sel && o === sel.hi && "e"].filter(Boolean).join(" ");
-        cells += `<button class="${cls}" data-act="day" data-v="${o}" data-o="${o}" data-k="day:${o}" aria-pressed="${!!inSel}" aria-label="${MONTHS_LONG[m]} ${d}, ${off ? "unavailable" : "available"}">${d}</button>`;
-      });
-      return `<div class="cal"><p class="cal-title">${MONTHS_LONG[m]} 2026</p><div class="cal-head">${DAYS.map(x => `<span>${x[0]}</span>`).join("")}</div><div class="cal-grid">${cells}</div></div>`;
-    }).join("");
+    if (ui.calView.avail == null) ui.calView.avail = viewOf(20261001);
+    const cal = rangeCal("avail", (o) => {
+      const off = un.includes(o), inSel = sel && o >= sel.lo && o <= sel.hi;
+      return { cls: [off && "off", inSel && "sel", sel && o === sel.lo && "s", sel && o === sel.hi && "e"], pressed: inSel, label: off ? "unavailable" : "available" };
+    }, sel && !sel.done ? sel.lo : null);
     let bar;
     if (!sel) bar = `<p class="muted small">Tap a start date, then an end date. Select a single day, a week or a whole month.</p>`;
     else if (!sel.done) bar = `<p class="small"><strong>From ${ordLabel(sel.lo)}.</strong> Now tap an end date, or pick a shortcut.</p>
-      <div class="avail-btns"><button class="btn-small" data-act="selweek" data-k="selweek">Whole week</button><button class="btn-small" data-act="selmonth" data-k="selmonth">All of ${MONTHS_LONG[Math.floor(sel.lo / 100)]}</button><button class="btn-small ghost" data-act="selclear" data-k="selclear">Cancel</button></div>`;
+      <div class="avail-btns"><button class="btn-small" data-act="selweek" data-k="selweek">Whole week</button><button class="btn-small" data-act="selmonth" data-k="selmonth">All of ${MONTHS_LONG[ymOf(sel.lo)[1]]}</button><button class="btn-small ghost" data-act="selclear" data-k="selclear">Cancel</button></div>`;
     else {
       const n = sel.ords.length;
       bar = `<p class="small"><strong>${n === 1 ? ordLabel(sel.lo) : `${ordLabel(sel.lo)} to ${ordLabel(sel.hi)}`}</strong> · ${n} ${n === 1 ? "day" : "days"} selected</p>
       <div class="avail-btns"><button class="btn-small dark" data-act="markoff" data-k="markoff">Mark unavailable</button><button class="btn-small" data-act="markon" data-k="markon">Mark available</button><button class="btn-small ghost" data-act="selclear" data-k="selclear">Clear</button></div>`;
     }
     return `<div class="avail">
-      <div class="avail-head"><div><p class="avail-title">Availability setting</p><p class="muted small">${un.length} ${un.length === 1 ? "date" : "dates"} unavailable in November and December</p></div><span class="badge badge-neutral">Preview</span></div>
-      <div class="avail-months">${months}</div>
+      <div class="avail-head"><div><p class="avail-title">Availability setting</p><p class="muted small">${un.length} ${un.length === 1 ? "date" : "dates"} marked unavailable</p></div><span class="badge badge-neutral">Preview</span></div>
+      ${cal}
       <div class="avail-bar" aria-live="polite">${bar}</div>
       <div class="avail-legend small muted"><span><i class="lg lg-on"></i>Available</span><span><i class="lg lg-off"></i>Unavailable</span><span><i class="lg lg-sel"></i>Selected</span></div>
       <p class="avail-note">${icon("clock", 16)}<span>This is a preview. Once your venue is published, you have full control over your calendar and availability from your venue dashboard.</span></p>
     </div>`;
   }
-  // Hover shows the range you're about to select
-  app.addEventListener("mouseover", (e) => {
-    const btn = e.target.closest && e.target.closest(".avail [data-o]");
-    if (!btn || ui.rangeStart == null || ui.rangeEnd != null) return;
-    const h = +btn.dataset.o, lo = Math.min(h, ui.rangeStart), hi = Math.max(h, ui.rangeStart);
-    app.querySelectorAll(".avail [data-o]").forEach(x => { const o = +x.dataset.o; x.classList.toggle("hover", o >= lo && o <= hi); });
-  });
 
   function priceField(f) {
     const raw = state.b.prices[f.id], err = ui.priceErrors[f.id];
@@ -609,7 +823,7 @@
 
   function supplier(step) {
     const b = state.b, L = D.listing;
-    const head = step >= 1 && step <= 6 ? topbar("supplier", step, `Step ${step} of 6`, (step / 6) * 100) : "";
+    const head = step >= 1 && step <= 6 ? topbar(`Step ${step} of 6`, (step / 6) * 100) : "";
     let body = "";
     switch (step) {
       case 0: body = `
@@ -698,7 +912,7 @@
           ${reviewCard("Listing", 1, `<div class="review-listing"><span class="review-art">${art("loft")}</span><div><p class="review-name">${L.name}</p><p class="muted small">${L.location} · 6 photos</p><p class="small">${L.description}</p></div></div>`)}
           ${reviewCard("Spaces", 2, L.spaces.map(s => kv(s.name, s.layouts.map(l => `${l[1]} ${l[2]}`).join(" · "))).join(""))}
           ${reviewCard("Pricing", 3, P + kv("Instant quotes", b.instant ? "On" : "Off"))}
-          ${reviewCard("Availability", 3, kv("Unavailable dates", `${b.unavailable.length} in November and December`))}
+          ${reviewCard("Availability", 3, kv("Unavailable dates", `${b.unavailable.length} marked`))}
           ${reviewCard("Policies and payouts", 4, kv("Deposit", `${b.deposit}% at booking`) + kv("Cancellation", b.cancel) + kv("Payout account", "Bank account •• 0921 · Verified") + kv("Insurance", "COI_2026.pdf · Uploaded"))}
           ${reviewCard("Team and response", 5, kv("Teammates", b.teammate ? "Luc Gagnon, Events manager" : "Just you") + kv("Notifications", [b.email && "Email", b.sms && "SMS"].filter(Boolean).join(" and ") || "None") + kv("Response promise", b.promise ? "Within 10 business hours" : "Not set"))}
         </div>
@@ -710,7 +924,7 @@
         ${ui.submitError ? `<p class="err" id="submit-err" role="alert">Please confirm your details to submit.</p>` : ""}
         ${actions(primary("Submit for review", "submitlisting"))}`; break;
       }
-      case 7: return `<div class="wrap single">${topbar("supplier", 7, "Submitted", 100)}
+      case 7: return `<div class="wrap single">${topbar("Submitted", 100)}
         <section class="screen center">
           <span class="done-mark pending">${icon("clock", 30)}</span>
           <h1 tabindex="-1">Your listing is with our team.</h1>
@@ -758,59 +972,106 @@
     return layout(main, meter(step), { title: "Listing quality", bar: meterBar(step) });
   }
 
+  // ---------- validation ----------
+  function hcError(raw) {
+    const n = parseNum(raw), [lo, hi] = D.headcountRange;
+    return Number.isInteger(n) && n >= lo && n <= hi ? "" : `Enter a number between ${num(lo)} and ${num(hi)}.`;
+  }
+  function showHcError() {
+    const input = $("#hc", app), err = $("#hc-err", app); if (!input) return;
+    input.classList.toggle("invalid", !!ui.hcError);
+    if (ui.hcError) input.setAttribute("aria-invalid", "true"); else input.removeAttribute("aria-invalid");
+    err.textContent = ui.hcError; err.hidden = !ui.hcError;
+  }
+  function showPriceError(id) {
+    const f = D.listing.pricing.find(x => x.id === id), input = $(`#price-${id}`, app), err = $(`#err-${id}`, app);
+    const msg = ui.priceErrors[id] = priceError(f, state.b.prices[id]);
+    if (!input) return;
+    input.closest(".rule-in").classList.toggle("invalid", !!msg);
+    if (msg) { input.setAttribute("aria-invalid", "true"); input.setAttribute("aria-describedby", `err-${id}`); } else { input.removeAttribute("aria-invalid"); input.removeAttribute("aria-describedby"); }
+    err.textContent = msg; err.hidden = !msg;
+  }
+  function validatePrices() {
+    D.listing.pricing.forEach(f => showPriceError(f.id));
+    const bad = D.listing.pricing.find(f => ui.priceErrors[f.id]);
+    if (bad) { $(`#price-${bad.id}`, app).focus(); return false; }
+    return true;
+  }
+
   // ---------- events ----------
   app.addEventListener("click", (e) => {
+    const opt = e.target.closest("[data-place]");
+    if (opt) { const input = opt.closest(".adder").querySelector("input"); return commitAdder(input.dataset.adder, opt.dataset.place); }
     const el = e.target.closest("[data-act]");
     if (!el || el.disabled) return;
     const act = el.dataset.act, v = el.dataset.v, r = route();
     const a = state.a, b = state.b;
     switch (act) {
-      case "back": return r.step > 0 ? go(r.flow, r.step === 10 || r.step === 11 ? (r.step === 11 && a.approval ? 9 : r.step - 1) : r.step === 9 ? 7 : r.step - 1) : go("home");
+      case "back": return r.step > 0 ? go(r.flow, r.flow === "planner" ? (r.step === 11 && policy() && a.approval ? 9 : r.step === 9 ? 7 : r.step - 1) : r.step - 1) : go("home");
       case "next":
         if (r.flow === "supplier" && r.step === 3 && !validatePrices()) return;
+        if (r.flow === "planner" && r.step === 2) { ui.hcError = hcError($("#hc", app).value); if (ui.hcError) { showHcError(); $("#hc", app).focus(); return; } }
         return go(r.flow, r.step + 1);
+      case "goto": return go("planner", +v);
       case "sheet": ui.sheet = !ui.sheet; return render();
+      case "enter-planner": state.a.policy = false; save(); return;
+      case "marketplace": return toast("In the product, this opens the venue marketplace to browse freely.");
+      case "policy-exit": return set(s => { s.a.policy = false; s.a.approval = false; if (r.step === 11) location.hash = "#planner/9"; });
+      // Planner intake
       case "type": return set(s => s.a.type = v);
-      case "hc": return set(s => s.a.headcount = Math.max(2, Math.min(400, s.a.headcount + +v)));
-      case "city": return set(s => s.a.cities[v] = !s.a.cities[v]);
-      case "addcity": return set(s => { s.a.cityAdded = true; s.a.cities.ott = true; });
+      case "hc": ui.hcError = ""; return set(s => s.a.headcount = Math.max(D.headcountRange[0], Math.min(D.headcountRange[1], s.a.headcount + +v)));
+      case "origin-remove": return set(s => s.a.origins.splice(+v, 1));
       case "execs": return set(s => s.a.execs = !s.a.execs);
-      case "month": return set(s => { s.a.month = +v; s.a.start = Math.min(s.a.start, daysInMonth(+v)); });
-      case "start": return set(s => s.a.start = +v);
+      case "adder-open": ui.adder = v; ui.adderIdx = -1; render(); { const i = $(`#adder-${v}`, app); if (i) { i.focus(); renderSuggestions(i); } } return;
+      case "adder-cancel": ui.adder = null; render(); { const bt = app.querySelector(`[data-k="adder:${v}"]`); if (bt) bt.focus(); } return;
+      case "adder-add": return commitAdder(v, ($(`#adder-${v}`, app) || {}).value);
+      case "calnav": ui.calView[el.dataset.cal] = Math.max(0, Math.min(MAX_VIEW, (ui.calView[el.dataset.cal] || 0) + +v)); return render();
+      case "plan-day": {
+        const o = +v;
+        if (!ui.pick) { ui.pick = true; return set(s => { s.a.start = s.a.end = o; s.a.half = false; }); }
+        ui.pick = false;
+        return set(s => { if (o < s.a.start) { s.a.end = s.a.start; s.a.start = o; } else s.a.end = o; });
+      }
+      case "dur": {
+        if (v === "custom") return;
+        ui.pick = false;
+        return set(s => { if (v === "half") { s.a.half = true; s.a.end = s.a.start; } else { s.a.half = false; s.a.end = addDays(s.a.start, +v - 1); } });
+      }
       case "flex": return set(s => s.a.flex = +v);
-      case "dur": return set(s => s.a.duration = v);
       case "wmode": return set(s => s.a.whereMode = v);
-      case "dest": return set(s => s.a.dest = v);
-      case "feel": return set(s => s.a.feel[el.dataset.p] = v);
-      case "must": return set(s => s.a.must[v] = !s.a.must[v]);
-      case "diet": return set(s => s.a.diet[v] = !s.a.diet[v]);
-      case "access": return set(s => s.a.access[v] = !s.a.access[v]);
+      case "vibe": return set(s => { const i = s.a.vibes.indexOf(v); if (i >= 0) s.a.vibes.splice(i, 1); else s.a.vibes.push(v); });
+      case "must": case "diet": case "access": return set(s => s.a[act][v] = !s.a[act][v]);
       case "rank": { const [i, d] = v.split(":").map(Number); return set(s => { const r2 = s.a.ranking; const j = i + d; [r2[i], r2[j]] = [r2[j], r2[i]]; }); }
+      // Plan, payment, success
       case "opt": return set(s => s.a.option = v);
       case "swap": return openSwap(+v);
       case "book": return set(s => { s.a.approval = false; s.a.terms = false; location.hash = "#planner/10"; });
       case "approve": return set(s => { s.a.approval = true; s.a.invited = false; location.hash = "#planner/11"; });
+      case "share": return toast("Link copied. Anyone you share it with can view the plan.");
       case "specialist": return toast("A Planned specialist will call you within the hour. Your plan stays as it is.");
+      case "paymethod": return set(s => s.a.payMethod = v);
       case "terms": state.a.terms = el.checked; ui.termsError = false; save(); return;
       case "confirm":
         if (!a.terms) { ui.termsError = true; render(); const c = app.querySelector('[data-k="terms"]'); if (c) c.focus(); return; }
         return set(s => { s.a.approval = false; s.a.invited = false; location.hash = "#planner/11"; });
       case "invite": return set(s => s.a.invited = true);
+      // Supplier
       case "draft": return draft();
       case "addspace": return toast("A new space starts from the same capacity and photo template.");
-      case "day": {
+      case "avail-day": {
         const o = +v;
         if (ui.rangeStart == null || ui.rangeEnd != null) { ui.rangeStart = o; ui.rangeEnd = null; }
         else ui.rangeEnd = o;
         return render();
       }
       case "selweek": {
-        const o = ui.rangeStart, m = Math.floor(o / 100), dow = new Date(2026, m, o % 100).getDay();
-        const sun = new Date(2026, m, o % 100 - dow), sat = new Date(2026, m, o % 100 - dow + 6);
-        const clamp = (d) => Math.min(Math.max(d.getMonth() * 100 + d.getDate(), allOrds()[0]), allOrds().slice(-1)[0]);
-        ui.rangeStart = clamp(sun); ui.rangeEnd = clamp(sat); return render();
+        const d = fromOrd(ui.rangeStart), sun = toOrd(new Date(d.getFullYear(), d.getMonth(), d.getDate() - d.getDay()));
+        ui.rangeStart = Math.max(sun, D.today); ui.rangeEnd = addDays(sun, 6); return render();
       }
-      case "selmonth": { const m = Math.floor(ui.rangeStart / 100); ui.rangeStart = m * 100 + 1; ui.rangeEnd = m * 100 + daysInMonth(m); return render(); }
+      case "selmonth": {
+        const [y, m] = ymOf(ui.rangeStart);
+        ui.rangeStart = Math.max(y * 10000 + m * 100 + 1, D.today); ui.rangeEnd = y * 10000 + m * 100 + daysInMonth(y, m); return render();
+      }
       case "selclear": ui.rangeStart = ui.rangeEnd = null; return render();
       case "markoff": case "markon": {
         const sel = selection(); if (!sel) return;
@@ -828,14 +1089,34 @@
       case "teammate": return set(s => s.b.teammate = true);
       case "notify": return set(s => s.b[v] = !s.b[v]);
       case "promise": state.b.promise = el.checked; save(); return;
-      case "crosslink": state.a.option = "best"; state.a.swaps = {}; save(); return;
+      case "crosslink": state.a.option = "best"; state.a.swaps = {}; state.a.policy = false; save(); return;
     }
   });
   app.addEventListener("submit", (e) => { e.preventDefault(); if (e.target.dataset.form === "draft") draft(); });
 
-  // Arrow keys move within radio groups and tabs
   app.addEventListener("keydown", (e) => {
     const el = e.target;
+    // Adder fields: arrows move through suggestions, Enter adds, Escape cancels
+    if (el.dataset && el.dataset.adder) {
+      const id = el.dataset.adder, list = $(`#adder-list-${id}`, app);
+      const opts = list ? [...list.querySelectorAll("[data-place]")] : [];
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        if (!opts.length) return;
+        e.preventDefault();
+        const len = opts.length;
+        if (e.key === "ArrowDown") ui.adderIdx = ui.adderIdx >= len - 1 ? 0 : ui.adderIdx + 1;
+        else ui.adderIdx = ui.adderIdx <= 0 ? len - 1 : ui.adderIdx - 1;
+        renderSuggestions(el);
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        commitAdder(id, ui.adderIdx >= 0 && opts[ui.adderIdx] ? opts[ui.adderIdx].dataset.place : el.value);
+      } else if (e.key === "Escape") {
+        e.preventDefault(); ui.adder = null; render();
+        const bt = app.querySelector(`[data-k="adder:${id}"]`); if (bt) bt.focus();
+      }
+      return;
+    }
+    // Arrow keys move within radio groups and tabs
     const grp = el.closest('[role="radiogroup"], [role="tablist"]');
     if (!grp || !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return;
     const items = [...grp.querySelectorAll('[role="radio"], [role="tab"]')];
@@ -846,46 +1127,46 @@
     const again = app.querySelector(`[data-k="${CSS.escape(n.dataset.k)}"]`); if (again) again.focus();
   });
 
-  // Budget slider updates text in place so dragging stays smooth
+  // Typing updates state in place so focus and cursor never jump
   app.addEventListener("input", (e) => {
-    if (e.target.id !== "pp") return;
-    state.a.pp = +e.target.value; save();
-    const t = budgetTotal(), over = t > D.company.policyLimit;
-    $("#b-pp").textContent = money(state.a.pp);
-    $("#b-total").textContent = money(t);
-    e.target.setAttribute("aria-valuetext", `${money(state.a.pp)} per person per day`);
-    const note = $("#b-note");
-    note.className = `policy ${over ? "warn" : "ok"}`;
-    note.innerHTML = `${icon(over ? "user" : "shield", 16)}<span>${over ? "Jordan Lee (Finance) will approve this" : "Within Fernway policy. No approval needed."}</span>`;
-    const body = $(".aside-body"); if (body) body.innerHTML = planPreview(5);
+    const t = e.target, a = state.a;
+    if (t.id === "pp") {
+      a.pp = +t.value; save();
+      $("#b-pp").textContent = money(a.pp);
+      $("#b-total").textContent = money(budgetTotal());
+      t.setAttribute("aria-valuetext", `${money(a.pp)} per person per day`);
+      $("#b-note").innerHTML = budgetNote();
+      return refreshPreview();
+    }
+    if (t.dataset.adder) { ui.adderIdx = -1; return renderSuggestions(t); }
+    if (t.dataset.text) { a[t.dataset.text] = t.value; save(); return refreshPreview(); }
+    if (t.dataset.hc !== undefined) {
+      const err = hcError(t.value);
+      if (!err) { a.headcount = parseNum(t.value); save(); }
+      if (ui.hcError && !err) { ui.hcError = ""; showHcError(); }
+      const pl = $("#placed", app); if (pl) pl.outerHTML = placedLine();
+      return refreshPreview();
+    }
+    if (t.dataset.origin !== undefined) {
+      const n = parseNum(t.value);
+      a.origins[+t.dataset.origin].count = Number.isInteger(n) && n >= 0 ? n : 0; save();
+      const pl = $("#placed", app); if (pl) pl.outerHTML = placedLine();
+      return refreshPreview();
+    }
+    const id = t.dataset.price;
+    if (id) {
+      state.b.prices[id] = t.value; save();
+      if (ui.priceErrors[id]) showPriceError(id);   // clear an existing error as soon as it's fixed
+      refreshMeter();
+    }
   });
   app.addEventListener("change", (e) => { if (e.target.id === "pp") render(); });
-
-  // Pricing fields (B3): validate as you type, format on blur
-  function showPriceError(id) {
-    const f = D.listing.pricing.find(x => x.id === id), input = $(`#price-${id}`, app), err = $(`#err-${id}`, app);
-    const msg = ui.priceErrors[id] = priceError(f, state.b.prices[id]);
-    if (!input) return;
-    input.closest(".rule-in").classList.toggle("invalid", !!msg);
-    if (msg) { input.setAttribute("aria-invalid", "true"); input.setAttribute("aria-describedby", `err-${id}`); } else { input.removeAttribute("aria-invalid"); input.removeAttribute("aria-describedby"); }
-    err.textContent = msg; err.hidden = !msg;
-  }
-  function validatePrices() {
-    D.listing.pricing.forEach(f => showPriceError(f.id));
-    const bad = D.listing.pricing.find(f => ui.priceErrors[f.id]);
-    if (bad) { $(`#price-${bad.id}`, app).focus(); return false; }
-    return true;
-  }
-  app.addEventListener("input", (e) => {
-    const id = e.target.dataset.price; if (!id) return;
-    state.b.prices[id] = e.target.value; save();
-    if (ui.priceErrors[id]) showPriceError(id);   // clear an existing error as soon as it's fixed
-    refreshMeter();
-  });
   app.addEventListener("focusout", (e) => {
-    const id = e.target.dataset && e.target.dataset.price; if (!id) return;
-    const f = D.listing.pricing.find(x => x.id === id), n = parseNum(e.target.value);
-    if (!priceError(f, e.target.value) && f.unit === "money") { e.target.value = state.b.prices[id] = num(n); save(); }
+    const t = e.target;
+    if (t.dataset && t.dataset.hc !== undefined) { ui.hcError = hcError(t.value); showHcError(); return; }
+    const id = t.dataset && t.dataset.price; if (!id) return;
+    const f = D.listing.pricing.find(x => x.id === id), n = parseNum(t.value);
+    if (!priceError(f, t.value) && f.unit === "money") { t.value = state.b.prices[id] = num(n); save(); }
     showPriceError(id); refreshMeter();
   });
 
@@ -911,14 +1192,14 @@
   // ---------- swap drawer ----------
   const drawer = $("#drawer");
   function openSwap(i) {
-    const opt = option(), list = choices(opt, i), cur = state.a.swaps[opt.id + i] || 0;
-    $("#drawer-title").textContent = `Swap ${opt.components[i].kind.toLowerCase()}`;
+    const opt = option(), list = choices(opt, i), cur = state.a.swaps[opt.id + i] || 0, kind = opt.components[i].kind;
+    $("#drawer-title").textContent = `Swap ${kind.toLowerCase()}`;
     $("#drawer-body").innerHTML = `<p class="muted small">Same dates, same rules. Prices update your total.</p>
-      <ul class="alts">${list.map((c, j) => `<li><button class="alt" data-j="${j}" aria-pressed="${j === cur}">
+      <ul class="alts">${list.map((c, j) => { const why = whyFor(c, kind); return `<li><button class="alt" data-j="${j}" aria-pressed="${j === cur}">
         <span class="alt-art">${art(c.art)}</span>
-        <span class="alt-body"><span class="alt-name">${c.name}</span><span class="muted small">${c.detail}</span>${c.why ? `<span class="small">${c.why}</span>` : ""}
-          <span class="alt-meta">${badge(Object.assign({ kind: opt.components[i].kind }, c), false)}<strong>${money(c.price)}</strong>${j === cur ? `<span class="muted small">Current</span>` : ""}</span></span>
-      </button></li>`).join("")}</ul>`;
+        <span class="alt-body"><span class="alt-name">${c.name}</span><span class="muted small">${c.detail}</span>${why ? `<span class="small">${why}</span>` : ""}
+          <span class="alt-meta">${badge(Object.assign({ kind }, c), false)}<strong>${money(c.price)}</strong>${j === cur ? `<span class="muted small">Current</span>` : ""}</span></span>
+      </button></li>`; }).join("")}</ul>`;
     drawer.dataset.i = i;
     drawer.showModal();
   }
@@ -941,18 +1222,22 @@
 
   // ---------- demo menu ----------
   const menu = $("#menu");
-  function renderMenu(r) {
-    const item = (href, label, extra) => {
-      const cur = location.hash === href || (href === "#" && !location.hash);
-      return `<li><a href="${href}" ${extra || ""} ${cur ? 'aria-current="page"' : ""}>${label}</a></li>`;
-    };
+  function renderMenu() {
+    const item = (href, label, extra, isCur) => `<li><a href="${href}" ${extra || ""} ${isCur ? 'aria-current="page"' : ""}>${label}</a></li>`;
+    const here = (href, pol) => (location.hash === href || (href === "#" && !location.hash)) && (pol == null || !!policy() === pol);
     $("#menu-body").innerHTML = `
-      <ul class="menu-list">${item("#", "Landing")}</ul>
+      <ul class="menu-list">${item("#", "Landing", "", here("#"))}</ul>
       <p class="menu-h">Flow A · Planner</p>
-      <ul class="menu-list">${PLANNER_STEPS.map((s, i) => item(`#planner/${i}`, `A${i} · ${s}`)).join("")}
-        <li><a href="#planner/11" data-approval="1">A11 · Success, approval variant</a></li></ul>
+      <ul class="menu-list">${PLANNER_STEPS.map((s, i) => item(`#planner/${i}`, `A${i} · ${s}`, "", here(`#planner/${i}`, false))).join("")}</ul>
+      <p class="menu-h">Flow A · With a company policy</p>
+      <ul class="menu-list">
+        ${item("#planner/0", "A0 · Welcome, policy set up", 'data-policy="1"', here("#planner/0", true))}
+        ${item("#planner/5", "A5 · Budget with a policy", 'data-policy="1"', here("#planner/5", true))}
+        ${item("#planner/9", "A9 · Plan with a policy", 'data-policy="1"', here("#planner/9", true))}
+        ${item("#planner/11", "A11 · Sent for approval", 'data-policy="1" data-approval="1"', here("#planner/11", true))}
+      </ul>
       <p class="menu-h">Flow B · Supplier</p>
-      <ul class="menu-list">${SUPPLIER_STEPS.map((s, i) => item(`#supplier/${i}`, `B${i} · ${s}`)).join("")}</ul>`;
+      <ul class="menu-list">${SUPPLIER_STEPS.map((s, i) => item(`#supplier/${i}`, `B${i} · ${s}`, "", here(`#supplier/${i}`))).join("")}</ul>`;
   }
   $("#menu-btn").addEventListener("click", () => menu.showModal());
   menu.addEventListener("click", (e) => {
@@ -963,9 +1248,13 @@
     }
     const a = e.target.closest("a"); if (!a) return;
     const href = a.getAttribute("href");
-    if (href === "#planner/11") state.a.approval = !!a.dataset.approval;
-    if (href === "#planner/10") state.a.terms = false;
-    save(); menu.close(); 
+    if (href.startsWith("#planner")) {
+      state.a.policy = !!a.dataset.policy;
+      state.a.approval = !!a.dataset.approval;
+      if (href === "#planner/9" && a.dataset.policy) { state.a.option = "memorable"; state.a.swaps = {}; }
+      if (href === "#planner/10") state.a.terms = false;
+    }
+    save(); menu.close();
     if (location.hash === href || (href === "#" && !location.hash)) { e.preventDefault(); lastRoute = ""; if (href === "#") go("home"); else render(); }
     else if (href === "#") { e.preventDefault(); go("home"); }
   });
