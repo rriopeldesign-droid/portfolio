@@ -32,7 +32,8 @@ def changed_files(before, after):
 
 
 def to_url(path):
-    if path in SKIP or path.startswith((".github/", "src/", "node_modules/")):
+    # planned/ is an unlisted concept page: never announce it
+    if path in SKIP or path.startswith((".github/", "src/", "node_modules/", "planned/")):
         return None
     if path == "llms.txt":
         return f"{SITE}/llms.txt"

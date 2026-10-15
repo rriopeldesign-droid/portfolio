@@ -1,0 +1,60 @@
+/*
+  Planned concept tokens.
+  Planned has no public design system, so these come from its live CSS (fetched Oct 15, 2026).
+  Sources:
+    [site]    https://planned.com/site/homepage-common-src/base.css and /site/homepage-r6-src/home.css
+    [app]     https://planned.com/site/prototypes/product-ui.css (product UI illustration styles)
+    [meta]    <meta name="theme-color"> on planned.com and app.planned.com
+  Anything marked "derived" is a darker shade picked so text passes WCAG AA.
+*/
+:root {
+  /* Surfaces */
+  --bg: #FCFBF4;            /* [meta] planned.com theme-color, also --paper in [site] */
+  --surface: #FFFFFF;       /* [site] --white */
+  --surface-2: #F4F1E8;     /* [site] --card */
+  --surface-3: #F1EDE3;     /* [site] --beige */
+  --chrome: #0A1013;        /* [meta] app.planned.com theme-color, also --ink in [app] */
+
+  /* Text */
+  --text: #293033;          /* [app] --text */
+  --text-strong: #0A1013;   /* [app] --ink */
+  --muted: #51605F;         /* [site] --muted (AA on --bg and white) */
+  --faint: #8E9692;         /* [site] --faint, decorative only */
+
+  /* Lines */
+  --line: #E1E1DC;          /* [site] --line */
+  --line-strong: #D2D1C9;   /* [site] --line-strong */
+
+  /* Accent: Planned's seafoam */
+  --accent: #4F9897;        /* [site] --seafoam / --ring */
+  --accent-ink: #294B4F;    /* [site] --deep, used for accent text */
+  --accent-soft: #E6F1EF;   /* derived: seafoam at ~12% on white */
+  --mint: #A8D8CD;          /* [site] --mint */
+  --sky: #C2E0E1;           /* [site] --sky */
+
+  /* Status */
+  --success: #13B866;       /* [app] --green */
+  --success-ink: #0B6B3C;   /* derived */
+  --success-soft: #E3F6EC;  /* derived */
+  --warning: #F5951F;       /* [app] --orange */
+  --warning-ink: #8A4B00;   /* derived */
+  --warning-soft: #FDF0DE;  /* derived */
+  --info: #087FE7;          /* [app] --blue */
+  --neutral-ink: #51605F;   /* [site] --muted */
+  --neutral-soft: #EEF1F2;  /* [app] --side */
+  --danger: #DE0014;        /* [app] --red */
+
+  /* Shape */
+  --radius: 12px;           /* [app] --radius */
+  --radius-lg: 18px;        /* [site] and [app] both use 18px for larger panels */
+  --radius-pill: 999px;     /* [site] */
+  --shadow-pop: 0 8px 28px -16px rgb(33 51 58 / .26); /* [site] softest card shadow, used for drawers only */
+
+  /* Type: [app] uses Aeonik (commercial, not self-hosted here).
+     Substituted with Geist, which planned.com's marketing site uses ([site] fonts.css) and is on Google Fonts. */
+  --font: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Motion */
+  --dur: 200ms;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}

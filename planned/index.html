@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Onboarding concept for Planned · Robert Riopel</title>
+  <meta name="description" content="A clickable concept: guided onboarding for planners and venues, built on one shared data model." />
+  <meta name="theme-color" content="#FCFBF4" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Onboarding concept for Planned, by Robert Riopel" />
+  <meta property="og:description" content="A clickable concept: guided onboarding for planners and venues, built on one shared data model." />
+  <meta property="og:image" content="https://robertriopel.ca/img/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/png" href="/img/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hdr">
+    <div class="hdr-in">
+      <a class="brand" href="#" id="home-link">Planned <span>Onboarding concept</span></a>
+      <span class="persona" id="persona"></span>
+      <span class="pill">Concept by Robert Riopel</span>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+    <noscript><div class="wrap single"><p>This concept needs JavaScript to run.</p></div></noscript>
+  </main>
+
+  <button class="menu-btn" id="menu-btn" aria-haspopup="dialog">Demo menu <kbd>?</kbd></button>
+
+  <dialog class="menu" id="menu" aria-labelledby="menu-title">
+    <div class="dlg-head"><h2 id="menu-title">Demo menu</h2><button class="icon-btn" data-close aria-label="Close menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <nav class="dlg-body" id="menu-body" aria-label="Jump to a screen"></nav>
+    <div class="menu-foot"><span class="muted small">Press ? to toggle</span><button class="btn-small" data-reset>Reset demo</button></div>
+  </dialog>
+
+  <dialog class="drawer" id="drawer" aria-labelledby="drawer-title">
+    <div class="dlg-head"><h2 id="drawer-title">Swap</h2><button class="icon-btn" data-close aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="dlg-body" id="drawer-body"></div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="data.js"></script>
+  <script src="art.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
