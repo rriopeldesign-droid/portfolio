@@ -7,7 +7,7 @@
   const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const PLANNER_STEPS = ["Welcome", "What are you planning?", "Who's coming?", "When?", "Where?", "Budget", "The feel", "What matters most?", "Building your plan", "Your plan", "Confirm and pay", "Success"];
-  const SUPPLIER_STEPS = ["Intro", "Claim your listing", "Spaces", "Pricing and availability", "Policies and getting paid", "Team and response", "You're live"];
+  const SUPPLIER_STEPS = ["Intro", "Claim your listing", "Spaces", "Pricing and availability", "Policies and getting paid", "Team and response", "Review your listing", "Submitted for review", "After approval: you're live"];
 
   function defaults() {
     return {
@@ -19,17 +19,17 @@
         diet: { Vegetarian: true, "Gluten-free": true }, access: { "Step-free access": true },
         ranking: D.priorities.slice(), option: "best", swaps: {}, approval: false, terms: false, invited: false
       },
-      b: { drafted: false, instant: false, blackouts: D.listing.blackouts.slice(), deposit: 30, cancel: "Moderate", teammate: false, email: true, sms: true, promise: true }
+      b: { drafted: false, instant: false, prices: Object.fromEntries(D.listing.pricing.map(f => [f.id, f.value])), unavailable: D.listing.unavailable.slice(), confirmed: false, deposit: 30, cancel: "Moderate", teammate: false, email: true, sms: true, promise: true }
     };
   }
 
   let state = load();
-  const ui = { sheet: false, reading: 0, termsError: false };
+  const ui = { sheet: false, reading: 0, termsError: false, submitError: false, priceErrors: {}, rangeStart: null, rangeEnd: null };
   let timers = [];
   let lastRoute = "";
 
   function load() {
-    try { const s = JSON.parse(sessionStorage.getItem(STORE)); if (s && s.a && s.b) return Object.assign(defaults(), s); } catch (e) { }
+    try { const s = JSON.parse(sessionStorage.getItem(STORE)), d = defaults(); if (s && s.a && s.b) return { a: Object.assign(d.a, s.a), b: Object.assign(d.b, s.b) }; } catch (e) { }
     return defaults();
   }
   function save() { try { sessionStorage.setItem(STORE, JSON.stringify(state)); } catch (e) { } }
@@ -102,7 +102,7 @@
     const r = route();
     const key = r.flow + "/" + r.step;
     const changed = key !== lastRoute;
-    if (changed) { timers.forEach(clearTimeout); timers = []; ui.sheet = false; ui.termsError = false; if (r.flow !== "supplier" || r.step !== 1) ui.reading = 0; }
+    if (changed) { timers.forEach(clearTimeout); timers = []; ui.sheet = false; ui.termsError = false; ui.submitError = false; ui.rangeStart = ui.rangeEnd = null; if (r.flow !== "supplier" || r.step !== 1) ui.reading = 0; }
     const focusKey = document.activeElement && document.activeElement.getAttribute("data-k");
     const headingFocused = document.activeElement && document.activeElement.tagName === "H1";
 
@@ -201,7 +201,7 @@
       <p class="lede">A concept for Planned by Robert Riopel.</p>
       <ul class="points">
         <li><strong>The gap</strong><span>Today a venue gets listed by booking a call, and a first-time planner meets a blank chat box.</span></li>
-        <li><strong>The idea</strong><span>Guided, visual onboarding on both sides. AI works behind the scenes, not in a chat window.</span></li>
+        <li><strong>The idea</strong><span>Guided, visual onboarding on both sides. AI runs in the background.</span></li>
         <li><strong>The payoff</strong><span>A planner lands on an event that is ready to book, and a venue goes live in minutes.</span></li>
       </ul>
       <div class="entries">
@@ -218,7 +218,7 @@
       </div>
       <details class="connect">
         <summary><span>How the two flows connect</span>${icon("down", 18)}</summary>
-        <p class="muted small">Every question a planner answers is matched against something a venue already told us. The venue Sophie lists in Flow B is the one Maya can book instantly in Flow A.</p>
+        <p class="muted small">Every question a planner answers is matched against something a venue already told us. The venue Sophie lists in Flow B is the one Maya can book in Flow A.</p>
         <table><thead><tr><th scope="col">Planner is asked…</th><th scope="col">Venue listing captures…</th></tr></thead>
         <tbody>${rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</tbody></table>
       </details>
@@ -499,17 +499,30 @@
   }
 
   // ---------- Flow B: supplier ----------
+  const parseNum = (v) => { const n = Number(String(v).replace(/[$,%\s]/g, "")); return String(v).trim() === "" || isNaN(n) ? NaN : n; };
+  function priceError(f, raw) {
+    const n = parseNum(raw);
+    if (f.unit === "percent") {
+      const [lo, hi] = D.listing.percentRange;
+      return n >= lo && n <= hi ? "" : `Enter a percentage between ${lo} and ${hi}.`;
+    }
+    const [lo, hi] = D.listing.moneyRange;
+    return n >= lo && n <= hi ? "" : `Enter an amount between ${money(lo)} and ${money(hi)}.`;
+  }
+  const pricesValid = () => D.listing.pricing.every(f => !priceError(f, state.b.prices[f.id]));
+
   function quality(step) {
     const b = state.b, drafted = b.drafted || step >= 2;
     return D.quality.map(q => {
       let done = step >= q.step;
       if (q.id === "photos") done = drafted && step >= 1;
-      if (q.id === "pricing") done = step >= 3 && b.instant;
+      if (q.id === "pricing") done = step >= 3 && pricesValid();
       return Object.assign({ done }, q);
     });
   }
+  const qualityPct = (step) => quality(step).reduce((s, q) => s + (q.done ? q.pts : 0), 0);
   function meter(step) {
-    const items = quality(step), pct = items.reduce((s, q) => s + (q.done ? q.pts : 0), 0);
+    const items = quality(step), pct = qualityPct(step);
     return `<div class="meter">
       <p class="aside-kicker">Listing quality</p>
       <p class="meter-num" aria-live="polite">${pct}%</p>
@@ -519,11 +532,84 @@
       <p class="muted small">Complete listings rank higher when planners search.</p>
     </div>`;
   }
-  const meterBar = (step) => { const p = quality(step).reduce((s, q) => s + (q.done ? q.pts : 0), 0); return `Listing quality <strong>${p}%</strong>`; };
+  const meterBar = (step) => `Listing quality <strong>${qualityPct(step)}%</strong>`;
+  function refreshMeter() {
+    const r = route(), body = $(".aside-body", app), bar = $(".sheet-bar-text", app);
+    if (body) body.innerHTML = meter(r.step);
+    if (bar) bar.innerHTML = meterBar(r.step);
+  }
+
+  // Availability preview: two months, select a range, then mark it
+  const ordLabel = (o) => `${MONTHS[Math.floor(o / 100)]} ${o % 100}`;
+  function monthOrds(m) { return Array.from({ length: daysInMonth(m) }, (_, i) => m * 100 + i + 1); }
+  const allOrds = () => D.listing.availabilityMonths.flatMap(monthOrds);
+  function selection() {
+    const a = ui.rangeStart, b = ui.rangeEnd;
+    if (a == null) return null;
+    const lo = b == null ? a : Math.min(a, b), hi = b == null ? a : Math.max(a, b);
+    return { lo, hi, done: b != null, ords: allOrds().filter(o => o >= lo && o <= hi) };
+  }
+  function availability() {
+    const sel = selection(), un = state.b.unavailable;
+    const months = D.listing.availabilityMonths.map(m => {
+      const first = new Date(2026, m, 1).getDay();
+      let cells = "";
+      for (let i = 0; i < first; i++) cells += `<span></span>`;
+      monthOrds(m).forEach(o => {
+        const d = o % 100, off = un.includes(o), inSel = sel && o >= sel.lo && o <= sel.hi;
+        const cls = [off && "off", inSel && "sel", sel && o === sel.lo && "s", sel && o === sel.hi && "e"].filter(Boolean).join(" ");
+        cells += `<button class="${cls}" data-act="day" data-v="${o}" data-o="${o}" data-k="day:${o}" aria-pressed="${!!inSel}" aria-label="${MONTHS_LONG[m]} ${d}, ${off ? "unavailable" : "available"}">${d}</button>`;
+      });
+      return `<div class="cal"><p class="cal-title">${MONTHS_LONG[m]} 2026</p><div class="cal-head">${DAYS.map(x => `<span>${x[0]}</span>`).join("")}</div><div class="cal-grid">${cells}</div></div>`;
+    }).join("");
+    let bar;
+    if (!sel) bar = `<p class="muted small">Tap a start date, then an end date. Select a single day, a week or a whole month.</p>`;
+    else if (!sel.done) bar = `<p class="small"><strong>From ${ordLabel(sel.lo)}.</strong> Now tap an end date, or pick a shortcut.</p>
+      <div class="avail-btns"><button class="btn-small" data-act="selweek" data-k="selweek">Whole week</button><button class="btn-small" data-act="selmonth" data-k="selmonth">All of ${MONTHS_LONG[Math.floor(sel.lo / 100)]}</button><button class="btn-small ghost" data-act="selclear" data-k="selclear">Cancel</button></div>`;
+    else {
+      const n = sel.ords.length;
+      bar = `<p class="small"><strong>${n === 1 ? ordLabel(sel.lo) : `${ordLabel(sel.lo)} to ${ordLabel(sel.hi)}`}</strong> · ${n} ${n === 1 ? "day" : "days"} selected</p>
+      <div class="avail-btns"><button class="btn-small dark" data-act="markoff" data-k="markoff">Mark unavailable</button><button class="btn-small" data-act="markon" data-k="markon">Mark available</button><button class="btn-small ghost" data-act="selclear" data-k="selclear">Clear</button></div>`;
+    }
+    return `<div class="avail">
+      <div class="avail-head"><div><p class="avail-title">Availability setting</p><p class="muted small">${un.length} ${un.length === 1 ? "date" : "dates"} unavailable in November and December</p></div><span class="badge badge-neutral">Preview</span></div>
+      <div class="avail-months">${months}</div>
+      <div class="avail-bar" aria-live="polite">${bar}</div>
+      <div class="avail-legend small muted"><span><i class="lg lg-on"></i>Available</span><span><i class="lg lg-off"></i>Unavailable</span><span><i class="lg lg-sel"></i>Selected</span></div>
+      <p class="avail-note">${icon("clock", 16)}<span>This is a preview. Once your venue is published, you have full control over your calendar and availability from your venue dashboard.</span></p>
+    </div>`;
+  }
+  // Hover shows the range you're about to select
+  app.addEventListener("mouseover", (e) => {
+    const btn = e.target.closest && e.target.closest(".avail [data-o]");
+    if (!btn || ui.rangeStart == null || ui.rangeEnd != null) return;
+    const h = +btn.dataset.o, lo = Math.min(h, ui.rangeStart), hi = Math.max(h, ui.rangeStart);
+    app.querySelectorAll(".avail [data-o]").forEach(x => { const o = +x.dataset.o; x.classList.toggle("hover", o >= lo && o <= hi); });
+  });
+
+  function priceField(f) {
+    const raw = state.b.prices[f.id], err = ui.priceErrors[f.id];
+    const pct = f.unit === "percent";
+    return `<div class="rule">
+      <label for="price-${f.id}">${f.label}</label>
+      <div class="rule-in-wrap">
+        <span class="rule-in ${err ? "invalid" : ""}">${pct ? "" : `<span class="affix">$</span>`}<input id="price-${f.id}" data-price="${f.id}" data-k="price:${f.id}" inputmode="numeric" autocomplete="off" value="${raw}" ${err ? `aria-invalid="true" aria-describedby="err-${f.id}"` : ""}>${pct ? `<span class="affix">%</span>` : ""}</span>
+        <p class="rule-err" id="err-${f.id}" ${err ? "" : "hidden"}>${err || ""}</p>
+      </div>
+    </div>`;
+  }
+
+  function reviewCard(title, step, rows) {
+    return `<div class="review-card">
+      <div class="review-head"><p class="review-title">${title}</p><button class="btn-small" data-act="edit" data-v="${step}" data-k="edit:${title}" aria-label="Edit ${title.toLowerCase()}">Edit</button></div>
+      ${rows}
+    </div>`;
+  }
+  const kv = (k, v) => `<div class="kv"><span>${k}</span><strong>${v}</strong></div>`;
 
   function supplier(step) {
     const b = state.b, L = D.listing;
-    const head = step === 0 || step === 6 ? "" : topbar("supplier", step, `Step ${step} of 5`, (step / 5) * 100);
+    const head = step >= 1 && step <= 6 ? topbar("supplier", step, `Step ${step} of 6`, (step / 6) * 100) : "";
     let body = "";
     switch (step) {
       case 0: body = `
@@ -533,7 +619,7 @@
         <ul class="ticks">
           <li>${icon("globe", 18)}<span>We draft your listing from your website</span></li>
           <li>${icon("clock", 18)}<span>About 5 minutes to check and finish it</span></li>
-          <li>${icon("user", 18)}<span>No sales call needed</span></li>
+          <li>${icon("user", 18)}<span>Our team reviews it, then helps you get set up</span></li>
         </ul>
         ${actions(primary("Start with your website", "next", "start"))}`; break;
       case 1: {
@@ -569,14 +655,12 @@
       case 3: body = `
         <h1 tabindex="-1">Pricing and availability</h1>
         <p class="lede">Set simple rules once. We use them for every request.</p>
-        <div class="panel rules">${L.pricing.map(p => `<div class="rule"><span>${p[0]}</span><strong>${p[1]}</strong></div>`).join("")}</div>
+        <div class="panel rules">${L.pricing.map(priceField).join("")}</div>
         <div class="panel instant ${b.instant ? "on" : ""}">
           ${toggle("Instant quotes", b.instant, "instant", "Let Planned quote from these rules. Planners see a firm price right away, and you skip writing quotes by hand. You can still decline any request.")}
           ${b.instant ? `<p class="badge badge-success">${icon("bolt", 14)}Instant-quote ready</p>` : ""}
         </div>
-        <div class="field"><span class="field-label">November 2026 · tap a date to block it</span>
-          ${calendar(10, d => ({ block: b.blackouts.includes(d), act: "blackout" }))}
-          <p class="helper"><span class="legend-block"></span> Blocked dates are hidden from planners.</p></div>
+        ${availability()}
         ${actions(primary("Continue", "next"))}`; break;
       case 4: body = `
         <h1 tabindex="-1">Policies and getting paid</h1>
@@ -604,11 +688,48 @@
           <div class="chips">${chip("Email", b.email, "notify", "email")}${chip("SMS", b.sms, "notify", "sms")}</div></div>
         <div class="field"><span class="field-label">Response promise</span>
           <label class="check card-check"><input type="checkbox" data-act="promise" data-k="promise" ${b.promise ? "checked" : ""}><span><strong>Reply to requests within 10 business hours</strong><span class="muted small">Planners book the venues that answer first.</span></span></label></div>
-        ${actions(primary("Go live", "next", "golive"))}`; break;
-      case 6: body = `
+        ${actions(primary("Review your listing", "next", "toreview"))}`; break;
+      case 6: {
+        const P = L.pricing.map(f => kv(f.label, f.unit === "percent" ? `${parseNum(b.prices[f.id])}%` : money(parseNum(b.prices[f.id])))).join("");
+        body = `
+        <h1 tabindex="-1">Review your listing</h1>
+        <p class="lede">This is what our team will review. Edit anything before you submit.</p>
+        <div class="review">
+          ${reviewCard("Listing", 1, `<div class="review-listing"><span class="review-art">${art("loft")}</span><div><p class="review-name">${L.name}</p><p class="muted small">${L.location} · 6 photos</p><p class="small">${L.description}</p></div></div>`)}
+          ${reviewCard("Spaces", 2, L.spaces.map(s => kv(s.name, s.layouts.map(l => `${l[1]} ${l[2]}`).join(" · "))).join(""))}
+          ${reviewCard("Pricing", 3, P + kv("Instant quotes", b.instant ? "On" : "Off"))}
+          ${reviewCard("Availability", 3, kv("Unavailable dates", `${b.unavailable.length} in November and December`))}
+          ${reviewCard("Policies and payouts", 4, kv("Deposit", `${b.deposit}% at booking`) + kv("Cancellation", b.cancel) + kv("Payout account", "Bank account •• 0921 · Verified") + kv("Insurance", "COI_2026.pdf · Uploaded"))}
+          ${reviewCard("Team and response", 5, kv("Teammates", b.teammate ? "Luc Gagnon, Events manager" : "Just you") + kv("Notifications", [b.email && "Email", b.sms && "SMS"].filter(Boolean).join(" and ") || "None") + kv("Response promise", b.promise ? "Within 10 business hours" : "Not set"))}
+        </div>
+        <div class="explain next-up">
+          <p class="explain-title">What happens next</p>
+          <p>Our team reviews every venue before planners see it. Once your listing is approved, we'll be in touch to book a short onboarding call and finish setting up your account.</p>
+        </div>
+        <label class="check ${ui.submitError ? "error" : ""}"><input type="checkbox" data-act="confirmlist" data-k="confirmlist" ${b.confirmed ? "checked" : ""} ${ui.submitError ? 'aria-invalid="true" aria-describedby="submit-err"' : ""}><span>I confirm these details are accurate and I agree to Planned's supplier terms.</span></label>
+        ${ui.submitError ? `<p class="err" id="submit-err" role="alert">Please confirm your details to submit.</p>` : ""}
+        ${actions(primary("Submit for review", "submitlisting"))}`; break;
+      }
+      case 7: return `<div class="wrap single">${topbar("supplier", 7, "Submitted", 100)}
+        <section class="screen center">
+          <span class="done-mark pending">${icon("clock", 30)}</span>
+          <h1 tabindex="-1">Your listing is with our team.</h1>
+          <p class="lede">Thanks, Sophie. We review every venue before it goes in front of corporate planners. We'll email and text you as soon as there's news.</p>
+          <ol class="timeline" aria-label="What happens next">
+            <li class="done"><span class="dot"></span><span><strong>Submitted</strong><span class="muted small">Just now</span></span></li>
+            <li class="active"><span class="dot"></span><span><strong>Team review</strong><span class="muted small">Usually 1 to 2 business days</span></span></li>
+            <li><span class="dot"></span><span><strong>Onboarding call</strong><span class="muted small">Once you're approved, we'll reach out to book a short call and finish your setup</span></span></li>
+            <li><span class="dot"></span><span><strong>Live to corporate planners</strong><span class="muted small">Requests start arriving</span></span></li>
+          </ol>
+          <div class="stack narrow">
+            <a class="link" href="#supplier/8" data-k="afterapproval">Preview: after approval ${icon("arrow", 16)}</a>
+          </div>
+        </section></div>`;
+      case 8: body = `
         <div class="celebrate" aria-hidden="true">${Array.from({ length: 10 }, (_, i) => `<i style="--i:${i}"></i>`).join("")}</div>
         <section class="screen center">
           <span class="done-mark">${icon("check", 30)}</span>
+          <p class="eyebrow">After review and your onboarding call</p>
           <h1 tabindex="-1">You're live.</h1>
           <p class="lede">The Foundry Loft is now visible to corporate planners on Planned.</p>
         </section>
@@ -619,7 +740,7 @@
               <div class="listing-body">
                 <div class="listing-top"><p class="listing-name">The Foundry Loft</p>${state.b.instant ? `<span class="badge badge-success">${icon("bolt", 14)}Instant-quote ready</span>` : ""}</div>
                 <p class="muted small">${icon("pin", 14)} Old Montreal · Up to 150 guests · 2 spaces</p>
-                <p class="small">From $1,300 per day · Replies within 10 business hours</p>
+                <p class="small">From ${money(Math.min(parseNum(b.prices.hall), parseNum(b.prices.board)) || 1300)} per day · Replies within 10 business hours</p>
               </div>
             </div></div>
           <div><p class="field-label">First request</p>
@@ -645,7 +766,9 @@
     const a = state.a, b = state.b;
     switch (act) {
       case "back": return r.step > 0 ? go(r.flow, r.step === 10 || r.step === 11 ? (r.step === 11 && a.approval ? 9 : r.step - 1) : r.step === 9 ? 7 : r.step - 1) : go("home");
-      case "next": return go(r.flow, r.step + 1);
+      case "next":
+        if (r.flow === "supplier" && r.step === 3 && !validatePrices()) return;
+        return go(r.flow, r.step + 1);
       case "sheet": ui.sheet = !ui.sheet; return render();
       case "type": return set(s => s.a.type = v);
       case "hc": return set(s => s.a.headcount = Math.max(2, Math.min(400, s.a.headcount + +v)));
@@ -675,7 +798,30 @@
       case "invite": return set(s => s.a.invited = true);
       case "draft": return draft();
       case "addspace": return toast("A new space starts from the same capacity and photo template.");
-      case "blackout": return set(s => { const d = +v; s.b.blackouts = s.b.blackouts.includes(d) ? s.b.blackouts.filter(x => x !== d) : s.b.blackouts.concat(d); });
+      case "day": {
+        const o = +v;
+        if (ui.rangeStart == null || ui.rangeEnd != null) { ui.rangeStart = o; ui.rangeEnd = null; }
+        else ui.rangeEnd = o;
+        return render();
+      }
+      case "selweek": {
+        const o = ui.rangeStart, m = Math.floor(o / 100), dow = new Date(2026, m, o % 100).getDay();
+        const sun = new Date(2026, m, o % 100 - dow), sat = new Date(2026, m, o % 100 - dow + 6);
+        const clamp = (d) => Math.min(Math.max(d.getMonth() * 100 + d.getDate(), allOrds()[0]), allOrds().slice(-1)[0]);
+        ui.rangeStart = clamp(sun); ui.rangeEnd = clamp(sat); return render();
+      }
+      case "selmonth": { const m = Math.floor(ui.rangeStart / 100); ui.rangeStart = m * 100 + 1; ui.rangeEnd = m * 100 + daysInMonth(m); return render(); }
+      case "selclear": ui.rangeStart = ui.rangeEnd = null; return render();
+      case "markoff": case "markon": {
+        const sel = selection(); if (!sel) return;
+        ui.rangeStart = ui.rangeEnd = null;
+        return set(s => { const rest = s.b.unavailable.filter(o => !sel.ords.includes(o)); s.b.unavailable = act === "markoff" ? rest.concat(sel.ords).sort((x, y) => x - y) : rest; });
+      }
+      case "edit": return go("supplier", +v);
+      case "confirmlist": state.b.confirmed = el.checked; ui.submitError = false; save(); return;
+      case "submitlisting":
+        if (!b.confirmed) { ui.submitError = true; render(); const c = app.querySelector('[data-k="confirmlist"]'); if (c) c.focus(); return; }
+        return go("supplier", 7);
       case "instant": return set(s => s.b.instant = !s.b.instant);
       case "deposit": return set(s => s.b.deposit = +v);
       case "cancel": return set(s => s.b.cancel = v);
@@ -714,6 +860,34 @@
     const body = $(".aside-body"); if (body) body.innerHTML = planPreview(5);
   });
   app.addEventListener("change", (e) => { if (e.target.id === "pp") render(); });
+
+  // Pricing fields (B3): validate as you type, format on blur
+  function showPriceError(id) {
+    const f = D.listing.pricing.find(x => x.id === id), input = $(`#price-${id}`, app), err = $(`#err-${id}`, app);
+    const msg = ui.priceErrors[id] = priceError(f, state.b.prices[id]);
+    if (!input) return;
+    input.closest(".rule-in").classList.toggle("invalid", !!msg);
+    if (msg) { input.setAttribute("aria-invalid", "true"); input.setAttribute("aria-describedby", `err-${id}`); } else { input.removeAttribute("aria-invalid"); input.removeAttribute("aria-describedby"); }
+    err.textContent = msg; err.hidden = !msg;
+  }
+  function validatePrices() {
+    D.listing.pricing.forEach(f => showPriceError(f.id));
+    const bad = D.listing.pricing.find(f => ui.priceErrors[f.id]);
+    if (bad) { $(`#price-${bad.id}`, app).focus(); return false; }
+    return true;
+  }
+  app.addEventListener("input", (e) => {
+    const id = e.target.dataset.price; if (!id) return;
+    state.b.prices[id] = e.target.value; save();
+    if (ui.priceErrors[id]) showPriceError(id);   // clear an existing error as soon as it's fixed
+    refreshMeter();
+  });
+  app.addEventListener("focusout", (e) => {
+    const id = e.target.dataset && e.target.dataset.price; if (!id) return;
+    const f = D.listing.pricing.find(x => x.id === id), n = parseNum(e.target.value);
+    if (!priceError(f, e.target.value) && f.unit === "money") { e.target.value = state.b.prices[id] = num(n); save(); }
+    showPriceError(id); refreshMeter();
+  });
 
   // Drag to rank (A7)
   let dragFrom = null;

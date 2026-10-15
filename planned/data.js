@@ -151,13 +151,19 @@ window.PLANNED_DATA = {
       { name: "Main Hall", art: "hall", layouts: [["theatre", "Theatre", 120], ["classroom", "Classroom", 70], ["banquet", "Banquet", 80], ["reception", "Reception", 150]] },
       { name: "Boardroom", art: "boardroom", layouts: [["boardroom", "Boardroom", 24]] }
     ],
+    // Editable pricing rules. Money fields accept $1,000 to $100,000.
     pricing: [
-      ["Day rental · Main Hall", "$3,200"],
-      ["Day rental · Boardroom", "$1,300"],
-      ["Food and beverage minimum", "$2,000"],
-      ["Peak-season uplift (Sep–Dec)", "15%"]
+      { id: "hall", label: "Day rental · Main Hall", unit: "money", value: "3,200" },
+      { id: "board", label: "Day rental · Boardroom", unit: "money", value: "1,300" },
+      { id: "fnb", label: "Food and beverage minimum", unit: "money", value: "2,000" },
+      { id: "season", label: "Seasonal premium (Sep–Dec)", unit: "percent", value: "15" }
     ],
-    blackouts: [7, 14, 28],
+    moneyRange: [1000, 100000],
+    percentRange: [0, 50],
+    // Availability preview covers November and December 2026 (month index 10 and 11).
+    // Dates are keyed as month * 100 + day. Pre-blocked: two private events and a holiday closure.
+    availabilityMonths: [10, 11],
+    unavailable: [1007, 1014, 1028, 1124, 1125, 1126, 1127, 1128, 1129, 1130, 1131],
     cancellation: ["Flexible", "Moderate", "Strict", "Custom"],
     cancellationNotes: {
       Flexible: "Full refund up to 7 days before the event.",
