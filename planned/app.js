@@ -200,9 +200,9 @@
       <h1 tabindex="-1">Two onboardings. One data model.</h1>
       <p class="lede">A concept for Planned by Robert Riopel.</p>
       <ul class="points">
-        <li><strong>The gap</strong><span>Today a venue gets listed by booking a call, and a first-time planner meets a blank chat box.</span></li>
+        <li><strong>The gap</strong><span>A venue can add a basic listing in a minute, but the details planners rely on still get sorted out over email and calls. A first-time planner has to know what to ask for.</span></li>
         <li><strong>The idea</strong><span>Guided, visual onboarding on both sides. AI runs in the background.</span></li>
-        <li><strong>The payoff</strong><span>A planner lands on an event that is ready to book, and a venue goes live in minutes.</span></li>
+        <li><strong>The payoff</strong><span>A planner lands on an event that is ready to book, and a venue's complete listing is ready for review in minutes.</span></li>
       </ul>
       <div class="entries">
         <a class="entry" href="#planner/0">
