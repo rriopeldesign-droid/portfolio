@@ -659,7 +659,7 @@
     return `<div class="stack">
       ${main}
       <button class="btn btn-secondary" data-act="share" data-k="share">${icon("share", 16)}Share for sign-off</button>
-      <button class="link" data-act="specialist" data-k="specialist">Talk to a specialist</button>
+      <button class="btn btn-tertiary" data-act="specialist" data-k="specialist">Talk to a specialist</button>
     </div>`;
   }
 

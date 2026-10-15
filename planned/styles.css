@@ -65,6 +65,8 @@ h1 { font-size: 40px; line-height: 1.12; letter-spacing: -0.025em; }
 .btn-primary:disabled { opacity: .5; cursor: default; }
 .btn-secondary { background: var(--surface); border-color: var(--line-strong); color: var(--text-strong); }
 .btn-secondary:hover { border-color: var(--text); }
+.btn-tertiary { background: var(--surface-2); color: var(--text-strong); }
+.btn-tertiary:hover { background: var(--surface-3); }
 .btn-ghost { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; padding: 8px 10px 8px 4px; margin-left: -4px; border-radius: 8px; font-size: 14px; color: var(--muted); }
 .btn-ghost:hover { color: var(--text-strong); background: var(--surface-2); }
 .btn-small { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--radius-pill); border: 1px solid var(--line-strong); background: var(--surface); font-size: 13px; font-weight: 500; transition: border-color var(--dur); }
