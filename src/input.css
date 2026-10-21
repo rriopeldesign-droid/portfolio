@@ -258,7 +258,7 @@
   .impact-item .impact-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--c); margin-right: 0.5rem; vertical-align: 1px; }
   .impact-item .impact-val { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.35rem; color: #141211; font-variant-numeric: tabular-nums; }
   .impact-item .impact-name { display: block; margin-top: 0.15rem; font-size: 0.8125rem; color: #6B6560; transition: color 0.3s ease; }
-  .impact-item:hover .impact-name { color: #C2410C; }
+  a.impact-item:hover .impact-name { color: #C2410C; }
 
   /* --- Results charts (inside the dark Results block) --- */
   .count-up { font-variant-numeric: tabular-nums; }

@@ -25,10 +25,7 @@
 - [Host Onboarding Overhaul](https://robertriopel.ca/case-studies/host-onboarding.html): Rebuilt host sign-up from landing page to first published listing. +27% activation, $3.4M annualized GMV, required fields cut from 28 to 12 (2022–2023).
 - [Host Dashboard Redesign](https://robertriopel.ca/case-studies/host-dashboard.html): Action-driven notification centre for hosts. +22% engagement, $1.5M incremental GMV, validated with a 50/50 A/B test (2024).
 - [Lifecycle & Email Campaigns](https://robertriopel.ca/case-studies/lifecycle-campaigns.html): Full email lifecycle and modular Braze template system. +13% engagement, $1.2M incremental GMV, 4× faster campaign production (2022–2024).
-- [Inspection & Claims Flow](https://robertriopel.ca/case-studies/inspection-claims.html): Guided, photo-documented vehicle inspections and claims. −18% claims volume, $500K annual savings, resolution time from 12 days to 3 (2023).
 - [AI Figma Plugin](https://robertriopel.ca/case-studies/ai-figma-plugin.html): Prompt-to-component Figma plugin backed by a 90+ component registry, synced with the production design system (2025).
-- [Tailwind Design System](https://robertriopel.ca/case-studies/design-system.html): Code-first design system with OKLCH tokens and Vue components. 50% faster design-to-development handoff, 30+ components (2024–present).
-- [SEO & AI Landing Pages](https://robertriopel.ca/case-studies/seo-ai-landing-pages.html): Template and AI content system for hundreds of location landing pages with human review (2024–2025).
 
 ## Side projects
 

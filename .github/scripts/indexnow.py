@@ -26,7 +26,7 @@ def sitemap_urls():
 
 
 def changed_files(before, after):
-    out = subprocess.run(["git", "diff", "--name-only", "--diff-filter=AM", before, after],
+    out = subprocess.run(["git", "diff", "--name-only", "--diff-filter=AMD", before, after],
                          capture_output=True, text=True, check=True).stdout
     return [line for line in out.splitlines() if line]
 
