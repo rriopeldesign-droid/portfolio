@@ -55,6 +55,8 @@ export const cutoutVert = /* glsl */ `
   attribute vec4 aP1; // shade, seed, sway, emissive (warm)
   attribute vec4 aP2; // opacity, flip, glow, rim
   uniform float uTime;
+  uniform float uBill;      // 0 on the path; 1 while wandering, when every cutout turns to face the walker
+  uniform vec3 uBillRight;  // the walker's right, flat on the ground
   varying vec2 vUv;
   varying vec3 vWorld;
   varying float vDepth;
@@ -66,6 +68,13 @@ export const cutoutVert = /* glsl */ `
     float s = aP1.z * uv.y * uv.y;
     pos.x += s * (sin(uTime * 0.55 + aP1.y * 17.0) * 0.012 + sin(uTime * 1.31 + aP1.y * 7.0) * 0.004);
     vec4 wp = modelMatrix * instanceMatrix * vec4(pos, 1.0);
+    if (uBill > 0.001) {
+      // Paper cutouts seen from the side would vanish; off the path they turn with you instead
+      vec3 c = (modelMatrix * instanceMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+      float sx = (modelMatrix * instanceMatrix * vec4(1.0, 0.0, 0.0, 0.0)).x;
+      vec3 bp = c + uBillRight * (pos.x * sx) + vec3(0.0, wp.y - c.y, 0.0);
+      wp.xyz = mix(wp.xyz, bp, uBill);
+    }
     vWorld = wp.xyz;
     vec4 mv = viewMatrix * wp;
     vDepth = -mv.z;
@@ -244,7 +253,9 @@ export const skyFrag = /* glsl */ `
     float k0 = 1.5, a0 = 0.21, e = 0.004;
     float r0 = horizon + 0.004 + ridged(x * k0, 1.0) * a0;
     float slope = (ridged((x + e) * k0, 1.0) - ridged((x - e) * k0, 1.0)) * a0 / (2.0 * e);
-    float lit = smoothstep(0.05, 0.7, -slope * sign(uLightDir.x));
+    // Faces only catch the light on the side of the sky the path looks toward; behind the walker
+    // (seen only when wandering) the range stays in shadow
+    float lit = smoothstep(0.05, 0.7, -slope * sign(uLightDir.x)) * smoothstep(2.7, 1.7, abs(az));
     float gully = smoothstep(0.55, 0.85, vnoise(vec2(x * 110.0, el * 7.0))) * smoothstep(horizon, r0, el);
     vec3 c0 = uRidge0 * (0.92 + lit * 0.24 - gully * 0.1) + uMoon * lit * mix(0.07, 0.03, uNight);
     c0 = mix(c0, uHorizon, (1.0 - smoothstep(horizon, r0, el)) * mix(0.45, 0.2, uNight));
@@ -329,6 +340,7 @@ export const mistVert = /* glsl */ `
 
 export const mistFrag = /* glsl */ `
   uniform float uOpacity;
+  uniform float uFace;      // 1 face-on; fades as the walker sees the bank edge-on
   uniform float uSeed;
   ${lightUniforms}
   varying vec2 vUv;
@@ -346,7 +358,7 @@ export const mistFrag = /* glsl */ `
     float far = 1.0 - smoothstep(55.0, 80.0, vDepth);
     float w = warmAt(vWorld, 0.22);
     vec3 col = mix(uFogLow * 1.35, uWarm * 0.8, clamp(w * 0.35, 0.0, 0.55));
-    gl_FragColor = vec4(col, shape * uOpacity * near * far * mix(0.35, 1.0, uNight));
+    gl_FragColor = vec4(col, shape * uOpacity * near * far * mix(0.35, 1.0, uNight) * uFace);
   }
 `;
 
@@ -395,6 +407,7 @@ export const fireflyFrag = /* glsl */ `
 export const shaftFrag = /* glsl */ `
   uniform float uSeed;
   uniform float uShaft;
+  uniform float uFace;
   uniform vec3 uSun;
   ${lightUniforms}
   varying vec2 vUv;
@@ -411,7 +424,7 @@ export const shaftFrag = /* glsl */ `
       * smoothstep(0.0, 0.2, vUv.x) * (1.0 - smoothstep(0.8, 1.0, vUv.x));
     float near = smoothstep(2.0, 9.0, vDepth) * (1.0 - smoothstep(40.0, 70.0, vDepth));
     float shimmer = 0.85 + 0.15 * sin(uTime * 0.7 + uSeed * 20.0);
-    gl_FragColor = vec4(uSun * beams * fade * near * shimmer * uShaft * 0.26, 1.0);
+    gl_FragColor = vec4(uSun * beams * fade * near * shimmer * uShaft * uFace * 0.26, 1.0);
   }
 `;
 
@@ -510,5 +523,23 @@ export const haloFrag = /* glsl */ `
     float d = length(vUv - 0.5) * 2.0;
     float g = exp(-d * d * 5.0) * 0.55 + exp(-d * 14.0) * 0.6;
     gl_FragColor = vec4(uColor, g * uIntensity * smoothstep(1.0, 0.75, d));
+  }
+`;
+
+// ── A thin cone of light under the saucer ──
+export const beamVert = eyesVert;
+export const beamFrag = /* glsl */ `
+  uniform float uTime;
+  uniform float uIntensity;
+  uniform vec3 uGlow;
+  varying vec2 vUv;
+  void main() {
+    // Narrow at the top (the saucer), wide at the ground
+    float half_ = mix(0.5, 0.16, vUv.y);
+    float x = abs(vUv.x - 0.5) / half_;
+    float body = smoothstep(1.0, 0.55, x) * smoothstep(1.0, 0.75, vUv.y) * smoothstep(0.0, 0.2, vUv.y);
+    float bands = 0.75 + 0.25 * sin(vUv.y * 26.0 + uTime * 3.0);
+    vec3 col = mix(uGlow, vec3(0.85, 1.0, 0.92), 0.45);
+    gl_FragColor = vec4(col, body * bands * uIntensity * 0.32);
   }
 `;

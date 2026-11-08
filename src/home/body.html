@@ -150,8 +150,10 @@
     <p>{{langs}} &middot; <a href="/llms.txt">For AI assistants</a></p>
   </footer>
 
+  <p class="forest-whisper" id="forestWhisper" aria-live="polite"></p>
   <div class="forest-hud">
     <p class="hud-loading" id="forestLoading"><span class="hud-bar" aria-hidden="true"></span>{{loading}}</p>
+    <button type="button" id="wanderToggle" class="hud-btn" aria-pressed="false" data-off="{{wander}}" data-on="{{wanderOff}}" data-hint="{{wanderHint}}" data-hint-touch="{{wanderHintTouch}}">{{wander}}</button>
     <button type="button" id="skipWalk" class="hud-btn">{{skip}}</button>
     <button type="button" id="walkAgain" class="hud-btn">{{walk}}</button>
   </div>

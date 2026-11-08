@@ -43,6 +43,8 @@ export const pages = {
     campBody: "Building something, or hiring? Either way, I&rsquo;d like to hear about it. I&rsquo;m open to freelance projects and full-time roles.",
     hello: "Say hello",
     loading: "Lighting the lanterns", skip: "Skip the walk", walk: "Walk the path",
+    wander: "Wander", wanderOff: "Back to the path",
+    wanderHint: "Arrow keys or WASD to walk, drag to look around. Esc to return.", wanderHintTouch: "Hold and drag to walk and turn. Tap what you find.",
   },
 
   de: {
@@ -78,6 +80,8 @@ export const pages = {
     campBody: "Sie bauen etwas oder suchen Verstärkung? So oder so freue ich mich, davon zu hören. Ich bin offen für Freelance-Projekte und Festanstellungen, in Wien, Ottawa oder remote.",
     hello: "Schreiben Sie mir",
     loading: "Die Laternen werden entzündet", skip: "Weg überspringen", walk: "Den Weg gehen",
+    wander: "Umherstreifen", wanderOff: "Zurück zum Weg",
+    wanderHint: "Pfeiltasten oder WASD zum Gehen, ziehen zum Umsehen. Esc führt zurück.", wanderHintTouch: "Halten und ziehen, um zu gehen und sich zu drehen. Tippen Sie an, was Sie finden.",
   },
 
   fr: {
@@ -113,5 +117,7 @@ export const pages = {
     campBody: "Vous bâtissez quelque chose ou vous recrutez? Dans les deux cas, j’aimerais en entendre parler. Je suis ouvert aux projets en freelance et aux postes permanents, à Ottawa, à Vienne ou à distance.",
     hello: "Écrivez-moi",
     loading: "On allume les lanternes", skip: "Passer la promenade", walk: "Reprendre le sentier",
+    wander: "Flâner", wanderOff: "Retour au sentier",
+    wanderHint: "Flèches ou WASD pour marcher, glissez pour regarder autour. Échap pour revenir.", wanderHintTouch: "Maintenez et glissez pour marcher et tourner. Touchez ce que vous trouvez.",
   },
 };

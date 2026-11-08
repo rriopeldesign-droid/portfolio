@@ -809,3 +809,135 @@ export function paintCampfire(seed, { W = 640, H = 256 } = {}) {
   for (let k = 0; k < 40; k++) dot(wm, W * p.rand(0.33, 0.67), H * p.rand(0.6, 0.85), p.rand(1.5, 4));
   return p.pack();
 }
+
+// The Hollow: a low mound of rock and earth with a cave mouth. Roots hang over the opening,
+// and something green breathes far down inside. Leads to the maze.
+export function paintHollow(seed, { W = 1024, H = 640 } = {}) {
+  const p = new Painter(W, H, seed);
+  const { m, g, d } = p;
+  const base = H * 0.985;
+  // The mound, ragged along its top, low at both ends
+  const top = [];
+  for (let i = 0; i <= 48; i++) {
+    const u = i / 48;
+    const hump = Math.pow(Math.sin(Math.PI * u), 0.75);
+    const y = base - H * (0.05 + 0.7 * hump) * (1 + p.n(u * 7 + 3) * 0.09) - (p.r() < 0.18 ? p.rand(0, H * 0.025) : 0);
+    top.push([W * (0.03 + u * 0.94), y]);
+  }
+  poly(m, [[W * 0.03, base + 6], ...top, [W * 0.97, base + 6]]);
+  // Boulders shouldering out of the earth
+  for (let k = 0; k < 7; k++) {
+    const u = p.rand(0.12, 0.88), hump = Math.pow(Math.sin(Math.PI * u), 0.75);
+    const x = W * u, y = base - H * 0.7 * hump * p.rand(0.55, 0.95);
+    const rx = W * p.rand(0.05, 0.09), ry = H * p.rand(0.06, 0.1);
+    blob(m, p, x, y, rx, ry, { rough: 0.3 });
+    d.globalAlpha = 0.5; d.lineWidth = 2;
+    d.beginPath(); d.moveTo(x - rx * 0.4, y - ry * 0.2); d.lineTo(x + p.rand(-rx, rx) * 0.3, y + ry * 0.7); d.stroke();
+    d.globalAlpha = 1;
+  }
+  // Grass and a few dead stalks along the crest
+  m.lineWidth = 2.2;
+  for (let i = 2; i < top.length - 2; i++) {
+    if (p.r() < 0.45) continue;
+    const [x, y] = top[i];
+    for (let k = 0; k < 3; k++) {
+      const h = p.rand(10, 34), lean = p.rand(-10, 10);
+      m.beginPath(); m.moveTo(x + k * 3, y + 3); m.quadraticCurveTo(x + k * 3 + lean * 0.3, y - h * 0.6, x + k * 3 + lean, y - h); m.stroke();
+    }
+  }
+  // The mouth: a crooked arch
+  const mx = W * 0.5, mw = W * 0.15, mh = H * 0.52;
+  const mouth = new Path2D(), arch = [];
+  for (let i = 0; i <= 56; i++) {
+    const a = Math.PI + (i / 56) * Math.PI;
+    const k = 1 + p.n(i * 0.21 + 20) * 0.09;
+    const x = mx + Math.cos(a) * mw * k, y = base - Math.pow(Math.max(0, -Math.sin(a)), 0.8) * mh * k;
+    arch.push([x, y]);
+    i ? mouth.lineTo(x, y) : mouth.moveTo(x, y);
+  }
+  mouth.lineTo(mx + mw, base + 6); mouth.lineTo(mx - mw, base + 6); mouth.closePath();
+  // Inside is darker than the rock around it
+  d.fill(mouth);
+  // Light from far down: brightest low and deep, fading toward the lip
+  g.save(); g.clip(mouth);
+  const deep = g.createRadialGradient(mx, base - mh * 0.18, 0, mx, base - mh * 0.3, mh * 0.95);
+  deep.addColorStop(0, "rgba(255,255,255,0.9)");
+  deep.addColorStop(0.35, "rgba(255,255,255,0.42)");
+  deep.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = deep; g.fillRect(0, 0, W, H);
+  g.restore();
+  // A thin lip of light where the glow catches the edge of the arch
+  g.globalAlpha = 0.28; g.lineWidth = 3;
+  g.beginPath(); arch.slice(6, -6).forEach(([x, y], i) => (i ? g.lineTo(x, y + 4) : g.moveTo(x, y + 4))); g.stroke();
+  g.globalAlpha = 1;
+  // Roots hanging over the opening, dark against the light
+  for (let k = 0; k < 11; k++) {
+    const u = p.rand(0.12, 0.88), [ax, ay] = arch[Math.floor(u * 56)];
+    const len = p.rand(0.12, 0.42) * mh;
+    const pts = [];
+    for (let i = 0; i <= 12; i++) { const t = i / 12; pts.push([ax + Math.sin(t * 3 + k) * 5 + (mx - ax) * 0.05 * t, ay - 2 + t * len]); }
+    const w0 = p.rand(2.5, 5), wf = (t) => w0 * (1 - t * 0.8);
+    for (const ctx of [m, g, d]) {
+      if (ctx !== m) ctx.globalCompositeOperation = "destination-out";
+      ribbon(ctx, pts, wf, 0.6, p.n);
+      ctx.globalCompositeOperation = "source-over";
+    }
+  }
+  // A few small glowing caps on the threshold
+  for (let k = 0; k < 5; k++) {
+    const x = mx + p.rand(-mw * 1.5, mw * 1.5), h = p.rand(6, 15);
+    if (Math.abs(x - mx) < mw * 0.85) continue;
+    m.lineWidth = 2.5; m.beginPath(); m.moveTo(x, base + 2); m.lineTo(x, base - h); m.stroke();
+    for (const ctx of [m, g]) { ctx.beginPath(); ctx.ellipse(x, base - h, p.rand(4, 8), 3.6, 0, Math.PI, 0); ctx.fill(); }
+  }
+  p.anchor("mouth", mx, base - mh * 0.42);
+  p.anchor("mouthTop", mx, base - mh);
+  return p.pack();
+}
+
+// A small saucer, hovering where it should not be. Someone small looks out of the dome.
+export function paintSaucer(seed, { W = 512, H = 320 } = {}) {
+  const p = new Painter(W, H, seed);
+  const { m, g, d, wm } = p;
+  const cx = W * 0.5, cy = H * 0.6, rx = W * 0.44, ry = H * 0.1;
+  // Dome
+  const dome = new Path2D();
+  dome.ellipse(cx, cy - ry * 0.4, W * 0.16, H * 0.27, 0, Math.PI, 0);
+  dome.closePath();
+  m.fill(dome);
+  g.save(); g.clip(dome);
+  const lit = g.createLinearGradient(0, cy - H * 0.3, 0, cy);
+  lit.addColorStop(0, "rgba(255,255,255,0.18)"); lit.addColorStop(1, "rgba(255,255,255,0.55)");
+  g.fillStyle = lit; g.fillRect(0, 0, W, H);
+  // The passenger: a round head on a thin neck, two dark eyes
+  g.globalCompositeOperation = "destination-out";
+  g.beginPath(); g.ellipse(cx + W * 0.02, cy - H * 0.2, W * 0.045, H * 0.07, 0.15, 0, Math.PI * 2); g.fill();
+  g.fillRect(cx + W * 0.012, cy - H * 0.15, W * 0.016, H * 0.12);
+  g.beginPath(); g.ellipse(cx + W * 0.02, cy - H * 0.06, W * 0.06, H * 0.05, 0, Math.PI, 0); g.fill();
+  g.globalCompositeOperation = "source-over";
+  g.globalAlpha = 0.9;
+  for (const s of [-1, 1]) { g.beginPath(); g.ellipse(cx + W * 0.02 + s * W * 0.018, cy - H * 0.205, W * 0.011, H * 0.022, s * 0.5, 0, Math.PI * 2); g.fill(); }
+  g.globalAlpha = 1;
+  g.restore();
+  // Antenna
+  m.lineWidth = 3; m.beginPath(); m.moveTo(cx, cy - ry * 0.4 - H * 0.27); m.lineTo(cx + 6, cy - ry * 0.4 - H * 0.36); m.stroke();
+  for (const c of [m, wm]) dot(c, cx + 6, cy - ry * 0.4 - H * 0.37, 4.5);
+  // The lens-shaped body and the bulge beneath it
+  m.beginPath(); m.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2); m.fill();
+  m.beginPath(); m.ellipse(cx, cy + ry * 0.8, W * 0.17, H * 0.07, 0, 0, Math.PI * 2); m.fill();
+  d.globalAlpha = 0.55; d.lineWidth = 2.5;
+  d.beginPath(); d.ellipse(cx, cy + 2, rx * 0.97, ry * 0.32, 0, 0, Math.PI); d.stroke();
+  d.globalAlpha = 0.3;
+  for (let k = -3; k <= 3; k++) { const x = cx + k * rx * 0.24; d.beginPath(); d.moveTo(x, cy - ry * 0.7); d.lineTo(x * 1.0 + k * 3, cy + ry * 0.5); d.stroke(); }
+  d.globalAlpha = 1;
+  // Running lights along the rim, and a glow underneath
+  for (let k = 0; k < 9; k++) {
+    const a = Math.PI * (0.1 + (k / 8) * 0.8);
+    dot(wm, cx - Math.cos(a) * rx * 0.86, cy + Math.sin(a) * ry * 0.45, 5);
+  }
+  g.globalAlpha = 0.8;
+  g.beginPath(); g.ellipse(cx, cy + ry * 1.25, W * 0.11, H * 0.03, 0, 0, Math.PI * 2); g.fill();
+  g.globalAlpha = 1;
+  p.anchor("beam", cx, cy + ry * 1.3);
+  return p.pack();
+}

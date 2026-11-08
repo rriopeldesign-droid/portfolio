@@ -98,7 +98,7 @@ function toTexture(pk) {
   return t;
 }
 
-export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
+export async function buildWorld({ quality = 1, onProgress = () => {}, note = () => {} } = {}) {
   const scene = new Scene();
   const rnd = P.makeRng(2026);
   const R = (a, b) => a + (b - a) * rnd();
@@ -114,6 +114,8 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     uFogDensity: { value: 0.031 },
     uNight: { value: 0 },
     uLightDir: { value: new Vector3(0.72, 0.7, 0) },
+    uBill: { value: 0 },
+    uBillRight: { value: new Vector3(1, 0, 0) },
   };
 
   // ── Paint every texture, yielding between each so the page stays responsive ──
@@ -145,6 +147,8 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     post: () => P.paintLanternPost(73, { W: q(320), H: q(896) }),
     waypost: () => P.paintWaypost(79, { W: q(512), H: q(1024) }),
     campfire: () => P.paintCampfire(89, { W: q(640), H: q(256) }),
+    hollow: () => P.paintHollow(113, { W: q(1024), H: q(640) }),
+    saucer: () => P.paintSaucer(127, { W: q(512), H: q(320) }),
   };
   // The boards carry words, so wait (briefly) for the page fonts before painting them
   await Promise.race([
@@ -284,6 +288,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     return l;
   };
   const haloGeo = new PlaneGeometry(1, 1);
+  const facers = []; // glows that turn to face the walker once they leave the path
   const addHalo = (pos, size, color, light) => {
     const m = new Mesh(haloGeo, new ShaderMaterial({
       uniforms: { uColor: { value: color }, uIntensity: { value: 0 } },
@@ -294,6 +299,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     m.scale.set(size, size, 1);
     m.renderOrder = 5;
     scene.add(m);
+    facers.push(m);
     const h = { mesh: m, light, size };
     if (light) light.halo = h;
     return h;
@@ -380,10 +386,69 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   flame.scale.set(1.3, 1.7, 1);
   flame.renderOrder = 6;
   scene.add(flame);
+  facers.push(flame);
 
   // Something tall between the trees, across the path from the cabin. Look again and it is gone.
   const figZ = -116, figure = place("figure", at(10.5, figZ), 0, figZ, 7.2, { flip: 1, sway: 0.2, shade: 0.7, opacity: 0, glow: 1.6, rim: 0.7 });
   const figState = { item: figure, op: 0, gone: false };
+
+  // ── The hidden layer ──
+  // Everything below draws from its own random stream, so the forest above grows exactly as before.
+  const xr = P.makeRng(4242);
+  const X = (a, b) => a + (b - a) * xr();
+  const own = (o = {}) => ({ shade: X(0.8, 1.15), seed: xr(), flip: xr() < 0.5 ? -1 : 1, ...o });
+
+  // The Hollow: a cave mouth off the path, deep past the sapling, where the uncanny things live.
+  // It is never pointed at; you notice its breathing green light, or you don't.
+  const HOLLOW = { dx: 10.5, z: -88 };
+  const hollow = place("hollow", at(HOLLOW.dx, HOLLOW.z), 0, HOLLOW.z, 3.4, { flip: 1, sway: 0, shade: 0.85, seed: 0.37, glow: 0.9, rim: 0.9 });
+  const mouthPos = anchorPos(hollow, "mouth"), mouthTop = anchorPos(hollow, "mouthTop");
+  const hollowHalo = addHalo(mouthPos.clone().add(new Vector3(0, -0.2, 0.35)), 3.4, C.glow, null);
+  // Clear the trees and ferns standing right in front of it (hidden, not removed, so nothing else moves)
+  for (const g of Object.values(groups)) {
+    if (g.key === "hollow") continue;
+    for (const it of g.items) {
+      if (it.z > HOLLOW.z - 1.2 && it.z < HOLLOW.z + 7 && Math.abs(it.x - hollow.x) < 3.2 + it.w * 0.2) it.opacity = 0;
+    }
+  }
+
+  // Behind the start, where the path never looks: more forest, so turning around finds trees, not the edge of the world
+  for (let i = 0; i < 70; i++) {
+    const zz = X(25, 58), dx = X(-34, 34), k = ["cedarA", "cedarB", "gnarledA", "gnarledC", "cedarC", "deadA"][Math.floor(xr() * 6)];
+    place(k, at(dx, zz), 0, zz, X(...treeH[k]) * (Math.abs(dx) > 14 ? 0.7 : 1), own({ rim: 0.8 }));
+  }
+  for (let z = 26; z < 40; z += X(1.4, 2.6)) {
+    for (const side of [-1, 1]) {
+      const zz = z + X(-0.5, 0.5), dx = X(2.3, 7);
+      place(xr() < 0.3 ? "fernB" : "fernA", at(side * dx, zz), 0, zz, X(0.8, 1.3) + dx * 0.14, own({ glow: 1, rim: 0.9 }));
+    }
+  }
+
+  // The saucer: only there for those who leave the path, and only behind them.
+  const UFO = { dx: -3.6, z: 19.5, y: 2.7 };
+  const saucer = place("saucer", at(UFO.dx, UFO.z), UFO.y, UFO.z, 0.95, { flip: 1, sway: 0, shade: 1, seed: 0.81, emit: 0, glow: 1.6, rim: 1, opacity: 0 });
+  const ufo = { item: saucer, baseX: saucer.x, hover: 0, rise: 0, gone: false };
+  const ufoHalo = addHalo(new Vector3(saucer.x, UFO.y + 0.3, UFO.z + 0.2), 2.2, C.glow, null);
+  const beam = new Mesh(new PlaneGeometry(1, 1).translate(0, -0.5, 0), new ShaderMaterial({
+    uniforms: { uTime: common.uTime, uIntensity: { value: 0 }, uGlow: { value: C.glow } },
+    vertexShader: S.beamVert, fragmentShader: S.beamFrag, transparent: true, depthWrite: false, blending: AdditiveBlending,
+  }));
+  beam.renderOrder = 6;
+  scene.add(beam);
+  facers.push(beam);
+
+  // Things to bump into while wandering: trunks, the cabin, rocks, the fire
+  const colliders = [];
+  for (const g of Object.values(groups)) {
+    const k = g.key;
+    const r = /^(gnarled|grove)/.test(k) ? 0.11 : /^cedar/.test(k) ? 0.1 : /^dead/.test(k) ? 0.07 : k === "cabin" ? 0.36
+      : k === "lookout" ? 0.3 : /^rocks/.test(k) ? 0.28 : k === "campfire" ? 0.5 : /^(waypost|signpost|post)$/.test(k) ? 0.12 : 0;
+    if (!r) continue;
+    for (const it of g.items) {
+      if (it.opacity === 0 || (/^rocks/.test(k) && it.h < 1.2)) continue;
+      colliders.push({ x: it.x, z: it.z, r: Math.max(0.3, it.w * r) });
+    }
+  }
 
   // ── Build the instanced meshes ──
   const m4 = new Matrix4(), qid = new Quaternion(), pos = new Vector3(), scl = new Vector3();
@@ -439,6 +504,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   scene.add(ground);
 
   const mistGeo0 = new PlaneGeometry(1, 1).translate(0, 0.5, 0);
+  const edgeOn = []; // flat banks of mist and light that fade when seen side-on
   // ── Sun shafts: slanting beams of late light through the first stretch of trees ──
   const shaftMat = new ShaderMaterial({
     uniforms: { ...common, uSun: { value: C.moon }, uShaft: { value: 1 } },
@@ -447,7 +513,8 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   });
   for (let z = 14; z > -62; z -= R(5, 8)) {
     const m = new Mesh(mistGeo0, shaftMat.clone());
-    m.material.uniforms = { ...shaftMat.uniforms, uSeed: { value: rnd() } };
+    m.material.uniforms = { ...shaftMat.uniforms, uSeed: { value: rnd() }, uFace: { value: 1 } };
+    edgeOn.push(m);
     m.position.set(at(R(-7, 7), z), -0.5, z);
     m.scale.set(R(9, 15), R(13, 18), 1);
     m.renderOrder = 3;
@@ -459,13 +526,14 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   for (let z = 16; z > -200; z -= R(7, 12)) {
     const tall = rnd() < 0.25;
     const m = new Mesh(mistGeo, new ShaderMaterial({
-      uniforms: { ...common, uOpacity: { value: tall ? R(0.12, 0.2) : R(0.3, 0.55) }, uSeed: { value: rnd() } },
+      uniforms: { ...common, uOpacity: { value: tall ? R(0.12, 0.2) : R(0.3, 0.55) }, uSeed: { value: rnd() }, uFace: { value: 1 } },
       vertexShader: S.mistVert, fragmentShader: S.mistFrag, transparent: true, depthWrite: false,
     }));
     m.position.set(at(R(-5, 5), z), tall ? -0.5 : -0.2, z);
     m.scale.set(R(28, 46), tall ? R(9, 14) : R(2.4, 4.5), 1);
     m.renderOrder = 2;
     scene.add(m);
+    edgeOn.push(m);
   }
 
   // ── Fireflies ──
@@ -523,6 +591,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     m.scale.set(s, s / 3, 1);
     m.renderOrder = 9;
     scene.add(m);
+    facers.push(m);
     eyes.push({ mesh: m, open: 0, alpha: 0, next: R(1, 5), blink: 0, gone: false, shy: 0 });
   }
 
@@ -544,6 +613,19 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   };
   const sm = (a, b, x) => { const u = Math.min(1, Math.max(0, (x - a) / (b - a))); return u * u * (3 - 2 * u); };
   let night = 0;
+  let bill = 0, faced = false;          // how far the world has turned to face a wandering walker
+  const noted = new Set();
+  const once = (id) => { if (!noted.has(id)) { noted.add(id); note(id); } };
+  const right = common.uBillRight.value;
+  // Where a point dx along a cutout's width lands, once the cutout has turned toward the walker
+  const along = (it, dx) => [it.x + dx * (1 - bill) + right.x * dx * bill, it.z + right.z * dx * bill];
+  const toScreen = (v, cam) => { tmp.copy(v).project(cam); return { x: (tmp.x * 0.5 + 0.5) * innerWidth, y: (-tmp.y * 0.5 + 0.5) * innerHeight, z: tmp.z, on: tmp.z < 1 && Math.abs(tmp.x) < 1 && Math.abs(tmp.y) < 1 }; };
+  // The two hidden ways out, as round hit areas on screen
+  const targets = [
+    { kind: "hollow", url: "/fun.html", hover: 0, hit: null },
+    { kind: "ufo", url: "/fun2.html", hover: 0, hit: null },
+  ];
+  let leaving = null; // { kind, t } once the walker has gone in
 
   function update(t, dt, cam, pointer) {
     common.uTime.value = t;
@@ -595,6 +677,23 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     su.uCamFwd.value.set(-e[8], -e[9], -e[10]);
     su.uTanHalf.value.set(ty * cam.aspect, ty, 0);
 
+    // Off the path, cutouts, glows and mist turn to face the walker so nothing is seen edge-on
+    common.uBill.value = bill;
+    if (bill > 0) {
+      right.set(e[0], 0, e[2]).normalize();
+      for (const m of facers) m.quaternion.copy(cam.quaternion);
+      const fz = e[10] / (Math.hypot(e[8], e[10]) || 1); // 1 looking down the path, -1 looking back
+      const face = 1 + (sm(0.25, 0.8, Math.abs(fz)) - 1) * bill;
+      // Sun shafts slant from the low sun ahead; from behind they would read as flat panes
+      const shaftFace = 1 + (sm(0.25, 0.8, fz) - 1) * bill;
+      for (const m of edgeOn) m.material.uniforms.uFace.value = m.material.uniforms.uShaft ? shaftFace : face;
+      faced = true;
+    } else if (faced) {
+      for (const m of facers) m.quaternion.identity();
+      for (const m of edgeOn) m.material.uniforms.uFace.value = 1;
+      faced = false;
+    }
+
     // Eyes: blink at random, close when you come close or point at them
     for (const e of eyes) {
       const d = camZ - e.mesh.position.z;
@@ -625,6 +724,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
       const target = !figState.gone && d < 46 && camZ < DEEP + 2 ? 1 : 0;
       figState.op += (target - figState.op) * Math.min(1, dt * (figState.gone ? 7 : 0.6));
       setP2(figure, 0, figState.op);
+      if (figState.op > 0.55 && toScreen(anchorPos(figure, "eyes"), cam).on) once("figure");
     }
 
     // The hand lets go of the tree
@@ -649,9 +749,10 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     const corner = (x, y, z) => { tmp.set(x, y, z).project(cam); return [(tmp.x * 0.5 + 0.5) * innerWidth, (-tmp.y * 0.5 + 0.5) * innerHeight, tmp.z]; };
     grove.forEach((b, i) => {
       const it = b.item;
-      const a = corner(it.x - it.w / 2, it.y + it.h * 0.88, it.z), c = corner(it.x + it.w / 2, it.y + it.h * 0.12, it.z);
+      const l = along(it, -it.w / 2), r = along(it, it.w / 2);
+      const a = corner(l[0], it.y + it.h * 0.88, l[1]), c = corner(r[0], it.y + it.h * 0.12, r[1]);
       b.rect = a[2] < 1 && c[2] < 1 ? { x0: a[0], y0: a[1], x1: c[0], y1: c[1] } : null;
-      if (b.start === null && postLight.lit > 0.6) b.start = t + 0.35 + i * 0.28;
+      if (b.start === null && postLight.lit > 0.6) { b.start = t + 0.35 + i * 0.28; once("lanterns"); }
       if (b.start !== null && t > b.start) b.lit = Math.min(1, b.lit + dt * 1.6);
       if (pointer && b.lit > 0.5 && b.rect && pointer.x > b.rect.x0 && pointer.x < b.rect.x1 && pointer.y > b.rect.y0 && pointer.y < b.rect.y1) hovered = b;
     });
@@ -667,6 +768,44 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
         b.link.root.boost = 1 + b.hover * 1.8;
       }
     }
+
+    // ── The Hollow breathes; the saucer only shows itself off the path ──
+    const camP = cam.position;
+    {
+      const T = targets[0];
+      const c = toScreen(mouthPos, cam), top = toScreen(mouthTop, cam);
+      const dist = Math.hypot(camP.x - mouthPos.x, camP.z - mouthPos.z);
+      T.hit = c.z < 1 && dist < 48 ? { x: c.x, y: c.y, r: Math.max(18, Math.hypot(top.x - c.x, top.y - c.y) * 1.25) } : null;
+      const breath = 0.5 + 0.5 * Math.sin(t * 0.85);
+      const go = leaving?.kind === "hollow" ? Math.min(1, leaving.t / 0.9) : 0;
+      setP2(hollow, 2, (0.75 + 0.35 * breath) * (1 + T.hover * 1.4) + go * 4);
+      const fogK = Math.exp(-Math.pow(Math.max(0.5, dist) * 0.028, 2));
+      hollowHalo.mesh.material.uniforms.uIntensity.value = ((0.16 + 0.12 * breath) * (0.4 + 0.6 * night) + T.hover * 0.35 + go * 1.2) * fogK;
+    }
+    {
+      const T = targets[1];
+      const show = sm(0.35, 0.95, bill);
+      if (leaving?.kind === "ufo") ufo.rise += dt * (1.2 + ufo.rise * 6);
+      saucer.y = UFO.y + Math.sin(t * 1.1) * 0.14 + ufo.rise;
+      saucer.x = ufo.baseX + Math.sin(t * 0.37) * 0.12;
+      moveItem(saucer);
+      setP2(saucer, 0, show);
+      setP1(saucer, 3, (0.55 + 0.45 * Math.pow(0.5 + 0.5 * Math.sin(t * 2.6), 2)) * (1 + T.hover * 0.5));
+      const bp = anchorPos(saucer, "beam");
+      beam.position.copy(bp);
+      beam.scale.set(1.3, bp.y, 1);
+      beam.material.uniforms.uIntensity.value = show * (0.55 + 0.2 * Math.sin(t * 1.7) + T.hover * 0.5 + (leaving?.kind === "ufo" ? 2 : 0)) * (ufo.rise > 0 ? Math.max(0, 1 - ufo.rise * 0.4) : 1);
+      ufoHalo.mesh.position.set(saucer.x, saucer.y + 0.35, saucer.z + 0.2);
+      ufoHalo.mesh.material.uniforms.uIntensity.value = show * (0.35 + T.hover * 0.4);
+      const c = toScreen(new Vector3(saucer.x, saucer.y + saucer.h * 0.45, saucer.z), cam);
+      const top = toScreen(new Vector3(saucer.x, saucer.y + saucer.h * 0.95, saucer.z), cam);
+      const dist = Math.hypot(camP.x - saucer.x, camP.z - saucer.z);
+      T.hit = show > 0.6 && c.z < 1 && dist < 36 ? { x: c.x, y: c.y, r: Math.max(26, Math.hypot(top.x - c.x, top.y - c.y) * 1.9) } : null;
+    }
+    if (leaving) leaving.t += dt;
+    const inHit = (T, x, y) => T.hit && Math.hypot(x - T.hit.x, y - T.hit.y) < T.hit.r;
+    if (!hovered && pointer) hovered = targets.find((T) => inHit(T, pointer.x, pointer.y)) || null;
+    for (const T of targets) { const on = T === hovered ? 1 : 0; T.hover += (on - T.hover) * Math.min(1, dt * (on ? 6 : 3)); }
     return { hovered };
   }
 
@@ -674,7 +813,31 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     scene, update,
     // Which board (if any) sits under a screen point; used for taps
     pick(x, y) {
-      return grove.find((b) => b.lit > 0.5 && b.rect && x > b.rect.x0 && x < b.rect.x1 && y > b.rect.y0 && y < b.rect.y1) || null;
+      return grove.find((b) => b.lit > 0.5 && b.rect && x > b.rect.x0 && x < b.rect.x1 && y > b.rect.y0 && y < b.rect.y1)
+        || targets.find((T) => T.hit && Math.hypot(x - T.hit.x, y - T.hit.y) < T.hit.r) || null;
+    },
+    // Wandering: how far the world has turned toward the walker (0 on the path, 1 off it)
+    setWander(b) { bill = b; },
+    // Step into the Hollow or under the saucer; the world plays its part, the page does the rest
+    leave(kind) { if (!leaving) leaving = { kind, t: 0 }; },
+    // Which hidden way out (if any) a wandering walker is standing in
+    near(x, z) {
+      if (Math.hypot(x - mouthPos.x, z - mouthPos.z) < 1.7) return targets[0];
+      if (bill > 0.9 && Math.hypot(x - saucer.x, z - saucer.z) < 1.6) return targets[1];
+      return null;
+    },
+    // Keep a walker out of trunks, walls and the fire, and inside the forest
+    collide(x, z, r = 0.4) {
+      z = Math.min(24, Math.max(-157, z));
+      const px = pathX(z);
+      x = px + Math.min(15, Math.max(-15, x - px));
+      for (const c of colliders) {
+        const dz = z - c.z;
+        if (Math.abs(dz) > c.r + r) continue;
+        const dx = x - c.x, d = Math.hypot(dx, dz), min = c.r + r;
+        if (d < min && d > 1e-4) { x = c.x + (dx / d) * min; z = c.z + (dz / d) * min; }
+      }
+      return [x, z];
     },
     focus(id) { focusId = id; },
     setSize(h, pr, fovY) {
