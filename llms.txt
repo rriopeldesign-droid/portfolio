@@ -1,6 +1,6 @@
 # Robert Riopel, Senior Product Designer (Ottawa & Vienna)
 
-> Robert Riopel is a Senior Product Designer based between Ottawa, Canada and Vienna, Austria. He designs digital products end to end (product UX and UI, design systems, growth and conversion, lifecycle and email) and builds AI-assisted design tooling. His work has contributed $8M+ in measurable business impact. He works in English and French and is open to conversations about senior product design roles in Vienna, Ottawa, or remote.
+> Robert Riopel is a Senior Product Designer based between Ottawa, Canada and Vienna, Austria. He designs digital products end to end (product UX and UI, design systems, growth and conversion, lifecycle and email) and builds AI-assisted design tooling. His work has contributed $8M+ in measurable business impact. He works in English and French and is open to freelance projects and to senior product design roles in Vienna, Ottawa, or remote.
 
 ## Contact
 
@@ -12,7 +12,7 @@
 
 ## Summary
 
-- Current role: sole Product Designer at RVezy, Canada's largest RV rental marketplace. Owns product UX/UI, the design system, lifecycle and email design, brand, and marketing design.
+- Most recent role: sole Product Designer at RVezy, Canada's largest RV rental marketplace. Owned product UX/UI, the design system, lifecycle and email design, brand, and marketing design.
 - Business impact: $8M+ in measurable impact; contributed to moving the company from a $6M deficit to profitability ($1.5M EBITDA positive).
 - Works closely with product managers, engineers, and data analysts; validates design decisions with A/B tests and funnel analytics.
 - Builds tools: an AI-powered Figma plugin (Claude API) that generates on-brand components from natural language, synced 1:1 with a coded Tailwind design system.
