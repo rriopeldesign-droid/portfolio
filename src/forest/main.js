@@ -6,8 +6,9 @@ import { buildWorld, pathX, STOPS } from "./world.js";
 ColorManagement.enabled = false;
 
 const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-// Smootherstep: starts and ends a walk more gently than smoothstep
-const smoother = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * t * (t * (t * 6 - 15) + 10); };
+// The walker's pace, in world units: a steady walk, eased in and out. Scrolling sets where the
+// walker is headed; it never makes them run (except to catch up after a long jump, like a nav link).
+const WALK = 10, ACCEL = 6, DECEL = 5;
 const lerp = (a, b, t) => a + (b - a) * t;
 
 export async function start() {
@@ -57,10 +58,8 @@ export async function start() {
   document.fonts?.ready.then(measure);
   addEventListener("load", measure);
 
-  // Scroll drives a soft, spring-damped "walker position". The camera and the cards both read
-  // from it, so the words arrive with the walker instead of ahead of it.
+  // Scroll sets where the walker is headed. The walker gets there at a walking pace (see frame()).
   const target = { z: STOPS[0].cam, look: 0 };
-  const walker = { y: scrollY, v: 0 };
   const readScroll = (y) => {
     if (!anchors.length) return;
     if (y <= anchors[0].s) { target.z = anchors[0].stop.cam; target.look = anchors[0].stop.look; }
@@ -70,7 +69,7 @@ export async function start() {
         const a = anchors[i], b = anchors[i + 1];
         if (y >= a.s && y <= b.s) {
           // Linger at each stop, then walk on
-          const t = smoother(0.2, 0.8, (y - a.s) / (b.s - a.s));
+          const t = smooth(0.18, 0.82, (y - a.s) / (b.s - a.s));
           target.z = lerp(a.stop.cam, b.stop.cam, t);
           target.look = lerp(a.stop.look, b.stop.look, t);
           break;
@@ -79,17 +78,25 @@ export async function start() {
     }
     anchors.forEach((a, i) => {
       const d = y - a.s;
-      let o = 1 - smooth(a.h * 0.14, a.h * 0.32, Math.abs(d));
-      if (i === 0 && d < 0) o = 1;
-      if (i === anchors.length - 1 && d > 0) o = 1;
+      a.d = d;
+      a.so = 1 - smooth(a.h * 0.14, a.h * 0.32, Math.abs(d));
+      if (i === 0 && d < 0) a.so = 1;
+      if (i === anchors.length - 1 && d > 0) a.so = 1;
+    });
+  };
+  // A card shows while the scroll sits at its stop AND the walker has actually arrived there
+  const updateCards = () => {
+    for (const a of anchors) {
+      const arrived = 1 - smooth(1.5, 7, Math.abs(cam.z - a.stop.cam));
+      const o = Math.min(a.so ?? 0, arrived);
       if (Math.abs((a.o ?? -1) - o) > 0.003) {
         a.o = o;
         a.el.style.setProperty("--o", o.toFixed(3));
         // Cards rise in from below and leave upward, in the direction of travel
-        a.el.style.setProperty("--dy", d < 0 ? "22px" : "-22px");
+        a.el.style.setProperty("--dy", a.d < 0 ? "22px" : "-22px");
         a.el.classList.toggle("is-near", o > 0.5);
       }
-    });
+    }
   };
 
   // ── Pointer: a gentle look-around, and hover on the grove's lanterns ──
@@ -115,12 +122,12 @@ export async function start() {
   });
 
   // ── The walk ──
-  const cam = { z: STOPS[0].cam, look: 0, dist: 0 };
+  const cam = { z: STOPS[0].cam, v: 0, look: 0, dist: 0 };
   const camPos = new Vector3(), lookAt = new Vector3();
   let last = performance.now(), t0 = last, frames = 0, slow = 0, running = true;
 
   // Start where the page already is (a reload halfway down should not walk from the start)
-  readScroll(walker.y);
+  readScroll(scrollY);
   cam.z = target.z; cam.look = target.look;
   world.igniteNear(cam.z);
 
@@ -130,16 +137,23 @@ export async function start() {
     last = now;
     const t = (now - t0) / 1000;
 
-    // Critically damped spring toward the real scroll position: eases in and out, never overshoots
-    const w = 3.4;
-    walker.v += (w * w * (scrollY - walker.y) - 2 * w * walker.v) * dt;
-    walker.y += walker.v * dt;
-    if (Math.abs(scrollY - walker.y) < 0.5 && Math.abs(walker.v) < 1) { walker.y = scrollY; walker.v = 0; }
-    readScroll(walker.y);
-    const dz = target.z - cam.z;
-    cam.z = target.z;
-    cam.dist += Math.abs(dz);
-    cam.look += (target.look - cam.look) * Math.min(1, dt * 6);
+    readScroll(scrollY);
+    // Walk toward the target: ease into a stride, hold a walking pace, slow down to arrive
+    {
+      const d = target.z - cam.z, ad = Math.abs(d);
+      const pace = WALK + Math.max(0, ad - 32) * 0.5; // only hurries when far behind
+      const want = Math.sign(d) * Math.min(pace, Math.sqrt(2 * DECEL * ad), ad * 6);
+      const dv = want - cam.v;
+      const lim = (Math.sign(dv) === Math.sign(cam.v) || cam.v === 0 ? ACCEL : DECEL * 1.6) * dt;
+      cam.v += Math.max(-lim, Math.min(lim, dv));
+      if (ad < 0.005 && Math.abs(cam.v) < 0.05) { cam.v = 0; cam.z = target.z; }
+      const step = cam.v * dt;
+      cam.z += step;
+      cam.dist += Math.abs(step);
+    }
+    // Turn the head toward the next stop as you walk, not all at once
+    cam.look += (target.look - cam.look) * Math.min(1, dt * 1.6);
+    updateCards();
     look.x += (pointer.nx - look.x) * Math.min(1, dt * 2);
     look.y += (pointer.ny - look.y) * Math.min(1, dt * 2);
 
