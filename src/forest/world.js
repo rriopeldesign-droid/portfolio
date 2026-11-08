@@ -420,7 +420,9 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   // ── Sky ──
   const sky = new Mesh(new PlaneGeometry(1, 1), new ShaderMaterial({
     uniforms: {
-      ...common, uRes: { value: new Vector3(1, 1, 0) }, uYaw: { value: 0 }, uPitch: { value: 0 }, uDrift: { value: 0 },
+      ...common, uRes: { value: new Vector3(1, 1, 0) },
+      uCamRight: { value: new Vector3(1, 0, 0) }, uCamUp: { value: new Vector3(0, 1, 0) }, uCamFwd: { value: new Vector3(0, 0, -1) },
+      uTanHalf: { value: new Vector3(1, 1, 0) }, uMoon: { value: C.moon },
       uSunH: { value: 0.12 }, uSunA: { value: 1 }, uMoonA: { value: 0 }, uSun: { value: C.moon },
       uTop: { value: C.top }, uHorizon: { value: C.horizon }, uHalo: { value: C.halo },
       uRidge0: { value: C.ridge0 }, uRidge1: { value: C.ridge1 }, uRidge2: { value: C.ridge2 },
@@ -592,8 +594,13 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
 
     // Sky follows where the camera faces
     cam.getWorldDirection(tmp);
-    sky.material.uniforms.uYaw.value = Math.atan2(tmp.x, -tmp.z);
-    sky.material.uniforms.uPitch.value = Math.asin(Math.max(-1, Math.min(1, tmp.y)));
+    // The sky is drawn by true view direction, so it needs the camera's exact frame
+    cam.updateMatrixWorld();
+    const e = cam.matrixWorld.elements, ty = Math.tan((cam.fov * Math.PI) / 360);
+    su.uCamRight.value.set(e[0], e[1], e[2]);
+    su.uCamUp.value.set(e[4], e[5], e[6]);
+    su.uCamFwd.value.set(-e[8], -e[9], -e[10]);
+    su.uTanHalf.value.set(ty * cam.aspect, ty, 0);
 
     // Eyes: blink at random, close when you come close or point at them
     for (const e of eyes) {

@@ -159,10 +159,10 @@ export const skyVert = /* glsl */ `
 `;
 
 export const skyFrag = /* glsl */ `
-  uniform vec2 uRes;
-  uniform float uYaw;
-  uniform float uPitch;
-  uniform float uDrift;
+  uniform vec3 uCamRight;
+  uniform vec3 uCamUp;
+  uniform vec3 uCamFwd;
+  uniform vec2 uTanHalf;
   uniform vec3 uTop;
   uniform vec3 uHorizon;
   uniform vec3 uHalo;
@@ -173,40 +173,57 @@ export const skyFrag = /* glsl */ `
   uniform float uSunA;
   uniform float uMoonA;
   uniform vec3 uSun;
+  uniform vec3 uMoon;
   ${lightUniforms}
   varying vec2 vUv;
   ${common}
-  float ridge(float x, float freq, float amp, float seed, float treeF, float treeA) {
-    float h = fbm(vec2(x * freq + seed, seed)) * amp;
-    float tx = x * treeF + seed * 3.0;
-    float cell = floor(tx);
-    float tri = 1.0 - abs(fract(tx) - 0.5) * 2.0;
-    h += pow(tri, 1.6) * treeA * (0.4 + 0.6 * hash(vec2(cell, seed)));
-    return h;
+  // Sharp-crested mountains: ridged noise
+  float ridged(float x, float seed) {
+    float v = 0.0, a = 0.55;
+    for (int i = 0; i < 5; i++) {
+      float n = 1.0 - abs(vnoise(vec2(x, seed + float(i) * 3.7)) * 2.0 - 1.0);
+      v += a * n * n;
+      x = x * 2.13 + 1.7;
+      a *= 0.48;
+    }
+    return v;
+  }
+  // A fringe of distant conifers along a ridge line
+  float treeline(float x, float density, float hgt, float seed) {
+    float tx = x * density + seed;
+    float cell = floor(tx), f = fract(tx);
+    float r = hash(vec2(cell, seed));
+    float c = 0.5 + (r - 0.5) * 0.4;
+    float w = 0.3 + 0.25 * hash(vec2(cell, seed + 1.0));
+    float tri = max(0.0, 1.0 - abs(f - c) / w);
+    return pow(tri, 1.3) * hgt * (0.45 + 0.55 * r) * step(0.2, r);
   }
   void main() {
-    float aspect = uRes.x / uRes.y;
-    vec2 p = vec2((vUv.x - 0.5) * aspect, vUv.y - 0.5);
-    float horizon = -0.04 - uPitch * 1.1;
-    float h = p.y - horizon;
-    vec3 col = mix(uHorizon, uTop, smoothstep(-0.02, 0.62, h));
+    // Everything here is drawn by true view direction (azimuth, elevation), so the sky,
+    // the sun, the moon and the mountains stay fixed in the far distance as you turn and walk.
+    vec3 d = normalize(uCamFwd + (vUv.x * 2.0 - 1.0) * uTanHalf.x * uCamRight + (vUv.y * 2.0 - 1.0) * uTanHalf.y * uCamUp);
+    float az = atan(d.x, -d.z);
+    float el = asin(clamp(d.y, -1.0, 1.0));
+    vec2 p = vec2(az, el);
+    float horizon = -0.008;
+    float h = el - horizon;
+    vec3 col = mix(uHorizon, uTop, smoothstep(-0.02, 0.6, h));
 
-    // Stars, sparse and faint
-    vec2 sp = p + vec2(uYaw * 0.9, 0.0);
-    vec2 g = sp * 70.0;
+    // Stars, sparse and faint, only at night
+    vec2 g = p * 70.0;
     float s = hash(floor(g));
     float tw = 0.6 + 0.4 * sin(uTime * (1.0 + s * 3.0) + s * 40.0);
     float star = step(0.992, s) * smoothstep(0.22, 0.0, length(fract(g) - 0.5)) * tw;
     col += vec3(0.78, 0.9, 0.86) * star * smoothstep(0.08, 0.45, h) * 0.7 * smoothstep(0.5, 0.9, uNight);
 
-    // The sun: low on the right, sinking behind the ridges as you walk
-    vec2 sc = vec2(0.36 - uYaw * 0.9, horizon + uSunH);
+    // The sun: low on the right, sinking behind the mountains as you walk
+    vec2 sc = vec2(0.42, horizon + uSunH);
     float sd = length(p - sc);
     col += uHalo * (exp(-sd * 2.4) * 0.42 + exp(-sd * 8.0) * 0.45) * uSunA;
     col = mix(col, vec3(1.0, 0.95, 0.84), smoothstep(0.05, 0.047, sd) * uSunA);
 
     // The moon, low and large, a little peach in its halo
-    vec2 mc = vec2(0.13 - uYaw * 0.9, 0.29 + horizon * 0.4);
+    vec2 mc = vec2(0.15, 0.26);
     float md = length(p - mc);
     float R = 0.072;
     col += uHalo * (exp(-md * 5.0) * 0.22 + exp(-md * 16.0) * 0.32) * uMoonA;
@@ -214,26 +231,37 @@ export const skyFrag = /* glsl */ `
     vec3 moon = mix(vec3(0.95, 0.92, 0.85), vec3(0.8, 0.79, 0.74), smoothstep(0.35, 0.75, mot));
     col = mix(col, moon, smoothstep(R, R - 0.0025, md) * uMoonA);
 
-    // Cloud drifting across the moon, edges lit where they pass it
-    vec2 cp = vec2(p.x * 1.2 + uTime * 0.006 + uYaw * 0.8 + uDrift, p.y * 3.6);
+    // Slow cloud, edges lit where they pass the sun or moon
+    vec2 cp = vec2(az * 1.2 + uTime * 0.006, el * 3.6);
     float c = fbm(cp * 2.2 + vec2(0.0, 2.0));
     c = smoothstep(0.52, 0.78, c) * smoothstep(0.05, 0.22, h) * (1.0 - smoothstep(0.4, 0.62, h));
     vec3 cloudBase = mix(mix(uHorizon, uTop, 0.35) * 1.08, uTop * 1.6 + 0.01, uNight);
     vec3 cloud = mix(cloudBase, uHalo * mix(0.95, 0.55, uNight), max(exp(-md * 4.0) * uMoonA, exp(-sd * 3.0) * uSunA));
     col = mix(col, cloud, c * 0.8);
 
-    // Three ridges of distant forest, far to near
-    float x = p.x + uYaw * 0.9;
-    float r0 = horizon + 0.02 + ridge(x + uDrift * 0.1, 1.3, 0.11, 1.0, 34.0, 0.022);
-    col = mix(col, uRidge0, smoothstep(0.002, -0.002, p.y - r0));
-    col = mix(col, uFog * 1.3, smoothstep(0.08, 0.0, p.y - horizon) * 0.35 * step(p.y, r0 + 0.002));
-    float r1 = horizon - 0.02 + ridge(x * 1.1 + uDrift * 0.25, 1.8, 0.1, 7.0, 26.0, 0.03);
-    col = mix(col, uRidge1, smoothstep(0.002, -0.002, p.y - r1));
-    float r2 = horizon - 0.06 + ridge(x * 1.25 + uDrift * 0.5, 2.4, 0.09, 13.0, 19.0, 0.04);
-    col = mix(col, uRidge2, smoothstep(0.002, -0.002, p.y - r2));
+    // Far mountains: sharp crests, faces turned to the light catch it, gullies, haze at the foot
+    float x = az;
+    float k0 = 1.5, a0 = 0.21, e = 0.004;
+    float r0 = horizon + 0.004 + ridged(x * k0, 1.0) * a0;
+    float slope = (ridged((x + e) * k0, 1.0) - ridged((x - e) * k0, 1.0)) * a0 / (2.0 * e);
+    float lit = smoothstep(0.05, 0.7, -slope * sign(uLightDir.x));
+    float gully = smoothstep(0.55, 0.85, vnoise(vec2(x * 110.0, el * 7.0))) * smoothstep(horizon, r0, el);
+    vec3 c0 = uRidge0 * (0.92 + lit * 0.24 - gully * 0.1) + uMoon * lit * mix(0.07, 0.03, uNight);
+    c0 = mix(c0, uHorizon, (1.0 - smoothstep(horizon, r0, el)) * mix(0.45, 0.2, uNight));
+    col = mix(col, c0, smoothstep(0.0012, -0.0012, el - r0));
+
+    // Mid hills with a fringe of trees
+    float r1 = horizon + 0.004 + fbm(vec2(x * 2.2 + 7.0, 7.0)) * 0.085 + treeline(x, 140.0, 0.012, 3.0);
+    vec3 c1 = mix(uRidge1, uHorizon, (1.0 - smoothstep(horizon - 0.01, r1, el)) * mix(0.3, 0.12, uNight));
+    col = mix(col, c1, smoothstep(0.0012, -0.0012, el - r1));
+
+    // The nearest ridge of forest
+    float r2 = horizon - 0.012 + fbm(vec2(x * 3.0 + 13.0, 13.0)) * 0.06
+      + max(treeline(x, 220.0, 0.02, 9.0), treeline(x, 97.0, 0.026, 21.0) * 0.85);
+    col = mix(col, uRidge2, smoothstep(0.0012, -0.0012, el - r2));
 
     // Mist pooling along the horizon
-    float mist = exp(-abs(p.y - horizon + 0.02) * 22.0) * (0.55 + 0.45 * fbm(vec2(p.x * 3.0 + uTime * 0.01, 1.0)));
+    float mist = exp(-abs(el - horizon + 0.02) * 22.0) * (0.55 + 0.45 * fbm(vec2(az * 3.0 + uTime * 0.01, 1.0)));
     col = mix(col, uFogLow, mist * 0.55);
     gl_FragColor = vec4(col, 1.0);
   }
