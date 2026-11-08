@@ -73,7 +73,7 @@ export const PROJECTS = [
 ];
 const BOARDS = [
   ...PROJECTS.filter((p) => p.url).map((p) => ({ id: p.id, name: p.name, value: p.value, url: p.url, tree: p.id })),
-  { id: "all", name: "All the work", value: "", url: "/work.html", tree: null },
+  { id: "all", name: { de: "Alle Projekte", fr: "Tous les projets" }[document.documentElement.lang] || "All the work", value: "", url: "/work.html", tree: null },
 ];
 const WAYPOST = { dx: 2.6, z: -47.5 };
 
@@ -284,7 +284,6 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     return l;
   };
   const haloGeo = new PlaneGeometry(1, 1);
-  const halos = [];
   const addHalo = (pos, size, color, light) => {
     const m = new Mesh(haloGeo, new ShaderMaterial({
       uniforms: { uColor: { value: color }, uIntensity: { value: 0 } },
@@ -296,7 +295,6 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     m.renderOrder = 5;
     scene.add(m);
     const h = { mesh: m, light, size };
-    halos.push(h);
     if (light) light.halo = h;
     return h;
   };
@@ -315,8 +313,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   }
 
   // Trails signpost
-  const sign = place("signpost", at(3.3, -24), 0, -24, 3.6, { flip: 1, sway: 0, shade: 1.1 });
-  void sign;
+  place("signpost", at(3.3, -24), 0, -24, 3.6, { flip: 1, sway: 0, shade: 1.1 });
 
   // The grove: one tree per project, its height grown from its impact
   const trees = {};
@@ -420,7 +417,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   // ── Sky ──
   const sky = new Mesh(new PlaneGeometry(1, 1), new ShaderMaterial({
     uniforms: {
-      ...common, uRes: { value: new Vector3(1, 1, 0) },
+      ...common,
       uCamRight: { value: new Vector3(1, 0, 0) }, uCamUp: { value: new Vector3(0, 1, 0) }, uCamFwd: { value: new Vector3(0, 0, -1) },
       uTanHalf: { value: new Vector3(1, 1, 0) }, uMoon: { value: C.moon },
       uSunH: { value: 0.12 }, uSunA: { value: 1 }, uMoonA: { value: 0 }, uSun: { value: C.moon },
@@ -448,7 +445,6 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     vertexShader: S.mistVert, fragmentShader: S.shaftFrag,
     transparent: true, depthWrite: false, blending: AdditiveBlending,
   });
-  const shafts = [];
   for (let z = 14; z > -62; z -= R(5, 8)) {
     const m = new Mesh(mistGeo0, shaftMat.clone());
     m.material.uniforms = { ...shaftMat.uniforms, uSeed: { value: rnd() } };
@@ -456,7 +452,6 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     m.scale.set(R(9, 15), R(13, 18), 1);
     m.renderOrder = 3;
     scene.add(m);
-    shafts.push(m);
   }
 
   // ── Mist banks ──
@@ -592,8 +587,6 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
       if (l) lightSlots[i].set(l.pos.x, l.pos.y, l.pos.z, l.now); else lightSlots[i].set(0, -100, 0, 0);
     }
 
-    // Sky follows where the camera faces
-    cam.getWorldDirection(tmp);
     // The sky is drawn by true view direction, so it needs the camera's exact frame
     cam.updateMatrixWorld();
     const e = cam.matrixWorld.elements, ty = Math.tan((cam.fov * Math.PI) / 360);
@@ -678,14 +671,13 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   }
 
   return {
-    scene, update, grove,
+    scene, update,
     // Which board (if any) sits under a screen point; used for taps
     pick(x, y) {
       return grove.find((b) => b.lit > 0.5 && b.rect && x > b.rect.x0 && x < b.rect.x1 && y > b.rect.y0 && y < b.rect.y1) || null;
     },
     focus(id) { focusId = id; },
-    setSize(w, h, pr, fovY) {
-      sky.material.uniforms.uRes.value.set(w, h, 0);
+    setSize(h, pr, fovY) {
       const scale = (h * pr) / (2 * Math.tan((fovY * Math.PI) / 360));
       ffMat.uniforms.uScale.value = scale;
       wMat.uniforms.uScale.value = scale;

@@ -160,276 +160,189 @@
     ]
   }
   </script>
+  <meta name="theme-color" content="#010609" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
   <script>document.documentElement.classList.add('js')</script>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/forest.css" />
   <script src="/js/script.js" defer></script>
-  <script type="module" src="/js/enhance.js"></script>
 </head>
 
-<body class="bg-surface text-ink font-body">
+<body class="forest-page">
+  <div class="forest-sky" aria-hidden="true"><div class="forest-moon"></div></div>
+  <canvas id="forest-canvas" aria-hidden="true"></canvas>
+  <div class="forest-vignette" aria-hidden="true"></div>
 
-  <nav class="sticky top-0 z-50 nav-glass">
-    <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
-
-      <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
-        RR
-      </a>
-
-      <div class="hidden md:flex gap-8 items-center">
+  <nav class="forest-nav">
+    <div class="forest-nav-row">
+      <a href="/" class="forest-logo" aria-label="Robert Riopel, home">RR</a>
+      <div class="forest-links">
         <a href="/work.html" class="nav-link">Work</a>
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-peach hover:text-ink">
-          Contact
-        </a>
+        <a href="mailto:rriopel.design@gmail.com" class="forest-pill">Contact</a>
       </div>
-
-      <button id="navToggle" class="md:hidden text-ink" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+      <button id="navToggle" class="forest-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <line x1="4" y1="7" x2="20" y2="7" style="transition: all 0.3s ease"/>
           <line x1="4" y1="17" x2="20" y2="17" style="transition: all 0.3s ease"/>
         </svg>
       </button>
     </div>
-
-    <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
-      <a href="/work.html" class="block nav-link py-1">Work</a>
-      <a href="/about.html" class="block nav-link py-1">About</a>
-      <a href="/death-of-figma/" class="block nav-link py-1">Figma</a>
-      <a href="/fun.html" class="block nav-link py-1">Fun</a>
-      <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
+    <div id="mobileMenu" class="forest-menu hidden">
+      <a href="/work.html" class="nav-link">Work</a>
+      <a href="/about.html" class="nav-link">About</a>
+      <a href="/death-of-figma/" class="nav-link">Figma</a>
+      <a href="/fun.html" class="nav-link">Fun</a>
+      <a href="mailto:rriopel.design@gmail.com" class="nav-link">Contact</a>
     </div>
   </nav>
-  <section class="hero relative px-6 md:px-10 pt-16 sm:pt-22 md:pt-30 pb-20 sm:pb-26 md:pb-30">
-    <div class="hero-glow" aria-hidden="true"></div>
-    <div class="max-w-7xl mx-auto">
 
-      <div class="reveal">
-        <p class="tag mb-6 md:mb-8">Robert Riopel, Senior Product Designer · Ottawa &amp; Vienna</p>
-      </div>
+  <main id="journey">
 
-      <h1 class="font-display text-hero max-w-5xl">
-        <span class="hero-word" style="--i:0">I</span> <span class="hero-word" style="--i:1">design</span> <span class="hero-word" style="--i:2">products</span><br />
-        <span class="hero-word" style="--i:3">that</span> <span class="hero-word" style="--i:4">move</span> <span class="hero-word shimmer italic" style="--i:5">metrics.</span>
-      </h1>
-
-      <div class="reveal mt-10 md:mt-14 max-w-xl">
-        <p class="text-muted text-base sm:text-lg leading-relaxed">
-          $8M+ in measurable business impact.
-          I build the product, the systems, and the AI tools that accelerate everything.
-        </p>
-      </div>
-
-      <div class="reveal mt-10 flex flex-wrap gap-5 items-center">
-        <a href="/work.html"
-           class="group inline-flex items-center gap-3 bg-ink text-surface text-sm font-semibold uppercase tracking-widest py-3.5 px-8 rounded-full hover:bg-peach hover:text-ink transition-colors duration-300">
-          See the work
-          <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 8h10M9 4l4 4-4 4"/>
-          </svg>
-        </a>
-        <a href="mailto:rriopel.design@gmail.com"
-           class="text-sm font-semibold uppercase tracking-widest text-muted hover:text-ink transition-colors duration-300">
-          Start a conversation
-        </a>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ====== What I Do (leads; the work below is the proof) ====== -->
-  <section id="what-i-do" class="px-6 md:px-10 pb-22 md:pb-26">
-    <div class="max-w-7xl mx-auto">
-      <div class="reveal mb-12 md:mb-14">
-        <p class="tag mb-4">What I do</p>
-        <h2 class="font-display text-section max-w-3xl">What I bring to a team.</h2>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 reveal-group">
-        <div class="reveal-child">
-          <h3 class="text-sm font-semibold mb-3 uppercase tracking-widest">Product design</h3>
-          <p class="text-sm text-muted leading-relaxed">End-to-end UX and UI for web and native mobile, from research and flows to shipped, measured features.</p>
-          <a href="https://datenight.online/welcome" target="_blank" rel="noopener" class="proof-link group">DateNight, idea to launch <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
-        </div>
-        <div class="reveal-child">
-          <h3 class="text-sm font-semibold mb-3 uppercase tracking-widest">Growth &amp; conversion</h3>
-          <p class="text-sm text-muted leading-relaxed">Checkout, onboarding, and lifecycle work tied to revenue. A/B tested and measured in GMV, not opinions.</p>
-          <a href="/case-studies/host-onboarding.html" class="proof-link group">$3.4M from onboarding <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
-        </div>
-        <div class="reveal-child">
-          <h3 class="text-sm font-semibold mb-3 uppercase tracking-widest">Design systems</h3>
-          <p class="text-sm text-muted leading-relaxed">Token-based systems built in code first with Tailwind and Vue, mirrored in Figma, so design and engineering never drift.</p>
-          <a href="/case-studies/lifecycle-campaigns.html" class="proof-link group">Email system, 4&times; faster <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
-        </div>
-        <div class="reveal-child">
-          <h3 class="text-sm font-semibold mb-3 uppercase tracking-widest">AI tooling</h3>
-          <p class="text-sm text-muted leading-relaxed">Custom tools, like an AI Figma plugin, that let PMs, engineers, and marketers design on-brand without waiting on design.</p>
-          <a href="/case-studies/ai-figma-plugin.html" class="proof-link group">The AI Figma plugin <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    <!-- Arrival -->
+    <section class="stop stop-arrival" data-stop="arrival" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">Senior product designer &middot; Ottawa &amp; Vienna</p>
+          <h1 class="stop-name">Robert <br />Riopel</h1>
+          <p class="stop-lede">I design products that move metrics, and build the AI tools that make the work faster. $8M+ in measured impact.</p>
+          <p class="stop-cue"><span class="cue-line" aria-hidden="true"></span>Scroll to walk the path</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ====== Impact ====== -->
-  <section class="px-6 md:px-10 pb-22 md:pb-26">
-    <div class="max-w-7xl mx-auto reveal">
-      <div class="flex flex-wrap items-end justify-between gap-6 mb-8">
-        <div>
-          <p class="tag mb-3">Measured impact</p>
-          <p class="font-display text-section"><span class="count-up">$8M+</span></p>
-        </div>
-        <p class="text-muted text-sm max-w-sm leading-relaxed">$7.6M of it from these five projects alone, each measured as revenue, GMV, or savings.</p>
-      </div>
-      <div class="impact-bar" role="img" aria-label="Impact by project: Host Onboarding $3.4M, Host Dashboard $1.5M, Lifecycle Email $1.2M, Pay-in-Full $1M, Inspection and Claims $500K.">
-        <span class="impact-seg" style="--v:3.4;--c:#012B1D;--i:0"></span>
-        <span class="impact-seg" style="--v:1.5;--c:#035A3B;--i:1"></span>
-        <span class="impact-seg" style="--v:1.2;--c:#00804F;--i:2"></span>
-        <span class="impact-seg" style="--v:1.0;--c:#01B36C;--i:3"></span>
-        <span class="impact-seg" style="--v:0.5;--c:#7DD4A8;--i:4"></span>
-      </div>
-      <div class="impact-legend mt-8">
-        <a href="/case-studies/host-onboarding.html" class="impact-item" style="--c:#012B1D">
-          <span class="impact-val"><span class="impact-dot" aria-hidden="true"></span>$3.4M</span>
-          <span class="impact-name">Host Onboarding</span>
-        </a>
-        <a href="/case-studies/host-dashboard.html" class="impact-item" style="--c:#035A3B">
-          <span class="impact-val"><span class="impact-dot" aria-hidden="true"></span>$1.5M</span>
-          <span class="impact-name">Host Dashboard</span>
-        </a>
-        <a href="/case-studies/lifecycle-campaigns.html" class="impact-item" style="--c:#00804F">
-          <span class="impact-val"><span class="impact-dot" aria-hidden="true"></span>$1.2M</span>
-          <span class="impact-name">Lifecycle Email</span>
-        </a>
-        <a href="/case-studies/pay-in-full.html" class="impact-item" style="--c:#01B36C">
-          <span class="impact-val"><span class="impact-dot" aria-hidden="true"></span>+$1M</span>
-          <span class="impact-name">Pay-in-Full</span>
-        </a>
-        <div class="impact-item" style="--c:#7DD4A8">
-          <span class="impact-val"><span class="impact-dot" aria-hidden="true"></span>$500K</span>
-          <span class="impact-name">Inspection &amp; Claims</span>
+    <!-- The trails: what I do -->
+    <section class="stop" id="what-i-do" data-stop="trails" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">The trails &middot; What I do</p>
+          <h2 class="stop-title">Four paths, one walker.</h2>
+          <ul class="trail-list">
+            <li><h3>Product design</h3><p>End-to-end UX and UI for web and native mobile, from research to shipped, measured features.</p></li>
+            <li><h3>Growth &amp; conversion</h3><p>Checkout, onboarding and lifecycle work tied to revenue, tested and measured in GMV.</p></li>
+            <li><h3>Design systems</h3><p>Token-based systems built in code first, mirrored in Figma, so design and engineering never drift.</p></li>
+            <li><h3>AI tooling</h3><p>Custom tools that let PMs, engineers and marketers design on-brand without waiting on design.</p></li>
+          </ul>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ====== Selected Work ====== -->
-  <section class="px-6 md:px-10 pb-26 md:pb-30">
-    <div class="max-w-7xl mx-auto">
-
-      <div class="section-divider reveal">
-        <span class="tag">Selected Work</span>
+    <!-- The grove: the work -->
+    <section class="stop" id="work" data-stop="grove" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">The grove &middot; Selected work</p>
+          <h2 class="stop-title">Every tree here grew from shipped work.</h2>
+          <p class="stop-body">The taller the tree, the bigger the impact: $8M+ in all, measured as revenue, GMV or savings. Follow a sign to read how each one grew.</p>
+          <ul class="grove-list">
+            <li><a href="/case-studies/host-onboarding.html" data-board="onboarding"><span>Host Onboarding</span><b>$3.4M</b></a></li>
+            <li><a href="/case-studies/host-dashboard.html" data-board="dashboard"><span>Host Dashboard</span><b>$1.5M</b></a></li>
+            <li><a href="/case-studies/lifecycle-campaigns.html" data-board="lifecycle"><span>Lifecycle Email</span><b>$1.2M</b></a></li>
+            <li><a href="/case-studies/pay-in-full.html" data-board="payinfull"><span>Pay-in-Full</span><b>+$1M</b></a></li>
+            <li><span class="grove-plain"><span>Inspection &amp; Claims</span><b>$500K</b></span></li>
+          </ul>
+          <a class="stop-link" href="/work.html" data-board="all">All projects <span aria-hidden="true">→</span></a>
+        </div>
       </div>
+    </section>
 
-      <div class="reveal-group">
-
-        <a href="https://datenight.online/welcome" target="_blank" rel="noopener" class="project-row reveal-child">
-          <span class="tag self-center">2026</span>
-          <div>
-            <p class="project-title">DateNight</p>
-            <p class="text-muted text-sm mt-1.5">Co-founded, designed, and built a dating app from concept to public launch. Currently in beta.</p>
-          </div>
-          <div class="hidden md:flex gap-4">
-            <span class="metric">Beta</span>
-          </div>
-        </a>
-
-        <a href="/case-studies/ai-figma-plugin.html" class="project-row reveal-child">
-          <span class="tag self-center">2025</span>
-          <div>
-            <p class="project-title" style="view-transition-name: cs-title-ai-figma-plugin">AI Figma Plugin</p>
-            <p class="text-muted text-sm mt-1.5">Prompt-to-component generation synced with the live design system</p>
-          </div>
-          <div class="hidden md:flex gap-4">
-            <span class="metric">AI &rarr; Figma</span>
-          </div>
-        </a>
-
-        <a href="/case-studies/pay-in-full.html" class="project-row reveal-child">
-          <span class="tag self-center">2025</span>
-          <div>
-            <p class="project-title" style="view-transition-name: cs-title-pay-in-full">Pay-in-Full Pricing</p>
-            <p class="text-muted text-sm mt-1.5">New payment model unlocking immediate revenue at checkout</p>
-          </div>
-          <div class="hidden md:flex gap-4">
-            <span class="metric">+$&nbsp;1M month one</span>
-            <span class="metric">+$&nbsp;3M proj. (Q1)</span>
-          </div>
-        </a>
-
-        <a href="/case-studies/host-dashboard.html" class="project-row reveal-child">
-          <span class="tag self-center">2024</span>
-          <div>
-            <p class="project-title" style="view-transition-name: cs-title-host-dashboard">Host Dashboard Redesign</p>
-            <p class="text-muted text-sm mt-1.5">Surfacing actionable data to drive host engagement and revenue</p>
-          </div>
-          <div class="hidden md:flex gap-4">
-            <span class="metric">+22%</span>
-            <span class="metric">$&nbsp;1.5M</span>
-          </div>
-        </a>
-
+    <!-- The sapling: DateNight -->
+    <section class="stop" data-stop="sapling" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">The sapling &middot; 2026</p>
+          <h2 class="stop-title">Still growing.</h2>
+          <p class="stop-body">DateNight is a dating app I co-founded, designed and built, from the first sketch to public launch. It&rsquo;s in beta now.</p>
+          <a class="stop-link" href="https://datenight.online/welcome" target="_blank" rel="noopener">Visit DateNight <span aria-hidden="true">→</span></a>
+        </div>
       </div>
+    </section>
 
-      <div class="reveal mt-10">
-        <a href="/work.html" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-ink hover:text-accent transition-colors duration-300">
-          All projects
-          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 8h10M9 4l4 4-4 4"/>
-          </svg>
-        </a>
+    <!-- The workshop: AI tools -->
+    <section class="stop" data-stop="workshop" data-side="right">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">The workshop &middot; Tools</p>
+          <h2 class="stop-title">Where the tools get made.</h2>
+          <p class="stop-body">I build the things that make a design team faster.</p>
+          <ul class="grove-list">
+            <li><a href="/case-studies/ai-figma-plugin.html"><span>AI Figma plugin</span><b>Prompt to component</b></a></li>
+            <li><a href="https://rvezy-email-builder.vercel.app/" target="_blank" rel="noopener"><span>Email builder</span><b>On-brand, no code</b></a></li>
+            <li><a href="/death-of-figma/"><span>The End of Figma</span><b>An essay</b></a></li>
+          </ul>
+        </div>
       </div>
+    </section>
 
-    </div>
-  </section>
-
-  <!-- ====== Brief About Strip ====== -->
-  <section class="px-6 md:px-10 py-22 md:py-26 bg-ink text-surface">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-20 items-start reveal">
-
-      <div>
-        <p class="tag text-faint mb-4">About</p>
-        <h2 class="font-display text-section text-surface">The short version.</h2>
+    <!-- The lookout: about -->
+    <section class="stop" id="about" data-stop="lookout" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">The lookout &middot; About</p>
+          <h2 class="stop-title">Between Ottawa and Vienna.</h2>
+          <p class="stop-body">I was the sole product designer at Canada&rsquo;s largest RV rental marketplace, where my work helped turn a $6M deficit into profit. I studied design, then technical management, and I learn by building. I work in English and French.</p>
+          <a class="stop-link" href="/about.html">The longer version <span aria-hidden="true">→</span></a>
+        </div>
       </div>
+    </section>
 
-      <div class="space-y-5 text-surface/70 text-base leading-relaxed max-w-2xl">
-        <p>
-          As the sole product designer at Canada's largest RV rental marketplace, I owned UX, UI, design systems, lifecycle, brand, and marketing design. My work helped move the company from a $6M deficit to profitability.
-        </p>
-        <p>
-          I also build tools. My AI-powered Figma plugin generates on-brand components from natural language, synced 1:1 with a coded design system.
-        </p>
-        <p>
-          I&rsquo;m a Senior Product Designer based between Ottawa, Canada and Vienna, Austria, working in English and French. I&rsquo;m open to freelance projects and to senior product design roles in Vienna, Ottawa, or remote.
-        </p>
-        <a href="/about.html" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent hover:text-surface transition-colors duration-300 mt-2">
-          Read more
-          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 8h10M9 4l4 4-4 4"/>
-          </svg>
-        </a>
+    <!-- The campfire: contact -->
+    <section class="stop" id="contact" data-stop="campfire" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">The campfire</p>
+          <h2 class="stop-title">Pull up a seat.</h2>
+          <p class="stop-body">Building something, or hiring? Either way, I&rsquo;d like to hear about it. I&rsquo;m open to freelance projects and full-time roles.</p>
+          <div class="stop-actions">
+            <a class="forest-pill forest-pill-lg" href="mailto:rriopel.design@gmail.com">Say hello</a>
+            <a class="stop-link" href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
       </div>
+    </section>
 
-    </div>
-  </section>
+  </main>
 
-  <!-- ====== Footer ====== -->
-  <footer class="px-6 md:px-10 py-10">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
-      <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
-      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Ottawa</span><span aria-hidden="true">&middot;</span><span>Vienna</span></p>
-      <div class="flex gap-6">
-        <a href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
-        <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>
-      </div>
-    </div>
-    <p class="footer-alt max-w-7xl mx-auto">
-      <a href="/de/" hreflang="de" lang="de">Deutsch</a><span aria-hidden="true">&middot;</span><a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a><span aria-hidden="true">&middot;</span><a href="/llms.txt">For AI assistants</a>
-    </p>
+  <footer class="forest-footer">
+    <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer &middot; Ottawa &middot; Vienna</p>
+    <p><a href="/de/" hreflang="de" lang="de">Deutsch</a> &middot; <a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a> &middot; <a href="/llms.txt">For AI assistants</a></p>
   </footer>
 
+  <div class="forest-hud">
+    <p class="hud-loading" id="forestLoading"><span class="hud-bar" aria-hidden="true"></span>Lighting the lanterns</p>
+    <button type="button" id="skipWalk" class="hud-btn">Skip the walk</button>
+    <button type="button" id="walkAgain" class="hud-btn">Walk the path</button>
+  </div>
+
+  <script>
+    // Walk the path only when the browser can, the visitor hasn't asked for less motion,
+    // and they haven't chosen to skip it. Otherwise the page stands on its own.
+    (function () {
+      var root = document.documentElement;
+      var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var skipped = false;
+      try { skipped = localStorage.getItem('forest-skip') === '1'; } catch (e) {}
+      var gl = false;
+      try { gl = !!document.createElement('canvas').getContext('webgl2'); } catch (e) {}
+      if (skipped) root.classList.add('forest-skipped');
+      if (!gl || reduce || skipped) { root.classList.add('forest-off'); return; }
+      root.classList.add('forest-on');
+      import('/js/forest.js').then(function (m) { return m.start(); }).catch(function (err) {
+        console.warn('[forest]', err);
+        root.classList.remove('forest-on');
+        root.classList.add('forest-off');
+      });
+    })();
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('#walkAgain')) return;
+      try { localStorage.removeItem('forest-skip'); } catch (err) {}
+      location.reload();
+    });
+  </script>
   <!-- Cloudflare Web Analytics (cookieless) --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7efe87006c69468396ae56c5120a8e95"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

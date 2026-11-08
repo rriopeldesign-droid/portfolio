@@ -80,26 +80,6 @@ function initNavIndicator() {
   group.addEventListener("pointerleave", () => (active ? moveTo(active) : moveTo(links[0], false)));
 }
 
-// ── Hero: a faint warm light that follows the cursor ─────────────────────────
-function initHeroGlow() {
-  const hero = document.querySelector(".hero");
-  const glow = hero && hero.querySelector(".hero-glow");
-  if (!glow || !finePointer || reduceMotion) return;
-  let tx = 70, ty = 30, x = tx, y = ty, raf = 0;
-  const loop = () => {
-    x += (tx - x) * 0.08; y += (ty - y) * 0.08;
-    glow.style.setProperty("--gx", `${x}%`);
-    glow.style.setProperty("--gy", `${y}%`);
-    raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.05 ? requestAnimationFrame(loop) : 0;
-  };
-  hero.addEventListener("pointermove", (e) => {
-    const r = hero.getBoundingClientRect();
-    tx = ((e.clientX - r.left) / r.width) * 100;
-    ty = ((e.clientY - r.top) / r.height) * 100;
-    if (!raf) raf = requestAnimationFrame(loop);
-  });
-}
-
 // ── Case studies: reading progress + section index ────────────────────────────
 function initReading() {
   const article = document.querySelector("article");
@@ -176,4 +156,4 @@ function initCopyEmail() {
   });
 }
 
-[initCounters, initMagnetic, initNavIndicator, initHeroGlow, initReading, initCopyEmail].forEach(ready);
+[initCounters, initMagnetic, initNavIndicator, initReading, initCopyEmail].forEach(ready);

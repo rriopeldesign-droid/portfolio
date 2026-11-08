@@ -49,7 +49,7 @@ export async function start() {
     camera.aspect = w / h;
     camera.fov = w / h < 0.8 ? 68 : 55;
     camera.updateProjectionMatrix();
-    world.setSize(w, h, renderer.getPixelRatio(), camera.fov);
+    world.setSize(h, renderer.getPixelRatio(), camera.fov);
     measure();
   };
   addEventListener("resize", resize);

@@ -163,14 +163,6 @@
     transition: color 0.3s ease;
   }
 
-  /* --- Proof link: each capability points at the work that proves it --- */
-  .proof-link {
-    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 1rem;
-    font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-    color: rgb(var(--c-accent)); text-decoration: none; transition: color 0.3s ease;
-  }
-  .proof-link:hover { color: rgb(var(--c-ink)); }
-
   /* --- Tag --- */
   .tag {
     display: inline-block;
@@ -254,12 +246,6 @@
 
   /* --- Hero --- */
   .hero { position: relative; isolation: isolate; }
-  .hero-glow {
-    position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0;
-    background: radial-gradient(520px circle at var(--gx, 70%) var(--gy, 30%), rgb(var(--c-jungle) / 0.08), transparent 70%);
-    transition: opacity 1.2s ease;
-  }
-  .hero:hover .hero-glow { opacity: 1; }
   .hero-word { display: inline-block; }
   .js .hero-word {
     opacity: 0; transform: translateY(0.3em);
@@ -276,18 +262,6 @@
   }
   .js .shimmer { animation: hero-word 1.1s var(--spring-soft) forwards, shimmer 1.8s ease-in-out 1.4s 1 both; }
   @keyframes shimmer { from { background-position: 100% 0; } to { background-position: 0% 0; } }
-
-  /* --- Impact strip (homepage) --- */
-  .impact-bar { display: flex; gap: 3px; height: 14px; border-radius: 999px; overflow: hidden; }
-  .impact-seg { flex: var(--v) 1 0; background: var(--c); }
-  .js .impact-bar .impact-seg { transform: scaleX(0); transform-origin: left center; transition: transform 1.2s var(--spring-soft); transition-delay: calc(var(--i, 0) * 0.08s); }
-  .js .visible .impact-bar .impact-seg { transform: none; }
-  .impact-legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 1.25rem 1.5rem; }
-  .impact-item { display: block; text-decoration: none; }
-  .impact-item .impact-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--c); margin-right: 0.5rem; vertical-align: 1px; }
-  .impact-item .impact-val { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.35rem; color: rgb(var(--c-ink)); font-variant-numeric: tabular-nums; }
-  .impact-item .impact-name { display: block; margin-top: 0.15rem; font-size: 0.8125rem; color: rgb(var(--c-muted)); transition: color 0.3s ease; }
-  a.impact-item:hover .impact-name { color: rgb(var(--c-accent)); }
 
   /* --- Results charts (inside the dark Results block) --- */
   .count-up { font-variant-numeric: tabular-nums; }
@@ -337,48 +311,6 @@
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 }
 
-@layer utilities {
-  /* --- Game styles (preserved) --- */
-  #game { font-size: 0; }
-  .cell {
-    width: calc(100vh / 20);
-    height: calc(100vh / 20);
-    background-color: #1e293b;
-    image-rendering: pixelated;
-  }
-  .cell-wall  { background-color: #4b5563; }
-  .cell-path  { background-color: #9ca3af; }
-  .cell-player {
-    background-color: transparent;
-    background-image: url('/img/hamburger.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .cell-key {
-    background-color: transparent;
-    background-image: url('/img/key.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .cell-door {
-    background-color: transparent;
-    background-image: url('/img/door.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .cell-chest {
-    background-color: transparent;
-    background-image: url('/img/chest.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-}
-
-
 /* ============================
    TEXTURE: a whisper of paper grain
    ============================ */
@@ -405,11 +337,10 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .js .reveal, .js .reveal-child, .js .hero-word, .js .shimmer,
   .js .reveal .case-img, .js .reveal .case-img img,
-  .js .impact-bar .impact-seg, .js .viz .viz-bar {
+  .js .viz .viz-bar {
     opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important;
   }
   .shimmer { background-position: 0 0; }
   .btn-magnetic, .project-row { transform: none !important; }
-  .hero-glow { display: none !important; }
   html { scroll-behavior: auto; }
 }

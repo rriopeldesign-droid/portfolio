@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="/img/favicon.png" />
-  <title>Robert Riopel | Product Designer · Ottawa &amp; Vienna</title>
-  <meta name="description" content="Robert Riopel designs products that move metrics and builds the AI tools that make the work faster. $8M+ in measured impact. Ottawa and Vienna." />
-  <!-- Prototype: not indexed until it replaces the homepage -->
-  <meta name="robots" content="noindex" />
   <meta name="theme-color" content="#010609" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,7 +15,7 @@
 
   <nav class="forest-nav">
     <div class="forest-nav-row">
-      <a href="/" class="forest-logo" aria-label="Robert Riopel, home">RR</a>
+      <a href="{{home}}" class="forest-logo" aria-label="{{homeLabel}}">RR</a>
       <div class="forest-links">
         <a href="/work.html" class="nav-link">Work</a>
         <a href="/about.html" class="nav-link">About</a>
@@ -55,10 +45,10 @@
     <section class="stop stop-arrival" data-stop="arrival" data-side="left">
       <div class="stop-inner">
         <div class="stop-card">
-          <p class="stop-tag">Product designer · Ottawa &amp; Vienna</p>
-          <h1 class="stop-name">Robert<br />Riopel</h1>
-          <p class="stop-lede">I design products that move metrics, and build the AI tools that make the work faster. $8M+ in measured impact.</p>
-          <p class="stop-cue"><span class="cue-line" aria-hidden="true"></span>Scroll to walk the path</p>
+          <p class="stop-tag">{{arrivalTag}}</p>
+          <h1 class="stop-name">Robert <br />Riopel</h1>
+          <p class="stop-lede">{{arrivalLede}}</p>
+          <p class="stop-cue"><span class="cue-line" aria-hidden="true"></span>{{cue}}</p>
         </div>
       </div>
     </section>
@@ -67,13 +57,13 @@
     <section class="stop" id="what-i-do" data-stop="trails" data-side="left">
       <div class="stop-inner">
         <div class="stop-card">
-          <p class="stop-tag">The trails · What I do</p>
-          <h2 class="stop-title">Four paths, one walker.</h2>
+          <p class="stop-tag">{{trailsTag}}</p>
+          <h2 class="stop-title">{{trailsTitle}}</h2>
           <ul class="trail-list">
-            <li><h3>Product design</h3><p>End-to-end UX and UI for web and native mobile, from research to shipped, measured features.</p></li>
-            <li><h3>Growth &amp; conversion</h3><p>Checkout, onboarding and lifecycle work tied to revenue, tested and measured in GMV.</p></li>
-            <li><h3>Design systems</h3><p>Token-based systems built in code first, mirrored in Figma, so design and engineering never drift.</p></li>
-            <li><h3>AI tooling</h3><p>Custom tools that let PMs, engineers and marketers design on-brand without waiting on design.</p></li>
+            <li><h3>{{t1}}</h3><p>{{t1p}}</p></li>
+            <li><h3>{{t2}}</h3><p>{{t2p}}</p></li>
+            <li><h3>{{t3}}</h3><p>{{t3p}}</p></li>
+            <li><h3>{{t4}}</h3><p>{{t4p}}</p></li>
           </ul>
         </div>
       </div>
@@ -83,17 +73,17 @@
     <section class="stop" id="work" data-stop="grove" data-side="left">
       <div class="stop-inner">
         <div class="stop-card">
-          <p class="stop-tag">The grove · Selected work</p>
-          <h2 class="stop-title">Every tree here grew from shipped work.</h2>
-          <p class="stop-body">The taller the tree, the bigger the impact: $8M+ in all, measured as revenue, GMV or savings. Follow a sign to read how each one grew.</p>
+          <p class="stop-tag">{{groveTag}}</p>
+          <h2 class="stop-title">{{groveTitle}}</h2>
+          <p class="stop-body">{{groveBody}}</p>
           <ul class="grove-list">
-            <li><a href="/case-studies/host-onboarding.html" data-board="onboarding"><span>Host Onboarding</span><b>$3.4M</b></a></li>
-            <li><a href="/case-studies/host-dashboard.html" data-board="dashboard"><span>Host Dashboard</span><b>$1.5M</b></a></li>
-            <li><a href="/case-studies/lifecycle-campaigns.html" data-board="lifecycle"><span>Lifecycle Email</span><b>$1.2M</b></a></li>
-            <li><a href="/case-studies/pay-in-full.html" data-board="payinfull"><span>Pay-in-Full</span><b>+$1M</b></a></li>
-            <li><span class="grove-plain"><span>Inspection &amp; Claims</span><b>$500K</b></span></li>
+            <li><a href="/case-studies/host-onboarding.html"{{en}} data-board="onboarding"><span>Host Onboarding</span><b>{{v1}}</b></a></li>
+            <li><a href="/case-studies/host-dashboard.html"{{en}} data-board="dashboard"><span>Host Dashboard</span><b>{{v2}}</b></a></li>
+            <li><a href="/case-studies/lifecycle-campaigns.html"{{en}} data-board="lifecycle"><span>Lifecycle Email</span><b>{{v3}}</b></a></li>
+            <li><a href="/case-studies/pay-in-full.html"{{en}} data-board="payinfull"><span>Pay-in-Full</span><b>{{v4}}</b></a></li>
+            <li><span class="grove-plain"><span>Inspection &amp; Claims</span><b>{{v5}}</b></span></li>
           </ul>
-          <a class="stop-link" href="/work.html" data-board="all">All projects <span aria-hidden="true">→</span></a>
+          <a class="stop-link" href="/work.html"{{en}} data-board="all">{{allWork}} <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -102,10 +92,10 @@
     <section class="stop" data-stop="sapling" data-side="left">
       <div class="stop-inner">
         <div class="stop-card">
-          <p class="stop-tag">The sapling · 2026</p>
-          <h2 class="stop-title">Still growing.</h2>
-          <p class="stop-body">DateNight is a dating app I co-founded, designed and built, from the first sketch to public launch. It&rsquo;s in beta now.</p>
-          <a class="stop-link" href="https://datenight.online/welcome" target="_blank" rel="noopener">Visit DateNight <span aria-hidden="true">→</span></a>
+          <p class="stop-tag">{{saplingTag}}</p>
+          <h2 class="stop-title">{{saplingTitle}}</h2>
+          <p class="stop-body">{{saplingBody}}</p>
+          <a class="stop-link" href="https://datenight.online/welcome" target="_blank" rel="noopener">{{saplingLink}} <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -114,13 +104,13 @@
     <section class="stop" data-stop="workshop" data-side="right">
       <div class="stop-inner">
         <div class="stop-card">
-          <p class="stop-tag">The workshop · Tools</p>
-          <h2 class="stop-title">Where the tools get made.</h2>
-          <p class="stop-body">I build the things that make a design team faster.</p>
+          <p class="stop-tag">{{workshopTag}}</p>
+          <h2 class="stop-title">{{workshopTitle}}</h2>
+          <p class="stop-body">{{workshopBody}}</p>
           <ul class="grove-list">
-            <li><a href="/case-studies/ai-figma-plugin.html"><span>AI Figma plugin</span><b>Prompt to component</b></a></li>
-            <li><a href="https://rvezy-email-builder.vercel.app/" target="_blank" rel="noopener"><span>Email builder</span><b>On-brand, no code</b></a></li>
-            <li><a href="/death-of-figma/"><span>The End of Figma</span><b>An essay</b></a></li>
+            <li><a href="/case-studies/ai-figma-plugin.html"{{en}}><span>{{w1}}</span><b>{{w1b}}</b></a></li>
+            <li><a href="https://rvezy-email-builder.vercel.app/" target="_blank" rel="noopener"><span>{{w2}}</span><b>{{w2b}}</b></a></li>
+            <li><a href="/death-of-figma/"{{en}}><span>The End of Figma</span><b>{{w3b}}</b></a></li>
           </ul>
         </div>
       </div>
@@ -130,10 +120,10 @@
     <section class="stop" id="about" data-stop="lookout" data-side="left">
       <div class="stop-inner">
         <div class="stop-card">
-          <p class="stop-tag">The lookout · About</p>
-          <h2 class="stop-title">Between Ottawa and Vienna.</h2>
-          <p class="stop-body">I was the sole product designer at Canada&rsquo;s largest RV rental marketplace, where my work helped turn a $6M deficit into profit. I studied design, then technical management, and I learn by building. I work in English and French.</p>
-          <a class="stop-link" href="/about.html">The longer version <span aria-hidden="true">→</span></a>
+          <p class="stop-tag">{{lookoutTag}}</p>
+          <h2 class="stop-title">{{lookoutTitle}}</h2>
+          <p class="stop-body">{{lookoutBody}}</p>
+          <a class="stop-link" href="/about.html"{{en}}>{{lookoutLink}} <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -142,11 +132,11 @@
     <section class="stop" id="contact" data-stop="campfire" data-side="left">
       <div class="stop-inner">
         <div class="stop-card">
-          <p class="stop-tag">The campfire</p>
-          <h2 class="stop-title">Pull up a seat.</h2>
-          <p class="stop-body">Building something, or hiring? Either way, I&rsquo;d like to hear about it. I&rsquo;m open to freelance projects and full-time roles.</p>
+          <p class="stop-tag">{{campTag}}</p>
+          <h2 class="stop-title">{{campTitle}}</h2>
+          <p class="stop-body">{{campBody}}</p>
           <div class="stop-actions">
-            <a class="forest-pill forest-pill-lg" href="mailto:rriopel.design@gmail.com">Say hello</a>
+            <a class="forest-pill forest-pill-lg" href="mailto:rriopel.design@gmail.com">{{hello}}</a>
             <a class="stop-link" href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">→</span></a>
           </div>
         </div>
@@ -156,14 +146,14 @@
   </main>
 
   <footer class="forest-footer">
-    <p>&copy; 2026 Robert Riopel &middot; Ottawa &middot; Vienna</p>
-    <p><a href="/de/" hreflang="de" lang="de">Deutsch</a> &middot; <a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a> &middot; <a href="/llms.txt">For AI assistants</a></p>
+    <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer &middot; Ottawa &middot; Vienna</p>
+    <p>{{langs}} &middot; <a href="/llms.txt">For AI assistants</a></p>
   </footer>
 
   <div class="forest-hud">
-    <p class="hud-loading" id="forestLoading"><span class="hud-bar" aria-hidden="true"></span>Lighting the lanterns</p>
-    <button type="button" id="skipWalk" class="hud-btn">Skip the walk</button>
-    <button type="button" id="walkAgain" class="hud-btn">Walk the path</button>
+    <p class="hud-loading" id="forestLoading"><span class="hud-bar" aria-hidden="true"></span>{{loading}}</p>
+    <button type="button" id="skipWalk" class="hud-btn">{{skip}}</button>
+    <button type="button" id="walkAgain" class="hud-btn">{{walk}}</button>
   </div>
 
   <script>
@@ -191,5 +181,6 @@
       location.reload();
     });
   </script>
+  <!-- Cloudflare Web Analytics (cookieless) --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7efe87006c69468396ae56c5120a8e95"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

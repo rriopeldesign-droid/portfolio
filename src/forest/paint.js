@@ -48,7 +48,6 @@ class Painter {
     this.anchors = {};
   }
   rand(a, b) { return a + (b - a) * this.r(); }
-  pick(arr) { return arr[Math.floor(this.r() * arr.length)]; }
   anchor(name, x, y) { this.anchors[name] = [x / this.w, 1 - y / this.h]; }
 
   // Pack the four layers into one texture (rows flipped for WebGL, so flipY stays off)
@@ -126,13 +125,12 @@ function walk(p, x, y, ang, len, steps, { turn = 0.3, bias = 0, toward = UP, kin
 }
 
 // Irregular blob (foliage clumps, rocks, mushroom caps)
-function blob(ctx, p, cx, cy, rx, ry, { rough = 0.25, verts = 22, spike = 0, rot = 0 } = {}) {
+function blob(ctx, p, cx, cy, rx, ry, { rough = 0.25, verts = 22, rot = 0 } = {}) {
   ctx.beginPath();
   const off = p.r() * 100;
   for (let i = 0; i <= verts; i++) {
     const t = (i / verts) * TAU;
     let k = 1 + p.n(off + i * 0.7) * rough;
-    if (spike && i % 2) k *= 1 + spike * (0.4 + p.r() * 0.6);
     const x = Math.cos(t) * rx * k, y = Math.sin(t) * ry * k;
     const xr = x * Math.cos(rot) - y * Math.sin(rot), yr = x * Math.sin(rot) + y * Math.cos(rot);
     i ? ctx.lineTo(cx + xr, cy + yr) : ctx.moveTo(cx + xr, cy + yr);

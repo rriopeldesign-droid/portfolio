@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Robert Riopel portfolio",
   "scripts": {
-    "build": "npm run build:css && npm run build:motion && npm run build:forest",
+    "build": "npm run build:home && npm run build:css && npm run build:motion && npm run build:forest",
+    "build:home": "node scripts/build-home.mjs",
     "build:css": "tailwindcss -i src/input.css -o css/style.css --minify",
     "build:motion": "esbuild src/motion-entry.js --bundle --format=esm --minify --target=es2020 --outfile=js/vendor/motion.js",
     "watch": "tailwindcss -i src/input.css -o css/style.css --watch",

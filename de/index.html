@@ -60,170 +60,189 @@
     }
   }
   </script>
+  <meta name="theme-color" content="#010609" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/forest.css" />
   <script src="/js/script.js" defer></script>
-  <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="bg-surface text-ink font-body">
 
-  <nav class="sticky top-0 z-50 nav-glass">
-    <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
+<body class="forest-page">
+  <div class="forest-sky" aria-hidden="true"><div class="forest-moon"></div></div>
+  <canvas id="forest-canvas" aria-hidden="true"></canvas>
+  <div class="forest-vignette" aria-hidden="true"></div>
 
-      <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
-        RR
-      </a>
-
-      <div class="hidden md:flex gap-8 items-center">
+  <nav class="forest-nav">
+    <div class="forest-nav-row">
+      <a href="/de/" class="forest-logo" aria-label="Robert Riopel, Startseite">RR</a>
+      <div class="forest-links">
         <a href="/work.html" class="nav-link">Work</a>
         <a href="/about.html" class="nav-link">About</a>
         <a href="/death-of-figma/" class="nav-link">Figma</a>
         <a href="/fun.html" class="nav-link">Fun</a>
-        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-peach hover:text-ink">
-          Contact
-        </a>
+        <a href="mailto:rriopel.design@gmail.com" class="forest-pill">Contact</a>
       </div>
-
-      <button id="navToggle" class="md:hidden text-ink" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+      <button id="navToggle" class="forest-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <line x1="4" y1="7" x2="20" y2="7" style="transition: all 0.3s ease"/>
           <line x1="4" y1="17" x2="20" y2="17" style="transition: all 0.3s ease"/>
         </svg>
       </button>
     </div>
-
-    <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
-      <a href="/work.html" class="block nav-link py-1">Work</a>
-      <a href="/about.html" class="block nav-link py-1">About</a>
-      <a href="/death-of-figma/" class="block nav-link py-1">Figma</a>
-      <a href="/fun.html" class="block nav-link py-1">Fun</a>
-      <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
+    <div id="mobileMenu" class="forest-menu hidden">
+      <a href="/work.html" class="nav-link">Work</a>
+      <a href="/about.html" class="nav-link">About</a>
+      <a href="/death-of-figma/" class="nav-link">Figma</a>
+      <a href="/fun.html" class="nav-link">Fun</a>
+      <a href="mailto:rriopel.design@gmail.com" class="nav-link">Contact</a>
     </div>
   </nav>
 
-  <header class="px-6 md:px-10 pt-16 sm:pt-22 md:pt-26 pb-16">
-    <div class="max-w-7xl mx-auto reveal">
-      <p class="tag mb-6">Robert Riopel, Senior Product Designer &middot; Ottawa &amp; Wien</p>
-      <h1 class="font-display text-section md:text-hero max-w-5xl">Produkte, die Kennzahlen bewegen.</h1>
-      <p class="mt-10 text-muted text-base sm:text-lg leading-relaxed max-w-2xl">Ich bin Senior Product Designer mit Sitz in Wien und Ottawa. Ich gestalte digitale Produkte von der Strategie bis zum ausgelieferten Feature, und ich messe meine Arbeit an Ergebnissen: über 8 Mio. US-Dollar messbarer Geschäftserfolg.</p>
-      <p class="mt-6"><a href="/" hreflang="en" lang="en" class="text-sm font-semibold uppercase tracking-widest text-muted hover:text-ink transition-colors duration-300">→ English version</a></p>
-    </div>
-  </header>
+  <main id="journey">
 
-  <section class="px-6 md:px-10 pb-22">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-20 items-start reveal">
-      <div>
-        <h2 class="font-display text-2xl font-bold">Über mich</h2>
-      </div>
-      <div class="space-y-5 text-muted text-base leading-relaxed max-w-2xl">
-        <p>Ich war der einzige Product Designer bei Kanadas größtem Marktplatz für Wohnmobilvermietung. Dort verantwortete ich UX und UI, das Designsystem, Lifecycle- und E-Mail-Design, Marke und Marketing. Meine Arbeit hat dazu beigetragen, das Unternehmen von einem Defizit von 6 Mio. US-Dollar in die Profitabilität zu führen.</p>
-        <p>Ich arbeite eng mit Produktmanagement, Data und Engineering zusammen, teste Entscheidungen mit A/B-Tests und baue Werkzeuge, die Design im ganzen Team skalieren, zum Beispiel ein KI-gestütztes Figma-Plugin, das Komponenten direkt aus dem Designsystem erzeugt.</p>
-        <p>Ich arbeite auf Englisch und Französisch. Ich bin offen für Freelance-Projekte und Senior-Product-Design-Rollen in Wien, in Ottawa oder remote.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="px-6 md:px-10 pb-22">
-    <div class="max-w-7xl mx-auto">
-      <div class="section-divider reveal">
-        <span class="tag">Schwerpunkte</span>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 reveal-group">
-        <div class="reveal-child">
-          <h3 class="text-sm font-semibold mb-3 uppercase tracking-widest">Product Design</h3>
-          <p class="text-sm text-muted leading-relaxed">End-to-End-UX und -UI für Web und native Mobile-Apps, von der Recherche bis zum gemessenen Release.</p>
-        </div>
-        <div class="reveal-child">
-          <h3 class="text-sm font-semibold mb-3 uppercase tracking-widest">Wachstum &amp; Conversion</h3>
-          <p class="text-sm text-muted leading-relaxed">Checkout, Onboarding und Lifecycle, direkt an Umsatz gekoppelt und mit A/B-Tests belegt.</p>
-        </div>
-        <div class="reveal-child">
-          <h3 class="text-sm font-semibold mb-3 uppercase tracking-widest">Designsysteme</h3>
-          <p class="text-sm text-muted leading-relaxed">Token-basierte Systeme mit Tailwind CSS und Vue, synchron mit Figma, ohne Abweichungen zwischen Design und Code.</p>
-        </div>
-        <div class="reveal-child">
-          <h3 class="text-sm font-semibold mb-3 uppercase tracking-widest">KI-Tools</h3>
-          <p class="text-sm text-muted leading-relaxed">Eigene Werkzeuge wie ein KI-Figma-Plugin, mit dem PMs, Engineers und Marketing markenkonform gestalten.</p>
+    <!-- Arrival -->
+    <section class="stop stop-arrival" data-stop="arrival" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">Senior Product Designer &middot; Wien &amp; Ottawa</p>
+          <h1 class="stop-name">Robert <br />Riopel</h1>
+          <p class="stop-lede">Ich gestalte Produkte, die Kennzahlen bewegen, und baue die KI-Tools, die die Arbeit schneller machen. Über 8 Mio. $ messbarer Erfolg.</p>
+          <p class="stop-cue"><span class="cue-line" aria-hidden="true"></span>Scrollen, um den Weg zu gehen</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="px-6 md:px-10 pb-22">
-    <div class="max-w-7xl mx-auto">
-      <div class="section-divider reveal">
-        <span class="tag">Ausgewählte Projekte</span>
+    <!-- The trails: what I do -->
+    <section class="stop" id="what-i-do" data-stop="trails" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">Die Pfade &middot; Was ich mache</p>
+          <h2 class="stop-title">Vier Pfade, ein Wanderer.</h2>
+          <ul class="trail-list">
+            <li><h3>Product Design</h3><p>End-to-End-UX und -UI für Web und native Mobile-Apps, von der Recherche bis zum gemessenen Release.</p></li>
+            <li><h3>Wachstum &amp; Conversion</h3><p>Checkout, Onboarding und Lifecycle, direkt an Umsatz gekoppelt und mit A/B-Tests belegt.</p></li>
+            <li><h3>Designsysteme</h3><p>Token-basierte Systeme, zuerst im Code gebaut und in Figma gespiegelt, damit Design und Engineering nie auseinanderlaufen.</p></li>
+            <li><h3>KI-Tools</h3><p>Eigene Werkzeuge, mit denen PMs, Engineers und Marketing markenkonform gestalten, ohne auf das Design zu warten.</p></li>
+          </ul>
+        </div>
       </div>
-      <p class="text-muted text-sm mb-6 reveal">Die ausführlichen Fallstudien sind auf Englisch verfügbar.</p>
-      <div class="reveal-group">
-        <a href="/case-studies/pay-in-full.html" hreflang="en" class="project-row reveal-child">
-          <span class="tag self-center">2025</span>
-          <div>
-            <p class="project-title" style="view-transition-name: cs-title-pay-in-full">Pay-in-Full Pricing</p>
-            <p class="text-muted text-sm mt-1.5">Neue Zahlungsoption im Checkout mit sofortigem Umsatz</p>
-          </div>
-          <div class="hidden md:flex gap-4">
-            <span class="metric">+1 Mio. $</span>
-          </div>
-        </a>
-        <a href="/case-studies/host-onboarding.html" hreflang="en" class="project-row reveal-child">
-          <span class="tag self-center">2022–23</span>
-          <div>
-            <p class="project-title" style="view-transition-name: cs-title-host-onboarding">Host Onboarding Overhaul</p>
-            <p class="text-muted text-sm mt-1.5">Neu gestaltetes Onboarding für Vermieter, +27 % Aktivierung</p>
-          </div>
-          <div class="hidden md:flex gap-4">
-            <span class="metric">+3,4 Mio. $</span>
-          </div>
-        </a>
-        <a href="/case-studies/host-dashboard.html" hreflang="en" class="project-row reveal-child">
-          <span class="tag self-center">2024</span>
-          <div>
-            <p class="project-title" style="view-transition-name: cs-title-host-dashboard">Host Dashboard Redesign</p>
-            <p class="text-muted text-sm mt-1.5">Handlungsorientiertes Dashboard, +22 % Engagement</p>
-          </div>
-          <div class="hidden md:flex gap-4">
-            <span class="metric">+1,5 Mio. $</span>
-          </div>
-        </a>
-        <a href="/case-studies/ai-figma-plugin.html" hreflang="en" class="project-row reveal-child">
-          <span class="tag self-center">2025</span>
-          <div>
-            <p class="project-title" style="view-transition-name: cs-title-ai-figma-plugin">AI Figma Plugin</p>
-            <p class="text-muted text-sm mt-1.5">Komponenten aus natürlicher Sprache, synchron mit dem Designsystem</p>
-          </div>
-          <div class="hidden md:flex gap-4">
-            <span class="metric">KI → Figma</span>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="px-6 md:px-10 py-22 bg-ink text-surface">
-    <div class="max-w-7xl mx-auto reveal">
-      <h2 class="font-display text-section text-surface max-w-2xl mb-6">Lassen Sie uns sprechen.</h2>
-      <p class="text-surface/70 text-base max-w-lg mb-10 leading-relaxed">Ich freue mich über Nachrichten zu Product-Design-Rollen, KI-Tools oder spannenden Produktproblemen, ob in Wien, Ottawa oder remote.</p>
-      <a href="mailto:rriopel.design@gmail.com" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent hover:text-surface transition-colors duration-300">E-Mail schreiben &rarr;</a>
-    </div>
-  </section>
-
-  <footer class="border-t border-border px-8 md:px-12 py-10">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
-      <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
-      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Ottawa</span><span aria-hidden="true">&middot;</span><span>Vienna</span></p>
-      <div class="flex gap-6">
-        <a href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
-        <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>
+    <!-- The grove: the work -->
+    <section class="stop" id="work" data-stop="grove" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">Der Hain &middot; Ausgewählte Projekte</p>
+          <h2 class="stop-title">Jeder Baum hier wuchs aus veröffentlichter Arbeit.</h2>
+          <p class="stop-body">Je höher der Baum, desto größer die Wirkung: insgesamt über 8 Mio. $, gemessen als Umsatz, GMV oder Einsparungen. Folgen Sie einem Wegweiser, um zu lesen, wie jeder gewachsen ist. Die Fallstudien sind auf Englisch.</p>
+          <ul class="grove-list">
+            <li><a href="/case-studies/host-onboarding.html" hreflang="en" data-board="onboarding"><span>Host Onboarding</span><b>3,4 Mio. $</b></a></li>
+            <li><a href="/case-studies/host-dashboard.html" hreflang="en" data-board="dashboard"><span>Host Dashboard</span><b>1,5 Mio. $</b></a></li>
+            <li><a href="/case-studies/lifecycle-campaigns.html" hreflang="en" data-board="lifecycle"><span>Lifecycle Email</span><b>1,2 Mio. $</b></a></li>
+            <li><a href="/case-studies/pay-in-full.html" hreflang="en" data-board="payinfull"><span>Pay-in-Full</span><b>+1 Mio. $</b></a></li>
+            <li><span class="grove-plain"><span>Inspection &amp; Claims</span><b>500.000 $</b></span></li>
+          </ul>
+          <a class="stop-link" href="/work.html" hreflang="en" data-board="all">Alle Projekte <span aria-hidden="true">→</span></a>
+        </div>
       </div>
-    </div>
-    <p class="footer-alt max-w-7xl mx-auto">
-      <a href="/de/" hreflang="de" lang="de">Deutsch</a><span aria-hidden="true">&middot;</span><a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a><span aria-hidden="true">&middot;</span><a href="/llms.txt">For AI assistants</a>
-    </p>
+    </section>
+
+    <!-- The sapling: DateNight -->
+    <section class="stop" data-stop="sapling" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">Der Setzling &middot; 2026</p>
+          <h2 class="stop-title">Wächst noch.</h2>
+          <p class="stop-body">DateNight ist eine Dating-App, die ich mitgegründet, gestaltet und gebaut habe, von der ersten Skizze bis zum öffentlichen Start. Sie ist jetzt in der Beta.</p>
+          <a class="stop-link" href="https://datenight.online/welcome" target="_blank" rel="noopener">DateNight besuchen <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- The workshop: AI tools -->
+    <section class="stop" data-stop="workshop" data-side="right">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">Die Werkstatt &middot; Werkzeuge</p>
+          <h2 class="stop-title">Wo die Werkzeuge entstehen.</h2>
+          <p class="stop-body">Ich baue Dinge, die ein Designteam schneller machen.</p>
+          <ul class="grove-list">
+            <li><a href="/case-studies/ai-figma-plugin.html" hreflang="en"><span>KI-Figma-Plugin</span><b>Vom Prompt zur Komponente</b></a></li>
+            <li><a href="https://rvezy-email-builder.vercel.app/" target="_blank" rel="noopener"><span>E-Mail-Builder</span><b>Markenkonform, ohne Code</b></a></li>
+            <li><a href="/death-of-figma/" hreflang="en"><span>The End of Figma</span><b>Ein Essay</b></a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- The lookout: about -->
+    <section class="stop" id="about" data-stop="lookout" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">Der Aussichtspunkt &middot; Über mich</p>
+          <h2 class="stop-title">Zwischen Wien und Ottawa.</h2>
+          <p class="stop-body">Ich war der einzige Product Designer bei Kanadas größtem Marktplatz für Wohnmobilvermietung, und meine Arbeit hat geholfen, ein Defizit von 6 Mio. US-Dollar in Gewinn zu verwandeln. Ich habe Design und danach Technical Management studiert, und ich lerne, indem ich baue. Ich arbeite auf Englisch und Französisch.</p>
+          <a class="stop-link" href="/about.html" hreflang="en">Die ausführliche Version <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- The campfire: contact -->
+    <section class="stop" id="contact" data-stop="campfire" data-side="left">
+      <div class="stop-inner">
+        <div class="stop-card">
+          <p class="stop-tag">Das Lagerfeuer</p>
+          <h2 class="stop-title">Setzen Sie sich dazu.</h2>
+          <p class="stop-body">Sie bauen etwas oder suchen Verstärkung? So oder so freue ich mich, davon zu hören. Ich bin offen für Freelance-Projekte und Festanstellungen, in Wien, Ottawa oder remote.</p>
+          <div class="stop-actions">
+            <a class="forest-pill forest-pill-lg" href="mailto:rriopel.design@gmail.com">Schreiben Sie mir</a>
+            <a class="stop-link" href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="forest-footer">
+    <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer &middot; Ottawa &middot; Vienna</p>
+    <p><a href="/" hreflang="en" lang="en">English</a> &middot; <a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a> &middot; <a href="/llms.txt">For AI assistants</a></p>
   </footer>
+
+  <div class="forest-hud">
+    <p class="hud-loading" id="forestLoading"><span class="hud-bar" aria-hidden="true"></span>Die Laternen werden entzündet</p>
+    <button type="button" id="skipWalk" class="hud-btn">Weg überspringen</button>
+    <button type="button" id="walkAgain" class="hud-btn">Den Weg gehen</button>
+  </div>
+
+  <script>
+    // Walk the path only when the browser can, the visitor hasn't asked for less motion,
+    // and they haven't chosen to skip it. Otherwise the page stands on its own.
+    (function () {
+      var root = document.documentElement;
+      var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var skipped = false;
+      try { skipped = localStorage.getItem('forest-skip') === '1'; } catch (e) {}
+      var gl = false;
+      try { gl = !!document.createElement('canvas').getContext('webgl2'); } catch (e) {}
+      if (skipped) root.classList.add('forest-skipped');
+      if (!gl || reduce || skipped) { root.classList.add('forest-off'); return; }
+      root.classList.add('forest-on');
+      import('/js/forest.js').then(function (m) { return m.start(); }).catch(function (err) {
+        console.warn('[forest]', err);
+        root.classList.remove('forest-on');
+        root.classList.add('forest-off');
+      });
+    })();
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('#walkAgain')) return;
+      try { localStorage.removeItem('forest-skip'); } catch (err) {}
+      location.reload();
+    });
+  </script>
   <!-- Cloudflare Web Analytics (cookieless) --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7efe87006c69468396ae56c5120a8e95"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
