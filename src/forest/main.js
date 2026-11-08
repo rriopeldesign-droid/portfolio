@@ -185,6 +185,7 @@ export async function start() {
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
+  if (/[?&]debug\b/.test(location.search)) window.__forest = { world, renderer, camera };
 
   // Skip the walk: stop rendering and show the page plainly
   document.getElementById("skipWalk")?.addEventListener("click", () => {

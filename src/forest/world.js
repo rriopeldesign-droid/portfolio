@@ -29,16 +29,38 @@ export const C = {
   path: hex(0x111a17),
 };
 
-// Where the walker stands at each stop, and where each landmark lives
+// Where the walker stands at each stop, and how far the day has turned to night there
 export const STOPS = [
-  { id: "arrival", cam: 9, look: 0 },
-  { id: "trails", cam: -15, look: 1.8 },
-  { id: "grove", cam: -41, look: 2.2, lookPortrait: 3.6 }, // portrait turns further, so the waypost is in frame
-  { id: "sapling", cam: -69, look: 1.3 },
-  { id: "workshop", cam: -92, look: -2.4 },
-  { id: "lookout", cam: -117, look: 3.4 },
-  { id: "campfire", cam: -141, look: 0.4 },
+  { id: "arrival", cam: 9, look: 0, night: 0 },
+  { id: "trails", cam: -15, look: 1.8, night: 0.16 },
+  { id: "grove", cam: -41, look: 2.2, lookPortrait: 3.6, night: 0.36 }, // portrait turns further, so the waypost is in frame
+  { id: "sapling", cam: -69, look: 1.3, night: 0.56 },
+  { id: "workshop", cam: -92, look: -2.4, night: 0.74 },
+  { id: "lookout", cam: -117, look: 3.4, night: 0.9 },
+  { id: "campfire", cam: -141, look: 0.4, night: 1 },
 ];
+const nightAt = (z) => {
+  if (z >= STOPS[0].cam) return 0;
+  for (let i = 0; i < STOPS.length - 1; i++) {
+    const a = STOPS[i], b = STOPS[i + 1];
+    if (z >= b.cam) return a.night + (b.night - a.night) * ((a.cam - z) / (a.cam - b.cam));
+  }
+  return 1;
+};
+
+// The light along the walk: late golden afternoon at the start, sunset at the grove,
+// blue hour by the sapling, full moonlit night from the workshop on.
+// "moon" is whatever lights the edges: low gold sun by day, cold teal moon by night.
+const TIME = [
+  { n: 0, top: 0x4b6c78, horizon: 0xe9ad86, halo: 0xffcb94, fog: 0x56695f, fogLow: 0x667158, base: 0x132b1c, moon: 0xffcd8c,
+    ground: 0x1b2919, path: 0x584833, ridge0: 0xc9a48a, ridge1: 0xa69a88, ridge2: 0x8a8f80, density: 0.018, lx: 0.95, ly: 0.32 },
+  { n: 0.36, top: 0x33455e, horizon: 0xdb8a6c, halo: 0xeea082, fog: 0x45525a, fogLow: 0x5c5957, base: 0x10211b, moon: 0xf6ae90,
+    ground: 0x152019, path: 0x36332d, ridge0: 0x4e5966, ridge1: 0x424e5a, ridge2: 0x36434d, density: 0.026, lx: 0.95, ly: 0.4 },
+  { n: 0.62, top: 0x131e35, horizon: 0x374b5f, halo: 0x89737f, fog: 0x1b2f34, fogLow: 0x283c3e, base: 0x08160f, moon: 0x9cc0bf,
+    ground: 0x07100c, path: 0x19211e, ridge0: 0x213539, ridge1: 0x1b2f32, ridge2: 0x16292b, density: 0.03, lx: 0.8, ly: 0.62 },
+  { n: 1, top: 0x010609, horizon: 0x1a3f3b, halo: 0x8f6556, fog: 0x0c2624, fogLow: 0x123532, base: 0x040e0a, moon: 0x8fbdb2,
+    ground: 0x030a07, path: 0x111a17, ridge0: 0x143532, ridge1: 0x11312e, ridge2: 0x0c2624, density: 0.031, lx: 0.72, ly: 0.7 },
+].map((k) => Object.fromEntries(Object.entries(k).map(([key, v]) => [key, typeof v === "number" && v > 2 ? hex(v) : v])));
 
 // The grove: each project is a tree, grown by its impact. The waypost at the edge of the
 // grove carries one arrow board per project; the boards are the links.
@@ -90,17 +112,19 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     uFog: { value: C.fog },
     uFogLow: { value: C.fogLow },
     uFogDensity: { value: 0.031 },
+    uNight: { value: 0 },
+    uLightDir: { value: new Vector3(0.72, 0.7, 0) },
   };
 
   // ── Paint every texture, yielding between each so the page stays responsive ──
   const specs = {
-    gnarledA: () => P.paintGnarled(11, { W: q(768), H: q(1536), glow: 0.55 }),
-    gnarledB: () => P.paintGnarled(29, { W: q(768), H: q(1536), glow: 0.3 }),
+    gnarledA: () => P.paintGnarled(11, { W: q(1024), H: q(1536), glow: 0.55 }),
+    gnarledB: () => P.paintGnarled(29, { W: q(1024), H: q(1536), glow: 0.3 }),
     // The same tree with something looking out of its hollow; only planted deep in the forest
-    gnarledEyes: () => P.paintGnarled(29, { W: q(768), H: q(1536), glow: 0.3, hollowEyes: true }),
-    gnarledC: () => P.paintGnarled(47, { W: q(768), H: q(1536), glow: 0.8, crown: 0.8 }),
-    groveA: () => P.paintGnarled(83, { W: q(768), H: q(1536), glow: 1, roots: 1.4, crown: 0.9 }),
-    groveB: () => P.paintGnarled(97, { W: q(768), H: q(1536), glow: 1, roots: 1.3, crown: 1 }),
+    gnarledEyes: () => P.paintGnarled(29, { W: q(1024), H: q(1536), glow: 0.3, hollowEyes: true }),
+    gnarledC: () => P.paintGnarled(47, { W: q(1024), H: q(1536), glow: 0.8, crown: 0.8 }),
+    groveA: () => P.paintGnarled(83, { W: q(1024), H: q(1536), glow: 1, roots: 1.4, crown: 0.9 }),
+    groveB: () => P.paintGnarled(97, { W: q(1024), H: q(1536), glow: 1, roots: 1.3, crown: 1 }),
     cedarA: () => P.paintCedar(5, { W: q(640), H: q(1536) }),
     cedarB: () => P.paintCedar(17, { W: q(640), H: q(1536) }),
     cedarC: () => P.paintCedar(23, { W: q(512), H: q(1280) }),
@@ -281,7 +305,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   let lside = 1;
   for (let z = -1; z > -150; z -= 7.6) {
     // Leave room at the waypost (it has its own lantern) and around the sapling
-    if (Math.abs(z - WAYPOST.z) < 3.5 || Math.abs(z + 79) < 3.5) { lside = -lside; continue; }
+    if (Math.abs(z - WAYPOST.z) < 3.5 || Math.abs(z + 79) < 3.5 || z < -140) { lside = -lside; continue; } // the fire lights the end
     const dx = 2.3 * lside; // far enough out that the lantern on its arm hangs at the path edge, not over it
     const item = place("post", at(dx, z), 0, z, 2.9, { flip: -lside, sway: 0.15, glow: 0, shade: 1, rim: 0.4 });
     const pos = anchorPos(item, "lantern");
@@ -356,7 +380,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     vertexShader: S.flameVert, fragmentShader: S.flameFrag, transparent: true, depthWrite: false, blending: AdditiveBlending,
   }));
   flame.position.set(fireX, 0.18, -149.95);
-  flame.scale.set(1.25, 1.9, 1);
+  flame.scale.set(1.3, 1.7, 1);
   flame.renderOrder = 6;
   scene.add(flame);
 
@@ -397,6 +421,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   const sky = new Mesh(new PlaneGeometry(1, 1), new ShaderMaterial({
     uniforms: {
       ...common, uRes: { value: new Vector3(1, 1, 0) }, uYaw: { value: 0 }, uPitch: { value: 0 }, uDrift: { value: 0 },
+      uSunH: { value: 0.12 }, uSunA: { value: 1 }, uMoonA: { value: 0 }, uSun: { value: C.moon },
       uTop: { value: C.top }, uHorizon: { value: C.horizon }, uHalo: { value: C.halo },
       uRidge0: { value: C.ridge0 }, uRidge1: { value: C.ridge1 }, uRidge2: { value: C.ridge2 },
     },
@@ -408,11 +433,29 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
 
   // ── Ground ──
   const ground = new Mesh(new PlaneGeometry(260, 300).rotateX(-Math.PI / 2), new ShaderMaterial({
-    uniforms: { ...common, uGround: { value: C.ground }, uPath: { value: C.path } },
+    uniforms: { ...common, uGround: { value: C.ground }, uPath: { value: C.path }, uMoon: { value: C.moon } },
     vertexShader: S.groundVert, fragmentShader: S.groundFrag,
   }));
   ground.position.set(0, 0, -90);
   scene.add(ground);
+
+  const mistGeo0 = new PlaneGeometry(1, 1).translate(0, 0.5, 0);
+  // ── Sun shafts: slanting beams of late light through the first stretch of trees ──
+  const shaftMat = new ShaderMaterial({
+    uniforms: { ...common, uSun: { value: C.moon }, uShaft: { value: 1 } },
+    vertexShader: S.mistVert, fragmentShader: S.shaftFrag,
+    transparent: true, depthWrite: false, blending: AdditiveBlending,
+  });
+  const shafts = [];
+  for (let z = 14; z > -62; z -= R(5, 8)) {
+    const m = new Mesh(mistGeo0, shaftMat.clone());
+    m.material.uniforms = { ...shaftMat.uniforms, uSeed: { value: rnd() } };
+    m.position.set(at(R(-7, 7), z), -0.5, z);
+    m.scale.set(R(9, 15), R(13, 18), 1);
+    m.renderOrder = 3;
+    scene.add(m);
+    shafts.push(m);
+  }
 
   // ── Mist banks ──
   const mistGeo = new PlaneGeometry(1, 1).translate(0, 0.5, 0);
@@ -439,7 +482,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   ffGeo.setAttribute("position", new Float32BufferAttribute(ffPos, 3));
   ffGeo.setAttribute("aSeed", new Float32BufferAttribute(ffSeed, 4));
   const ffMat = new ShaderMaterial({
-    uniforms: { uTime: common.uTime, uCamZ: { value: 0 }, uScale: { value: 800 }, uGlow: { value: C.glow } },
+    uniforms: { uTime: common.uTime, uCamZ: { value: 0 }, uScale: { value: 800 }, uGlow: { value: C.glow }, uNight: common.uNight },
     vertexShader: S.fireflyVert, fragmentShader: S.fireflyFrag, transparent: true, depthWrite: false, blending: AdditiveBlending,
   });
   const fireflies = new Points(ffGeo, ffMat);
@@ -492,14 +535,36 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   const ranked = [];
   let revealT = 0;
 
+  const lerpKeys = (n) => {
+    let i = 0;
+    while (i < TIME.length - 2 && n > TIME[i + 1].n) i++;
+    const a = TIME[i], b = TIME[i + 1], k = Math.min(1, Math.max(0, (n - a.n) / (b.n - a.n)));
+    for (const key of ["top", "horizon", "halo", "fog", "fogLow", "base", "moon", "ground", "path", "ridge0", "ridge1", "ridge2"]) {
+      C[key].lerpVectors(a[key], b[key], k);
+    }
+    common.uFogDensity.value = a.density + (b.density - a.density) * k;
+    common.uLightDir.value.set(a.lx + (b.lx - a.lx) * k, a.ly + (b.ly - a.ly) * k, 0);
+  };
+  const sm = (a, b, x) => { const u = Math.min(1, Math.max(0, (x - a) / (b - a))); return u * u * (3 - 2 * u); };
+  let night = 0;
+
   function update(t, dt, cam, pointer) {
     common.uTime.value = t;
     const camZ = cam.position.z;
+    // The day turns as you walk
+    night = nightAt(camZ);
+    common.uNight.value = night;
+    lerpKeys(night);
+    const su = sky.material.uniforms;
+    su.uSunH.value = 0.13 - 0.2 * sm(0, 0.42, night);   // the sun sinks behind the ridges by the grove
+    su.uSunA.value = 1 - sm(0.36, 0.5, night);
+    su.uMoonA.value = sm(0.48, 0.75, night);
+    shaftMat.uniforms.uShaft.value = 1 - sm(0.12, 0.34, night);
     ffMat.uniforms.uCamZ.value = camZ;
 
     // Lanterns ignite one by one ahead of the walker, then flicker
     for (const l of lights) {
-      if (l.ignite !== null && l.target === 0 && camZ - l.ignite < 24) { l.target = 1; l.delay = (camZ - l.ignite) > 0 ? R(0, 0.5) : 0; }
+      if (l.ignite !== null && l.target === 0 && camZ - l.ignite < 24 && night > 0.26) { l.target = 1; l.delay = (camZ - l.ignite) > 0 ? R(0, 0.5) : 0; }
       if (l.target > l.lit) {
         if ((l.delay -= dt) > 0) continue;
         l.lit = Math.min(1, l.lit + dt * (0.9 + rnd() * 2) * (rnd() < 0.3 ? 0.2 : 1));
@@ -619,6 +684,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
       wMat.uniforms.uScale.value = scale;
     },
     igniteNear(camZ) {
+      if (nightAt(camZ) <= 0.26) return;
       for (const l of lights) if (l.ignite !== null && camZ - l.ignite < 24) { l.target = 1; l.delay = Math.max(0, (camZ - l.ignite)) * 0.09 + 0.5; }
     },
   };

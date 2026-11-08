@@ -114,6 +114,11 @@ function walk(p, x, y, ang, len, steps, { turn = 0.3, bias = 0, toward = UP, kin
   for (let i = 1; i <= steps; i++) {
     a += (p.r() - 0.5) * turn + (toward - a) * bias;
     if (kink && p.r() < kink) a += (p.r() - 0.5) * 1.1; // angular, knuckled turns
+    // Keep inside the canvas, so no crown is ever sliced by the texture's edge
+    const mg = p.w * 0.1;
+    if (x < mg) a += (UP + 0.75 - a) * 0.4;
+    else if (x > p.w - mg) a += (UP - 0.75 - a) * 0.4;
+    if (y < p.h * 0.05) a += ((Math.cos(a) >= 0 ? -0.15 : -Math.PI + 0.15) - a) * 0.4;
     x += Math.cos(a) * step; y += Math.sin(a) * step;
     pts.push([x, y]);
   }
@@ -134,6 +139,37 @@ function blob(ctx, p, cx, cy, rx, ry, { rough = 0.25, verts = 22, spike = 0, rot
   }
   ctx.closePath();
   ctx.fill();
+}
+
+// A canopy built from rounded, scalloped leaf masses. Lower masses overlap higher ones,
+// and each is shaded underneath (detail layer), so the crown reads as volume, not a flat cutout.
+function canopy(p, clumps) {
+  const { m, d, n, w: W } = p;
+  clumps.sort((a, b) => a[1] - b[1]);
+  for (let [x, y, r] of clumps) {
+    const pad = r * 1.18 + 6;
+    x = Math.min(W - pad, Math.max(pad, x));
+    y = Math.max(pad, y);
+    const path = new Path2D();
+    const L = Math.round(p.rand(5, 9)), ph = p.rand(0, TAU), off = p.r() * 100;
+    for (let i = 0; i <= 64; i++) {
+      const t = (i / 64) * TAU;
+      const k = 0.84 + 0.16 * Math.pow(Math.abs(Math.sin(t * L * 0.5 + ph)), 0.5) + n(off + t * 2.2) * 0.07
+        + Math.sin(t * 41 + ph) * 0.012;
+      const px = x + Math.cos(t) * r * k * 1.08, py = y + Math.sin(t) * r * k * 0.92;
+      i ? path.lineTo(px, py) : path.moveTo(px, py);
+    }
+    path.closePath();
+    m.fill(path);
+    // Clear the shading of masses behind, then shade this one's underside
+    d.globalCompositeOperation = "destination-out"; d.fill(path); d.globalCompositeOperation = "source-over";
+    d.save(); d.clip(path);
+    d.globalAlpha = 0.62;
+    d.beginPath(); d.ellipse(x - r * 0.12, y + r * 0.72, r * 1.1, r * 0.78, 0, 0, TAU); d.fill();
+    d.globalAlpha = 0.35;
+    for (let s = 0; s < 7; s++) dot(d, x + p.rand(-r, r) * 0.8, y + p.rand(-r * 0.2, r * 0.9), p.rand(1.5, r * 0.08 + 2));
+    d.restore(); d.globalAlpha = 1;
+  }
 }
 
 function dot(ctx, x, y, r) { ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill(); }
@@ -172,22 +208,23 @@ function branches(p, ctx, x, y, ang, len, w, depth, opts, tips) {
 // ── Painters ─────────────────────────────────────────────────────────────────
 
 // An ancient broadleaf: a massive twisted trunk, flaring roots, a dark crown.
-export function paintGnarled(seed, { W = 768, H = 1536, glow = 0.5, crown = 1, hollowEyes = false, roots = 1 } = {}) {
+export function paintGnarled(seed, { W = 1024, H = 1536, glow = 0.5, crown = 1, hollowEyes = false, roots = 1 } = {}) {
   const p = new Painter(W, H, seed);
   const { m, g, d, n } = p;
+  const U = H * 0.5; // sizes follow the height; the extra width is room for the crown
   const ground = H * 0.985;
   const topY = H * p.rand(0.44, 0.52);
   const N = 70;
-  const x0 = W * p.rand(0.44, 0.56);
+  const x0 = W * p.rand(0.46, 0.54);
   const lean = p.rand(-0.08, 0.08);
   const trunk = [];
   for (let i = 0; i <= N; i++) {
     const t = i / N;
-    trunk.push([x0 + n(t * 2.6 + 3) * W * 0.06 + lean * t * W + Math.sin(t * 7 + seed) * W * 0.01, ground - t * (ground - topY)]);
+    trunk.push([x0 + n(t * 2.6 + 3) * U * 0.06 + lean * t * U + Math.sin(t * 7 + seed) * U * 0.01, ground - t * (ground - topY)]);
   }
-  const baseW = W * p.rand(0.12, 0.16), topW = W * 0.04;
-  const widthAt = (t) => baseW * (1 - t) + topW * t + Math.exp(-t * 10) * W * 0.13;
-  ribbon(m, trunk, widthAt, W * 0.012, n);
+  const baseW = U * p.rand(0.12, 0.16), topW = U * 0.04;
+  const widthAt = (t) => baseW * (1 - t) + topW * t + Math.exp(-t * 10) * U * 0.13;
+  ribbon(m, trunk, widthAt, U * 0.012, n);
 
   // Roots: buttresses that flare from the trunk and dive into the soil, never out across the path
   const rootCount = Math.round(p.rand(4, 6) * roots);
@@ -195,16 +232,16 @@ export function paintGnarled(seed, { W = 768, H = 1536, glow = 0.5, crown = 1, h
     const side = k % 2 ? 1 : -1;
     const sx = x0 + side * baseW * p.rand(0.05, 0.35);
     const sy = ground - H * p.rand(0.035, 0.075);
-    const len = Math.min(W * p.rand(0.1, 0.2), side > 0 ? W - sx - 30 : sx - 30);
+    const len = Math.min(U * p.rand(0.1, 0.2), side > 0 ? W - sx - 30 : sx - 30);
     const sink = ground + H * 0.014; // ends below the soil line, where the texture fades out
     const pts = [];
     for (let i = 0; i <= 20; i++) {
       const t = i / 20;
-      pts.push([sx + side * len * Math.pow(t, 0.85) + n(t * 3 + k * 9) * W * 0.008,
+      pts.push([sx + side * len * Math.pow(t, 0.85) + n(t * 3 + k * 9) * U * 0.008,
         sy + (sink - sy) * (1 - Math.pow(1 - t, 1.6)) - Math.sin(t * Math.PI) * H * 0.006]);
     }
-    const rw = W * p.rand(0.05, 0.08);
-    ribbon(m, pts, (t) => rw * (1 - 0.7 * Math.pow(t, 0.9)), W * 0.004, n);
+    const rw = U * p.rand(0.05, 0.08);
+    ribbon(m, pts, (t) => rw * (1 - 0.7 * Math.pow(t, 0.9)), U * 0.004, n);
     // Bioluminescent veins and spores along the root
     if (glow > 0) {
       g.globalAlpha = 0.5 * glow;
@@ -233,15 +270,20 @@ export function paintGnarled(seed, { W = 768, H = 1536, glow = 0.5, crown = 1, h
   for (let k = 0; k < 3; k++) branches(p, m, top[0], top[1], UP + (k - 1) * 0.5, H * 0.14, topW * 0.9, 3, { spread: 0.6 }, tips);
 
   if (crown > 0) {
+    const clumps = [];
     for (const [x, y] of tips) {
-      const c = Math.round(p.rand(1, 3) * crown);
+      const c = Math.round(p.rand(1, 2.4) * crown);
       for (let i = 0; i < c; i++) {
-        const rr = W * p.rand(0.035, 0.085) * crown;
-        blob(m, p, x + p.rand(-rr, rr), y + p.rand(-rr, rr * 0.5), rr * p.rand(1, 1.6), rr, { rough: 0.45, verts: 26, spike: 0.35 });
-        // Texture inside the canopy
-        for (let s = 0; s < 6; s++) dot(d, x + p.rand(-rr, rr), y + p.rand(-rr, rr), p.rand(2, 6));
+        const rr = U * p.rand(0.05, 0.085) * crown;
+        clumps.push([x + p.rand(-rr, rr) * 0.6, y + p.rand(-rr * 0.5, rr * 0.3), rr]);
       }
     }
+    // Fill the heart of the crown so it reads as one canopy, not loose puffs
+    for (let i = 0; i < tips.length; i += 2) {
+      const [x, y] = tips[i];
+      clumps.push([top[0] + (x - top[0]) * 0.62, top[1] + (y - top[1]) * 0.62, U * p.rand(0.07, 0.1) * crown]);
+    }
+    canopy(p, clumps);
   }
 
   // Bark cracks
@@ -280,7 +322,7 @@ export function paintGnarled(seed, { W = 768, H = 1536, glow = 0.5, crown = 1, h
       const side = p.r() < 0.5 ? -1 : 1;
       const ex = x + side * widthAt(t) * 0.5;
       for (let s = 0; s < 3; s++) {
-        const fw = W * p.rand(0.012, 0.03), fy = y + s * fw * 0.9;
+        const fw = U * p.rand(0.012, 0.03), fy = y + s * fw * 0.9;
         for (const ctx of [m, g]) {
           ctx.beginPath();
           ctx.ellipse(ex + side * fw * 0.3, fy, fw, fw * 0.32, 0, side > 0 ? -Math.PI / 2 : Math.PI / 2, side > 0 ? Math.PI / 2 : Math.PI * 1.5, side < 0);
@@ -322,7 +364,7 @@ export function paintCedar(seed, { W = 640, H = 1536, spire = true } = {}) {
       if (p.r() < 0.12 && t > 0.3) continue; // a missing branch here and there
       const droop = len * p.rand(0.28, 0.5);
       const pts = [[tx, y - len * 0.05]];
-      const segs = 14;
+      const segs = 36; // fine serration reads as needles, not teeth
       for (let i = 1; i <= segs; i++) {
         const u = i / segs;
         pts.push([tx + s * len * u, y - len * 0.03 * Math.sin(u * Math.PI) + droop * u]);
@@ -331,9 +373,9 @@ export function paintCedar(seed, { W = 640, H = 1536, spire = true } = {}) {
       for (let i = segs; i >= 0; i--) {
         const u = i / segs;
         const base = [tx + s * len * u, y + droop * u];
-        const hang = H * 0.022 * (1 - u * 0.5) * (0.5 + p.r());
-        pts.push([base[0] + s * p.rand(-3, 3), base[1] + hang]);
-        pts.push([base[0] - s * len * 0.02, base[1] + hang * 0.3]);
+        const hang = H * 0.015 * (1 - u * 0.45) * (0.55 + 0.9 * p.r()) * (0.75 + 0.25 * Math.sin(u * 9 + seed));
+        pts.push([base[0] + s * p.rand(-2, 2), base[1] + hang]);
+        pts.push([base[0] - s * len * 0.008, base[1] + hang * 0.45]);
       }
       poly(m, pts);
       for (let k = 0; k < 4; k++) dot(d, tx + s * len * p.rand(0.2, 0.9), y + droop * 0.4 + p.rand(-4, 8), p.rand(1.5, 4));
@@ -363,10 +405,11 @@ export function paintDead(seed, { W = 768, H = 1280 } = {}) {
   for (let k = 0; k < 4; k++) {
     const side = k % 2 ? 1 : -1;
     const sx = x0 + side * bw * 0.3;
-    const len = Math.min(W * p.rand(0.12, 0.28), side > 0 ? W - sx - 8 : sx - 8);
+    const len = Math.min(W * p.rand(0.08, 0.15), side > 0 ? W - sx - 30 : sx - 30);
     const pts = [];
-    for (let i = 0; i <= 16; i++) { const t = i / 16; pts.push([sx + side * len * t, ground - H * 0.03 * (1 - t) - Math.sin(t * 3) * 4]); }
-    ribbon(m, pts, (t) => bw * 0.4 * (1 - t) + 1.5, 2, n);
+    const sink = ground + H * 0.014;
+    for (let i = 0; i <= 16; i++) { const t = i / 16; pts.push([sx + side * len * Math.pow(t, 0.85), ground - H * 0.035 + (sink - ground + H * 0.035) * (1 - Math.pow(1 - t, 1.6))]); }
+    ribbon(m, pts, (t) => bw * 0.55 * (1 - 0.7 * t), 2, n);
   }
   const tips = [];
   const limbs = Math.round(p.rand(3, 5));
@@ -427,9 +470,10 @@ export function paintGrass(seed, { W = 1024, H = 256, spores = 0.03 } = {}) {
   const { m, g, n } = p;
   const blades = Math.round(W * 0.28);
   for (let k = 0; k < blades; k++) {
-    const x = p.rand(0, W);
+    const x = p.rand(W * 0.05, W * 0.95);
     const clump = (n(x * 0.012) + 1) * 0.5;
-    const h = H * (0.18 + 0.78 * clump * p.rand(0.5, 1));
+    const env = Math.pow(Math.sin((Math.PI * x) / W), 0.7); // tufts thin out at the ends, no hard edges
+    const h = H * (0.18 + 0.78 * clump * p.rand(0.5, 1)) * env;
     const bw = p.rand(2.5, 7);
     const bend = (p.r() - 0.5) * h * 0.55 + n(x * 0.02 + 40) * h * 0.25;
     poly(m, [[x - bw, H], [x - bw * 0.3 + bend * 0.45, H - h * 0.55], [x + bend, H - h], [x + bw * 0.3 + bend * 0.5, H - h * 0.5], [x + bw, H]]);
