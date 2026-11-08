@@ -6,6 +6,8 @@ import { buildWorld, pathX, STOPS } from "./world.js";
 ColorManagement.enabled = false;
 
 const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+// Smootherstep: starts and ends a walk more gently than smoothstep
+const smoother = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * t * (t * (t * 6 - 15) + 10); };
 const lerp = (a, b, t) => a + (b - a) * t;
 
 export async function start() {
@@ -34,7 +36,9 @@ export async function start() {
   const measure = () => {
     anchors = sections.map((el) => {
       const top = el.offsetTop, h = el.offsetHeight;
-      return { el, h, s: top + h / 2 - innerHeight / 2, stop: byId[el.dataset.stop] };
+      const st = byId[el.dataset.stop];
+      const stop = st && innerWidth / innerHeight < 0.8 && st.lookPortrait != null ? { ...st, look: st.lookPortrait } : st;
+      return { el, h, s: top + h / 2 - innerHeight / 2, stop };
     }).filter((a) => a.stop);
   };
 
@@ -53,10 +57,11 @@ export async function start() {
   document.fonts?.ready.then(measure);
   addEventListener("load", measure);
 
-  // Scroll position → where the walker should be (and how far each card has faded)
+  // Scroll drives a soft, spring-damped "walker position". The camera and the cards both read
+  // from it, so the words arrive with the walker instead of ahead of it.
   const target = { z: STOPS[0].cam, look: 0 };
-  const readScroll = () => {
-    const y = scrollY;
+  const walker = { y: scrollY, v: 0 };
+  const readScroll = (y) => {
     if (!anchors.length) return;
     if (y <= anchors[0].s) { target.z = anchors[0].stop.cam; target.look = anchors[0].stop.look; }
     else if (y >= anchors[anchors.length - 1].s) { const a = anchors[anchors.length - 1]; target.z = a.stop.cam; target.look = a.stop.look; }
@@ -64,8 +69,8 @@ export async function start() {
       for (let i = 0; i < anchors.length - 1; i++) {
         const a = anchors[i], b = anchors[i + 1];
         if (y >= a.s && y <= b.s) {
-          // Linger at each stop, then walk
-          const t = smooth(0.18, 0.82, (y - a.s) / (b.s - a.s));
+          // Linger at each stop, then walk on
+          const t = smoother(0.2, 0.8, (y - a.s) / (b.s - a.s));
           target.z = lerp(a.stop.cam, b.stop.cam, t);
           target.look = lerp(a.stop.look, b.stop.look, t);
           break;
@@ -74,12 +79,14 @@ export async function start() {
     }
     anchors.forEach((a, i) => {
       const d = y - a.s;
-      let o = 1 - smooth(a.h * 0.16, a.h * 0.36, Math.abs(d));
+      let o = 1 - smooth(a.h * 0.14, a.h * 0.32, Math.abs(d));
       if (i === 0 && d < 0) o = 1;
       if (i === anchors.length - 1 && d > 0) o = 1;
       if (Math.abs((a.o ?? -1) - o) > 0.003) {
         a.o = o;
         a.el.style.setProperty("--o", o.toFixed(3));
+        // Cards rise in from below and leave upward, in the direction of travel
+        a.el.style.setProperty("--dy", d < 0 ? "22px" : "-22px");
         a.el.classList.toggle("is-near", o > 0.5);
       }
     });
@@ -93,16 +100,18 @@ export async function start() {
     pointer.nx = (e.clientX / innerWidth) * 2 - 1;
     pointer.ny = (e.clientY / innerHeight) * 2 - 1;
   }, { passive: true });
-  const label = document.createElement("div");
-  label.className = "forest-label";
-  label.setAttribute("aria-hidden", "true");
-  document.body.appendChild(label);
   let hovered = null;
-  canvas.addEventListener("click", () => { if (hovered?.url) location.href = hovered.url; });
-  // Clicks land on the page above the canvas, so listen there too, but only on empty space
+  // Clicks land on the page above the canvas; on empty space, see if a waypost board is there
   document.addEventListener("click", (e) => {
-    if (!hovered?.url || e.target.closest("a, button, .stop-card")) return;
-    location.href = hovered.url;
+    if (e.target.closest("a, button, .stop-card, .forest-nav, .forest-hud")) return;
+    const b = world.pick(e.clientX, e.clientY);
+    if (b?.url) location.href = b.url;
+  });
+  // Hovering a project in the card lights its board and its tree
+  document.querySelectorAll("[data-board]").forEach((el) => {
+    const on = () => world.focus(el.dataset.board), off = () => world.focus(null);
+    el.addEventListener("pointerenter", on); el.addEventListener("pointerleave", off);
+    el.addEventListener("focus", on); el.addEventListener("blur", off);
   });
 
   // ── The walk ──
@@ -110,6 +119,9 @@ export async function start() {
   const camPos = new Vector3(), lookAt = new Vector3();
   let last = performance.now(), t0 = last, frames = 0, slow = 0, running = true;
 
+  // Start where the page already is (a reload halfway down should not walk from the start)
+  readScroll(walker.y);
+  cam.z = target.z; cam.look = target.look;
   world.igniteNear(cam.z);
 
   function frame(now) {
@@ -118,12 +130,16 @@ export async function start() {
     last = now;
     const t = (now - t0) / 1000;
 
-    readScroll();
-    const k = 1 - Math.exp(-dt * 2.4);
-    const dz = (target.z - cam.z) * k;
-    cam.z += dz;
+    // Critically damped spring toward the real scroll position: eases in and out, never overshoots
+    const w = 3.4;
+    walker.v += (w * w * (scrollY - walker.y) - 2 * w * walker.v) * dt;
+    walker.y += walker.v * dt;
+    if (Math.abs(scrollY - walker.y) < 0.5 && Math.abs(walker.v) < 1) { walker.y = scrollY; walker.v = 0; }
+    readScroll(walker.y);
+    const dz = target.z - cam.z;
+    cam.z = target.z;
     cam.dist += Math.abs(dz);
-    cam.look += (target.look - cam.look) * k;
+    cam.look += (target.look - cam.look) * Math.min(1, dt * 6);
     look.x += (pointer.nx - look.x) * Math.min(1, dt * 2);
     look.y += (pointer.ny - look.y) * Math.min(1, dt * 2);
 
@@ -139,11 +155,8 @@ export async function start() {
     const res = world.update(t, dt, camera, coarse ? null : pointer);
     if (res.hovered !== hovered) {
       hovered = res.hovered;
-      document.body.classList.toggle("lantern-hover", !!hovered?.url);
-      if (hovered) label.innerHTML = `<span>${hovered.name}</span><b>${hovered.value}</b>`;
-      label.classList.toggle("show", !!hovered);
+      document.body.classList.toggle("sign-hover", !!hovered?.url);
     }
-    if (hovered) label.style.transform = `translate(${hovered.screen.x + 18}px, ${hovered.screen.y - 14}px)`;
 
     renderer.render(world.scene, camera);
 

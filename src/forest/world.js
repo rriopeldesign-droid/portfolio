@@ -33,20 +33,27 @@ export const C = {
 export const STOPS = [
   { id: "arrival", cam: 9, look: 0 },
   { id: "trails", cam: -15, look: 1.8 },
-  { id: "grove", cam: -41, look: 2.2 },
+  { id: "grove", cam: -41, look: 2.2, lookPortrait: 3.6 }, // portrait turns further, so the waypost is in frame
   { id: "sapling", cam: -69, look: 1.3 },
   { id: "workshop", cam: -92, look: -2.4 },
   { id: "lookout", cam: -117, look: 3.4 },
   { id: "campfire", cam: -141, look: 0.4 },
 ];
 
+// The grove: each project is a tree, grown by its impact. The waypost at the edge of the
+// grove carries one arrow board per project; the boards are the links.
 export const PROJECTS = [
-  { name: "Host Onboarding", value: "$3.4M", impact: 3.4, url: "/case-studies/host-onboarding.html", dx: 3.1, z: -59 },
-  { name: "Host Dashboard", value: "$1.5M", impact: 1.5, url: "/case-studies/host-dashboard.html", dx: 7.6, z: -54 },
-  { name: "Lifecycle Email", value: "$1.2M", impact: 1.2, url: "/case-studies/lifecycle-campaigns.html", dx: 11.5, z: -62 },
-  { name: "Pay-in-Full", value: "+$1M", impact: 1.0, url: "/case-studies/pay-in-full.html", dx: 6.2, z: -68 },
-  { name: "Inspection & Claims", value: "$500K", impact: 0.5, url: null, dx: 15, z: -57 },
+  { id: "onboarding", name: "Host Onboarding", value: "$3.4M", impact: 3.4, url: "/case-studies/host-onboarding.html", dx: 6.2, z: -60 },
+  { id: "dashboard", name: "Host Dashboard", value: "$1.5M", impact: 1.5, url: "/case-studies/host-dashboard.html", dx: 9.4, z: -54.5 },
+  { id: "lifecycle", name: "Lifecycle Email", value: "$1.2M", impact: 1.2, url: "/case-studies/lifecycle-campaigns.html", dx: 13, z: -63 },
+  { id: "payinfull", name: "Pay-in-Full", value: "+$1M", impact: 1.0, url: "/case-studies/pay-in-full.html", dx: 7.4, z: -69 },
+  { id: "claims", name: "Inspection & Claims", value: "$500K", impact: 0.5, url: null, dx: 16, z: -58 },
 ];
+const BOARDS = [
+  ...PROJECTS.filter((p) => p.url).map((p) => ({ id: p.id, name: p.name, value: p.value, url: p.url, tree: p.id })),
+  { id: "all", name: "All the work", value: "", url: "/work.html", tree: null },
+];
+const WAYPOST = { dx: 2.6, z: -47.5 };
 
 // Yield to the browser between paint jobs without timer throttling (background tabs clamp setTimeout)
 const chan = typeof MessageChannel !== "undefined" ? new MessageChannel() : null;
@@ -110,9 +117,17 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     figure: () => P.paintFigure(67, { W: q(448), H: q(1536) }),
     hand: () => P.paintHand(71, { W: q(640), H: q(384) }),
     post: () => P.paintLanternPost(73, { W: q(320), H: q(896) }),
-    hanging: () => P.paintHangingLantern(79, { W: q(160), H: q(768) }),
+    waypost: () => P.paintWaypost(79, { W: q(512), H: q(1024) }),
     campfire: () => P.paintCampfire(89, { W: q(640), H: q(256) }),
   };
+  // The boards carry words, so wait (briefly) for the page fonts before painting them
+  await Promise.race([
+    Promise.all([document.fonts?.load('600 64px "Inter Tight"'), document.fonts?.load("800 64px Syne")]),
+    new Promise((r) => setTimeout(r, 2500)),
+  ]).catch(() => {});
+  BOARDS.forEach((b, i) => {
+    specs["board" + i] = () => P.paintBoard(101 + i * 7, { W: q(1152), H: q(208), name: b.name.toUpperCase(), value: b.value, dir: 1 });
+  });
   const packs = {};
   const keys = Object.keys(specs);
   const tPaint = performance.now();
@@ -259,7 +274,9 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   // Lanterns along the path; they light as the walker approaches
   let lside = 1;
   for (let z = -1; z > -150; z -= 7.6) {
-    const dx = 1.85 * lside;
+    // Leave room at the waypost (it has its own lantern) and around the sapling
+    if (Math.abs(z - WAYPOST.z) < 3.5 || Math.abs(z + 79) < 3.5) { lside = -lside; continue; }
+    const dx = 2.3 * lside; // far enough out that the lantern on its arm hangs at the path edge, not over it
     const item = place("post", at(dx, z), 0, z, 2.9, { flip: -lside, sway: 0.15, glow: 0, shade: 1, rim: 0.4 });
     const pos = anchorPos(item, "lantern");
     const l = addLight(pos, 1.0, { ignite: z, item });
@@ -272,21 +289,32 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   void sign;
 
   // The grove: one tree per project, its height grown from its impact
-  const grove = [];
+  const trees = {};
   PROJECTS.forEach((pr, i) => {
     const h = 7 + pr.impact * 5.2;
     const x = at(pr.dx, pr.z);
-    place(i % 2 ? "groveB" : "groveA", x, 0, pr.z, h, { glow: 2.2, shade: 0.9, flip: i % 2 ? -1 : 1 });
+    const tree = place(i % 2 ? "groveB" : "groveA", x, 0, pr.z, h, { glow: 2.2, shade: 0.9, flip: i % 2 ? -1 : 1 });
     // The grove glows from its roots
-    addHalo(new Vector3(x, 0.5, pr.z + 0.4), 3.5 + pr.impact * 1.2, C.glow, addLight(new Vector3(x, 0, pr.z), 0, { lit: 0.55 }));
-    const lx = x - h * 0.08, lz = pr.z + 0.6;
-    const lan = place("hanging", lx, 1.05 + i * 0.12, lz, 3.0, { sway: 0.6, glow: 0, shade: 1, flip: 1 });
-    const pos = anchorPos(lan, "lantern");
-    const l = addLight(pos, 1.2, { ignite: pr.z + 4, item: lan });
-    addHalo(pos, 2.2, C.warm, l);
-    grove.push({ ...pr, pos, light: l, item: lan, hover: 0 });
+    const root = addLight(new Vector3(x, 0, pr.z), 0, { lit: 0.55 });
+    addHalo(new Vector3(x, 0.5, pr.z + 0.4), 3.5 + pr.impact * 1.2, C.glow, root);
+    trees[pr.id] = { tree, root };
   });
 
+  // The waypost: a lantern on top, one arrow board per project, pointing into the grove
+  const wpX = at(WAYPOST.dx, WAYPOST.z);
+  const post = place("waypost", wpX, 0, WAYPOST.z, 4.1, { flip: 1, sway: 0, shade: 1.05, glow: 1, rim: 0.8 });
+  const postLamp = anchorPos(post, "lantern");
+  const postLight = addLight(postLamp.clone().add(new Vector3(0, 0, 0.35)), 1.35, { ignite: WAYPOST.z + 4, item: post });
+  addHalo(postLamp, 2.4, C.warm, postLight);
+  const BH = 0.44, GAP = 0.09, topY = 3.12 - BH;
+  const grove = BOARDS.map((b, i) => {
+    const key = "board" + i;
+    const w = BH * packs[key].aspect;
+    const item = place(key, wpX + w * 0.41, topY - i * (BH + GAP), WAYPOST.z + 0.04 + i * 0.002, BH,
+      { flip: 1, sway: 0, shade: 1.15, emit: 0, glow: 0, rim: 0.7 });
+    return { ...b, item, w, lit: 0, hover: 0, start: null, rect: null, link: b.tree ? trees[b.tree] : null };
+  });
+  let focusId = null;
   // DateNight: the sapling, glowing in its own small clearing
   const sap = place("sapling", at(2.7, -79), 0, -79, 3.3, { glow: 1.6, shade: 0.9, flip: 1 });
   addHalo(new Vector3(sap.x, 0.9, sap.z + 0.1), 4.5, C.glow, addLight(new Vector3(sap.x, 1, sap.z), 0, { lit: 1 }));
@@ -545,22 +573,39 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     if (camZ < -104) revealT = Math.min(1, revealT + dt / 7);
     wMat.uniforms.uReveal.value = revealT;
 
-    // Grove lanterns respond to the pointer
+    // The waypost: boards light one by one once its lantern is lit, and answer the pointer
     let hovered = null;
-    for (const gp of grove) {
-      tmp.copy(gp.pos).project(cam);
-      const sx = (tmp.x * 0.5 + 0.5) * innerWidth, sy = (-tmp.y * 0.5 + 0.5) * innerHeight;
-      gp.screen = { x: sx, y: sy };
-      const near = pointer && tmp.z < 1 && Math.hypot(pointer.x - sx, pointer.y - sy) < 46 && gp.light.lit > 0.5;
-      if (near) hovered = gp;
-      gp.hover += ((near ? 1 : 0) - gp.hover) * Math.min(1, dt * 8);
-      gp.light.boost = 1 + gp.hover * 0.9;
+    const corner = (x, y, z) => { tmp.set(x, y, z).project(cam); return [(tmp.x * 0.5 + 0.5) * innerWidth, (-tmp.y * 0.5 + 0.5) * innerHeight, tmp.z]; };
+    grove.forEach((b, i) => {
+      const it = b.item;
+      const a = corner(it.x - it.w / 2, it.y + it.h * 0.88, it.z), c = corner(it.x + it.w / 2, it.y + it.h * 0.12, it.z);
+      b.rect = a[2] < 1 && c[2] < 1 ? { x0: a[0], y0: a[1], x1: c[0], y1: c[1] } : null;
+      if (b.start === null && postLight.lit > 0.6) b.start = t + 0.35 + i * 0.28;
+      if (b.start !== null && t > b.start) b.lit = Math.min(1, b.lit + dt * 1.6);
+      if (pointer && b.lit > 0.5 && b.rect && pointer.x > b.rect.x0 && pointer.x < b.rect.x1 && pointer.y > b.rect.y0 && pointer.y < b.rect.y1) hovered = b;
+    });
+    if (!hovered && focusId) hovered = grove.find((b) => b.id === focusId && b.lit > 0.2) || null;
+    for (const b of grove) {
+      const on = b === hovered ? 1 : 0;
+      b.hover += (on - b.hover) * Math.min(1, dt * (on ? 10 : 5));
+      const flick = 0.95 + 0.05 * Math.sin(t * 9 + b.w);
+      setP1(b.item, 3, (0.12 + 0.58 * b.lit + 0.32 * b.hover) * flick);
+      setP2(b.item, 2, b.hover * 1.5);
+      if (b.link) {
+        setP2(b.link.tree, 2, 2.2 + b.hover * 3.2);
+        b.link.root.boost = 1 + b.hover * 1.8;
+      }
     }
     return { hovered };
   }
 
   return {
     scene, update, grove,
+    // Which board (if any) sits under a screen point; used for taps
+    pick(x, y) {
+      return grove.find((b) => b.lit > 0.5 && b.rect && x > b.rect.x0 && x < b.rect.x1 && y > b.rect.y0 && y < b.rect.y1) || null;
+    },
+    focus(id) { focusId = id; },
     setSize(w, h, pr, fovY) {
       sky.material.uniforms.uRes.value.set(w, h, 0);
       const scale = (h * pr) / (2 * Math.tan((fovY * Math.PI) / 360));

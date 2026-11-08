@@ -10,7 +10,8 @@ html:has(.forest-page) { background: #010609; overflow-x: clip; }
   background: #010609;
   color: rgb(var(--f-cream));
   font-family: 'Inter Tight', system-ui, sans-serif;
-  overflow-x: hidden;
+  /* clip, not hidden: hidden turns the body into a scroll container and breaks the sticky cards */
+  overflow-x: clip;
 }
 .forest-page::after { opacity: 0.075; }
 .forest-page ::selection { background: rgb(var(--f-peach)); color: rgb(var(--f-forest)); }
@@ -131,16 +132,8 @@ main#journey, .forest-footer, .forest-hud { position: relative; z-index: 3; }
 .hud-loading { align-items: center; gap: 0.6rem; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(var(--f-cream) / 0.5); }
 .hud-bar { width: 40px; height: 1px; background: linear-gradient(90deg, rgb(var(--f-peach)) calc(var(--p, 0) * 100%), rgb(var(--f-cream) / 0.2) 0); }
 
-/* Hover label for the grove's lanterns */
-.forest-label {
-  position: fixed; left: 0; top: 0; z-index: 30; pointer-events: none; opacity: 0;
-  display: flex; gap: 0.75rem; align-items: baseline; white-space: nowrap;
-  padding: 0.5rem 0.8rem; border-radius: 4px; background: rgba(1, 6, 9, 0.72); border: 1px solid rgb(var(--f-peach) / 0.35);
-  font-size: 0.8rem; color: rgb(var(--f-cream)); transition: opacity 0.25s ease;
-}
-.forest-label b { color: rgb(var(--f-peach)); font-weight: 600; }
-.forest-label.show { opacity: 1; }
-.lantern-hover { cursor: pointer; }
+/* The grove's waypost boards are links: show it */
+.sign-hover, .sign-hover .stop-inner { cursor: pointer; }
 
 /* ── The walk: each section holds its card in view while the camera moves ── */
 .forest-on .stop { height: 175vh; padding: 0; }
@@ -148,8 +141,10 @@ main#journey, .forest-footer, .forest-hud { position: relative; z-index: 3; }
 .forest-on .stop-inner { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; padding: 0 2rem; }
 @media (min-width: 768px) { .forest-on .stop-inner { padding: 0 6vw; } }
 .forest-on .stop[data-side="right"] .stop-inner { justify-content: flex-end; }
-.forest-on .stop-card { opacity: var(--o, 0); transform: translateY(calc((1 - var(--o, 0)) * 18px)); will-change: opacity, transform; }
+.forest-on .stop-card { opacity: var(--o, 0); transform: translateY(calc((1 - var(--o, 0)) * var(--dy, 22px))); will-change: opacity, transform; }
 .forest-on .stop-arrival .stop-card { opacity: var(--o, 1); }
+/* Until the forest has drawn, keep every card readable */
+.forest-on:not(.forest-ready) .stop-card { opacity: 1; transform: none; }
 .forest-on .stop:not(.is-near) .stop-card { pointer-events: none; }
 .forest-on .stop-arrival:not([style]) .stop-card { pointer-events: auto; }
 .forest-on .forest-footer { opacity: 0.8; }

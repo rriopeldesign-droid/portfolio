@@ -189,31 +189,32 @@ export function paintGnarled(seed, { W = 768, H = 1536, glow = 0.5, crown = 1, h
   const widthAt = (t) => baseW * (1 - t) + topW * t + Math.exp(-t * 10) * W * 0.13;
   ribbon(m, trunk, widthAt, W * 0.012, n);
 
-  // Roots that grip the ground
-  const rootCount = Math.round(p.rand(4, 7) * roots);
+  // Roots: buttresses that flare from the trunk and dive into the soil, never out across the path
+  const rootCount = Math.round(p.rand(4, 6) * roots);
   for (let k = 0; k < rootCount; k++) {
     const side = k % 2 ? 1 : -1;
-    const sx = x0 + side * baseW * p.rand(0.1, 0.45);
-    const sy = ground - H * p.rand(0.02, 0.06);
-    const len = Math.min(W * p.rand(0.18, 0.42), side > 0 ? W - sx - 8 : sx - 8);
+    const sx = x0 + side * baseW * p.rand(0.05, 0.35);
+    const sy = ground - H * p.rand(0.035, 0.075);
+    const len = Math.min(W * p.rand(0.1, 0.2), side > 0 ? W - sx - 30 : sx - 30);
+    const sink = ground + H * 0.014; // ends below the soil line, where the texture fades out
     const pts = [];
-    for (let i = 0; i <= 24; i++) {
-      const t = i / 24;
-      pts.push([sx + side * len * t + n(t * 4 + k * 9) * W * 0.012,
-        sy + (ground - sy) * (1 - Math.pow(1 - t, 2)) - Math.sin(t * Math.PI) * H * 0.012]);
+    for (let i = 0; i <= 20; i++) {
+      const t = i / 20;
+      pts.push([sx + side * len * Math.pow(t, 0.85) + n(t * 3 + k * 9) * W * 0.008,
+        sy + (sink - sy) * (1 - Math.pow(1 - t, 1.6)) - Math.sin(t * Math.PI) * H * 0.006]);
     }
-    const rw = W * p.rand(0.035, 0.06);
-    ribbon(m, pts, (t) => rw * Math.pow(1 - t, 1.2) + 1.5, W * 0.004, n);
+    const rw = W * p.rand(0.05, 0.08);
+    ribbon(m, pts, (t) => rw * (1 - 0.7 * Math.pow(t, 0.9)), W * 0.004, n);
     // Bioluminescent veins and spores along the root
     if (glow > 0) {
-      g.globalAlpha = 0.55 * glow;
-      g.lineWidth = Math.max(1.2, rw * 0.12);
+      g.globalAlpha = 0.5 * glow;
+      g.lineWidth = Math.max(1.2, rw * 0.1);
       g.beginPath();
-      pts.slice(2, 20).forEach(([x, y], i) => (i ? g.lineTo(x, y - rw * 0.15) : g.moveTo(x, y - rw * 0.15)));
+      pts.slice(1, 15).forEach(([x, y], i) => (i ? g.lineTo(x, y - rw * 0.12) : g.moveTo(x, y - rw * 0.12)));
       g.stroke();
       g.globalAlpha = 1;
-      for (let i = 3; i < 22; i++) if (p.r() < 0.35 * glow) {
-        const [x, y] = pts[i]; dot(g, x + p.rand(-3, 3), y - rw * 0.3 * (1 - i / 24), p.rand(1.2, 3.2));
+      for (let i = 2; i < 16; i++) if (p.r() < 0.3 * glow) {
+        const [x, y] = pts[i]; dot(g, x + p.rand(-3, 3), y - rw * 0.3 * (1 - i / 20), p.rand(1.2, 3));
       }
     }
   }
@@ -662,21 +663,90 @@ export function paintLanternPost(seed, { W = 320, H = 896 } = {}) {
   return p.pack();
 }
 
-// A paper lantern on a cord, for hanging from branches (the grove's project lanterns).
-export function paintHangingLantern(seed, { W = 160, H = 768 } = {}) {
+// The grove's waypost: a tall post with a capped top and a lantern on a short arm.
+// The arrow boards are painted separately so each can light up on its own.
+export function paintWaypost(seed, { W = 512, H = 1024 } = {}) {
   const p = new Painter(W, H, seed);
-  const { m, d, wm } = p;
-  const cx = W / 2, cy = H * 0.83, rh = H * 0.085;
-  m.lineWidth = 2; m.beginPath(); m.moveTo(cx, 0); m.lineTo(cx, cy - rh); m.stroke();
-  m.fillRect(cx - W * 0.22, cy - rh - 3, W * 0.44, 6);
-  m.fillRect(cx - W * 0.22, cy + rh - 3, W * 0.44, 6);
-  blob(m, p, cx, cy, W * 0.36, rh, { rough: 0.02, verts: 30 });
-  blob(wm, p, cx, cy, W * 0.33, rh * 0.92, { rough: 0.02, verts: 30 });
-  d.globalAlpha = 0.4; d.lineWidth = 2;
-  for (let k = -2; k <= 2; k++) { d.beginPath(); d.ellipse(cx, cy + k * rh * 0.3, W * 0.33 * Math.cos(k * 0.38), 3, 0, 0, Math.PI); d.stroke(); }
+  const { m, d, g, wm } = p;
+  const cx = W * 0.5, pw = W * 0.045;
+  poly(m, [[cx - pw * 1.15, H], [cx - pw, H * 0.075], [cx, H * 0.045], [cx + pw, H * 0.075], [cx + pw * 1.15, H]]);
+  d.globalAlpha = 0.5; d.lineWidth = 2;
+  for (let k = 0; k < 3; k++) { const x = cx + (k - 1) * pw * 0.5; d.beginPath(); d.moveTo(x, H * 0.1); d.lineTo(x + p.rand(-3, 3), H * 0.95); d.stroke(); }
   d.globalAlpha = 1;
-  m.lineWidth = 2; m.beginPath(); m.moveTo(cx, cy + rh); m.lineTo(cx, cy + rh + H * 0.05); m.stroke();
-  p.anchor("lantern", cx, cy);
+  // Arm and lantern, hanging toward the path
+  const ax = W * 0.14, ay = H * 0.1;
+  m.lineWidth = 12; m.beginPath(); m.moveTo(cx, H * 0.11); m.quadraticCurveTo((cx + ax) / 2, H * 0.085, ax, ay); m.stroke();
+  m.lineWidth = 2.5; m.beginPath(); m.moveTo(ax, ay); m.lineTo(ax, H * 0.15); m.stroke();
+  const ly = H * 0.19, lr = W * 0.075, lh = H * 0.04;
+  m.fillRect(ax - lr * 0.8, ly - lh - 4, lr * 1.6, 7);
+  m.fillRect(ax - lr * 0.8, ly + lh - 3, lr * 1.6, 7);
+  blob(m, p, ax, ly, lr, lh, { rough: 0.02, verts: 30 });
+  blob(wm, p, ax, ly, lr * 0.92, lh * 0.92, { rough: 0.02, verts: 30 });
+  d.globalAlpha = 0.4; d.lineWidth = 2;
+  for (let k = -2; k <= 2; k++) { d.beginPath(); d.ellipse(ax, ly + k * lh * 0.3, lr * 0.92 * Math.cos(k * 0.38), 3, 0, 0, Math.PI); d.stroke(); }
+  d.globalAlpha = 1;
+  p.anchor("lantern", ax, ly);
+  // Moss and a few glowing caps at the foot
+  for (let k = 0; k < 5; k++) blob(m, p, cx + p.rand(-pw * 2.2, pw * 2.2), H - p.rand(4, 14), W * p.rand(0.025, 0.05), H * 0.012, { rough: 0.4 });
+  for (let k = 0; k < 4; k++) { const x = cx + p.rand(-pw * 2.4, pw * 2.4), y = H - p.rand(10, 30); for (const c of [m, g]) blob(c, p, x, y, W * 0.012, H * 0.005, { rough: 0.1 }); }
+  return p.pack();
+}
+
+// One arrow board for the waypost. The words are painted in the warm layer, so they glow
+// like lantern paper; the outline is in the glow layer and only shows when the board is hovered.
+export function paintBoard(seed, { W = 1024, H = 208, name = "", value = "", dir = 1 } = {}) {
+  const p = new Painter(W, H, seed);
+  const { m, g, d, wm } = p;
+  const tilt = p.rand(-0.025, 0.025);
+  const cy = H / 2, bh = H * 0.74;
+  const x0 = 26, x1 = W - 120, tip = W - 22;
+  const ca = Math.cos(tilt), sa = Math.sin(tilt);
+  const tr = ([x, y]) => {
+    const u = x - W / 2, v = y - cy;
+    const rx = W / 2 + u * ca - v * sa, ry = cy + u * sa + v * ca;
+    return [dir > 0 ? rx : W - rx, ry];
+  };
+  const shape = [];
+  // Top edge, a little ragged, then the arrow point, then the bottom edge back
+  for (let i = 0; i <= 12; i++) shape.push([x0 + ((x1 - x0) * i) / 12, cy - bh / 2 + p.rand(-1.5, 1.5)]);
+  shape.push([tip, cy]);
+  for (let i = 12; i >= 0; i--) shape.push([x0 + ((x1 - x0) * i) / 12, cy + bh / 2 + p.rand(-1.5, 1.5)]);
+  shape.push([x0 - 6, cy + p.rand(-8, 8)]);
+  const pts = shape.map(tr);
+  poly(m, pts);
+  // Grain and two nails
+  d.globalAlpha = 0.55; d.lineWidth = 1.6;
+  for (let k = 0; k < 4; k++) {
+    const v = cy + (k - 1.5) * bh * 0.22;
+    d.beginPath(); d.moveTo(...tr([x0 + 10, v])); d.lineTo(...tr([x1 - 30, v + p.rand(-3, 3)])); d.stroke();
+  }
+  d.globalAlpha = 1;
+  // Glowing outline (hidden until hover)
+  g.lineWidth = 9;
+  g.beginPath(); pts.forEach((q, i) => (i ? g.lineTo(...q) : g.moveTo(...q))); g.closePath(); g.stroke();
+  // The words
+  const right = x1 - 34;
+  const vfs = H * 0.34;
+  wm.font = `800 ${vfs}px Syne, sans-serif`;
+  const vw = value ? wm.measureText(value).width : 0;
+  let fs = H * 0.34;
+  const setName = () => { wm.font = `600 ${fs}px "Inter Tight", system-ui, sans-serif`; if ("letterSpacing" in wm) wm.letterSpacing = `${(fs * 0.06).toFixed(1)}px`; };
+  setName();
+  const room = right - vw - 36 - (x0 + 44);
+  while (wm.measureText(name).width > room && fs > 18) { fs -= 2; setName(); }
+  wm.save();
+  wm.translate(W / 2, cy); wm.rotate(dir > 0 ? tilt : -tilt); wm.translate(-W / 2, -cy);
+  const nx = dir > 0 ? x0 + 44 : W - right;
+  wm.textBaseline = "middle";
+  wm.textAlign = "left";
+  wm.fillText(name, nx, cy + fs * 0.04);
+  if (value) {
+    if ("letterSpacing" in wm) wm.letterSpacing = "0px";
+    wm.font = `800 ${vfs}px Syne, sans-serif`;
+    wm.textAlign = "right";
+    wm.fillText(value, dir > 0 ? right : W - x0 - 48, cy + vfs * 0.03);
+  }
+  wm.restore();
   return p.pack();
 }
 

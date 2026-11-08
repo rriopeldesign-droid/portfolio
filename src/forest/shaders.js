@@ -109,6 +109,10 @@ export const cutoutFrag = /* glsl */ `
     float band = step(0.5, rim) * 0.42 + step(0.5, rimWide) * 0.05;
     col += uMoon * band * high * vP2.w * (0.45 + 0.7 * grain);
 
+    // Highlight: a grove tree whose sign is hovered lights its whole outline in jungle green
+    float hl = max(0.0, vP2.z - 2.4);
+    col += uGlow * hl * (step(0.5, rim) * 0.32 + step(0.5, rimWide) * 0.16 + 0.025);
+
     // Lantern light, with a warm rim on the side that faces the flame
     vec2 wdir = vec2(0.0);
     float wsum = 0.0;
