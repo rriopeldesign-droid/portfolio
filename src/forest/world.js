@@ -95,7 +95,9 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   // ── Paint every texture, yielding between each so the page stays responsive ──
   const specs = {
     gnarledA: () => P.paintGnarled(11, { W: q(768), H: q(1536), glow: 0.55 }),
-    gnarledB: () => P.paintGnarled(29, { W: q(768), H: q(1536), glow: 0.3, hollowEyes: true }),
+    gnarledB: () => P.paintGnarled(29, { W: q(768), H: q(1536), glow: 0.3 }),
+    // The same tree with something looking out of its hollow; only planted deep in the forest
+    gnarledEyes: () => P.paintGnarled(29, { W: q(768), H: q(1536), glow: 0.3, hollowEyes: true }),
     gnarledC: () => P.paintGnarled(47, { W: q(768), H: q(1536), glow: 0.8, crown: 0.8 }),
     groveA: () => P.paintGnarled(83, { W: q(768), H: q(1536), glow: 1, roots: 1.4, crown: 0.9 }),
     groveB: () => P.paintGnarled(97, { W: q(768), H: q(1536), glow: 1, roots: 1.3, crown: 1 }),
@@ -188,15 +190,19 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   const treeH = { gnarledA: [15, 24], gnarledB: [14, 22], gnarledC: [13, 20], cedarA: [22, 34], cedarB: [20, 30], cedarC: [16, 26], deadA: [9, 15], deadB: [8, 13] };
   const minDx = (k) => (k.startsWith("gnarled") ? 5 : k.startsWith("dead") ? 4 : 6);
   const glowOf = (k) => (k === "gnarledC" ? 1.2 : 1);
+  // The opening is welcoming: the uncanny things only start past the sapling (DateNight)
+  const DEEP = -72;
+  const deepen = (k, z) => (k === "gnarledB" && z < DEEP ? "gnarledEyes" : k);
 
   // Near band: the giants beside the path
   for (let z = 24; z > -200; z -= R(3.4, 5.6)) {
     for (const side of [-1, 1]) {
-      const k = pickTree([["gnarledA", 3], ["gnarledB", 2], ["gnarledC", 2], ["cedarC", 1], ["deadA", 1.4], ["deadB", 1.2]]);
+      const dead = z > -45 ? 0.25 : 1; // few dead trees at the start
+      const k = pickTree([["gnarledA", 3], ["gnarledB", 2], ["gnarledC", 2], ["cedarC", 1], ["deadA", 1.4 * dead], ["deadB", 1.2 * dead]]);
       const dx = R(minDx(k), minDx(k) + 4.5);
       const zz = z + R(-1.2, 1.2), x = at(side * dx, zz);
       if (!isClear(x, zz, 1)) continue;
-      place(k, x, 0, zz, R(...treeH[k]), { glow: glowOf(k) });
+      place(deepen(k, zz), x, 0, zz, R(...treeH[k]), { glow: glowOf(k) });
     }
   }
   // Mid band
@@ -205,7 +211,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
       const k = pickTree([["cedarA", 3], ["cedarB", 3], ["cedarC", 2], ["gnarledA", 1.5], ["gnarledB", 1], ["deadA", 0.6]]);
       const zz = z + R(-1, 1), x = at(side * R(9.5, 22), zz);
       if (!isClear(x, zz, 2)) continue;
-      place(k, x, 0, zz, R(...treeH[k]) * 0.68, { rim: 0.8 });
+      place(deepen(k, zz), x, 0, zz, R(...treeH[k]) * 0.68, { rim: 0.8 });
     }
   }
   // Far band: fog silhouettes
@@ -329,7 +335,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   // A hand around a tree near the workshop. It lets go when you come close.
   // The tree stands left of the path; the fingers reach around its right edge, toward you.
   const handTreeZ = -94.5, handTreeX = at(-5.2, handTreeZ);
-  const handTree = place("gnarledB", handTreeX, 0, handTreeZ, 15, { flip: 1, glow: 0.8 });
+  const handTree = place("gnarledEyes", handTreeX, 0, handTreeZ, 15, { flip: 1, glow: 0.8 });
   const t20 = anchorPos(handTree, "t20");
   const trunkRight = t20.x + handTree.g.pk.anchors.w20[0] * handTree.w * 0.5;
   const hand = place("hand", trunkRight + 0.85, t20.y - 0.62, handTreeZ - 0.06, 1.25, { flip: -1, sway: 0, shade: 0.8, rim: 1.2 });
@@ -354,8 +360,8 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   flame.renderOrder = 6;
   scene.add(flame);
 
-  // Something tall between the trees, beyond the grove. Look again and it is gone.
-  const figZ = -79, figure = place("figure", at(-10.5, figZ), 0, figZ, 7.2, { flip: 1, sway: 0.2, shade: 0.7, opacity: 0, glow: 1.6, rim: 0.7 });
+  // Something tall between the trees, across the path from the cabin. Look again and it is gone.
+  const figZ = -116, figure = place("figure", at(10.5, figZ), 0, figZ, 7.2, { flip: 1, sway: 0.2, shade: 0.7, opacity: 0, glow: 1.6, rim: 0.7 });
   const figState = { item: figure, op: 0, gone: false };
 
   // ── Build the instanced meshes ──
@@ -465,7 +471,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
   // ── Eyes in the dark beside the path ──
   const eyeGeo = new PlaneGeometry(1, 1);
   const eyes = [];
-  for (const z of [-7, -18, -30, -37, -48, -64, -74, -87, -98, -112, -122, -134, -146]) {
+  for (const z of [-86, -98, -112, -122, -134, -146]) {
     const side = rnd() < 0.5 ? -1 : 1;
     const mat = new ShaderMaterial({
       uniforms: { uOpen: { value: 0 }, uAlpha: { value: 0 }, uGlow: { value: C.glow } },
@@ -530,7 +536,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
       if (e.gone) { e.alpha = Math.max(0, e.alpha - dt * 3); }
       else {
         if (d < 7.5 && d > -2) e.gone = true;
-        const visible = d > 7.5 && d < 46;
+        const visible = d > 7.5 && d < 46 && camZ < DEEP;
         const target = visible ? 1 : 0;
         e.alpha += (target - e.alpha) * Math.min(1, dt * 0.8);
         if (pointer && e.screen && Math.hypot(pointer.x - e.screen.x, pointer.y - e.screen.y) < 70) e.shy = 2.5;
@@ -551,7 +557,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {} } = {}) {
     {
       const d = camZ - figZ;
       if (!figState.gone && d < 25) figState.gone = true;
-      const target = !figState.gone && d < 46 ? 1 : 0;
+      const target = !figState.gone && d < 46 && camZ < DEEP + 2 ? 1 : 0;
       figState.op += (target - figState.op) * Math.min(1, dt * (figState.gone ? 7 : 0.6));
       setP2(figure, 0, figState.op);
     }
