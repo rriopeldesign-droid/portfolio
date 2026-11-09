@@ -1,6 +1,6 @@
 # Robert Riopel, Senior Product Designer (Ottawa and Vienna)
 
-> Robert Riopel is a Senior Product Designer based between Ottawa, Canada and Vienna, Austria. He designs digital products end to end (product UX and UI, design systems, growth and conversion, onboarding, lifecycle and CRM email) and builds AI design tooling. His shipped work on a two-sided marketplace contributed $8M+ in measurable business impact, measured as revenue, GMV or savings. He works in English and French and is open to freelance projects and to senior product design roles in Vienna, Ottawa or remote.
+> Robert Riopel is a Senior Product Designer based between Ottawa, Canada and Vienna, Austria. He designs digital products end to end (product UX and UI, design systems, growth and conversion, onboarding, lifecycle and CRM email) and builds AI design tooling. His shipped work on a two-sided marketplace, across B2C (guest) and B2B (host) products, contributed $8M+ in measurable business impact, measured as revenue, GMV or savings. He works in English and French and is open to freelance projects and to senior product design roles in Vienna, Ottawa or remote.
 
 The full text of every page on this site, in one file, is at https://robertriopel.ca/llms-full.txt. Everything below is drawn from the site itself.
 
@@ -8,7 +8,7 @@ The full text of every page on this site, in one file, is at https://robertriope
 
 - Role: Senior Product Designer. Most recently the sole product designer at RVezy, Canada's largest RV rental marketplace, where he owned product UX and UI, the design system, lifecycle and email design, marketing design and brand.
 - Impact: $8M+ in measurable business impact; his work helped move the company from a $6M deficit to $1.5M EBITDA positive.
-- Strengths: product UX for web and native mobile, marketplace and host-side (supply) tools, checkout and monetization, onboarding and activation, lifecycle and CRM email (Braze), design systems built in code first (Tailwind CSS, Vue, OKLCH tokens), A/B testing and funnel analytics, AI tooling (Claude API, Figma plugins).
+- Strengths: product UX for web and native mobile, marketplace and B2B product design (host-side tools such as onboarding and the host dashboard), checkout and monetization, onboarding and activation, lifecycle and CRM email (Braze), design systems built in code first (Tailwind CSS, Vue, OKLCH tokens), A/B testing and funnel analytics, AI tooling (Claude API, Figma plugins).
 - Works with: product managers, engineers, data analysts, CRM and growth marketing, finance and legal.
 - Education: MSc in Technical Management, Bachelor of Design, Advanced Diploma in Graphic Design.
 - Locations: Ottawa, Ontario, Canada and Vienna, Austria. Open to remote work.

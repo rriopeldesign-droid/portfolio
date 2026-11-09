@@ -2,7 +2,7 @@
 
 > The complete text of robertriopel.ca in one plain-text file, for AI assistants, search tools and anyone who prefers reading without the 3D forest. A shorter index is at https://robertriopel.ca/llms.txt.
 
-Robert Riopel is a Senior Product Designer based between Ottawa, Canada and Vienna, Austria. He designs digital products end to end (product UX and UI for web and native mobile, design systems, growth and conversion, onboarding, lifecycle and CRM email) and builds AI design tooling. As the sole product designer at RVezy, Canada's largest RV rental marketplace, his shipped work contributed $8M+ in measurable business impact and helped move the company from a $6M deficit to $1.5M EBITDA positive. He works in English and French and is open to freelance projects and to senior product design roles in Vienna, Ottawa or remote.
+Robert Riopel is a Senior Product Designer based between Ottawa, Canada and Vienna, Austria. He designs digital products end to end (product UX and UI for web and native mobile, design systems, growth and conversion, onboarding, lifecycle and CRM email) and builds AI design tooling. As the sole product designer at RVezy, Canada's largest RV rental marketplace, his shipped work across the guest (B2C) and host (B2B) sides contributed $8M+ in measurable business impact and helped move the company from a $6M deficit to $1.5M EBITDA positive. He works in English and French and is open to freelance projects and to senior product design roles in Vienna, Ottawa or remote.
 
 Contents:
 1. Profile and keywords
@@ -28,14 +28,14 @@ Contents:
 - Locations: Ottawa, Ontario, Canada and Vienna, Austria
 - Work arrangement: open to freelance projects and full-time roles in Vienna, in Ottawa, or remote
 - Languages: English and French
-- Most recent role: sole product designer at RVezy, Canada's largest RV rental marketplace (a two-sided marketplace of guests and hosts). Owned everything visual: product UX, UI, design systems, lifecycle campaigns, marketing and brand.
+- Most recent role: sole product designer at RVezy, Canada's largest RV rental marketplace (a two-sided marketplace: B2C for guests, B2B for the hosts who list and run their rentals there). Owned everything visual: product UX, UI, design systems, lifecycle campaigns, marketing and brand.
 - Measurable impact: $8M+ in total, measured as revenue, GMV or savings. Host Onboarding $3.4M annualized GMV, Host Dashboard $1.5M incremental GMV, Lifecycle Email $1.2M incremental GMV, Pay-in-Full +$1M incremental revenue in month one, Inspection and Claims $500K.
 - Education: MSc in Technical Management, Bachelor of Design, Advanced Diploma in Graphic Design
 - Contact: rriopel.design@gmail.com
 - LinkedIn: https://www.linkedin.com/in/robert-riopel-product-design/
 - Website: https://robertriopel.ca/
 
-Areas of expertise: senior product design, product UX, UI design, interaction design, UX research, marketplace design (guest side and host/supply side), checkout UX and monetization, conversion rate optimization, onboarding and activation, lifecycle and CRM email design (Braze), design systems (Tailwind CSS, Vue.js, OKLCH color tokens), A/B testing and funnel analytics, prototyping, responsive web and native mobile (iOS and Android), AI tooling and AI-assisted design workflows (Claude API, Claude Code, Figma plugins), React Native, Supabase, design ops, mentoring co-op designers, executive presentations, cross-functional collaboration with product, engineering, data, finance and legal.
+Areas of expertise: senior product design, product UX, UI design, interaction design, UX research, B2B and B2C product design, marketplace design (guest side and host/supply side), checkout UX and monetization, conversion rate optimization, onboarding and activation, lifecycle and CRM email design (Braze), design systems (Tailwind CSS, Vue.js, OKLCH color tokens), A/B testing and funnel analytics, prototyping, responsive web and native mobile (iOS and Android), AI tooling and AI-assisted design workflows (Claude API, Claude Code, Figma plugins), React Native, Supabase, design ops, mentoring co-op designers, executive presentations, cross-functional collaboration with product, engineering, data, finance and legal.
 
 ---
 
