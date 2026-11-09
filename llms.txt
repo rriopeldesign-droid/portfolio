@@ -10,7 +10,7 @@ The full text of every page on this site, in one file, is at https://robertriope
 - Impact: $8M+ in measurable business impact; his work helped move the company from a $6M deficit to $1.5M EBITDA positive.
 - Strengths: product UX for web and native mobile, marketplace and B2B product design (host-side tools such as onboarding and the host dashboard), checkout and monetization, onboarding and activation, lifecycle and CRM email (Braze), design systems built in code first (Tailwind CSS, Vue, OKLCH tokens), A/B testing and funnel analytics, AI tooling (Claude API, Figma plugins).
 - Works with: product managers, engineers, data analysts, CRM and growth marketing, finance and legal.
-- Education: MSc in Technical Management, Bachelor of Design, Advanced Diploma in Graphic Design.
+- Education: MSc in Technical Management (currently studying), Bachelor of Design, Advanced Diploma in Graphic Design.
 - Locations: Ottawa, Ontario, Canada and Vienna, Austria. Open to remote work.
 - Languages: English and French.
 - Open to: freelance projects and full-time senior product design roles.

@@ -30,7 +30,7 @@ Contents:
 - Languages: English and French
 - Most recent role: sole product designer at RVezy, Canada's largest RV rental marketplace (a two-sided marketplace: B2C for guests, B2B for the hosts who list and run their rentals there). Owned everything visual: product UX, UI, design systems, lifecycle campaigns, marketing and brand.
 - Measurable impact: $8M+ in total, measured as revenue, GMV or savings. Host Onboarding $3.4M annualized GMV, Host Dashboard $1.5M incremental GMV, Lifecycle Email $1.2M incremental GMV, Pay-in-Full +$1M incremental revenue in month one, Inspection and Claims $500K.
-- Education: MSc in Technical Management, Bachelor of Design, Advanced Diploma in Graphic Design
+- Education: MSc in Technical Management (currently studying), Bachelor of Design, Advanced Diploma in Graphic Design
 - Contact: rriopel.design@gmail.com
 - LinkedIn: https://www.linkedin.com/in/robert-riopel-product-design/
 - Website: https://robertriopel.ca/
@@ -67,7 +67,7 @@ The workshop: tools. Where the tools get made. "I build the things that make a d
 - Email builder: on-brand, no code
 - The End of Figma: an essay
 
-The lookout: about. Between Ottawa and Vienna. "I was the sole product designer at Canada's largest RV rental marketplace, where my work helped turn a $6M deficit into profit. I studied design, then technical management, and I learn by building. I work in English and French."
+The lookout: about. Between Ottawa and Vienna. "I was the sole product designer at Canada's largest RV rental marketplace, where my work helped turn a $6M deficit into profit. I studied design, I'm now doing a master's in technical management, and I learn by building. I work in English and French."
 
 The campfire: contact. "Building something, or hiring? Either way, I'd like to hear about it. I'm open to freelance projects and full-time roles."
 
@@ -88,7 +88,7 @@ Over three years there, my work contributed over $8M in measurable business impa
 
 I also build tools. I wrote an AI-powered Figma plugin that generates on-brand components from natural language, synced 1:1 with the coded Tailwind design system. Before that, I built the design system itself using OKLCH color tokens, Vue components, shared typography and spacing scales.
 
-I studied Graphic Design (Advanced Diploma), earned a Bachelor of Design, and hold an MSc in Technical Management, which pairs a designer's eye with how technology products are planned, built, and run.
+I studied Graphic Design (Advanced Diploma), earned a Bachelor of Design, and am now studying for an MSc in Technical Management, which pairs a designer's eye with how technology products are planned, built, and run.
 
 On my own time, I ship side projects. Most recently DateNight, a React Native dating app I co-founded and took from concept to public beta, and AI-generated video campaigns. I learn by building.
 
