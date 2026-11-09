@@ -333,7 +333,16 @@ export async function start() {
       if (slow > 40 && dpr > 0.85) { dpr = Math.max(0.85, dpr - 0.25); renderer.setPixelRatio(dpr); resize(); }
       slow = 0;
     }
-    if (frames === 2) root.classList.add("forest-ready");
+    if (frames === 2) {
+      root.classList.add("forest-ready");
+      // Back from the void (/#wander): already off the path, turned toward the saucer
+      if (location.hash === "#wander") {
+        setWander(true);
+        const s = world.ufoSpot;
+        wander.yaw = Math.atan2(s.x - wander.x, -(s.z - wander.z));
+        wander.pitch = 0.6;
+      }
+    }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);

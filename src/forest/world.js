@@ -818,6 +818,8 @@ export async function buildWorld({ quality = 1, onProgress = () => {}, note = ()
     },
     // Wandering: how far the world has turned toward the walker (0 on the path, 1 off it)
     setWander(b) { bill = b; },
+    // Where the saucer hangs, so a walker back from the void can turn to face it
+    ufoSpot: { x: saucer.x, z: UFO.z },
     // Step into the Hollow or under the saucer; the world plays its part, the page does the rest
     leave(kind) { if (!leaving) leaving = { kind, t: 0 }; },
     // Which hidden way out (if any) a wandering walker is standing in
