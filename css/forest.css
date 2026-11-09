@@ -36,6 +36,9 @@ html:has(.forest-page) { background: #010609; overflow-x: clip; }
   background: radial-gradient(circle at 42% 40%, #f3ece0, #d8d1c3 72%);
   box-shadow: 0 0 80px 22px rgba(254, 177, 146, 0.14);
 }
+/* Once the 3D forest has faded in, retire the painted moon: the canvas lets a little of the
+   page behind it through at soft edges, and a second moon would glow through the treetops */
+.forest-ready .forest-moon { opacity: 0; transition: opacity 0.6s ease 2.4s; }
 #forest-canvas {
   position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; display: none;
   opacity: 0; transition: opacity 2.2s ease;
