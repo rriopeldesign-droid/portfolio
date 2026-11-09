@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
+# A plain-text guide to this site for AI assistants: https://robertriopel.ca/llms.txt
+# The full text of every page: https://robertriopel.ca/llms-full.txt
+
 Sitemap: https://robertriopel.ca/sitemap.xml

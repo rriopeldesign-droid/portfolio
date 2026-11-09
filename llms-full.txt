@@ -1,0 +1,300 @@
+# Robert Riopel, Senior Product Designer (Ottawa and Vienna): full site text
+
+> The complete text of robertriopel.ca in one plain-text file, for AI assistants, search tools and anyone who prefers reading without the 3D forest. A shorter index is at https://robertriopel.ca/llms.txt.
+
+Robert Riopel is a Senior Product Designer based between Ottawa, Canada and Vienna, Austria. He designs digital products end to end (product UX and UI for web and native mobile, design systems, growth and conversion, onboarding, lifecycle and CRM email) and builds AI design tooling. As the sole product designer at RVezy, Canada's largest RV rental marketplace, his shipped work contributed $8M+ in measurable business impact and helped move the company from a $6M deficit to $1.5M EBITDA positive. He works in English and French and is open to freelance projects and to senior product design roles in Vienna, Ottawa or remote.
+
+Contents:
+1. Profile and keywords
+2. Homepage (the forest walk)
+3. About
+4. Work (all projects)
+5. Case study: Host Onboarding Overhaul
+6. Case study: Host Dashboard Redesign
+7. Case study: Lifecycle and Email Campaigns
+8. Case study: Pay-in-Full Pricing
+9. Case study: AI Figma Plugin
+10. Email Builder
+11. DateNight
+12. Essay: The End of Figma
+13. Other pages and languages
+
+---
+
+## 1. Profile and keywords
+
+- Name: Robert Riopel
+- Title: Senior Product Designer
+- Locations: Ottawa, Ontario, Canada and Vienna, Austria
+- Work arrangement: open to freelance projects and full-time roles in Vienna, in Ottawa, or remote
+- Languages: English and French
+- Most recent role: sole product designer at RVezy, Canada's largest RV rental marketplace (a two-sided marketplace of guests and hosts). Owned everything visual: product UX, UI, design systems, lifecycle campaigns, marketing and brand.
+- Measurable impact: $8M+ in total, measured as revenue, GMV or savings. Host Onboarding $3.4M annualized GMV, Host Dashboard $1.5M incremental GMV, Lifecycle Email $1.2M incremental GMV, Pay-in-Full +$1M incremental revenue in month one, Inspection and Claims $500K.
+- Education: MSc in Technical Management, Bachelor of Design, Advanced Diploma in Graphic Design
+- Contact: rriopel.design@gmail.com
+- LinkedIn: https://www.linkedin.com/in/robert-riopel-product-design/
+- Website: https://robertriopel.ca/
+
+Areas of expertise: senior product design, product UX, UI design, interaction design, UX research, marketplace design (guest side and host/supply side), checkout UX and monetization, conversion rate optimization, onboarding and activation, lifecycle and CRM email design (Braze), design systems (Tailwind CSS, Vue.js, OKLCH color tokens), A/B testing and funnel analytics, prototyping, responsive web and native mobile (iOS and Android), AI tooling and AI-assisted design workflows (Claude API, Claude Code, Figma plugins), React Native, Supabase, design ops, mentoring co-op designers, executive presentations, cross-functional collaboration with product, engineering, data, finance and legal.
+
+---
+
+## 2. Homepage (the forest walk)
+
+URL: https://robertriopel.ca/ (also in German at /de/ and French at /fr/)
+
+The homepage is a walk along a path through a 3D forest. Each stop on the path is a part of Robert's work.
+
+Arrival. Senior product designer, Ottawa and Vienna. "I design products that move metrics, and build the AI tools that make the work faster. $8M+ in measured impact."
+
+The trails: what I do. Four paths, one walker.
+- Product design: End-to-end UX and UI for web and native mobile, from research to shipped, measured features.
+- Growth and conversion: Checkout, onboarding and lifecycle work tied to revenue, tested and measured in GMV.
+- Design systems: Token-based systems built in code first, mirrored in Figma, so design and engineering never drift.
+- AI tooling: Custom tools that let PMs, engineers and marketers design on-brand without waiting on design.
+
+The grove: selected work. Every tree here grew from shipped work. The taller the tree, the bigger the impact: $8M+ in all, measured as revenue, GMV or savings.
+- Host Onboarding: $3.4M
+- Host Dashboard: $1.5M
+- Lifecycle Email: $1.2M
+- Pay-in-Full: +$1M
+- Inspection and Claims: $500K
+
+The sapling (2026): still growing. DateNight is a dating app Robert co-founded, designed and built, from the first sketch to public launch. It is in beta now.
+
+The workshop: tools. Where the tools get made. "I build the things that make a design team faster."
+- AI Figma plugin: prompt to component
+- Email builder: on-brand, no code
+- The End of Figma: an essay
+
+The lookout: about. Between Ottawa and Vienna. "I was the sole product designer at Canada's largest RV rental marketplace, where my work helped turn a $6M deficit into profit. I studied design, then technical management, and I learn by building. I work in English and French."
+
+The campfire: contact. "Building something, or hiring? Either way, I'd like to hear about it. I'm open to freelance projects and full-time roles."
+
+---
+
+## 3. About
+
+URL: https://robertriopel.ca/about.html
+
+Robert Riopel. Senior Product Designer, Ottawa and Vienna.
+- Location: Ottawa, Canada and Vienna, Austria
+- Languages: English and French
+- Open to: freelance projects and full-time roles
+
+I was the sole designer at Canada's largest RV rental marketplace, where I owned everything visual: product UX, UI, design systems, lifecycle campaigns, marketing, and brand.
+
+Over three years there, my work contributed over $8M in measurable business impact, helping the company move from a $6M deficit to $1.5M EBITDA positive.
+
+I also build tools. I wrote an AI-powered Figma plugin that generates on-brand components from natural language, synced 1:1 with the coded Tailwind design system. Before that, I built the design system itself using OKLCH color tokens, Vue components, shared typography and spacing scales.
+
+I studied Graphic Design (Advanced Diploma), earned a Bachelor of Design, and hold an MSc in Technical Management, which pairs a designer's eye with how technology products are planned, built, and run.
+
+On my own time, I ship side projects. Most recently DateNight, a React Native dating app I co-founded and took from concept to public beta, and AI-generated video campaigns. I learn by building.
+
+I'm based between Ottawa, Canada and Vienna, Austria, and I work in English and French. I'm open to freelance projects and to senior product design roles in Vienna, in Ottawa, or remote, especially with product teams that care about measurable outcomes.
+
+How I work:
+- Design and craft: Figma, prototyping, interaction design, visual systems, responsive web and native mobile, illustration, motion.
+- Strategy and growth: conversion optimization, A/B testing, lifecycle design, SEO, data-informed iteration, stakeholder alignment.
+- Technology and AI: Figma plugins, Claude API, React Native, Tailwind CSS, Vue.js, Supabase, AI-assisted design workflows.
+- Leadership: cross-functional collaboration, design ops, mentoring co-op designers, executive presentations, roadmap influence.
+
+Let's talk about building something that matters. Open to freelance projects, full-time roles, AI tooling, or simply an interesting problem. Email: rriopel.design@gmail.com
+
+---
+
+## 4. Work (all projects)
+
+URL: https://robertriopel.ca/work.html
+
+Everything here shipped. Every metric is real. These projects helped move the company from a $6M deficit to profitability.
+
+Product design
+- Pay-in-Full Pricing (2025): Designed a new checkout flow letting guests pay upfront at a discount. Mapped edge cases across deposits, insurance, and cancellation. +$1M month one, +$3M projected (Q1).
+- Host Dashboard Redesign (2024): Rebuilt the host portal from a static summary into a data-rich dashboard surfacing booking trends, earnings, and optimization levers. Designed end to end from research through shipped product. +22% engagement, $1.5M GMV.
+- Host Onboarding Overhaul (2022 to 2023): Redesigned the host sign-up funnel from landing page through first listing. Reduced friction, improved listing quality, and established the framework still in use today. +27% activation, $3.4M annual.
+
+Systems and AI tooling
+- AI Figma Plugin (2025 to 2026): Designed and built a plugin that generates production-ready components from natural language prompts. Synced 1:1 with the coded design system so anyone can design on-brand without touching Figma.
+
+Growth and marketing design
+- Email Builder (2025 to 2026): Designed and built a drag-and-drop email builder for RVezy's marketing team, enabling anyone to create on-brand, production-ready emails without engineering support. Live tool.
+- Lifecycle and Email Campaigns (2022 to 2024): Designed retention emails, re-engagement campaigns, and transactional templates across the booking lifecycle. Built scalable systems in Braze with marketing. +13% engagement, $1.2M GMV.
+
+Personal projects
+- DateNight (2026): Co-founded, designed, and built a dating app from concept to public launch. In beta.
+
+---
+
+## 5. Case study: Host Onboarding Overhaul
+
+URL: https://robertriopel.ca/case-studies/host-onboarding.html
+
+Rebuilding the host sign-up experience at RVezy from landing page to first published listing, reducing friction at every step and establishing the onboarding framework still in use today.
+
+- Results: +27% visitor-to-published-listing activation rate; $3.4M annualized GMV from incremental new host listings; 2.3x first-month booking rate for hosts who used smart pricing; landing page to sign-up conversion from 34% to 52%.
+- Role: Sole Product Designer
+- Team: PM, growth marketing, web and mobile engineers, data analyst
+- Timeline: 10 months, 2022 to 2023
+- Platforms: web, iOS and Android
+
+The problem: the funnel was leaking at every step. Host acquisition was expensive. Paid campaigns drove traffic to a host landing page, but conversion from visitor to published listing was dismal. Of everyone who landed on the host page, 34% started sign-up, 18% reached the listing form and 9% published a listing: 91% never published. The biggest drops were at the initial value proposition and the listing creation form, which had too many required fields, confusing photo requirements and unclear pricing guidance.
+
+What shipped:
+- Reframed the landing page. Replaced the generic "List your RV" page with a calculator-led experience: visitors enter their RV type and location to see projected earnings before creating an account. The framing shifted from "do work" to "see what you could earn". Landing page to sign-up conversion went from 34% to 52%.
+- Progressive listing creation. The old form asked for 28 fields on one page. It became a guided, step-by-step flow, one category of information per screen, with smart defaults and inline help. Required fields dropped from 28 to 12 for the minimum viable listing.
+- Smart pricing guidance. The flow suggests a nightly rate based on comparable RVs nearby and the season, with a one-tap "use suggested price" option and a plain explanation. Hosts who accepted the suggestion booked far sooner (the 2.3x first-month booking rate).
+- Photo guidance. A checklist of must-have shots (exterior, interior, sleeping area, driving cab), example images and direct upload from the phone replaced a blank upload box.
+- Save and resume. Every step saves automatically; hosts can pick up on any device, with a reminder email if they don't come back.
+
+Approach: before touching a screen, Robert partnered with the data analyst to instrument the full path from landing page to first published listing, adding step-level events and a funnel dashboard that became the team's scoreboard for ten months. He interviewed hosts who had abandoned a listing and some who had recently published, and watched session recordings. People weren't put off by renting out their RV; they were overwhelmed by being asked for everything before they knew it was worth their time. The work shipped in phases, each behind a feature flag and A/B tested against the old experience, so the team always knew which change moved which part of the funnel.
+
+Obstacles: operations and trust and safety worried fewer fields meant low-quality listings. The team went field by field: anything needed to evaluate or book an RV stayed; the rest moved after publishing. Insurance details and verification became requirements before a host's first booking, not their first listing. A minimum viable listing first and a complete listing over time worked because it was paired with persistent reminders, which later grew into the onboarding cards in the Host Dashboard redesign. Running each phase as an experiment with a control group separated the effect of the design from seasonality and marketing.
+
+Collaboration: growth marketing aligned ad messaging with the earnings-led landing page; web and mobile engineers kept both platforms in lockstep so a host could start on a laptop and finish on a phone; Robert and the data analyst reviewed the funnel weekly; operations brought direct feedback from new hosts.
+
+Next: personalize the flow by RV type (a towable trailer and a Class A motorhome have very different requirements) and bring the earnings calculator into retargeting emails.
+
+---
+
+## 6. Case study: Host Dashboard Redesign
+
+URL: https://robertriopel.ca/case-studies/host-dashboard.html
+
+Replacing a static host landing screen at RVezy with an action-driven notification centre that surfaces what hosts need to do right now, how they're performing against targets, and what's coming next. 2024.
+
+- Results: +22% host dashboard engagement (weekly active hosts, indexed 122 vs. 100 for control); $1.5M incremental GMV attributed to faster booking acceptance; 31% fewer "what do I do next?" support tickets.
+- Role: Sole Product Designer
+- Scope: mobile-first dashboard, notification cards, performance benchmarks, multi-state logic
+- Team: 1 PM, 3 engineers, 1 data analyst
+- Validation: 50/50 A/B test, split by user ID, tracked per platform (iOS and Android)
+
+Context: the old home screen showed a booking count and an earnings total but gave hosts no indication of what to do next. Booking requests went unaccepted, enquiries sat unanswered, and new hosts stalled mid-onboarding. The business needed hosts to accept bookings faster, respond to guests, complete verification and enable instant book. Hosts also had no visibility into quality targets: 70% acceptance rate, 90% response rate (replies within 24 hours), and at most 1 cancellation per year.
+
+What was designed: a feed of contextual notification cards, modeled on Airbnb's host home but tailored to RV rentals (inspection windows, onboarding calls, seasonal availability, multi-day trips).
+- Booking action cards: pending requests and unanswered enquiries as top-priority cards with accept and decline actions.
+- Onboarding nudges: persistent one-tap cards for ID verification, insurance profile and payout setup, plus booking an onboarding call via Calendly.
+- Inspection reminders: cards on trip start and return dates, deep-linked into the app's inspection flow.
+- Opportunity cards: enable instant book, improve listing photos, adjust seasonal pricing, shown by behavior and eligibility.
+
+Designing for every state: a draft listing (onboarding checklist and progress bar), published with no data ("not enough data yet" benchmarks and opportunity cards), and published with data (booking actions, performance against targets, upcoming trips with inspection reminders).
+
+Reflection: the shift was from "here's what happened" to "here's what you need to do". In a two-sided marketplace, the most valuable screen is the one that tells people what to do next. Next steps: rank cards by predicted impact per host, and turn the benchmarks into a progression system toward top-host status.
+
+---
+
+## 7. Case study: Lifecycle and Email Campaigns
+
+URL: https://robertriopel.ca/case-studies/lifecycle-campaigns.html
+
+Designing the full email lifecycle at RVezy, from welcome sequences to re-engagement campaigns, building scalable templates in Braze and a visual language that drove measurable retention. 2022 to 2024.
+
+- Results: +13% overall email engagement; $1.2M incremental GMV attributed to lifecycle campaigns (measured with holdout groups); 4x faster campaign production with the template system; 50+ campaign designs.
+- Role: Sole designer (lifecycle, brand and product)
+- Team: CRM manager, lifecycle marketer, data analyst, front-end developer
+- Tools: Figma, Braze, HTML email
+
+Scope: every customer-facing email, including transactional confirmations, marketing campaigns, seasonal promotions, host communications, re-engagement sequences and referral flows. The designs became a modular template system in Braze: 12 reusable blocks (hero images, listing grids, single-CTA sections, testimonials, pricing callouts and more), each tested across 30+ email clients with dark mode variants, so campaigns could be assembled in hours instead of days.
+
+Lifecycle map: 23 distinct email touchpoints on the guest side and 18 on the host side. The highest-leverage moments: the 48 hours after a search without booking (re-engagement with viewed RVs, live availability and similar options), the day before a trip (pickup details, checklist and host contact for anxious first-time renters), and a host's first week after going live (coaching to add photos, adjust pricing and enable instant book).
+
+Designing for the inbox: table layouts, blocked images, Outlook's word-processor rendering and forced dark mode. The system used single-column layouts that degrade gracefully, live text instead of text in images, real alt text, and colors that survive dark-mode inversion.
+
+Measurement: as mail privacy features inflated open rates, Robert worked with the data analyst to move the team to clicks, bookings and GMV per campaign, with holdout groups on key flows. Whole structures were tested (one call to action versus several, listing-led versus story-led).
+
+Collaboration and handoff: segmentation and trigger logic with the CRM manager in Braze, robust HTML with a front-end developer, Canadian anti-spam (consent, sender identification, unsubscribe) designed into every template. The real deliverable was a system the marketing team could run without him: documented blocks, starter templates and reviews of the team's first campaigns.
+
+---
+
+## 8. Case study: Pay-in-Full Pricing
+
+URL: https://robertriopel.ca/case-studies/pay-in-full.html
+
+A new checkout option at RVezy that lets guests pay everything upfront at a discount, converting price-sensitive browsers into confirmed bookings. 2025.
+
+- Results: +$1M incremental revenue in the first month; +$3M projected Q1 revenue; 40% of eligible bookings chose pay-in-full in the first month; 0 payment-related support tickets in the first 30 days.
+- Role: Sole Product Designer
+- Team: PM, payments engineers, finance, legal, data analyst
+- Timeline: 5-week design sprint
+- Platforms: web and mobile checkout
+
+The bet: average order value is around $1,800, normally split into a deposit and a later balance. Some guests wanted one payment and done. Offer a small discount (3 to 5%) for paying in full: guests get a price break and peace of mind, the business gets immediate cash flow, hosts get faster payouts. The challenge was complexity: deposits, insurance add-ons, damage protection, service fees and cancellation policies all interact with a third payment path.
+
+Design decisions:
+- Show the savings, not the math. A full breakdown felt like a negotiation in testing; the final design shows the discounted price with a simple "You save $X" line.
+- Default to split, upsell full. A higher-looking upfront price increased abandonment for budget guests, so split payment stays the default with pay-in-full highlighted as an alternative.
+- Cancel gracefully. With legal and engineering, a refund flow that refunds the actual amount paid, proportional to the cancellation policy.
+- Host-side transparency. Hosts see that a guest paid in full, and their payout timeline reflects it.
+
+The sprint: week 1 mapped every way money moves through a booking with engineering and finance; week 2 prototyped options; week 3 tested with guests; weeks 4 and 5 covered edge cases (cancellations, modifications, payout timing) and handoff. Launched to a portion of traffic first; measured against the split-payment control, the revenue was genuinely incremental, not cannibalized.
+
+Guest research: guests who paid early tended to book further ahead and for longer trips; families planning summer trips liked having it paid and off their minds. Pay-in-full was positioned as peace of mind with a reward attached. Next: personalize the offer for longer or higher-value trips and test discount size.
+
+---
+
+## 9. Case study: AI Figma Plugin
+
+URL: https://robertriopel.ca/case-studies/ai-figma-plugin.html
+
+A prompt-driven Figma plugin that generates production-ready UI components from natural language, synced 1:1 with the coded design system so anyone on the team can design on-brand. Designed and developed by Robert. 2025.
+
+- Role: designer and developer
+- Users: PMs, engineers, marketing
+- Stack: Figma Plugin API, TypeScript, Claude API
+- Numbers: 90+ components in the registry with full metadata; 3 interaction modes (generate, iterate, explore)
+
+The idea: as the sole designer, every mockup and spec request flowed through him. What if anyone could generate an on-brand Figma component by describing it in plain English, with a tool that knows the exact design system: tokens, component library and visual language?
+
+How it works: describe ("Create a booking confirmation card with check-in date, guest name, and a cancel button"), generate (Claude matches the prompt against the component registry and applies the correct tokens), render (native, editable Figma layers with correct colors, typography, spacing and auto-layout). Responses are structured JSON mapped to Figma plugin API calls such as createFrame, createText and setFills: semantic generation of native Figma objects, not screenshot-to-code. The registry is derived from the same Tailwind config that powers production, so there is no drift.
+
+Obstacles: invented components and colors (solved by constraining generation to the registry and validating every response), Figma API realities (font loading, programmatic auto-layout), and keeping the registry current. Rollout used live demos on real backlog requests, office hours and a running list of failed prompts; anything headed for production still went through design review.
+
+What he learned: as the only designer, his leverage comes less from the screens he makes and more from the systems that let other people make good decisions without him.
+
+---
+
+## 10. Email Builder
+
+URL: https://rvezy-email-builder.vercel.app/ (live demo)
+
+An internal Next.js tool Robert designed and built in a few days to replace RVezy's email production chain (design in Figma, export with a plugin, hand off to Braze, fix what broke). Pick a template, configure blocks, preview in dark and light mode, and copy the HTML. No Figma, no code. It lets anyone on the marketing team create on-brand, production-ready emails without engineering support.
+
+---
+
+## 11. DateNight
+
+URL: https://datenight.online/welcome
+
+A React Native dating app Robert co-founded, designed and built, from the first sketch to public launch. In beta (2026).
+
+---
+
+## 12. Essay: The End of Figma
+
+URL: https://robertriopel.ca/death-of-figma/
+
+A researched presentation by Robert Riopel on what design tools taught us, why they're disappearing, and what comes next. Updated October 2026, 12 sources.
+
+What is Figma: launched in 2016, browser-based, real-time and collaborative. Its breakthrough was multiplayer: designers, product managers and engineers in the same file. Between 2017 and 2023, knowing Figma deeply was a career skill.
+
+The Adobe moment: in September 2022 Adobe announced it would acquire Figma for roughly $20 billion. Facing UK and EU regulators, the companies called it off in December 2023 and Adobe paid a $1 billion termination fee, then said it had no plans to invest further in XD. Figma went public on its own at $33 a share in July 2025.
+
+The real threat was artificial intelligence. Timeline: Figma's April 2025 survey (78% say AI significantly improves efficiency, 32% say they can rely on its output); Claude Code generally available (May 2025); Figma Make launched at Config (May 2025); Figma IPO (July 2025); "vibe coding" named Collins Dictionary's Word of the Year (November 2025); Google's "vibe design" update to Stitch and a 12% two-day drop in Figma's stock (March 2026); Anthropic launches Claude Design (April 2026); Figma shares fall 51.6% in the first half of 2026 while revenue grows 46% year over year.
+
+Two things he shipped: the Email Builder, and the AI Figma plugin that generates Vue and Tailwind components from the design system. The brain behind the plugin is two files, a design system doc and a color registry; the plugin is just the hands.
+
+How he works now: Figma is the last step. Language first (Tailwind CSS and shadcn/ui), explore with Claude Design and Google Stitch, prove with Claude Code and v0 against the real codebase and real data, then polish in Figma. The site itself was built this way.
+
+So is design dead? The tool was never the skill. AI can generate a UI in seconds, but it cannot tell you whether that UI respects your user. In a world flooded with AI-generated interfaces, taste is becoming rarer and more valuable, not less.
+
+Sources include CNBC, Adobe's SEC Form 8-K, The Register, Figma, Anthropic, Collins Dictionary, VentureBeat, The Motley Fool and Vercel.
+
+---
+
+## 13. Other pages and languages
+
+- German homepage: https://robertriopel.ca/de/ (Senior Product Designer in Wien und Ottawa)
+- French homepage: https://robertriopel.ca/fr/ (Senior Product Designer à Ottawa et à Vienne)
+- Fun: https://robertriopel.ca/fun.html, "Escape the Maze", a browser arcade game he built (find the key, reach the chest, dodge the ghosts).
+- Case studies and the about page are in English.

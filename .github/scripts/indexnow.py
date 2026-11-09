@@ -35,8 +35,8 @@ def to_url(path):
     # planned/ is an unlisted concept page: never announce it
     if path in SKIP or path.startswith((".github/", "src/", "node_modules/", "planned/")):
         return None
-    if path == "llms.txt":
-        return f"{SITE}/llms.txt"
+    if path in ("llms.txt", "llms-full.txt"):
+        return f"{SITE}/{path}"
     if not path.endswith(".html"):
         return None
     if path == "index.html":
