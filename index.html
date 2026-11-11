@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="/img/favicon.png" />
   <title>Robert Riopel | Senior Product Designer · Ottawa &amp; Vienna</title>
-  <meta name="description" content="Robert Riopel is a Senior Product Designer in Ottawa and Vienna. $8M+ in measurable impact through product UX, design systems, onboarding, lifecycle email and AI tooling. English and French, open to remote." />
+  <meta name="description" content="Robert Riopel is a Senior Product Designer in Ottawa and Vienna. $8M+ in measurable impact through product UX, design systems and AI tooling. Open to remote." />
   <meta name="keywords" content="Robert Riopel, Product Designer, UX Designer, UI Designer, Senior Product Designer, Ottawa, UX Portfolio, Product Design Portfolio, Design Systems, AI Design Tools, Figma, RVezy, Conversion Rate Optimization, User Experience, Interface Design, Mobile App Design, Senior Product Designer Ottawa, Product Designer Vienna, Senior Product Designer Vienna, UX Designer Vienna, UX Designer Wien, Produktdesigner Wien, Product Designer Austria, Product Designer Canada, B2B Product Designer, Marketplace Product Designer" />
   <meta name="author" content="Robert Riopel" />
   <meta name="robots" content="max-image-preview:large" />
@@ -165,9 +165,7 @@
   }
   </script>
   <meta name="theme-color" content="#010609" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="/css/fonts.css" rel="stylesheet" />
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="/css/forest.css" />
@@ -337,11 +335,16 @@
       if (skipped) root.classList.add('forest-skipped');
       if (!gl || reduce || skipped) { root.classList.add('forest-off'); return; }
       root.classList.add('forest-on');
-      import('/js/forest.js').then(function (m) { return m.start(); }).catch(function (err) {
-        console.warn('[forest]', err);
-        root.classList.remove('forest-on');
-        root.classList.add('forest-off');
-      });
+      // Let the text paint first: the scene (three.js) loads once the page is idle.
+      var boot = function () {
+        import('/js/forest.js').then(function (m) { return m.start(); }).catch(function (err) {
+          console.warn('[forest]', err);
+          root.classList.remove('forest-on');
+          root.classList.add('forest-off');
+        });
+      };
+      var idle = function () { (window.requestIdleCallback || function (f) { setTimeout(f, 200); })(boot, { timeout: 1500 }); };
+      if (document.readyState === 'complete') idle(); else addEventListener('load', idle, { once: true });
     })();
     document.addEventListener('click', function (e) {
       if (!e.target.closest('#walkAgain')) return;

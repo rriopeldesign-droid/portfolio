@@ -39,11 +39,20 @@ jobs:
       - name: Stamp last-updated dates
         # Sitemap <lastmod> and each page's structured-data dateModified come from git history
         run: python3 .github/scripts/sitemap_lastmod.py
+      - name: Assemble the site
+        # Publish only what the site serves: no build sources, tooling or dotfiles
+        run: |
+          mkdir _site
+          rsync -a \
+            --exclude='.*' --exclude='_site' --exclude='node_modules' --exclude='audits' \
+            --exclude='/src' --exclude='/scripts' \
+            --exclude='/package.json' --exclude='/package-lock.json' \
+            --exclude='/tailwind.config.js' --exclude='/README.md' \
+            ./ _site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
