@@ -249,7 +249,17 @@
       </div>
       <div class="reveal">
         <div class="case-img">
-          <video src="/img/case-studies/figma-plugin.mp4" autoplay loop muted playsinline style="width:100%;display:block;"></video>
+          <video data-src="/img/case-studies/figma-plugin.mp4" width="3820" height="1922" preload="none" loop muted playsinline aria-label="Screen recording of the plugin generating a component" style="width:100%;height:auto;display:block;"></video>
+          <script>
+            // Fetch and play the recording only when it scrolls into view.
+            (function () {
+              var v = document.currentScript.previousElementSibling;
+              var go = function () { v.src = v.dataset.src; var p = v.play(); if (p && p.catch) p.catch(function () { v.controls = true; }); };
+              if (!('IntersectionObserver' in window)) return go();
+              var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); go(); } }, { rootMargin: '300px' });
+              io.observe(v);
+            })();
+          </script>
         </div>
       </div>
     </section>
