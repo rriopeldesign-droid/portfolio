@@ -87,6 +87,34 @@ const idle = () => {
   return new Promise((r) => { queue.push(() => { lastYield = performance.now(); r(); }); chan ? chan.port2.postMessage(0) : setTimeout(() => queue.shift()?.(), 0); });
 };
 
+// Paint jobs ([painter name, ...args]) in background workers. Resolves to the packs in job order,
+// or rejects (the caller then paints on the page) when workers or OffscreenCanvas are unavailable.
+function paintInWorkers(jobs, onEach) {
+  if (!jobs.length || typeof Worker === "undefined" || typeof OffscreenCanvas === "undefined") return Promise.reject();
+  const url = new URL("./forest-paint.js", import.meta.url);
+  const count = Math.max(1, Math.min(3, (navigator.hardwareConcurrency || 2) - 1));
+  return new Promise((resolve, reject) => {
+    const out = new Array(jobs.length);
+    const workers = [];
+    let next = 0, left = jobs.length, failed = false;
+    const fail = () => { if (failed) return; failed = true; workers.forEach((w) => w.terminate()); reject(); };
+    const feed = (w) => { if (next < jobs.length) { const i = next++; w.postMessage({ i, job: jobs[i] }); } };
+    for (let n = 0; n < count; n++) {
+      let w;
+      try { w = new Worker(url); } catch { return fail(); }
+      workers.push(w);
+      w.onerror = fail;
+      w.onmessage = ({ data }) => {
+        if (data.error) return fail();
+        out[data.i] = data.pk;
+        onEach();
+        if (--left === 0) { workers.forEach((x) => x.terminate()); resolve(out); } else feed(w);
+      };
+      feed(w);
+    }
+  });
+}
+
 function toTexture(pk) {
   const t = new DataTexture(pk.data, pk.w, pk.h, RGBAFormat);
   t.flipY = false;
@@ -120,35 +148,35 @@ export async function buildWorld({ quality = 1, onProgress = () => {}, note = ()
 
   // ── Paint every texture, yielding between each so the page stays responsive ──
   const specs = {
-    gnarledA: () => P.paintGnarled(11, { W: q(1024), H: q(1536), glow: 0.55 }),
-    gnarledB: () => P.paintGnarled(29, { W: q(1024), H: q(1536), glow: 0.3 }),
+    gnarledA: ["paintGnarled", 11, { W: q(1024), H: q(1536), glow: 0.55 }],
+    gnarledB: ["paintGnarled", 29, { W: q(1024), H: q(1536), glow: 0.3 }],
     // The same tree with something looking out of its hollow; only planted deep in the forest
-    gnarledEyes: () => P.paintGnarled(29, { W: q(1024), H: q(1536), glow: 0.3, hollowEyes: true }),
-    gnarledC: () => P.paintGnarled(47, { W: q(1024), H: q(1536), glow: 0.8, crown: 0.8 }),
-    groveA: () => P.paintGnarled(83, { W: q(1024), H: q(1536), glow: 1, roots: 1.4, crown: 0.9 }),
-    groveB: () => P.paintGnarled(97, { W: q(1024), H: q(1536), glow: 1, roots: 1.3, crown: 1 }),
-    cedarA: () => P.paintCedar(5, { W: q(640), H: q(1536) }),
-    cedarB: () => P.paintCedar(17, { W: q(640), H: q(1536) }),
-    cedarC: () => P.paintCedar(23, { W: q(512), H: q(1280) }),
-    deadA: () => P.paintDead(31, { W: q(768), H: q(1280) }),
-    deadB: () => P.paintDead(61, { W: q(640), H: q(1152) }),
-    fernA: () => P.paintFern(3, { W: q(512), H: q(384) }),
-    fernB: () => P.paintFern(9, { W: q(512), H: q(384), glow: 1 }),
-    grassA: () => P.paintGrass(7, { W: q(1024), H: q(256) }),
-    grassB: () => P.paintGrass(13, { W: q(1024), H: q(256), spores: 0.06 }),
-    rocksA: () => P.paintRocks(21, { W: q(768), H: q(384) }),
-    rocksB: () => P.paintRocks(37, { W: q(768), H: q(384), moss: 0.8 }),
-    signpost: () => P.paintSignpost(41, { W: q(640), H: q(1024) }),
-    cabin: () => P.paintCabin(43, { W: q(1024), H: q(896) }),
-    lookout: () => P.paintLookout(53, { W: q(1280), H: q(896) }),
-    sapling: () => P.paintSapling(59, { W: q(512), H: q(768) }),
-    figure: () => P.paintFigure(67, { W: q(448), H: q(1536) }),
-    hand: () => P.paintHand(71, { W: q(640), H: q(384) }),
-    post: () => P.paintLanternPost(73, { W: q(320), H: q(896) }),
-    waypost: () => P.paintWaypost(79, { W: q(512), H: q(1024) }),
-    campfire: () => P.paintCampfire(89, { W: q(640), H: q(256) }),
-    hollow: () => P.paintHollow(113, { W: q(1024), H: q(640) }),
-    saucer: () => P.paintSaucer(127, { W: q(512), H: q(320) }),
+    gnarledEyes: ["paintGnarled", 29, { W: q(1024), H: q(1536), glow: 0.3, hollowEyes: true }],
+    gnarledC: ["paintGnarled", 47, { W: q(1024), H: q(1536), glow: 0.8, crown: 0.8 }],
+    groveA: ["paintGnarled", 83, { W: q(1024), H: q(1536), glow: 1, roots: 1.4, crown: 0.9 }],
+    groveB: ["paintGnarled", 97, { W: q(1024), H: q(1536), glow: 1, roots: 1.3, crown: 1 }],
+    cedarA: ["paintCedar", 5, { W: q(640), H: q(1536) }],
+    cedarB: ["paintCedar", 17, { W: q(640), H: q(1536) }],
+    cedarC: ["paintCedar", 23, { W: q(512), H: q(1280) }],
+    deadA: ["paintDead", 31, { W: q(768), H: q(1280) }],
+    deadB: ["paintDead", 61, { W: q(640), H: q(1152) }],
+    fernA: ["paintFern", 3, { W: q(512), H: q(384) }],
+    fernB: ["paintFern", 9, { W: q(512), H: q(384), glow: 1 }],
+    grassA: ["paintGrass", 7, { W: q(1024), H: q(256) }],
+    grassB: ["paintGrass", 13, { W: q(1024), H: q(256), spores: 0.06 }],
+    rocksA: ["paintRocks", 21, { W: q(768), H: q(384) }],
+    rocksB: ["paintRocks", 37, { W: q(768), H: q(384), moss: 0.8 }],
+    signpost: ["paintSignpost", 41, { W: q(640), H: q(1024) }],
+    cabin: ["paintCabin", 43, { W: q(1024), H: q(896) }],
+    lookout: ["paintLookout", 53, { W: q(1280), H: q(896) }],
+    sapling: ["paintSapling", 59, { W: q(512), H: q(768) }],
+    figure: ["paintFigure", 67, { W: q(448), H: q(1536) }],
+    hand: ["paintHand", 71, { W: q(640), H: q(384) }],
+    post: ["paintLanternPost", 73, { W: q(320), H: q(896) }],
+    waypost: ["paintWaypost", 79, { W: q(512), H: q(1024) }],
+    campfire: ["paintCampfire", 89, { W: q(640), H: q(256) }],
+    hollow: ["paintHollow", 113, { W: q(1024), H: q(640) }],
+    saucer: ["paintSaucer", 127, { W: q(512), H: q(320) }],
   };
   // The boards carry words, so wait (briefly) for the page fonts before painting them
   await Promise.race([
@@ -161,12 +189,21 @@ export async function buildWorld({ quality = 1, onProgress = () => {}, note = ()
   const packs = {};
   const keys = Object.keys(specs);
   const tPaint = performance.now();
-  for (let i = 0; i < keys.length; i++) {
-    packs[keys[i]] = specs[keys[i]]();
-    onProgress((i + 1) / keys.length);
+  let done = 0;
+  const tick = () => onProgress(Math.min(1, ++done / keys.length));
+  // The painters run in background workers, so the page stays smooth while the forest is made.
+  // Boards are painted here: they need the page's fonts. Without workers, everything is painted here.
+  const local = async (k) => {
+    const s = specs[k];
+    packs[k] = typeof s === "function" ? s() : P[s[0]](...s.slice(1));
+    tick();
     await idle();
-  }
-  console.info(`[forest] painted ${keys.length} textures in ${Math.round(performance.now() - tPaint)}ms`);
+  };
+  const jobs = keys.filter((k) => Array.isArray(specs[k]));
+  const remote = await paintInWorkers(jobs.map((k) => specs[k]), () => tick()).catch(() => null);
+  if (remote) jobs.forEach((k, i) => { packs[k] = remote[i]; });
+  for (const k of keys) if (!packs[k]) await local(k);
+  console.info(`[forest] painted ${keys.length} textures in ${Math.round(performance.now() - tPaint)}ms${remote ? " (workers)" : ""}`);
 
   // ── Cutout groups: one instanced mesh per texture ──
   const plane = new PlaneGeometry(1, 1, 1, 6).translate(0, 0.5, 0);

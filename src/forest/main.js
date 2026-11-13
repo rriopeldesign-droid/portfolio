@@ -345,6 +345,21 @@ export async function start() {
     }
     requestAnimationFrame(frame);
   }
+  // Spread the GPU's start-up work instead of doing it all in the first frame: shaders compile
+  // in the background where supported, and textures go to the GPU a couple at a time.
+  try { await renderer.compileAsync(world.scene, camera); } catch {}
+  const texes = new Set();
+  world.scene.traverse((o) => {
+    for (const m of [].concat(o.material || [])) {
+      if (m.map) texes.add(m.map);
+      for (const u of Object.values(m.uniforms || {})) if (u.value?.isTexture) texes.add(u.value);
+    }
+  });
+  let n = 0;
+  for (const t of texes) {
+    renderer.initTexture(t);
+    if (++n % 2 === 0) await new Promise((r) => setTimeout(r, 0));
+  }
   requestAnimationFrame(frame);
   if (/[?&]debug\b/.test(location.search)) window.__forest = { world, renderer, camera };
 

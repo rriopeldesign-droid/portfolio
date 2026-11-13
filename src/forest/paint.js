@@ -37,7 +37,8 @@ class Painter {
     this.r = makeRng(seed);
     this.n = makeNoise(this.r);
     const mk = () => {
-      const c = document.createElement("canvas");
+      // A page canvas, or an OffscreenCanvas when painting in the worker (same pixels either way)
+      const c = typeof document !== "undefined" ? document.createElement("canvas") : new OffscreenCanvas(w, h);
       c.width = w; c.height = h;
       const x = c.getContext("2d", { willReadFrequently: true });
       x.fillStyle = x.strokeStyle = "#fff";

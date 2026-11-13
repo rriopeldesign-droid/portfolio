@@ -8,7 +8,7 @@
     "build:css": "tailwindcss -i src/input.css -o css/style.css --minify",
     "build:motion": "esbuild src/motion-entry.js --bundle --format=esm --minify --target=es2020 --outfile=js/vendor/motion.js",
     "watch": "tailwindcss -i src/input.css -o css/style.css --watch",
-    "build:forest": "esbuild src/forest/main.js --bundle --format=esm --minify --target=es2020 --outfile=js/forest.js"
+    "build:forest": "esbuild src/forest/main.js --bundle --format=esm --minify --target=es2020 --outfile=js/forest.js && esbuild src/forest/paint-worker.js --bundle --format=iife --minify --target=es2020 --outfile=js/forest-paint.js"
   },
   "devDependencies": {
     "esbuild": "^0.28.2",
