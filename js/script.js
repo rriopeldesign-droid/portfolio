@@ -3,7 +3,30 @@ document.addEventListener('DOMContentLoaded', () => {
   enableMobileToggle();
   initScrollReveal();
   initFieldNotes();
+  initHeroNav();
 });
+
+// ── Pages with a dark hero ───────────────────────────────────────────────────
+// The nav is clear over the top of the hero, dark glass once the page moves under it,
+// and the usual light glass past the hero (body classes nav-scrolled and past-hero).
+function initHeroNav() {
+  var hero = document.querySelector('.page-hero');
+  var nav = document.querySelector('nav.nav-glass');
+  if (!hero || !nav || !document.body.classList.contains('has-hero')) return;
+  var root = document.documentElement, ticking = false;
+  var update = function () {
+    // The nav's own row (plus its border), so opening the phone menu doesn't move the hero
+    var h = Math.round(nav.firstElementChild.getBoundingClientRect().height + nav.offsetHeight - nav.clientHeight);
+    root.style.setProperty('--nav-h', h + 'px');
+    document.body.classList.toggle('nav-scrolled', window.scrollY > 4);
+    document.body.classList.toggle('past-hero', hero.getBoundingClientRect().bottom <= h);
+    ticking = false;
+  };
+  var request = function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  addEventListener('scroll', request, { passive: true });
+  addEventListener('resize', request);
+  update();
+}
 
 // ── Field notes ──────────────────────────────────────────────────────────────
 // A quiet log of things found around the site, kept in this browser only (localStorage).

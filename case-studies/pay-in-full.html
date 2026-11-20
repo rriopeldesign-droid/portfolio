@@ -89,7 +89,7 @@
   <script src="/js/script.js" defer></script>
   <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="case-study bg-surface text-ink font-body">
+<body class="case-study has-hero bg-surface text-ink font-body">
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
@@ -124,24 +124,37 @@
     </div>
   </nav>
 
-  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
-
-    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
-      <p class="tag">Case Study &middot; 2025</p>
-      <a href="/work.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Back to Work</a>
-    </div>
-
-    <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-pay-in-full">Pay-in-Full Pricing</h1>
-      <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
-        A new checkout option that lets guests pay everything upfront at a discount. It turned price-sensitive browsers into confirmed bookings: +$&nbsp;1M in GMV in month one, and $&nbsp;4M by the end of Q1&nbsp;2026.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <span class="metric">+$&nbsp;1M month one</span>
-        <span class="metric">$&nbsp;4M by end of Q1 2026</span>
-        <span class="metric">5-week design sprint</span>
+  <header class="page-hero">
+    <div class="max-w-6xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Case Study &middot; 2025</p>
+        <a href="/work.html" class="page-hero-back">&larr; Back to Work</a>
       </div>
-    </header>
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title" style="view-transition-name: cs-title-pay-in-full"><span class="whitespace-nowrap">Pay-in-Full</span> Pricing</h1>
+          <p class="page-hero-line">
+            A new checkout option that lets guests pay everything upfront at a discount. It turned price-sensitive browsers into confirmed bookings: +$1M in GMV in month one, and $4M by the end of Q1&nbsp;2026.
+          </p>
+          <div class="page-hero-chips">
+            <span class="hero-chip">+$1M month one</span>
+            <span class="hero-chip">$4M by end of Q1 2026</span>
+            <span class="hero-chip">5-week design sprint</span>
+          </div>
+        </div>
+        <div class="reveal" role="img" aria-label="GMV from pay-in-full bookings: +$1M in month one, $4M by the end of Q1 2026. 40% of eligible bookings chose it.">
+          <div class="hero-bars">
+            <p class="hero-bars-title">GMV from pay-in-full bookings</p>
+            <div class="hero-bar"><span class="hero-bar-label">Month one</span><span class="hero-bar-value">+$1M</span><span class="hero-bar-track"><span class="hero-bar-fill" style="--w:25%"></span></span></div>
+            <div class="hero-bar is-hi"><span class="hero-bar-label">By end of Q1 2026</span><span class="hero-bar-value">$4M</span><span class="hero-bar-track"><span class="hero-bar-fill" style="--w:100%"></span></span></div>
+            <div><span class="hero-chip">40% of eligible bookings</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pb-26">
 
     <!-- Project snapshot -->
     <section class="mt-14 reveal">
