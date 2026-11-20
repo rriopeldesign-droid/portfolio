@@ -100,7 +100,7 @@
   <script type="module" src="/js/enhance.js"></script>
 </head>
 
-<body class="case-study bg-surface text-ink font-body">
+<body class="case-study has-hero bg-surface text-ink font-body">
 
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
@@ -136,18 +136,34 @@
     </div>
   </nav>
 
-  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
-
-    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
-      <p class="tag">Writing &middot; Essay</p>
-      <a href="/writing/" class="text-sm text-muted hover:text-ink transition-colors">&larr; All writing</a>
+  <header class="page-hero">
+    <div class="max-w-6xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Writing &middot; Essay</p>
+        <a href="/writing/" class="page-hero-back">&larr; All writing</a>
+      </div>
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title">The End of Figma</h1>
+          <p class="page-hero-line">What design tools taught us, why they&rsquo;re disappearing, and what comes next.</p>
+          <p class="page-hero-meta">By <a href="/about.html">Robert Riopel</a> &middot; <time datetime="2026-03-31">Updated October 2026</time> &middot; 6 min read</p>
+        </div>
+        <div class="reveal" role="img" aria-label="From the essay&rsquo;s timeline: Adobe moves to buy Figma for about $20 billion in September 2022, Figma goes public at $33 a share in July 2025, Anthropic launches Claude Design in April 2026, and in the first half of 2026 Figma shares fall 51.6% while revenue grows 46%.">
+          <div class="hero-flow">
+            <div class="hero-box"><small>September 2022</small><b>Adobe moves to buy Figma for about $20 billion</b></div>
+            <p class="hero-arrow" aria-hidden="true">&darr;</p>
+            <div class="hero-box"><small>July 2025</small><b>Figma goes public at $33 a share</b></div>
+            <p class="hero-arrow" aria-hidden="true">&darr;</p>
+            <div class="hero-box is-warn"><small>April 2026</small><b>Anthropic launches Claude Design</b></div>
+            <p class="hero-arrow" aria-hidden="true">&darr;</p>
+            <div class="hero-box is-hi"><small>First half of 2026</small><b>Shares fall 51.6% while revenue grows 46%</b></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </header>
 
-    <header class="mt-12 max-w-3xl reveal">
-      <h1 class="font-display text-section md:text-[3.75rem] md:leading-[1.05]">The End of Figma</h1>
-      <p class="mt-5 text-muted text-lg leading-relaxed">What design tools taught us, why they&rsquo;re disappearing, and what comes next.</p>
-      <p class="mt-6 text-sm text-faint">By <a href="/about.html" class="text-ink underline underline-offset-4 hover:text-accent transition-colors">Robert Riopel</a> &middot; <time datetime="2026-03-31">Updated October 2026</time> &middot; 6 min read</p>
-    </header>
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pb-26">
 
     <div class="article-body mt-14">
 <p class="text-sm">First published as a presentation. <a href="/death-of-figma/">See the original presentation</a>.</p>

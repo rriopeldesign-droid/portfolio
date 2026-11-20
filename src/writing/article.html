@@ -7,7 +7,7 @@
     3. Add a share card for <slug> to src/og/og-page.html and run `node scripts/build-og.mjs <slug>`.
     4. Add a row to writing/index.html (newest first) and a BlogPosting to its JSON-LD.
     5. Add the URL to sitemap.xml and llms.txt.
-  Body markup: <p>, <h2>, <h3>, <ul>/<ol>, <pre><code>, <p class="callout">, <figure> with <figcaption>.
+  The hero (top) takes one graphic, like the share cards. Body markup: <p>, <h2>, <h3>, <ul>/<ol>, <pre><code>, <p class="callout">, <figure> with <figcaption>.
   Images below the fold get loading="lazy" plus width and height.
 -->
 <html lang="en">
@@ -81,7 +81,7 @@
   <script type="module" src="/js/enhance.js"></script>
 </head>
 
-<body class="case-study bg-surface text-ink font-body">
+<body class="case-study has-hero bg-surface text-ink font-body">
 
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
@@ -117,18 +117,26 @@
     </div>
   </nav>
 
-  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
-
-    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
-      <p class="tag">Writing &middot; {{KIND, e.g. Essay or Build notes}}</p>
-      <a href="/writing/" class="text-sm text-muted hover:text-ink transition-colors">&larr; All writing</a>
+  <header class="page-hero">
+    <div class="max-w-6xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Writing &middot; {{KIND, e.g. Essay or Build notes}}</p>
+        <a href="/writing/" class="page-hero-back">&larr; All writing</a>
+      </div>
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title">{{TITLE}}</h1>
+          <p class="page-hero-line">{{DEK: one or two sentences}}</p>
+          <p class="page-hero-meta">By <a href="/about.html">Robert Riopel</a> &middot; <time datetime="{{DATE}}">{{DATE, e.g. November 20, 2026}}</time> &middot; {{MINUTES}} min read</p>
+        </div>
+        <div class="reveal" role="img" aria-label="{{DESCRIBE THE GRAPHIC}}">
+          {{GRAPHIC: hero-bars, hero-nums, hero-flow, hero-layers or hero-post links; see src/input.css}}
+        </div>
+      </div>
     </div>
+  </header>
 
-    <header class="mt-12 max-w-3xl reveal">
-      <h1 class="font-display text-section md:text-[3.75rem] md:leading-[1.05]">{{TITLE}}</h1>
-      <p class="mt-5 text-muted text-lg leading-relaxed">{{DEK: one or two sentences}}</p>
-      <p class="mt-6 text-sm text-faint">By <a href="/about.html" class="text-ink underline underline-offset-4 hover:text-accent transition-colors">Robert Riopel</a> &middot; <time datetime="{{DATE}}">{{DATE, e.g. November 20, 2026}}</time> &middot; {{MINUTES}} min read</p>
-    </header>
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pb-26">
 
     <div class="article-body mt-14">
 <p>{{Opening paragraph.}}</p>

@@ -59,7 +59,7 @@
   <script type="module" src="/js/enhance.js"></script>
 </head>
 
-<body class="bg-surface text-ink font-body">
+<body class="has-hero bg-surface text-ink font-body">
 
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
@@ -96,13 +96,26 @@
   </nav>
 
   <!-- Page header -->
-  <header class="px-8 md:px-12 pt-16 sm:pt-22 md:pt-26 pb-16">
-    <div class="max-w-7xl mx-auto reveal">
-      <p class="tag mb-5">Case Studies</p>
-      <h1 class="font-display text-hero max-w-4xl">The work.</h1>
-      <p class="mt-6 text-muted text-base sm:text-lg leading-relaxed max-w-2xl">
-        Everything here shipped. Every metric is real. These projects helped move the company from a $6M deficit to profitability.
-      </p>
+  <header class="page-hero">
+    <div class="max-w-7xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Case Studies</p>
+      </div>
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title">The work.</h1>
+          <p class="page-hero-line">Everything here shipped. Every metric is real. These projects helped move the company from a $6M deficit to profitability.</p>
+        </div>
+        <div class="reveal" role="img" aria-label="Impact by project: Pay-in-Full $4M, Host Onboarding $3.4M, Host Dashboard $1.5M, Lifecycle Email $1.2M.">
+          <div class="hero-bars">
+            <p class="hero-bars-title">Impact by project</p>
+            <div class="hero-bar is-hi"><span class="hero-bar-label">Pay-in-Full</span><span class="hero-bar-value">$4M</span><span class="hero-bar-track"><span class="hero-bar-fill" style="--w:100%"></span></span></div>
+            <div class="hero-bar"><span class="hero-bar-label">Host Onboarding</span><span class="hero-bar-value">$3.4M</span><span class="hero-bar-track"><span class="hero-bar-fill" style="--w:85%"></span></span></div>
+            <div class="hero-bar"><span class="hero-bar-label">Host Dashboard</span><span class="hero-bar-value">$1.5M</span><span class="hero-bar-track"><span class="hero-bar-fill" style="--w:37.5%"></span></span></div>
+            <div class="hero-bar"><span class="hero-bar-label">Lifecycle Email</span><span class="hero-bar-value">$1.2M</span><span class="hero-bar-track"><span class="hero-bar-fill" style="--w:30%"></span></span></div>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 

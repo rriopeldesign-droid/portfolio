@@ -89,7 +89,7 @@
   <script src="/js/script.js" defer></script>
   <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="case-study bg-surface text-ink font-body">
+<body class="case-study has-hero bg-surface text-ink font-body">
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
@@ -124,25 +124,37 @@
     </div>
   </nav>
 
-  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
-
-    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
-      <p class="tag">Case Study &middot; 2025</p>
-      <a href="/work.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Back to Work</a>
-    </div>
-
-    <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-ai-figma-plugin">AI Figma Plugin</h1>
-      <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
-        A prompt-driven Figma plugin that generates production-ready UI components from natural language. Synced 1:1 with the coded design system so anyone on the team can design on-brand without being a designer.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <span class="metric">Prompt &rarr; Component</span>
-        <span class="metric">Handoff time cut in half</span>
-        <span class="metric">Design system synced</span>
-        <span class="metric">Designed + Developed</span>
+  <header class="page-hero">
+    <div class="max-w-6xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Case Study &middot; 2025</p>
+        <a href="/work.html" class="page-hero-back">&larr; Back to Work</a>
       </div>
-    </header>
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title" style="view-transition-name: cs-title-ai-figma-plugin">AI Figma Plugin</h1>
+          <p class="page-hero-line">A prompt-driven Figma plugin that generates production-ready UI components from natural language. Synced 1:1 with the coded design system so anyone on the team can design on-brand without being a designer.</p>
+          <div class="page-hero-chips">
+            <span class="hero-chip">Prompt &rarr; Component</span>
+            <span class="hero-chip">Handoff time cut in half</span>
+            <span class="hero-chip">Design system synced</span>
+            <span class="hero-chip">Designed + Developed</span>
+          </div>
+        </div>
+        <div class="reveal" role="img" aria-label="A prompt goes to the Claude API, which composes it from the 90+ component registry, and the plugin draws native, editable Figma layers.">
+          <div class="hero-flow">
+            <div class="hero-box"><small>01 &middot; Prompt</small><b>&ldquo;A booking card with a cancel button&rdquo;</b></div>
+            <p class="hero-arrow" aria-hidden="true">&darr;</p>
+            <div class="hero-box"><small>02 &middot; Claude API</small><b>Composed from the 90+ component registry</b></div>
+            <p class="hero-arrow" aria-hidden="true">&darr;</p>
+            <div class="hero-box is-hi"><small>03 &middot; Figma</small><b>Native, editable layers</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pb-26">
 
     <!-- Project snapshot -->
     <section class="mt-14 reveal">

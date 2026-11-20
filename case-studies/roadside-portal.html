@@ -89,7 +89,7 @@
   <script src="/js/script.js" defer></script>
   <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="case-study bg-surface text-ink font-body">
+<body class="case-study has-hero bg-surface text-ink font-body">
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
@@ -124,26 +124,33 @@
     </div>
   </nav>
 
-  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
-
-    <!-- Breadcrumb -->
-    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
-      <p class="tag">Case Study &middot; 2022&ndash;23</p>
-      <a href="/work.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Back to Work</a>
-    </div>
-
-    <!-- Header -->
-    <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-roadside-portal">Roadside Assistance Portal</h1>
-      <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
-        Helped rebuild the portal our 24/7 roadside partner used, so their agents could see each booking&rsquo;s coverage instead of calling us to ask.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <span class="metric">Phone call &rarr; Portal</span>
-        <span class="metric">Internal ops tool</span>
-        <span class="metric">Designed + Developed</span>
+  <header class="page-hero">
+    <div class="max-w-6xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Case Study &middot; 2022&ndash;23</p>
+        <a href="/work.html" class="page-hero-back">&larr; Back to Work</a>
       </div>
-    </header>
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title is-long" style="view-transition-name: cs-title-roadside-portal">Roadside Assistance Portal</h1>
+          <p class="page-hero-line">Helped rebuild the portal our 24/7 roadside partner used, so their agents could see each booking&rsquo;s coverage instead of calling us to ask.</p>
+          <div class="page-hero-chips">
+            <span class="hero-chip">Phone call &rarr; Portal</span>
+            <span class="hero-chip">Internal ops tool</span>
+            <span class="hero-chip">Designed + Developed</span>
+          </div>
+        </div>
+        <div class="reveal" role="img" aria-label="Before: an unclear case became a phone call to Customer Success. After: the agent opens the booking and the portal shows its coverage.">
+          <div class="hero-pair">
+            <div><p class="hero-pair-head">Before</p><div class="hero-flow"><div class="hero-box"><small>Roadside agent</small><b>Unclear coverage</b></div><p class="hero-arrow" aria-hidden="true">&darr;</p><div class="hero-box is-warn"><small>Phone call</small><b>To Customer Success</b></div></div></div>
+            <div><p class="hero-pair-head">After</p><div class="hero-flow"><div class="hero-box"><small>Roadside agent</small><b>Opens the booking</b></div><p class="hero-arrow" aria-hidden="true">&darr;</p><div class="hero-box is-hi"><small>Portal</small><b>Shows its coverage</b></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pb-26">
 
     <!-- Before and after: who an unclear case had to reach -->
     <figure class="mt-14 reveal">

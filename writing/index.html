@@ -99,7 +99,7 @@
   <script type="module" src="/js/enhance.js"></script>
 </head>
 
-<body class="bg-surface text-ink font-body">
+<body class="has-hero bg-surface text-ink font-body">
 
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
@@ -136,15 +136,26 @@
   </nav>
 
   <!-- Page header -->
-  <header class="px-8 md:px-12 pt-16 sm:pt-22 md:pt-26 pb-16">
-    <div class="max-w-7xl mx-auto reveal">
-      <p class="tag mb-5">Writing</p>
-      <h1 class="font-display text-hero max-w-4xl">Notes from the work.</h1>
-      <p class="mt-6 text-muted text-base sm:text-lg leading-relaxed max-w-2xl">
-        Essays and build notes: product design, AI design tools, and how the things on this site were made.
-      </p>
+  <header class="page-hero">
+    <div class="max-w-7xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Writing</p>
+      </div>
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title">Notes from the work.</h1>
+          <p class="page-hero-line">Essays and build notes: product design, AI design tools, and how the things on this site were made.</p>
+        </div>
+        <div class="reveal">
+          <div>
+            <a href="/writing/how-i-built-the-forest/" class="hero-post"><small>Build notes</small><b>How I built the forest</b></a>
+            <a href="/writing/the-end-of-figma/" class="hero-post"><small>Essay</small><b>The End of Figma</b></a>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
+
 
   <section class="px-8 md:px-12 pb-26">
     <div class="max-w-7xl mx-auto">

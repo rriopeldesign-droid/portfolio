@@ -3,7 +3,7 @@
    and the rose-to-orange gradient. Small text keeps at least 4.5:1 contrast,
    so a few greys sit a step lighter than in the app. */
 
-.dn {
+.dn, .dn-scope {
   --dn-bg: #0a0a0a;
   --dn-900: oklch(21% 0.006 285.885);
   --dn-800: oklch(27.4% 0.006 286.033);
@@ -19,6 +19,8 @@
   --dn-grad: linear-gradient(to right, var(--dn-rose-500), var(--dn-orange-400));
   --dn-text-2: rgb(255 255 255 / 0.62);
   --dn-text-3: rgb(255 255 255 / 0.55);
+}
+.dn {
   background: var(--dn-bg);
   color: #fff;
   border-radius: 1.5rem;

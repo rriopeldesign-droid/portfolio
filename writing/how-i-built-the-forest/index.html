@@ -100,7 +100,7 @@
   <script type="module" src="/js/enhance.js"></script>
 </head>
 
-<body class="case-study bg-surface text-ink font-body">
+<body class="case-study has-hero bg-surface text-ink font-body">
 
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
@@ -136,18 +136,31 @@
     </div>
   </nav>
 
-  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
-
-    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
-      <p class="tag">Writing &middot; Build notes</p>
-      <a href="/writing/" class="text-sm text-muted hover:text-ink transition-colors">&larr; All writing</a>
+  <header class="page-hero">
+    <div class="max-w-6xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Writing &middot; Build notes</p>
+        <a href="/writing/" class="page-hero-back">&larr; All writing</a>
+      </div>
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title">How I built the forest</h1>
+          <p class="page-hero-line">This site&rsquo;s homepage is a walk through a forest. It&rsquo;s three.js with no framework and no texture files: every tree is painted in code when the page loads. Here&rsquo;s how it works.</p>
+          <p class="page-hero-meta">By <a href="/about.html">Robert Riopel</a> &middot; <time datetime="2026-11-20">November 20, 2026</time> &middot; 4 min read</p>
+        </div>
+        <div class="reveal" role="img" aria-label="Every texture packs four layers: A is the mask, R the warm glow, G the green glow, B the bark detail.">
+          <div class="hero-layers">
+            <div class="hero-layer"><i style="background:#f5f0eb"></i><b>A &middot; Mask</b><span>the silhouette</span></div>
+            <div class="hero-layer"><i style="background:#feb192"></i><b>R &middot; Warm</b><span>lanterns, windows</span></div>
+            <div class="hero-layer"><i style="background:#01b36c"></i><b>G &middot; Glow</b><span>fungi, eyes, spores</span></div>
+            <div class="hero-layer"><i style="background:#55615b"></i><b>B &middot; Detail</b><span>bark and grain</span></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </header>
 
-    <header class="mt-12 max-w-3xl reveal">
-      <h1 class="font-display text-section md:text-[3.75rem] md:leading-[1.05]">How I built the forest</h1>
-      <p class="mt-5 text-muted text-lg leading-relaxed">This site&rsquo;s homepage is a walk through a forest. It&rsquo;s three.js with no framework and no texture files: every tree is painted in code when the page loads. Here&rsquo;s how it works.</p>
-      <p class="mt-6 text-sm text-faint">By <a href="/about.html" class="text-ink underline underline-offset-4 hover:text-accent transition-colors">Robert Riopel</a> &middot; <time datetime="2026-11-20">November 20, 2026</time> &middot; 4 min read</p>
-    </header>
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pb-26">
 
     <div class="article-body mt-14">
 <p>I rebuilt my portfolio, and it walks you through a forest.</p>

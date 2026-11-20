@@ -101,7 +101,7 @@
   <link rel="stylesheet" href="/css/datenight.css" />
   <script src="/js/datenight.js" defer></script>
 </head>
-<body class="case-study bg-surface text-ink font-body">
+<body class="case-study has-hero bg-surface text-ink font-body">
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
@@ -136,44 +136,31 @@
     </div>
   </nav>
 
-  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="dn-g" x1="6" y1="6" x2="50" y2="50" gradientUnits="userSpaceOnUse"><stop stop-color="#E63946"/><stop offset="1" stop-color="#F4A261"/></linearGradient></defs></svg>
-
-    <!-- Breadcrumb -->
-    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
-      <p class="tag">Case Study &middot; 2026</p>
-      <a href="/work.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Back to Work</a>
-    </div>
-
-    <!-- Header -->
-    <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-datenight">DateNight</h1>
-      <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
-        Dating built around real plans instead of swiping. I co-founded DateNight in 2026, then designed and built it: a Progressive Web App, now in public beta in Toronto.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <span class="metric">Public beta &middot; Toronto</span>
-        <span class="metric">Progressive Web App</span>
-        <span class="metric">Ships daily</span>
+  <header class="page-hero">
+    <div class="max-w-6xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Case Study &middot; 2026</p>
+        <a href="/work.html" class="page-hero-back">&larr; Back to Work</a>
       </div>
-      <div class="mt-8">
-        <a href="https://datenight.online/welcome" target="_blank" rel="noopener" class="btn-magnetic group inline-flex items-center gap-3 bg-ink text-surface text-sm font-semibold uppercase tracking-widest py-3.5 px-8 rounded-full hover:bg-peach hover:text-ink">
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title" style="view-transition-name: cs-title-datenight">DateNight</h1>
+          <p class="page-hero-line">Dating built around real plans instead of swiping. I co-founded DateNight in 2026, then designed and built it: a Progressive Web App, now in public beta in Toronto.</p>
+          <div class="page-hero-chips">
+            <span class="hero-chip">Public beta &middot; Toronto</span>
+            <span class="hero-chip">Progressive Web App</span>
+            <span class="hero-chip">Ships daily</span>
+          </div>
+          <div class="page-hero-cta">
+        <a href="https://datenight.online/welcome" target="_blank" rel="noopener" class="btn-magnetic group inline-flex items-center gap-3 bg-peach text-forest text-sm font-semibold uppercase tracking-widest py-3.5 px-8 rounded-full hover:bg-surface">
           Visit the app
           <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
           <span class="sr-only">(opens in a new tab)</span>
         </a>
-      </div>
-    </header>
-
-    <!-- Hero: the app's own landing-page phone, clickable -->
-    <div class="mt-14 reveal">
-      <div class="dn dn-hero">
-        <div class="dn-hero-copy">
-          <p class="dn-badge"><i aria-hidden="true"></i>Now in public beta &middot; Toronto</p>
-          <p class="dn-tagline"><span>Browse.</span><span>RSVP.</span><span>Date.</span><span class="dn-grad-text">No Swiping.</span></p>
-          <p class="dn-lede">Tap the tabs on the phone to look around: Explore, your Dates, Messages and Profile.</p>
+          </div>
         </div>
-        <div class="dn-phone-wrap" data-tab="Explore">
+        <div class="reveal page-hero-phone dn-scope">
+          <div class="dn-phone-wrap" data-tab="Explore">
           <div class="dn-phone">
             <div class="dn-screen">
               <div class="dn-status" aria-hidden="true"><span>9:41</span><span class="dn-notch"></span><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><rect x="0.5" y="2.5" width="2" height="7" rx="0.5" fill="white" fill-opacity="0.3"/><rect x="3.5" y="1.5" width="2" height="8" rx="0.5" fill="white" fill-opacity="0.3"/><rect x="6.5" y="0.5" width="2" height="9" rx="0.5" fill="white" fill-opacity="0.5"/><rect x="9.5" y="0" width="2" height="10" rx="0.5" fill="white" fill-opacity="0.7"/></svg></div>
@@ -224,9 +211,13 @@
           <div class="dn-sticker dn-sticker-a" aria-hidden="true">Plans, not profiles</div>
           <div class="dn-sticker dn-sticker-b" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2L4.6 8.8 10 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>RSVP sent</div>
         </div>
+          <p class="page-hero-note">Tap the tabs to look around. The phone from DateNight&rsquo;s landing page: example dates, not live listings.</p>
+        </div>
       </div>
-      <p class="mt-3 text-xs text-faint text-center">The phone from DateNight&rsquo;s landing page. Illustration: example dates, not live listings.</p>
     </div>
+  </header>
+
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pb-26">
 
     <!-- Project snapshot -->
     <section class="mt-14 reveal" aria-label="Project snapshot">

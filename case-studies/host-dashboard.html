@@ -89,7 +89,7 @@
   <script src="/js/script.js" defer></script>
   <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="case-study bg-surface text-ink font-body">
+<body class="case-study has-hero bg-surface text-ink font-body">
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
@@ -124,26 +124,35 @@
     </div>
   </nav>
 
-  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
-
-    <!-- Breadcrumb -->
-    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
-      <p class="tag">Case Study · 2024</p>
-      <a href="/work.html" class="text-sm text-muted hover:text-ink transition-colors">← Back to Work</a>
-    </div>
-
-    <!-- Header -->
-    <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-host-dashboard">Host Dashboard Redesign</h1>
-      <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
-        Replacing a static host landing screen with an action-driven notification centre that surfaces what hosts need to do right now, how they're performing against targets, and what's coming next.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <span class="metric">+22% engagement</span>
-        <span class="metric">$1.5M incremental GMV</span>
-        <span class="metric">A/B tested</span>
+  <header class="page-hero">
+    <div class="max-w-6xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Case Study · 2024</p>
+        <a href="/work.html" class="page-hero-back">&larr; Back to Work</a>
       </div>
-    </header>
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title is-long" style="view-transition-name: cs-title-host-dashboard">Host Dashboard Redesign</h1>
+          <p class="page-hero-line">Replacing a static host landing screen with an action-driven notification centre that surfaces what hosts need to do right now, how they're performing against targets, and what's coming next.</p>
+          <div class="page-hero-chips">
+            <span class="hero-chip">+22% engagement</span>
+            <span class="hero-chip">$1.5M incremental GMV</span>
+            <span class="hero-chip">A/B tested</span>
+          </div>
+        </div>
+        <div class="reveal" role="img" aria-label="Weekly active hosts rose from 100 in the control group to 122 with the redesign. Support tickets asking what to do next fell 31%.">
+          <div class="hero-bars">
+            <p class="hero-bars-title">Weekly active hosts, indexed</p>
+            <div class="hero-bar"><span class="hero-bar-label">Control</span><span class="hero-bar-value">100</span><span class="hero-bar-track"><span class="hero-bar-fill" style="--w:82%"></span></span></div>
+            <div class="hero-bar is-hi"><span class="hero-bar-label">Redesign</span><span class="hero-bar-value">122</span><span class="hero-bar-track"><span class="hero-bar-fill" style="--w:100%"></span></span></div>
+            <div class="hero-art-chip"><span class="hero-chip">31% fewer &ldquo;what do I do next?&rdquo; tickets</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pb-26">
 
  <!-- Hero image -->
     <div class="mt-14 reveal flex flex-col md:flex-row gap-4 items-start">

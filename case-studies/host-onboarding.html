@@ -89,7 +89,7 @@
   <script src="/js/script.js" defer></script>
   <script type="module" src="/js/enhance.js"></script>
 </head>
-<body class="case-study bg-surface text-ink font-body">
+<body class="case-study has-hero bg-surface text-ink font-body">
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
 
@@ -124,24 +124,35 @@
     </div>
   </nav>
 
-  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
-
-    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
-      <p class="tag">Case Study &middot; 2022&ndash;2023</p>
-      <a href="/work.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Back to Work</a>
-    </div>
-
-    <header class="mt-12 reveal">
-      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-host-onboarding">Host Onboarding Overhaul</h1>
-      <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
-        Rebuilding an almost 30-step host flow, from landing page to first listing approval. Reducing friction at every step and establishing the onboarding framework still in use today.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <span class="metric">+27% activation</span>
-        <span class="metric">Est. $&nbsp;3.4M annual booking revenue</span>
-        <span class="metric">10-month initiative</span>
+  <header class="page-hero">
+    <div class="max-w-6xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Case Study &middot; 2022&ndash;2023</p>
+        <a href="/work.html" class="page-hero-back">&larr; Back to Work</a>
       </div>
-    </header>
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title is-long" style="view-transition-name: cs-title-host-onboarding">Host Onboarding Overhaul</h1>
+          <p class="page-hero-line">Rebuilding an almost 30-step host flow, from landing page to first listing approval. Reducing friction at every step and establishing the onboarding framework still in use today.</p>
+          <div class="page-hero-chips">
+            <span class="hero-chip">+27% activation</span>
+            <span class="hero-chip">Est. $3.4M annual booking revenue</span>
+            <span class="hero-chip">10-month initiative</span>
+          </div>
+        </div>
+        <div class="reveal" role="img" aria-label="Landing page to sign-up conversion rose from 34% to 52%. Hosts who used smart pricing had a 2.3 times first-month booking rate.">
+          <div class="hero-bars">
+            <p class="hero-bars-title">Landing page to sign-up</p>
+            <div class="hero-bar"><span class="hero-bar-label">Before</span><span class="hero-bar-value">34%</span><span class="hero-bar-track"><span class="hero-bar-fill" style="--w:34%"></span></span></div>
+            <div class="hero-bar is-hi"><span class="hero-bar-label">After</span><span class="hero-bar-value">52%</span><span class="hero-bar-track"><span class="hero-bar-fill" style="--w:52%"></span></span></div>
+            <div class="hero-art-chip"><span class="hero-chip">2.3&times; first-month bookings with smart pricing</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pb-26">
 
     <!-- Project snapshot -->
     <section class="mt-14 reveal">
