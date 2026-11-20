@@ -87,7 +87,7 @@
   <script type="module" src="/js/enhance.js"></script>
 </head>
 
-<body class="has-hero bg-surface text-ink font-body">
+<body class="bg-surface text-ink font-body">
 
   <nav class="sticky top-0 z-50 nav-glass">
     <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
@@ -124,34 +124,23 @@
   </nav>
 
   <!-- Header -->
-  <header class="page-hero">
-    <div class="max-w-7xl mx-auto px-8 md:px-12">
-      <div class="page-hero-top reveal">
-        <p class="page-hero-eyebrow">About</p>
-      </div>
-      <div class="page-hero-grid">
-        <div class="reveal">
-          <h1 class="page-hero-title">Robert Riopel.</h1>
-          <p class="page-hero-line">Senior Product Designer &middot; Product Design, Design Systems &amp; AI Tooling &middot; Co-founder, DateNight</p>
-          <div class="page-hero-chips">
-            <span class="hero-chip">$8M+ in measured impact</span>
-            <span class="hero-chip">Canada</span>
-            <span class="hero-chip">English &amp; French</span>
-          </div>
-        </div>
-        <div class="reveal">
-          <div class="hero-portrait"><img width="1170" height="2532" src="/img/headshot.jpg" alt="Robert Riopel" fetchpriority="high" /></div>
-        </div>
-      </div>
+  <header class="px-8 md:px-12 pt-16 sm:pt-22 md:pt-26 pb-16">
+    <div class="max-w-7xl mx-auto reveal">
+      <p class="tag mb-5">About</p>
+      <h1 class="font-display text-hero max-w-4xl">Robert Riopel.</h1>
+      <p class="mt-5 text-muted text-lg leading-relaxed max-w-3xl">Senior Product Designer &middot; Product Design, Design Systems &amp; AI Tooling &middot; Co-founder, DateNight</p>
     </div>
   </header>
 
   <!-- Bio -->
-  <section class="px-8 md:px-12 pt-16 md:pt-20 pb-22">
+  <section class="px-8 md:px-12 pb-22">
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12 md:gap-20">
 
       <!-- Left: photo + quick facts -->
       <div class="reveal">
+        <div class="aspect-[3/4] rounded-xl mb-8 overflow-hidden">
+          <img width="1170" height="2532" src="/img/headshot.jpg" alt="Robert Riopel" class="w-full h-full object-cover" />
+        </div>
         <div class="space-y-5 text-sm">
           <div>
             <p class="tag mb-1">Location</p>
