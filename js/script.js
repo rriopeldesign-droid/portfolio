@@ -178,6 +178,8 @@ function highlightActiveNavLink() {
     // Highlight "Work" for both /work.html and /case-studies/*
     if (href === '/work.html' && (path.includes('/work') || path.includes('/case-studies/'))) {
       link.classList.add('active');
+    } else if (href === '/writing/' && path.startsWith('/writing/')) {
+      link.classList.add('active');
     } else if (path === href || path === href.replace('.html', '')) {
       link.classList.add('active');
     } else if (path === '/' && (href === '/' || href === '/index.html')) {

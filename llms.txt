@@ -1,44 +1,49 @@
-# Robert Riopel, Senior Product Designer (Ottawa and Vienna)
+# Robert Riopel, Senior Product Designer (Canada)
 
-> Robert Riopel is a Senior Product Designer based between Ottawa, Canada and Vienna, Austria. He designs digital products end to end (product UX and UI, design systems, growth and conversion, onboarding, lifecycle and CRM email) and builds AI design tooling. His shipped work on a two-sided marketplace, across B2C (guest) and B2B (host) products, contributed $8M+ in measurable business impact, measured as revenue, GMV or savings. He works in English and French and is open to freelance projects and to senior product design roles in Vienna, Ottawa or remote.
+> Robert Riopel: Senior Product Designer | Product Design, Design Systems & AI Tooling | Co-founder, DateNight. He is based in Canada and designs digital products end to end (product UX and UI, design systems, growth and conversion, onboarding, internal tools, lifecycle and CRM email) and builds AI design tooling. His shipped work on a two-sided marketplace, across B2C (guest) and B2B (host) products, contributed $8M+ in measurable business impact, measured as revenue, GMV or savings. He works in English and French (both native) and is open to freelance projects and to senior product design roles, in Canada or remote.
 
 The full text of every page on this site, in one file, is at https://robertriopel.ca/llms-full.txt. Everything below is drawn from the site itself.
 
 ## At a glance
 
 - Role: Senior Product Designer. Most recently the sole product designer at RVezy, Canada's largest RV rental marketplace, where he owned product UX and UI, the design system, lifecycle and email design, marketing design and brand.
+- Co-founder: DateNight (2026), a dating app built around real plans instead of swiping, in public beta in Toronto.
 - Impact: $8M+ in measurable business impact; his work helped move the company from a $6M deficit to $1.5M EBITDA positive.
-- Strengths: product UX for web and native mobile, marketplace and B2B product design (host-side tools such as onboarding and the host dashboard), checkout and monetization, onboarding and activation, lifecycle and CRM email (Braze), design systems built in code first (Tailwind CSS, Vue, OKLCH tokens), A/B testing and funnel analytics, AI tooling (Claude API, Figma plugins).
-- Works with: product managers, engineers, data analysts, CRM and growth marketing, finance and legal.
+- Strengths: product design, design systems, UX, prototyping, AI tooling and front-end development; marketplace and B2B product design (host onboarding, the host dashboard, internal operations tools), checkout and monetization, lifecycle and CRM email (Braze), A/B testing and funnel analytics.
+- Mentoring: two design interns (summers 2025 and 2026), and still a reference for both.
+- Works with: product managers, engineers, data analysts, customer success, CRM and growth marketing, finance and legal.
 - Education: MSc in Technical Management (currently studying), Bachelor of Design, Advanced Diploma in Graphic Design.
-- Locations: Ottawa, Ontario, Canada and Vienna, Austria. Open to remote work.
-- Languages: English and French.
-- Open to: freelance projects and full-time senior product design roles.
+- Location: Canada. Open to remote work.
+- Languages: English and French (native).
 - Contact: rriopel.design@gmail.com, https://www.linkedin.com/in/robert-riopel-product-design/
 
 ## Case studies
 
-- [Host Onboarding Overhaul](https://robertriopel.ca/case-studies/host-onboarding.html): Rebuilt host sign-up from landing page to first published listing. +27% visitor-to-published-listing activation, $3.4M annualized GMV, landing-to-sign-up conversion 34% to 52%, required fields cut from 28 to 12 (2022 to 2023, web, iOS and Android).
-- [Host Dashboard Redesign](https://robertriopel.ca/case-studies/host-dashboard.html): Turned a static host home screen into an action-driven notification centre. +22% weekly active hosts, $1.5M incremental GMV, 31% fewer "what do I do next?" support tickets, validated with a 50/50 A/B test (2024).
-- [Lifecycle and Email Campaigns](https://robertriopel.ca/case-studies/lifecycle-campaigns.html): The full guest and host email lifecycle plus a modular Braze template system. +13% engagement, $1.2M incremental GMV measured with holdout groups, 4x faster campaign production, 50+ campaign designs (2022 to 2024).
-- [Pay-in-Full Pricing](https://robertriopel.ca/case-studies/pay-in-full.html): A checkout option to pay upfront at a discount. +$1M incremental revenue in month one, +$3M projected for Q1, 40% adoption among eligible bookings, zero payment-related support tickets in the first 30 days (5-week design sprint, 2025).
-- [AI Figma Plugin](https://robertriopel.ca/case-studies/ai-figma-plugin.html): Designed and built a prompt-to-component Figma plugin on the Claude API, backed by a 90+ component registry derived from the production Tailwind config (2025).
+- [Roadside Assistance Portal](https://robertriopel.ca/case-studies/roadside-portal.html): Helped rebuild the portal RVezy's 24/7 roadside partner used, so agents could see each booking's coverage instead of calling to ask. A new roadside dashboard in the internal ops system and revised partner permissions; contact between Customer Success and roadside was cut in half (2022 to 2023).
+- [Pay-in-Full Pricing](https://robertriopel.ca/case-studies/pay-in-full.html): A checkout option to pay upfront at a discount. +$1M in GMV in month one, $4M by the end of Q1 2026, 40% adoption among eligible bookings, zero payment-related support tickets in the first 30 days (5-week design sprint, 2025).
+- [Host Dashboard Redesign](https://robertriopel.ca/case-studies/host-dashboard.html): Turned a static host home screen into an action-driven notification centre. +22% engagement (weekly active hosts), $1.5M incremental GMV, 31% fewer "what do I do next?" support tickets, validated with a 50/50 A/B test (2024).
+- [Host Onboarding Overhaul](https://robertriopel.ca/case-studies/host-onboarding.html): Rebuilt an almost 30-step host flow, from landing page to first listing approval. +27% activation, an estimated $3.4M in annual booking revenue, landing-to-sign-up conversion 34% to 52%; the framework is still in use (2022 to 2023).
+- [AI Figma Plugin](https://robertriopel.ca/case-studies/ai-figma-plugin.html): A Figma plugin on the Claude API that generates native Figma components from prompts, synced 1:1 with RVezy's coded design system. Used mostly by PMs and senior stakeholders; cut design-to-dev handoff time in half (2025).
+- [Lifecycle and Email Campaigns](https://robertriopel.ca/case-studies/lifecycle-campaigns.html): The full guest and host email lifecycle plus a modular Braze template system. +13% engagement, $1.2M incremental GMV measured with holdout groups, 4x faster campaign production (2022 to 2024).
+- [DateNight](https://robertriopel.ca/case-studies/datenight.html): Co-founded in 2026. A Progressive Web App built with Next.js and React (Supabase, Google Maps and Places APIs, Resend, Vercel, its own design system, built with Claude Code), shipped to staging and production daily. Browse. RSVP. Date. No Swiping.
 
-## Tools and side projects
+## Writing
 
-- [Email Builder](https://rvezy-email-builder.vercel.app/): A drag-and-drop email builder (Next.js) he designed and built so the marketing team could make on-brand, production-ready emails without engineering support.
-- [DateNight](https://datenight.online/welcome): A React Native dating app he co-founded, designed and built from first sketch to public launch; in beta (2026).
+- [Writing](https://robertriopel.ca/writing/): Essays and build notes.
+- [How I built the forest](https://robertriopel.ca/writing/how-i-built-the-forest/): How the three.js forest homepage works: painted textures, a 2.5D diorama, a one-shader sky (November 2026).
+- [The End of Figma](https://robertriopel.ca/death-of-figma/): His researched essay on AI and the future of design tools (updated October 2026).
 
 ## Pages
 
 - [Home](https://robertriopel.ca/): A walk through a 3D forest; each stop is a part of his work.
 - [About](https://robertriopel.ca/about.html): Background, capabilities, education and contact.
 - [Work](https://robertriopel.ca/work.html): All projects with outcomes.
-- [The End of Figma](https://robertriopel.ca/death-of-figma/): His researched essay on AI and the future of design tools (updated October 2026).
 
 ## Optional
 
 - [Full text of the site](https://robertriopel.ca/llms-full.txt): Every page above, in plain text.
+- [Email Builder](https://rvezy-email-builder.vercel.app/): A drag-and-drop email builder (Next.js) he designed and built for RVezy's marketing team.
+- [DateNight app](https://datenight.online/welcome): The live app.
 - [Deutsch](https://robertriopel.ca/de/): Homepage in German.
 - [Français](https://robertriopel.ca/fr/): Homepage in French.
 - [Fun](https://robertriopel.ca/fun.html): A browser arcade maze game he built.

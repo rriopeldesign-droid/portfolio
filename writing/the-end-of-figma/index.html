@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/img/favicon.png" />
+  <title>The End of Figma | Robert Riopel</title>
+  <meta name="description" content="Robert Riopel on AI and design tools: what happened to Figma, from the Adobe deal to Claude Design, and why taste matters more than any tool." />
+  <meta name="keywords" content="Robert Riopel, Figma, AI design tools, Claude Design, Claude Code, Google Stitch, Figma Make, future of product design" />
+  <meta name="author" content="Robert Riopel" />
+  <meta name="robots" content="max-image-preview:large" />
+  <link rel="canonical" href="https://robertriopel.ca/death-of-figma/" />
+  <meta property="article:published_time" content="2026-03-31T00:00:00+00:00" />
+  <meta property="article:author" content="https://robertriopel.ca/about.html" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://robertriopel.ca/death-of-figma/" />
+  <meta property="og:title" content="The End of Figma | Robert Riopel" />
+  <meta property="og:description" content="How AI is reshaping product design, what happened to Figma, and why taste is becoming more valuable than any software. A researched essay by Robert Riopel." />
+  <meta property="og:image" content="https://robertriopel.ca/img/og/og-death-of-figma.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="The End of Figma, an essay by Robert Riopel" />
+  <meta property="og:site_name" content="Robert Riopel, Senior Product Designer" />
+  <meta property="og:locale" content="en_CA" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The End of Figma | Robert Riopel" />
+  <meta name="twitter:description" content="How AI is reshaping product design, what happened to Figma, and why taste is becoming more valuable than any software. A researched essay by Robert Riopel." />
+  <meta name="twitter:image" content="https://robertriopel.ca/img/og/og-death-of-figma.png" />
+  <meta name="twitter:image:alt" content="The End of Figma, an essay by Robert Riopel" />
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "https://robertriopel.ca/death-of-figma/#article",
+        "headline": "The End of Figma",
+        "description": "Robert Riopel on AI and design tools: what happened to Figma, from the Adobe deal to Claude Design, and why taste matters more than any tool.",
+        "url": "https://robertriopel.ca/death-of-figma/",
+        "mainEntityOfPage": "https://robertriopel.ca/death-of-figma/",
+        "image": "https://robertriopel.ca/img/og/og-death-of-figma.png",
+        "inLanguage": "en",
+        "datePublished": "2026-03-31T00:00:00+00:00",
+        "dateModified": "2026-10-06T13:54:39-04:00",
+        "wordCount": 1353,
+        "timeRequired": "PT6M",
+        "author": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "isPartOf": {
+          "@type": "Blog",
+          "@id": "https://robertriopel.ca/writing/#blog",
+          "name": "Writing by Robert Riopel",
+          "url": "https://robertriopel.ca/writing/"
+        },
+        "keywords": "Figma, AI design tools, Claude Design, Claude Code, Google Stitch, Figma Make, future of product design"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://robertriopel.ca/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Writing",
+            "item": "https://robertriopel.ca/writing/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "The End of Figma",
+            "item": "https://robertriopel.ca/writing/the-end-of-figma/"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <link href="/css/fonts.css" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
+</head>
+
+<body class="case-study bg-surface text-ink font-body">
+
+  <nav class="sticky top-0 z-50 nav-glass">
+    <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
+
+      <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
+        RR
+      </a>
+
+      <div class="hidden md:flex gap-8 items-center">
+        <a href="/work.html" class="nav-link">Work</a>
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/writing/" class="nav-link">Writing</a>
+        <a href="/fun.html" class="nav-link">Fun</a>
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-peach hover:text-ink">
+          Contact
+        </a>
+      </div>
+
+      <button id="navToggle" class="md:hidden text-ink" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="7" x2="20" y2="7" style="transition: all 0.3s ease"/>
+          <line x1="4" y1="17" x2="20" y2="17" style="transition: all 0.3s ease"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
+      <a href="/work.html" class="block nav-link py-1">Work</a>
+      <a href="/about.html" class="block nav-link py-1">About</a>
+      <a href="/writing/" class="block nav-link py-1">Writing</a>
+      <a href="/fun.html" class="block nav-link py-1">Fun</a>
+      <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
+    </div>
+  </nav>
+
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
+
+    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
+      <p class="tag">Writing &middot; Essay</p>
+      <a href="/writing/" class="text-sm text-muted hover:text-ink transition-colors">&larr; All writing</a>
+    </div>
+
+    <header class="mt-12 max-w-3xl reveal">
+      <h1 class="font-display text-section md:text-[3.75rem] md:leading-[1.05]">The End of Figma</h1>
+      <p class="mt-5 text-muted text-lg leading-relaxed">What design tools taught us, why they&rsquo;re disappearing, and what comes next.</p>
+      <p class="mt-6 text-sm text-faint">By <a href="/about.html" class="text-ink underline underline-offset-4 hover:text-accent transition-colors">Robert Riopel</a> &middot; <time datetime="2026-03-31">Updated October 2026</time> &middot; 6 min read</p>
+    </header>
+
+    <div class="article-body mt-14">
+<p class="text-sm">First published as a presentation. <a href="/death-of-figma/">See the original presentation</a>.</p>
+
+<h2><span class="kicker">01 &middot; What is Figma</span>Let me tell you about Figma.</h2>
+<p>Figma launched in 2016 and changed everything. It was browser-based, real-time and collaborative, and it replaced the clunky, file-on-your-hard-drive tools designers had been fighting with for years.</p>
+<p>Its real breakthrough wasn&rsquo;t a drawing tool. It was multiplayer: designers, product managers and engineers in the same file, at the same time. Design stopped being a handoff and became a shared workspace.</p>
+<p>If you worked in product design between 2017 and 2023, knowing Figma deeply was a career skill. It was the tool that separated designers who knew what they were doing from designers who didn&rsquo;t.</p>
+
+<h2><span class="kicker">02 &middot; The Adobe Moment</span>Adobe tried to buy it for $20 billion.</h2>
+<p>In September 2022, Adobe announced it would acquire Figma for roughly $20 billion, one of the largest software acquisitions ever announced. Fifteen months later the deal was dead. Facing objections from regulators in the UK and the European Union, the two companies called it off in December 2023,<sup class="cite"><a href="#src-1" aria-label="Source 1">1</a></sup> and Adobe paid Figma a $1 billion termination fee.<sup class="cite"><a href="#src-2" aria-label="Source 2">2</a></sup></p>
+<p>Adobe had decades of dominance with Photoshop and Illustrator, and its own Figma competitor in XD, and still felt the need to spend $20 billion to neutralize a startup. After the deal collapsed, Adobe said it had no plans to invest further in XD.<sup class="cite"><a href="#src-3" aria-label="Source 3">3</a></sup></p>
+<p>Figma went public on its own instead, pricing its IPO at $33 a share in July 2025<sup class="cite"><a href="#src-4" aria-label="Source 4">4</a></sup> and soaring on its first day of trading. Then the line started to bend the other way.</p>
+<figure>
+  <img src="/img/figma-stock.png" width="1176" height="1122" alt="Line chart of Figma&rsquo;s (NYSE: FIG) share price since its July 2025 IPO: a spike on the first days of trading, then a long decline" loading="lazy" />
+  <figcaption>Figma (NYSE: FIG) share price since IPO<sup class="cite"><a href="#src-4" aria-label="Source 4">4</a></sup><sup class="cite"><a href="#src-11" aria-label="Source 11">11</a></sup></figcaption>
+</figure>
+<p class="callout">But the real threat to Figma was never Adobe. It was something else entirely.</p>
+
+<h2><span class="kicker">03 &middot; The Real Threat</span>Artificial intelligence.</h2>
+<p>The thing Adobe couldn&rsquo;t buy its way out of.</p>
+
+<h2><span class="kicker">04 &middot; The Timeline</span>Then it happened fast.</h2>
+<p>For most of a decade, the threat to a design tool was another design tool. Over the last eighteen months, the threat stopped being a tool at all.</p>
+<ol class="timeline">
+          <li><span class="tl-date">April 2025</span><span class="tl-text">Figma&rsquo;s own survey of 2,500 designers and developers: <strong>78%</strong> say AI significantly improves their efficiency, but only <strong>32%</strong> say they can rely on its output.<sup class="cite"><a href="#src-5" aria-label="Source 5">5</a></sup></span></li>
+          <li><span class="tl-date">May 2025</span><span class="tl-text">Anthropic makes <strong>Claude Code</strong> generally available: an agentic tool that writes and changes real software from plain-language instructions.<sup class="cite"><a href="#src-6" aria-label="Source 6">6</a></sup></span></li>
+          <li class="tl-key"><span class="tl-date">May 2025</span><span class="tl-text">At Config, Figma launches <strong>Figma Make</strong>, its own prompt-to-code tool. The incumbent starts building the thing that threatens it.<sup class="cite"><a href="#src-7" aria-label="Source 7">7</a></sup></span></li>
+          <li><span class="tl-date">July 2025</span><span class="tl-text">Figma goes public at <strong>$33 a share</strong>.<sup class="cite"><a href="#src-4" aria-label="Source 4">4</a></sup></span></li>
+          <li><span class="tl-date">November 2025</span><span class="tl-text"><strong>&ldquo;Vibe coding&rdquo;</strong>, building software by describing it to AI, is named Collins Dictionary&rsquo;s Word of the Year.<sup class="cite"><a href="#src-8" aria-label="Source 8">8</a></sup></span></li>
+          <li><span class="tl-date">March 2026</span><span class="tl-text">Google ships a &ldquo;vibe design&rdquo; update to <strong>Stitch</strong>. Figma&rsquo;s stock falls 12% in two days.<sup class="cite"><a href="#src-9" aria-label="Source 9">9</a></sup></span></li>
+          <li class="tl-key"><span class="tl-date">April 2026</span><span class="tl-text">Anthropic launches <strong>Claude Design</strong>, turning conversations into designs, interactive prototypes and decks.<sup class="cite"><a href="#src-10" aria-label="Source 10">10</a></sup></span></li>
+          <li class="tl-key"><span class="tl-date">First half of 2026</span><span class="tl-text">Figma shares fall <strong>51.6%</strong> in six months, while revenue grows <strong>46%</strong> year over year.<sup class="cite"><a href="#src-11" aria-label="Source 11">11</a></sup></span></li>
+        </ol>
+<p class="callout">Read that last line again. The business was growing. The market was pricing in what comes next.</p>
+
+<h2><span class="kicker">05 &middot; Two Things I Built</span>Here&rsquo;s what I shipped.</h2>
+<p>Here are two things I&rsquo;ve shipped at RVezy that didn&rsquo;t exist in a designer&rsquo;s toolkit two years ago.</p>
+<h3>01 &middot; The Email Builder</h3>
+<p>Our email production workflow was: design in Figma, export with Emailify (the worst plugin ever built), hand off to Braze, fix everything that broke.</p>
+<p>In just a few days I built an internal Next.js tool that replaced the entire chain. Pick a template, configure blocks, preview in dark and light mode, and copy the HTML. No Figma. No code. <a href="https://rvezy-email-builder.vercel.app/" target="_blank" rel="noopener">See the live demo</a>.</p>
+<h3>02 &middot; The Figma Plugin and the Brain Behind It</h3>
+<p>I built an <a href="/case-studies/ai-figma-plugin.html">AI-powered Figma plugin</a> that generates production-ready Vue and Tailwind components pulled directly from our design system.</p>
+<p>The brain behind it is those two files: the design system doc and the color registry. The plugin is just the hands.</p>
+<pre><code><span class="c"># rvezy-design-system.md</span>
+<span class="c"># RVezy Design System v2.0 &middot; Vue 3 + Tailwind CSS v4</span>
+
+<span class="k">## Button</span>
+Variants: default | highlight | secondary
+Sizes: sm (h-9) | md (h-11) | lg (h-13)
+Always: rounded-full, border-2, font-semibold
+
+<span class="k">## Badge</span>
+success: bg-green-100 text-green-700
+warning: bg-orange-100 text-orange-700
+error:   bg-red-100 text-red-700</code></pre>
+<pre><code><span class="c">// colors-rgb.json: brand colors as RGB values,</span>
+<span class="c">// readable by any tool or model</span>
+<span class="k">"primary"</span>: {
+  "500": { "r": 0.184, "g": 0.706, "b": 1.0 },
+  "600": { "r": 0.153, "g": 0.427, "b": 0.973 },
+  "950": { "r": 0.075, "g": 0.145, "b": 0.345 }
+}</code></pre>
+
+<h2><span class="kicker">06 &middot; How I Work Now</span>Figma is the last step.</h2>
+<p>Two years ago, every idea I had started as a rectangle on a Figma canvas. Today, by the time I open Figma, the idea has already been explored, built in real code and tested against real data. This is the toolkit I reach for first, and the one I&rsquo;d expect any senior designer to be fluent in.</p>
+<h3>01 &middot; Language: Tailwind CSS &amp; shadcn/ui</h3>
+<p>Before I design anything, I decide what it&rsquo;s made of. Tailwind gives design and engineering one shared vocabulary of tokens, spacing and type. shadcn/ui gives me accessible, well-built primitives to compose from, instead of redrawing buttons from scratch.</p>
+<h3>02 &middot; Explore: Claude Design &amp; Google Stitch</h3>
+<p>This is where ideas are born now. I describe the problem, not the pixels, and get several genuinely different directions in minutes, from layouts to clickable prototypes I can critique.<sup class="cite"><a href="#src-10" aria-label="Source 10">10</a></sup><sup class="cite"><a href="#src-9" aria-label="Source 9">9</a></sup> The tools generate; my job is knowing which direction is right, and why.</p>
+<h3>03 &middot; Prove: Claude Code &amp; v0</h3>
+<p>The fastest way to end a debate is a working prototype. With Claude Code I build the idea against our real codebase and real data, so I&rsquo;m testing behaviour and edge cases, not a picture of them.<sup class="cite"><a href="#src-6" aria-label="Source 6">6</a></sup> For quick standalone experiments, v0 turns a prompt into a React and shadcn/ui prototype.<sup class="cite"><a href="#src-12" aria-label="Source 12">12</a></sup> This page, and the site it lives on, were built the same way.</p>
+<h3>04 &middot; Polish: Figma</h3>
+<p>Figma is still in the workflow. It&rsquo;s where I refine the craft, document decisions and align the team. Tellingly, Figma is moving the same way: Figma Make turns prompts into working prototypes.<sup class="cite"><a href="#src-7" aria-label="Source 7">7</a></sup></p>
+<p><strong>Tailwind</strong> (design language) &rarr; <strong>Claude Design</strong> (exploration) &rarr; <strong>Claude Code</strong> (real prototype) &rarr; <strong>Figma</strong> (final polish).</p>
+<p class="callout">Figma is still there. It&rsquo;s just no longer where ideas are born. It&rsquo;s where they&rsquo;re finished.</p>
+
+<h2><span class="kicker">07 &middot; So Is Design Dead?</span>The tool was never the skill.</h2>
+<p>A designer&rsquo;s career has historically been built on being very good at specific software: Figma, Photoshop before that, XD in between.</p>
+<p>So when I say Figma is losing relevance, I&rsquo;m saying it as someone whose identity was tied to it.</p>
+<p>The designers who are thriving right now aren&rsquo;t the ones who resisted these tools. They&rsquo;re the ones who recognized what actually made them good in the first place. It was never really about the software.</p>
+<p class="callout">AI can generate a UI in seconds, but it cannot tell you whether that UI respects your user. That part still requires a human.</p>
+<p>In a world flooded with AI-generated interfaces, taste is becoming rarer and more valuable, not less. I&rsquo;m not watching this shift from the outside. I&rsquo;m in it, experimenting and building something new every day.</p>
+
+<h2 id="sources"><span class="kicker">Sources &amp; further reading</span>The research.</h2>
+<ol class="sources">
+        <li id="src-1"><span>CNBC &middot; Dec 18, 2023</span><a href="https://www.cnbc.com/2023/12/18/adobe-and-figma-call-off-20-billion-merger.html" target="_blank" rel="noopener">Adobe and Figma call off $20 billion acquisition after regulatory scrutiny</a></li>
+        <li id="src-2"><span>Adobe Inc. (SEC Form 8-K) &middot; Dec 2023</span><a href="https://www.sec.gov/Archives/edgar/data/796343/000079634323000254/adbe-20231217.htm" target="_blank" rel="noopener">Termination of the Figma merger agreement and $1 billion termination fee</a></li>
+        <li id="src-3"><span>The Register &middot; Jan 31, 2024</span><a href="https://www.theregister.com/2024/01/31/adobe_no_plans_to_invest/" target="_blank" rel="noopener">Adobe: “No plans” to invest in XD despite its Figma failure</a></li>
+        <li id="src-4"><span>Figma &middot; Jul 30, 2025</span><a href="https://www.figma.com/blog/ipo-pricing/" target="_blank" rel="noopener">Figma announces pricing of initial public offering</a></li>
+        <li id="src-5"><span>Figma &middot; Apr 24, 2025</span><a href="https://www.figma.com/blog/figma-2025-ai-report-perspectives/" target="_blank" rel="noopener">Figma’s 2025 AI report: Perspectives from designers and developers</a></li>
+        <li id="src-6"><span>Anthropic &middot; May 22, 2025</span><a href="https://www.anthropic.com/news/claude-4" target="_blank" rel="noopener">Introducing Claude 4 (including Claude Code general availability)</a></li>
+        <li id="src-7"><span>Figma &middot; May 2025</span><a href="https://www.figma.com/blog/config-2025-recap/" target="_blank" rel="noopener">Config 2025: Pushing design further</a></li>
+        <li id="src-8"><span>Collins Dictionary &middot; Nov 6, 2025</span><a href="https://blog.collinsdictionary.com/language-lovers/collins-word-of-the-year-2025-ai-meets-authenticity-as-society-shifts/" target="_blank" rel="noopener">Collins’ Word of the Year 2025: AI meets authenticity as society shifts</a></li>
+        <li id="src-9"><span>CNBC &middot; Mar 19, 2026</span><a href="https://www.cnbc.com/2026/03/19/figma-stock-drops-11percent-after-google-releases-vibe-design-product-stitch.html" target="_blank" rel="noopener">Figma’s stock drops 12% in two days after Google releases “vibe design” product</a></li>
+        <li id="src-10"><span>VentureBeat &middot; Apr 17, 2026</span><a href="https://venturebeat.com/technology/anthropic-just-launched-claude-design-an-ai-tool-that-turns-prompts-into-prototypes-and-challenges-figma" target="_blank" rel="noopener">Anthropic just launched Claude Design, an AI tool that turns prompts into prototypes and challenges Figma</a></li>
+        <li id="src-11"><span>The Motley Fool &middot; Jul 10, 2026</span><a href="https://www.fool.com/investing/2026/07/10/why-figma-stock-lost-52-in-the-first-half-of-2026/" target="_blank" rel="noopener">Why Figma stock lost 52% in the first half of 2026</a></li>
+        <li id="src-12"><span>Vercel &middot; Oct 2023</span><a href="https://vercel.com/blog/announcing-v0-generative-ui" target="_blank" rel="noopener">Announcing v0: Generative UI</a></li>
+      </ol>
+<p class="text-sm">Research compiled October 2026. Market figures as reported at time of publication.</p>
+    </div>
+
+    <nav class="mt-22 max-w-3xl flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-t border-border pt-8" aria-label="More from Robert Riopel">
+      <a href="/work.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Back to the portfolio</a>
+      <a href="/writing/how-i-built-the-forest/" class="group sm:text-right">
+        <span class="tag block mb-2">More writing</span>
+        <span class="font-display text-xl md:text-2xl font-bold text-ink group-hover:text-accent transition-colors">How I built the forest &rarr;</span>
+      </a>
+    </nav>
+
+  </article>
+
+  <!-- ====== Footer ====== -->
+  <footer class="border-t border-border px-8 md:px-12 py-10">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
+      <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
+      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Canada</span></p>
+      <div class="flex gap-6">
+        <a href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
+        <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>
+      </div>
+    </div>
+    <p class="footer-alt max-w-7xl mx-auto">
+      <a href="/de/" hreflang="de" lang="de">Deutsch</a><span aria-hidden="true">&middot;</span><a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a><span aria-hidden="true">&middot;</span><a href="/llms.txt">For AI assistants</a>
+    </p>
+  </footer>
+
+  <!-- Cloudflare Web Analytics (cookieless) --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7efe87006c69468396ae56c5120a8e95"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

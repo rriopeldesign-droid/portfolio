@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <title>Share image</title>
-<!-- The Open Graph / Twitter card image (1200x630). To regenerate img/og/og-robert-riopel.jpg:
+<!-- The Open Graph / Twitter card image (1200x630) for the homepage and About. The other pages' cards
+     are src/og/og-page.html. `node scripts/build-og.mjs` regenerates all of them; by hand:
      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 --virtual-time-budget=5000 --screenshot=og.png src/og/og-image.html
      sips -s format jpeg -s formatOptions 88 og.png --out img/og/og-robert-riopel.jpg
      Then copy it over img/og-image.jpg too, so old links get the new picture. -->
@@ -83,12 +84,13 @@
         <h1>Robert Riopel</h1>
         <p class="place">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-          Ottawa <span class="dot">&middot;</span> Vienna
+          Canada
         </p>
       </div>
       <div class="meta">
         <span class="num">$8M+</span> in measurable product impact<br />
-        Product UX &middot; Design systems &middot; AI tooling
+        Product design &middot; Design systems &middot; AI tooling<br />
+        Co-founder, DateNight
         <strong>robertriopel.ca</strong>
       </div>
     </div>

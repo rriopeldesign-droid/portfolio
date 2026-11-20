@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/img/favicon.png" />
+  <title>Writing | Robert Riopel, Senior Product Designer</title>
+  <meta name="description" content="Essays and build notes by Robert Riopel on product design, AI design tools and how this site was made." />
+  <meta name="keywords" content="Robert Riopel, writing, product design essays, AI design tools, three.js, build notes" />
+  <meta name="author" content="Robert Riopel" />
+  <meta name="robots" content="max-image-preview:large" />
+  <link rel="canonical" href="https://robertriopel.ca/writing/" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://robertriopel.ca/writing/" />
+  <meta property="og:title" content="Writing | Robert Riopel, Senior Product Designer" />
+  <meta property="og:description" content="Essays and build notes by Robert Riopel: the end of Figma, AI design tools, and how the forest homepage was built." />
+  <meta property="og:image" content="https://robertriopel.ca/img/og/og-writing.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Writing by Robert Riopel" />
+  <meta property="og:site_name" content="Robert Riopel, Senior Product Designer" />
+  <meta property="og:locale" content="en_CA" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Writing | Robert Riopel, Senior Product Designer" />
+  <meta name="twitter:description" content="Essays and build notes by Robert Riopel: the end of Figma, AI design tools, and how the forest homepage was built." />
+  <meta name="twitter:image" content="https://robertriopel.ca/img/og/og-writing.jpg" />
+  <meta name="twitter:image:alt" content="Writing by Robert Riopel" />
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Blog",
+        "@id": "https://robertriopel.ca/writing/#blog",
+        "name": "Writing by Robert Riopel",
+        "url": "https://robertriopel.ca/writing/",
+        "inLanguage": "en",
+        "description": "Essays and build notes by Robert Riopel on product design, AI design tools and how this site was made.",
+        "author": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "blogPost": [
+          {
+            "@type": "BlogPosting",
+            "headline": "How I built the forest",
+            "url": "https://robertriopel.ca/writing/how-i-built-the-forest/",
+            "datePublished": "2026-11-20T00:00:00-05:00",
+            "author": {
+              "@id": "https://robertriopel.ca/#person"
+            }
+          },
+          {
+            "@type": "BlogPosting",
+            "headline": "The End of Figma",
+            "url": "https://robertriopel.ca/death-of-figma/",
+            "datePublished": "2026-03-31T00:00:00+00:00",
+            "author": {
+              "@id": "https://robertriopel.ca/#person"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://robertriopel.ca/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Writing",
+            "item": "https://robertriopel.ca/writing/"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <link href="/css/fonts.css" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
+</head>
+
+<body class="bg-surface text-ink font-body">
+
+  <nav class="sticky top-0 z-50 nav-glass">
+    <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
+
+      <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
+        RR
+      </a>
+
+      <div class="hidden md:flex gap-8 items-center">
+        <a href="/work.html" class="nav-link">Work</a>
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/writing/" class="nav-link">Writing</a>
+        <a href="/fun.html" class="nav-link">Fun</a>
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-peach hover:text-ink">
+          Contact
+        </a>
+      </div>
+
+      <button id="navToggle" class="md:hidden text-ink" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="7" x2="20" y2="7" style="transition: all 0.3s ease"/>
+          <line x1="4" y1="17" x2="20" y2="17" style="transition: all 0.3s ease"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
+      <a href="/work.html" class="block nav-link py-1">Work</a>
+      <a href="/about.html" class="block nav-link py-1">About</a>
+      <a href="/writing/" class="block nav-link py-1">Writing</a>
+      <a href="/fun.html" class="block nav-link py-1">Fun</a>
+      <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Page header -->
+  <header class="px-8 md:px-12 pt-16 sm:pt-22 md:pt-26 pb-16">
+    <div class="max-w-7xl mx-auto reveal">
+      <p class="tag mb-5">Writing</p>
+      <h1 class="font-display text-hero max-w-4xl">Notes from the work.</h1>
+      <p class="mt-6 text-muted text-base sm:text-lg leading-relaxed max-w-2xl">
+        Essays and build notes: product design, AI design tools, and how the things on this site were made.
+      </p>
+    </div>
+  </header>
+
+  <section class="px-8 md:px-12 pb-26">
+    <div class="max-w-7xl mx-auto">
+      <div class="section-divider reveal">
+        <span class="tag">All writing</span>
+      </div>
+      <div class="reveal-group">
+        <a href="/writing/how-i-built-the-forest/" class="post-row reveal-child">
+          <span class="tag self-center"><time datetime="2026-11-20">November 20, 2026</time></span>
+          <div>
+            <h2 class="project-title">How I built the forest</h2>
+            <p class="text-muted text-sm mt-1.5 max-w-xl">This site&rsquo;s homepage is a walk through a forest. It&rsquo;s three.js with no framework and no texture files: every tree is painted in code when the page loads. Here&rsquo;s how it works.</p>
+          </div>
+          <div class="hidden md:flex gap-4 items-center">
+            <span class="metric">Build notes &middot; 4 min</span>
+          </div>
+        </a>
+        <a href="/writing/the-end-of-figma/" class="post-row reveal-child">
+          <span class="tag self-center"><time datetime="2026-03-31">Updated October 2026</time></span>
+          <div>
+            <h2 class="project-title">The End of Figma</h2>
+            <p class="text-muted text-sm mt-1.5 max-w-xl">What design tools taught us, why they&rsquo;re disappearing, and what comes next.</p>
+          </div>
+          <div class="hidden md:flex gap-4 items-center">
+            <span class="metric">Essay &middot; 6 min</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Footer ====== -->
+  <footer class="border-t border-border px-8 md:px-12 py-10">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
+      <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
+      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Canada</span></p>
+      <div class="flex gap-6">
+        <a href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
+        <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>
+      </div>
+    </div>
+    <p class="footer-alt max-w-7xl mx-auto">
+      <a href="/de/" hreflang="de" lang="de">Deutsch</a><span aria-hidden="true">&middot;</span><a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a><span aria-hidden="true">&middot;</span><a href="/llms.txt">For AI assistants</a>
+    </p>
+  </footer>
+
+  <!-- Cloudflare Web Analytics (cookieless) --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7efe87006c69468396ae56c5120a8e95"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

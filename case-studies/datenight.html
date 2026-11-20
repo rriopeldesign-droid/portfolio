@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/img/favicon.png" />
+  <title>DateNight | Robert Riopel, Co-founder &amp; Product Designer</title>
+  <meta name="description" content="Case study: DateNight, a dating app built around real plans instead of swiping. A Next.js and React PWA I co-founded in 2026, in public beta in Toronto." />
+  <meta name="keywords" content="Robert Riopel, DateNight, dating app, Progressive Web App, Next.js, React, Supabase, Vercel, Claude Code, co-founder, product design case study" />
+  <meta name="author" content="Robert Riopel" />
+  <meta name="robots" content="max-image-preview:large" />
+  <link rel="canonical" href="https://robertriopel.ca/case-studies/datenight.html" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://robertriopel.ca/case-studies/datenight.html" />
+  <meta property="og:title" content="DateNight | Robert Riopel, Co-founder &amp; Product Designer" />
+  <meta property="og:description" content="Browse. RSVP. Date. No Swiping. DateNight is a dating app built around real plans instead of swiping, which Robert Riopel co-founded, designed and built. In public beta in Toronto." />
+  <meta property="og:image" content="https://robertriopel.ca/img/og/og-datenight.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="DateNight case study: Browse. RSVP. Date. No Swiping." />
+  <meta property="og:site_name" content="Robert Riopel, Senior Product Designer" />
+  <meta property="og:locale" content="en_CA" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DateNight | Robert Riopel, Co-founder &amp; Product Designer" />
+  <meta name="twitter:description" content="Browse. RSVP. Date. No Swiping. DateNight is a dating app built around real plans instead of swiping, which Robert Riopel co-founded, designed and built. In public beta in Toronto." />
+  <meta name="twitter:image" content="https://robertriopel.ca/img/og/og-datenight.jpg" />
+  <meta name="twitter:image:alt" content="DateNight case study: Browse. RSVP. Date. No Swiping." />
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "https://robertriopel.ca/case-studies/datenight.html#article",
+        "headline": "DateNight: Dating Built Around Real Plans Instead of Swiping",
+        "description": "DateNight, co-founded in 2026: a Progressive Web App built with Next.js and React, where people browse real date plans and RSVP instead of swiping. In public beta in Toronto.",
+        "url": "https://robertriopel.ca/case-studies/datenight.html",
+        "mainEntityOfPage": "https://robertriopel.ca/case-studies/datenight.html",
+        "image": "https://robertriopel.ca/img/og/og-datenight.jpg",
+        "inLanguage": "en",
+        "datePublished": "2026-11-20T00:00:00-05:00",
+        "dateModified": "2026-11-20T00:00:00-05:00",
+        "author": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "keywords": "DateNight, Progressive Web App, Next.js, React, Supabase, Vercel, Claude Code, design system, dating app",
+        "about": {
+          "@type": "Organization",
+          "name": "DateNight",
+          "url": "https://datenight.online/",
+          "slogan": "Browse. RSVP. Date. No Swiping.",
+          "foundingDate": "2026",
+          "founder": {
+            "@id": "https://robertriopel.ca/#person"
+          }
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://robertriopel.ca/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Work",
+            "item": "https://robertriopel.ca/work.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "DateNight",
+            "item": "https://robertriopel.ca/case-studies/datenight.html"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <link href="/css/fonts.css" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
+  <link rel="stylesheet" href="/css/datenight.css" />
+  <script src="/js/datenight.js" defer></script>
+</head>
+<body class="case-study bg-surface text-ink font-body">
+  <nav class="sticky top-0 z-50 nav-glass">
+    <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
+
+      <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
+        RR
+      </a>
+
+      <div class="hidden md:flex gap-8 items-center">
+        <a href="/work.html" class="nav-link">Work</a>
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/writing/" class="nav-link">Writing</a>
+        <a href="/fun.html" class="nav-link">Fun</a>
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-peach hover:text-ink">
+          Contact
+        </a>
+      </div>
+
+      <button id="navToggle" class="md:hidden text-ink" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="7" x2="20" y2="7" style="transition: all 0.3s ease"/>
+          <line x1="4" y1="17" x2="20" y2="17" style="transition: all 0.3s ease"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
+      <a href="/work.html" class="block nav-link py-1">Work</a>
+      <a href="/about.html" class="block nav-link py-1">About</a>
+      <a href="/writing/" class="block nav-link py-1">Writing</a>
+      <a href="/fun.html" class="block nav-link py-1">Fun</a>
+      <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
+    </div>
+  </nav>
+
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="dn-g" x1="6" y1="6" x2="50" y2="50" gradientUnits="userSpaceOnUse"><stop stop-color="#E63946"/><stop offset="1" stop-color="#F4A261"/></linearGradient></defs></svg>
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
+      <p class="tag">Case Study &middot; 2026</p>
+      <a href="/work.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Back to Work</a>
+    </div>
+
+    <!-- Header -->
+    <header class="mt-12 reveal">
+      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-datenight">DateNight</h1>
+      <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
+        Dating built around real plans instead of swiping. I co-founded DateNight in 2026, then designed and built it: a Progressive Web App, now in public beta in Toronto.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <span class="metric">Public beta &middot; Toronto</span>
+        <span class="metric">Progressive Web App</span>
+        <span class="metric">Ships daily</span>
+      </div>
+      <div class="mt-8">
+        <a href="https://datenight.online/welcome" target="_blank" rel="noopener" class="btn-magnetic group inline-flex items-center gap-3 bg-ink text-surface text-sm font-semibold uppercase tracking-widest py-3.5 px-8 rounded-full hover:bg-peach hover:text-ink">
+          Visit the app
+          <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Hero: the app's own landing-page phone, clickable -->
+    <div class="mt-14 reveal">
+      <div class="dn dn-hero">
+        <div class="dn-hero-copy">
+          <p class="dn-badge"><i aria-hidden="true"></i>Now in public beta &middot; Toronto</p>
+          <p class="dn-tagline"><span>Browse.</span><span>RSVP.</span><span>Date.</span><span class="dn-grad-text">No Swiping.</span></p>
+          <p class="dn-lede">Tap the tabs on the phone to look around: Explore, your Dates, Messages and Profile.</p>
+        </div>
+        <div class="dn-phone-wrap" data-tab="Explore">
+          <div class="dn-phone">
+            <div class="dn-screen">
+              <div class="dn-status" aria-hidden="true"><span>9:41</span><span class="dn-notch"></span><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><rect x="0.5" y="2.5" width="2" height="7" rx="0.5" fill="white" fill-opacity="0.3"/><rect x="3.5" y="1.5" width="2" height="8" rx="0.5" fill="white" fill-opacity="0.3"/><rect x="6.5" y="0.5" width="2" height="9" rx="0.5" fill="white" fill-opacity="0.5"/><rect x="9.5" y="0" width="2" height="10" rx="0.5" fill="white" fill-opacity="0.7"/></svg></div>
+              <div class="dn-view">
+<div class="dn-panel" id="dn-p-explore" role="tabpanel" aria-labelledby="dn-t-explore">
+<div class="dn-hd"><span class="dn-brand dn-grad-text">DateNight</span><span class="dn-filter"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4H14M4 8H12M6 12H10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Filters</span></div>
+<div class="dn-chips"><span class="is-on">All</span><span>Fun</span><span>Flirty</span><span>Dinner</span><span>Drinks</span></div>
+<div class="dn-list">
+<div class="dn-card"><div class="dn-scene is-amber"><svg class="dn-ico" viewBox="0 0 56 56" fill="none" aria-hidden="true"><g stroke="url(#dn-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 22h28v9a13 13 0 01-13 13h-2a13 13 0 01-13-13v-9z"/><path d="M39 25h3a6 6 0 010 12h-4"/><path d="M19 9c-1.5 2 1.5 4 0 6M27 9c-1.5 2 1.5 4 0 6M35 9c-1.5 2 1.5 4 0 6"/></g></svg><span class="dn-cat">Fun</span><span class="dn-av">M</span></div><div class="dn-card-body"><p class="dn-title">Morning Coffee &amp; Chat</p><p class="dn-when">Tomorrow at 9:00 AM</p><p class="dn-where"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5C13 11 8 14.5 8 14.5S3 11 3 6.5a5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg>Pilot Coffee, Kensington</p></div></div>
+<div class="dn-card"><div class="dn-scene is-violet"><svg class="dn-ico" viewBox="0 0 56 56" fill="none" aria-hidden="true"><g stroke="url(#dn-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 40V14l22-5v26"/><circle cx="16" cy="40" r="6"/><circle cx="38" cy="35" r="6"/><path d="M22 21l22-5"/></g></svg><span class="dn-cat">Drinks</span><span class="dn-av">J</span></div><div class="dn-card-body"><p class="dn-title">Jazz Night Downtown</p><p class="dn-when">Fri, Oct 16, 8:00 PM</p><p class="dn-where"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5C13 11 8 14.5 8 14.5S3 11 3 6.5a5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg>The Rex Hotel</p></div></div>
+<div class="dn-card"><div class="dn-scene is-emerald"><svg class="dn-ico" viewBox="0 0 56 56" fill="none" aria-hidden="true"><g stroke="url(#dn-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 44l15-22 8 11 6-8 15 19H6z"/><path d="M17 28l4 3 4-3"/><circle cx="40" cy="14" r="4"/></g></svg><span class="dn-cat">Active</span><span class="dn-av">S</span></div><div class="dn-card-body"><p class="dn-title">Sunday Ravine Hike</p><p class="dn-when">Sun, Oct 18, 10:00 AM</p><p class="dn-where"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5C13 11 8 14.5 8 14.5S3 11 3 6.5a5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg>Beltline Trail</p></div></div>
+</div>
+</div>
+<div class="dn-panel" id="dn-p-dates" role="tabpanel" aria-labelledby="dn-t-dates" hidden>
+<div class="dn-hd"><span class="dn-h">Your dates</span></div>
+<div class="dn-chips"><span class="is-on">Hosting</span><span>Attending</span></div>
+<div class="dn-list">
+<div class="dn-card"><div class="dn-scene is-rose"><svg class="dn-ico" viewBox="0 0 56 56" fill="none" aria-hidden="true"><g stroke="url(#dn-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 40V14l22-5v26"/><circle cx="16" cy="40" r="6"/><circle cx="38" cy="35" r="6"/><path d="M22 21l22-5"/></g></svg><span class="dn-cat">Flirty</span></div><div class="dn-card-body"><p class="dn-title">Wine &amp; Vinyl Night</p><p class="dn-when">Sat, Oct 17, 7:30 PM</p><p class="dn-where"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5C13 11 8 14.5 8 14.5S3 11 3 6.5a5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg>Bar Raval</p></div></div>
+<p class="dn-label">Requests to join (2)</p>
+<div class="dn-row"><span class="dn-av">J</span><p>Jordan, 31</p><span class="dn-x"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="dn-ok"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2L4.6 8.8 10 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+<div class="dn-row"><span class="dn-av">S</span><p>Sam, 28</p><span class="dn-x"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="dn-ok"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2L4.6 8.8 10 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+<p class="dn-fine">You can edit this date until someone is confirmed to attend.</p>
+</div>
+</div>
+<div class="dn-panel" id="dn-p-messages" role="tabpanel" aria-labelledby="dn-t-messages" hidden>
+<div class="dn-hd"><span class="dn-h">Messages</span></div>
+<p class="dn-intro">Chat opens 24 hours before each date. Each person gets 3 messages. Make them count.</p>
+<div class="dn-list">
+<div class="dn-chat"><div class="dn-scene is-violet"><svg class="dn-ico" viewBox="0 0 56 56" fill="none" aria-hidden="true"><g stroke="url(#dn-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 40V14l22-5v26"/><circle cx="16" cy="40" r="6"/><circle cx="38" cy="35" r="6"/><path d="M22 21l22-5"/></g></svg></div><div class="dn-chat-text"><b>Jazz Night Downtown</b><span>Jordan: I&rsquo;ll grab a table near the stage.</span></div><span class="dn-left">2 left</span></div>
+<div class="dn-chat"><div class="dn-scene is-amber"><svg class="dn-ico" viewBox="0 0 56 56" fill="none" aria-hidden="true"><g stroke="url(#dn-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 22h28v9a13 13 0 01-13 13h-2a13 13 0 01-13-13v-9z"/><path d="M39 25h3a6 6 0 010 12h-4"/><path d="M19 9c-1.5 2 1.5 4 0 6M27 9c-1.5 2 1.5 4 0 6M35 9c-1.5 2 1.5 4 0 6"/></g></svg></div><div class="dn-chat-text"><b>Morning Coffee &amp; Chat</b><span>You: See you at the window seat!</span></div><span class="dn-left">1 left</span></div>
+<div class="dn-chat"><div class="dn-scene is-emerald"><svg class="dn-ico" viewBox="0 0 56 56" fill="none" aria-hidden="true"><g stroke="url(#dn-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 44l15-22 8 11 6-8 15 19H6z"/><path d="M17 28l4 3 4-3"/><circle cx="40" cy="14" r="4"/></g></svg></div><div class="dn-chat-text"><b>Sunday Ravine Hike</b><span>Chat opens Sat at 10:00 AM</span></div><span class="dn-left is-locked">Locked</span></div>
+<p class="dn-label" style="padding-top:.5rem">Jazz Night Downtown</p>
+<div class="dn-bubbles"><p class="dn-msg is-in">Looking forward to it! Do they do a late set?</p><p class="dn-msg is-out">Yes, 10 PM. I&rsquo;ll grab a table near the stage.</p></div>
+</div>
+</div>
+<div class="dn-panel" id="dn-p-profile" role="tabpanel" aria-labelledby="dn-t-profile" hidden>
+<div class="dn-hd"><span class="dn-h">Profile</span><span class="dn-edit">Edit</span></div>
+<div class="dn-list">
+<div class="dn-profile"><span class="dn-av">A</span><div class="dn-profile-name"><b>Alex, 29</b><span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5C13 11 8 14.5 8 14.5S3 11 3 6.5a5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg>Toronto, ON</span></div></div>
+<p class="dn-bio">Coffee snob, live music regular, always up for a long walk through the park.</p>
+<div class="dn-tags"><span>Coffee</span><span>Live music</span><span>Hiking</span><span>Wine bars</span></div>
+</div>
+</div>
+                <div class="dn-tabbar" role="tablist" aria-label="Preview the app"><button type="button" class="dn-tab" role="tab" id="dn-t-explore" data-tab="Explore" aria-controls="dn-p-explore" aria-selected="true" tabindex="0"><i aria-hidden="true"></i>Explore</button><button type="button" class="dn-tab" role="tab" id="dn-t-dates" data-tab="Dates" aria-controls="dn-p-dates" aria-selected="false" tabindex="-1"><i aria-hidden="true"></i>Dates</button><button type="button" class="dn-tab" role="tab" id="dn-t-messages" data-tab="Messages" aria-controls="dn-p-messages" aria-selected="false" tabindex="-1"><i aria-hidden="true"></i>Messages</button><button type="button" class="dn-tab" role="tab" id="dn-t-profile" data-tab="Profile" aria-controls="dn-p-profile" aria-selected="false" tabindex="-1"><i aria-hidden="true"></i>Profile</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="dn-sticker dn-sticker-a" aria-hidden="true">Plans, not profiles</div>
+          <div class="dn-sticker dn-sticker-b" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2L4.6 8.8 10 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>RSVP sent</div>
+        </div>
+      </div>
+      <p class="mt-3 text-xs text-faint text-center">The phone from DateNight&rsquo;s landing page. Illustration: example dates, not live listings.</p>
+    </div>
+
+    <!-- Project snapshot -->
+    <section class="mt-14 reveal" aria-label="Project snapshot">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 rounded-xl border border-border p-6">
+        <div>
+          <p class="tag mb-2">Role</p>
+          <p class="text-sm text-ink font-medium">Co-founder, designer and developer</p>
+        </div>
+        <div>
+          <p class="tag mb-2">Founded</p>
+          <p class="text-sm text-ink font-medium">2026</p>
+        </div>
+        <div>
+          <p class="tag mb-2">Platform</p>
+          <p class="text-sm text-ink font-medium">Progressive Web App</p>
+        </div>
+        <div>
+          <p class="tag mb-2">Status</p>
+          <p class="text-sm text-ink font-medium">Public beta in Toronto</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- The idea -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">The Idea</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Real plans instead of swiping</h2>
+        <p class="text-muted leading-relaxed mb-6">DateNight starts with the date, not the profile. People post real plans with a place and a time: a coffee, a concert, a hike. Everyone else browses those plans, RSVPs to the ones they&rsquo;d actually enjoy, and the host approves who comes.</p>
+        <p class="text-muted leading-relaxed mb-6">I co-founded it in 2026 and designed and built it end to end, from its own design system to the lifecycle emails. The tagline says it in four words: Browse. RSVP. Date. No Swiping.</p>
+      </div>
+    </section>
+
+    <!-- One design decision -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Design Decision</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Browse and RSVP, instead of swipe</h2>
+        <p class="text-muted leading-relaxed mb-6">Swiping asks you to judge a face in a second. DateNight asks a different question: would I enjoy this evening?</p>
+        <p class="text-muted leading-relaxed mb-6">So the core unit is a plan, not a person. A date card leads with what, when and where, and the host is a small avatar in the corner. You don&rsquo;t match with someone and hope a plan follows. You RSVP to the plan, the host approves who joins, and the date already has a time and a place.</p>
+        <p class="text-muted leading-relaxed mb-10">The three-message limit finishes the job. Chat opens 24 hours before the date, and three messages each is enough to say hi and sort out the details. The rest happens in person.</p>
+      </div>
+      <div class="dn dn-flow" data-step="0">
+        <div class="dn-device" aria-hidden="true">
+          <div class="dn-s dn-s-feed">
+            <div class="dn-hd"><span class="dn-brand dn-grad-text">DateNight</span><span class="dn-filter"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4H14M4 8H12M6 12H10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Filters</span></div>
+            <div class="dn-chips"><span class="is-on">All</span><span>Fun</span><span>Flirty</span><span>Drinks</span></div>
+            <div class="dn-list dn-feed">
+<div class="dn-card"><div class="dn-scene is-amber"><svg class="dn-ico" viewBox="0 0 56 56" fill="none" aria-hidden="true"><g stroke="url(#dn-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 22h28v9a13 13 0 01-13 13h-2a13 13 0 01-13-13v-9z"/><path d="M39 25h3a6 6 0 010 12h-4"/><path d="M19 9c-1.5 2 1.5 4 0 6M27 9c-1.5 2 1.5 4 0 6M35 9c-1.5 2 1.5 4 0 6"/></g></svg><span class="dn-cat">Fun</span><span class="dn-av">M</span></div><div class="dn-card-body"><p class="dn-title">Morning Coffee &amp; Chat</p><p class="dn-when">Tomorrow at 9:00 AM</p><p class="dn-where"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5C13 11 8 14.5 8 14.5S3 11 3 6.5a5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg>Pilot Coffee, Kensington</p></div></div>
+<div class="dn-card dn-target"><div class="dn-scene is-violet"><svg class="dn-ico" viewBox="0 0 56 56" fill="none" aria-hidden="true"><g stroke="url(#dn-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 40V14l22-5v26"/><circle cx="16" cy="40" r="6"/><circle cx="38" cy="35" r="6"/><path d="M22 21l22-5"/></g></svg><span class="dn-cat">Drinks</span><span class="dn-av">J</span></div><div class="dn-card-body"><p class="dn-title">Jazz Night Downtown</p><p class="dn-when">Fri, Oct 16, 8:00 PM</p><p class="dn-where"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5C13 11 8 14.5 8 14.5S3 11 3 6.5a5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg>The Rex Hotel</p></div></div>
+<div class="dn-card"><div class="dn-scene is-emerald"><svg class="dn-ico" viewBox="0 0 56 56" fill="none" aria-hidden="true"><g stroke="url(#dn-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 44l15-22 8 11 6-8 15 19H6z"/><path d="M17 28l4 3 4-3"/><circle cx="40" cy="14" r="4"/></g></svg><span class="dn-cat">Active</span><span class="dn-av">S</span></div><div class="dn-card-body"><p class="dn-title">Sunday Ravine Hike</p><p class="dn-when">Sun, Oct 18, 10:00 AM</p><p class="dn-where"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5C13 11 8 14.5 8 14.5S3 11 3 6.5a5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg>Beltline Trail</p></div></div>
+            </div>
+          </div>
+          <div class="dn-s dn-s-detail">
+            <div class="dn-detail"><div class="dn-scene is-violet"><svg class="dn-ico" viewBox="0 0 56 56" fill="none" aria-hidden="true"><g stroke="url(#dn-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 40V14l22-5v26"/><circle cx="16" cy="40" r="6"/><circle cx="38" cy="35" r="6"/><path d="M22 21l22-5"/></g></svg><span class="dn-cat">Drinks</span></div>
+              <div class="dn-detail-body">
+                <p class="dn-title">Jazz Night Downtown</p>
+                <p class="dn-when">Fri, Oct 16, 8:00 PM</p>
+                <p class="dn-where"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5C13 11 8 14.5 8 14.5S3 11 3 6.5a5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg>The Rex Hotel</p>
+                <div class="dn-host"><span class="dn-av">J</span>Hosted by Jordan</div>
+              </div>
+            </div>
+            <div class="dn-cta"><span class="dn-b-rsvp">RSVP</span><span class="dn-b-pending">Request Pending</span><span class="dn-b-msg"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C8.69 17.5 7.46 17.16 6.4 16.56L2.5 17.5L3.44 13.6C2.84 12.54 2.5 11.31 2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Send a Message</span></div>
+            <span class="dn-tap"></span>
+            <div class="dn-toast dn-toast-rsvp"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2L4.6 8.8 10 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>RSVP sent</div>
+            <div class="dn-toast dn-toast-ok"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2L4.6 8.8 10 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Approved by the host</div>
+          </div>
+          <div class="dn-s dn-s-chat">
+            <div class="dn-hd"><span class="dn-h">Jazz Night Downtown</span><span class="dn-counter"><span class="dn-left is-3">3 left</span><span class="dn-left is-2">2 left</span></span></div>
+            <p class="dn-intro">Chat opens 24 hours before each date. Each person gets 3 messages. Make them count.</p>
+            <div class="dn-chat-body">
+              <p class="dn-msg is-out dn-m-out">Looking forward to it! Do they do a late set?</p>
+              <p class="dn-msg is-in dn-m-in">Yes, 10 PM. I&rsquo;ll grab a table near the stage.</p>
+            </div>
+          </div>
+          <div class="dn-s dn-s-date">
+            <svg class="dn-ringmark" viewBox="0 0 88 88" fill="none"><circle cx="44" cy="44" r="40" stroke="url(#dn-g2)" stroke-width="3" pathLength="1"/><path d="M28 45l11 11 21-23" stroke="url(#dn-g2)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/><defs><linearGradient id="dn-g2" x1="4" y1="4" x2="84" y2="84" gradientUnits="userSpaceOnUse"><stop stop-color="#E63946"/><stop offset="1" stop-color="#F4A261"/></linearGradient></defs></svg>
+            <p class="dn-tonight">Tonight</p>
+            <p class="dn-title">Jazz Night Downtown</p>
+            <p class="dn-when">8:00 PM &middot; The Rex Hotel</p>
+            <p class="dn-bio">Meet in person, not behind a screen.</p>
+          </div>
+        </div>
+        <div>
+          <ol class="dn-steps" aria-label="How a date happens on DateNight">
+            <li><button type="button" class="dn-step" data-go="0" aria-current="step"><span class="n">01</span><b>Browse</b><small>Real plans with a place and a time. A coffee, a concert, a hike. No profiles to swipe.</small><span class="bar" aria-hidden="true"></span></button></li>
+            <li><button type="button" class="dn-step" data-go="1"><span class="n">02</span><b>RSVP</b><small>Ask to join the one you&rsquo;d actually enjoy. The request goes to the host.</small><span class="bar" aria-hidden="true"></span></button></li>
+            <li><button type="button" class="dn-step" data-go="2"><span class="n">03</span><b>Approved</b><small>Hosts approve who joins their date, up to six people.</small><span class="bar" aria-hidden="true"></span></button></li>
+            <li><button type="button" class="dn-step" data-go="3"><span class="n">04</span><b>Chat</b><small>Chat opens 24 hours before the date. Three messages each, so you sort out the details and save the rest.</small><span class="bar" aria-hidden="true"></span></button></li>
+            <li><button type="button" class="dn-step" data-go="4"><span class="n">05</span><b>Date</b><small>Meet in person, not behind a screen.</small><span class="bar" aria-hidden="true"></span></button></li>
+          </ol>
+          <div class="dn-flow-foot"><span>Built from DateNight&rsquo;s own tokens and screens.</span><button type="button" class="dn-pause" aria-pressed="false" hidden>Pause</button></div>
+        </div>
+      </div>
+      <p class="mt-3 text-xs text-faint text-center">The RSVP flow, step by step: DateNight&rsquo;s real RSVP, Request Pending and Send a Message states, on its #0A0A0A canvas with zinc cards and the rose-to-orange gradient.</p>
+    </section>
+
+    <!-- How I ship -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">How I Ship</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Staging first, then production, every day</h2>
+        <p class="text-muted leading-relaxed mb-8">I ship to staging and production daily. Every change takes the same path, and the database follows the same order as the code: staging first, then production.</p>
+      </div>
+      <ol class="grid grid-cols-1 md:grid-cols-4 gap-px bg-border rounded-xl overflow-hidden border border-border" aria-label="From a branch to production">
+        <li class="bg-surface p-6 md:p-7">
+          <p class="tag mb-3">01 &middot; Branch</p>
+          <p class="font-display text-lg font-bold mb-2">Build it</p>
+          <p class="text-sm text-muted leading-relaxed">Each change starts on its own branch, built with Claude Code and type-checked before it goes anywhere.</p>
+        </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="tag mb-3">02 &middot; Staging</p>
+          <p class="font-display text-lg font-bold mb-2">Try it</p>
+          <p class="text-sm text-muted leading-relaxed">It merges into the staging branch, and Vercel deploys it to a staging site with its own Supabase database and test accounts.</p>
+        </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="tag mb-3">03 &middot; Test</p>
+          <p class="font-display text-lg font-bold mb-2">Break it</p>
+          <p class="text-sm text-muted leading-relaxed">I use it the way members would: signed in as two test people at once, in Chrome and Safari, with database rules checked for each.</p>
+        </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="tag mb-3">04 &middot; Production</p>
+          <p class="font-display text-lg font-bold mb-2">Ship it</p>
+          <p class="text-sm text-muted leading-relaxed">A pull request into main. If it touches the database, a schema check compares it with production. Merge, and Vercel deploys it live.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Stack -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Stack</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-8">What it&rsquo;s built with</h2>
+      </div>
+      <dl class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-xl overflow-hidden border border-border">
+        <div class="bg-surface p-6"><dt class="tag mb-2">App</dt><dd class="text-sm text-ink font-medium">Progressive Web App, built with Next.js and React</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Database</dt><dd class="text-sm text-ink font-medium">Supabase</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Maps</dt><dd class="text-sm text-ink font-medium">Google Maps and Places APIs</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Email</dt><dd class="text-sm text-ink font-medium">Resend, for lifecycle emails</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Analytics</dt><dd class="text-sm text-ink font-medium">Vercel Web Analytics (cookieless), Sentry for errors</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Design</dt><dd class="text-sm text-ink font-medium">Its own design system</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Hosting</dt><dd class="text-sm text-ink font-medium">Vercel</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Built with</dt><dd class="text-sm text-ink font-medium">Claude Code</dd></div>
+      </dl>
+    </section>
+
+    <!-- Beta -->
+    <section class="mt-22 px-8 md:px-14 py-14 bg-ink text-surface rounded-2xl reveal">
+      <p class="tag text-faint mb-4">Status</p>
+      <h2 class="font-display text-section text-surface mb-6">The beta is live.</h2>
+      <p class="text-surface/70 text-base leading-relaxed max-w-2xl mb-10">DateNight is in public beta in Toronto. Browse real plans, RSVP to one, and go on the date.</p>
+      <a href="https://datenight.online/welcome" target="_blank" rel="noopener" class="btn-magnetic group inline-flex items-center gap-3 bg-peach text-forest text-sm font-semibold uppercase tracking-widest py-3.5 px-8 rounded-full hover:bg-surface">
+        Visit the app
+        <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        <span class="sr-only">(opens in a new tab)</span>
+      </a>
+    </section>
+
+    <nav class="mt-22 flex items-end justify-between gap-6 border-t border-border pt-8" aria-label="More case studies">
+      <a href="/case-studies/lifecycle-campaigns.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Lifecycle &amp; Email Campaigns</a>
+      <a href="/case-studies/roadside-portal.html" class="group text-right">
+        <span class="tag block mb-2">Next case study</span>
+        <span class="font-display text-xl md:text-2xl font-bold text-ink group-hover:text-accent transition-colors">Roadside Assistance Portal &rarr;</span>
+      </a>
+    </nav>
+
+  </article>
+
+  <footer class="border-t border-border px-8 md:px-12 py-10">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
+      <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
+      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Canada</span></p>
+      <div class="flex gap-6">
+        <a href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
+        <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>
+      </div>
+    </div>
+    <p class="footer-alt max-w-7xl mx-auto">
+      <a href="/de/" hreflang="de" lang="de">Deutsch</a><span aria-hidden="true">&middot;</span><a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a><span aria-hidden="true">&middot;</span><a href="/llms.txt">For AI assistants</a>
+    </p>
+  </footer>
+  <!-- Cloudflare Web Analytics (cookieless) --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7efe87006c69468396ae56c5120a8e95"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

@@ -68,11 +68,12 @@ export const PROJECTS = [
   { id: "onboarding", name: "Host Onboarding", value: "$3.4M", impact: 3.4, url: "/case-studies/host-onboarding.html", dx: 6.2, z: -60 },
   { id: "dashboard", name: "Host Dashboard", value: "$1.5M", impact: 1.5, url: "/case-studies/host-dashboard.html", dx: 9.4, z: -54.5 },
   { id: "lifecycle", name: "Lifecycle Email", value: "$1.2M", impact: 1.2, url: "/case-studies/lifecycle-campaigns.html", dx: 13, z: -63 },
-  { id: "payinfull", name: "Pay-in-Full", value: "+$1M", impact: 1.0, url: "/case-studies/pay-in-full.html", dx: 7.4, z: -69 },
+  { id: "payinfull", name: "Pay-in-Full", value: "$4M", impact: 4.0, url: "/case-studies/pay-in-full.html", dx: 7.4, z: -69 },
   { id: "claims", name: "Inspection & Claims", value: "$500K", impact: 0.5, url: null, dx: 16, z: -58 },
 ];
 const BOARDS = [
-  ...PROJECTS.filter((p) => p.url).map((p) => ({ id: p.id, name: p.name, value: p.value, url: p.url, tree: p.id })),
+  // Boards read top to bottom by impact, the same order as the grove list on the page
+  ...PROJECTS.filter((p) => p.url).sort((a, b) => b.impact - a.impact).map((p) => ({ id: p.id, name: p.name, value: p.value, url: p.url, tree: p.id })),
   { id: "all", name: { de: "Alle Projekte", fr: "Tous les projets" }[document.documentElement.lang] || "All the work", value: "", url: "/work.html", tree: null },
 ];
 const WAYPOST = { dx: 2.6, z: -47.5 };

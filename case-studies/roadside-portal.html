@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/img/favicon.png" />
+  <title>Roadside Assistance Portal | Robert Riopel, UX Case Study</title>
+  <meta name="description" content="Case study: rebuilding the portal RVezy's 24/7 roadside partner used, so agents could see each booking's coverage instead of calling us to ask." />
+  <meta name="keywords" content="Robert Riopel, roadside assistance, internal tools, operations dashboard, permissions, information hierarchy, B2B product design, RVezy, customer success" />
+  <meta name="author" content="Robert Riopel" />
+  <meta name="robots" content="max-image-preview:large" />
+  <link rel="canonical" href="https://robertriopel.ca/case-studies/roadside-portal.html" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://robertriopel.ca/case-studies/roadside-portal.html" />
+  <meta property="og:title" content="Roadside Assistance Portal | Robert Riopel, UX Case Study" />
+  <meta property="og:description" content="Coverage disputes turned every unclear roadside case into a phone call. A new dashboard and partner permissions put each booking's coverage in front of the agent. Contact between the teams was cut in half." />
+  <meta property="og:image" content="https://robertriopel.ca/img/og/og-roadside-portal.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Roadside Assistance Portal case study: from a phone call to the portal" />
+  <meta property="og:site_name" content="Robert Riopel, Senior Product Designer" />
+  <meta property="og:locale" content="en_CA" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Roadside Assistance Portal | Robert Riopel, UX Case Study" />
+  <meta name="twitter:description" content="Coverage disputes turned every unclear roadside case into a phone call. A new dashboard and partner permissions put each booking's coverage in front of the agent. Contact between the teams was cut in half." />
+  <meta name="twitter:image" content="https://robertriopel.ca/img/og/og-roadside-portal.jpg" />
+  <meta name="twitter:image:alt" content="Roadside Assistance Portal case study: from a phone call to the portal" />
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "https://robertriopel.ca/case-studies/roadside-portal.html#article",
+        "headline": "Roadside Assistance Portal: Coverage in the Portal, Not on the Phone",
+        "description": "Rebuilding the portal RVezy's 24/7 roadside partner used, so their agents could see each booking's coverage instead of calling us to ask. Contact between the teams was cut in half.",
+        "url": "https://robertriopel.ca/case-studies/roadside-portal.html",
+        "mainEntityOfPage": "https://robertriopel.ca/case-studies/roadside-portal.html",
+        "image": "https://robertriopel.ca/img/og/og-roadside-portal.jpg",
+        "inLanguage": "en",
+        "datePublished": "2026-11-20T00:00:00-05:00",
+        "dateModified": "2026-11-20T00:00:00-05:00",
+        "author": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "keywords": "internal tools, operations, permissions, information hierarchy, RVezy"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://robertriopel.ca/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Work",
+            "item": "https://robertriopel.ca/work.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Roadside Assistance Portal",
+            "item": "https://robertriopel.ca/case-studies/roadside-portal.html"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <link href="/css/fonts.css" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
+</head>
+<body class="case-study bg-surface text-ink font-body">
+  <nav class="sticky top-0 z-50 nav-glass">
+    <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
+
+      <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
+        RR
+      </a>
+
+      <div class="hidden md:flex gap-8 items-center">
+        <a href="/work.html" class="nav-link">Work</a>
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/writing/" class="nav-link">Writing</a>
+        <a href="/fun.html" class="nav-link">Fun</a>
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-peach hover:text-ink">
+          Contact
+        </a>
+      </div>
+
+      <button id="navToggle" class="md:hidden text-ink" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="7" x2="20" y2="7" style="transition: all 0.3s ease"/>
+          <line x1="4" y1="17" x2="20" y2="17" style="transition: all 0.3s ease"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
+      <a href="/work.html" class="block nav-link py-1">Work</a>
+      <a href="/about.html" class="block nav-link py-1">About</a>
+      <a href="/writing/" class="block nav-link py-1">Writing</a>
+      <a href="/fun.html" class="block nav-link py-1">Fun</a>
+      <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
+    </div>
+  </nav>
+
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
+      <p class="tag">Case Study &middot; 2022&ndash;23</p>
+      <a href="/work.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Back to Work</a>
+    </div>
+
+    <!-- Header -->
+    <header class="mt-12 reveal">
+      <h1 class="font-display text-section md:text-hero max-w-4xl" style="view-transition-name: cs-title-roadside-portal">Roadside Assistance Portal</h1>
+      <p class="mt-5 text-muted text-lg leading-relaxed max-w-2xl">
+        Helped rebuild the portal our 24/7 roadside partner used, so their agents could see each booking&rsquo;s coverage instead of calling us to ask.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <span class="metric">Phone call &rarr; Portal</span>
+        <span class="metric">Internal ops tool</span>
+        <span class="metric">Designed + Developed</span>
+      </div>
+    </header>
+
+    <!-- Before and after: who an unclear case had to reach -->
+    <figure class="mt-14 reveal">
+      <div class="case-img">
+        <div class="rs-diagram" role="img" aria-label="Before: a stranded renter&rsquo;s case went from the roadside agent to a phone call with RVezy Customer Success before anyone knew what was covered. After: the agent sees the booking&rsquo;s coverage in the portal and makes the call.">
+        <div class="rs-flow">
+          <p class="tag mb-4">Before</p>
+          <ol class="rs-steps">
+          <li class="rs-step"><span class="rs-who">Renter</span><span class="rs-what">Breaks down on the side of the road</span></li>
+          <li class="rs-step"><span class="rs-who">Roadside agent</span><span class="rs-what">Can&rsquo;t see which coverage tier the booking has</span></li>
+          <li class="rs-step is-call"><span class="rs-who">Phone call</span><span class="rs-what">To RVezy Customer Success, often to me</span></li>
+          <li class="rs-step"><span class="rs-who">Customer Success</span><span class="rs-what">Looks up the booking and answers</span></li>
+          </ol>
+        </div>
+        <div class="rs-flow is-after">
+          <p class="tag mb-4">After</p>
+          <ol class="rs-steps">
+          <li class="rs-step"><span class="rs-who">Renter</span><span class="rs-what">Breaks down on the side of the road</span></li>
+          <li class="rs-step"><span class="rs-who">Roadside agent</span><span class="rs-what">Opens the booking in the portal</span></li>
+          <li class="rs-step"><span class="rs-who">Portal</span><span class="rs-what">Shows that booking&rsquo;s coverage</span></li>
+          <li class="rs-step is-end"><span class="rs-who">Roadside agent</span><span class="rs-what">Makes the coverage call</span></li>
+          </ol>
+        </div>
+        </div>
+      </div>
+      <figcaption class="mt-3 text-xs text-faint text-center">Who an unclear case had to reach, before and after the rebuild</figcaption>
+    </figure>
+
+    <!-- Context + Sidebar -->
+    <section class="mt-18 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14">
+      <div class="md:col-span-7 reveal">
+        <h2 class="font-display text-2xl font-bold mb-4">Context</h2>
+        <div class="space-y-4 text-muted leading-relaxed">
+          <p>
+            RVezy partners with Access Roadside, a Canadian company providing 24/7 roadside coverage. Their agents handled RVezy cases through a portal connected to our internal operations dashboard.
+          </p>
+          <p>
+            This was early in my time at RVezy, when I led roadside operations.
+          </p>
+        </div>
+      </div>
+      <aside class="md:col-span-5 reveal">
+        <div class="rounded-xl border border-border p-6 space-y-5">
+          <div>
+            <p class="tag mb-2">Role</p>
+            <p class="text-sm text-ink font-medium">Led roadside operations; designed and shipped the fix</p>
+          </div>
+          <div>
+            <p class="tag mb-2">Scope</p>
+            <p class="text-sm text-ink font-medium">Roadside dashboard in our internal ops system, partner permissions</p>
+          </div>
+          <div>
+            <p class="tag mb-2">Team</p>
+            <p class="text-sm text-ink font-medium">Me and one engineer, who reviewed the code and kept the backend in sync</p>
+          </div>
+          <div>
+            <p class="tag mb-2">Partner</p>
+            <p class="text-sm text-ink font-medium">Access Roadside, 24/7 roadside coverage</p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Problem -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">The Problem</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Every unclear case became a phone call</h2>
+        <p class="text-muted leading-relaxed mb-6">There were constant disputes over what was covered. Coverage depended on the insurance tier each renter chose at booking: tire replacement, for example, was covered on some bookings and not others.</p>
+        <p class="text-muted leading-relaxed mb-6">The portal didn&rsquo;t show which tier applied to the booking an agent was working on. So every unclear case became a phone call.</p>
+      </div>
+    </section>
+
+    <!-- Research -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Research</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 md:items-center">
+        <div class="md:col-span-7">
+          <h2 class="font-display text-2xl font-bold mb-5">The calls weren&rsquo;t about the repair</h2>
+          <p class="text-muted leading-relaxed mb-6">Because I led roadside operations, I handled cases directly with renters broken down on the side of the road. Access Roadside&rsquo;s service providers also called my cell about specific cases.</p>
+          <p class="text-muted leading-relaxed">The pattern was clear. Most calls weren&rsquo;t about the repair. They were about whether that booking covered it.</p>
+        </div>
+        <div class="md:col-span-5">
+          <div class="px-6 border border-border rounded-xl text-center" style="padding-top:2.5rem;padding-bottom:2.5rem">
+            <p class="font-display text-5xl font-extrabold text-accent tracking-tight">50%+</p>
+            <p class="text-sm text-muted mt-4">of roadside cases had some sort of dispute</p>
+            <p class="text-xs text-faint mt-1">where Customer Success (me) had to get involved</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The decision -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">The Decision</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">From a guide to the actual data</h2>
+        <p class="text-muted leading-relaxed mb-6">The first instinct was to send Access Roadside a clearer coverage guide, such as a PDF or FAQ explaining each tier. But agents already understood the tiers in general. What they lacked was which tier this booking had.</p>
+        <p class="text-muted leading-relaxed mb-6">So the fix moved from writing a guide to showing each booking&rsquo;s coverage in the portal.</p>
+      </div>
+    </section>
+
+    <!-- Solution -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Solution</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">A dashboard for roadside, and the right permissions</h2>
+        <p class="text-muted leading-relaxed mb-8">We rebuilt the portal in two parts.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-border">
+        <div class="bg-surface p-8">
+          <h3 class="font-display text-lg font-bold mb-2">A new roadside dashboard</h3>
+          <p class="text-sm text-muted leading-relaxed">A dashboard for the roadside team inside our internal ops system, built around the booking an agent is working on.</p>
+        </div>
+        <div class="bg-surface p-8">
+          <h3 class="font-display text-lg font-bold mb-2">Revised partner permissions</h3>
+          <p class="text-sm text-muted leading-relaxed">Access Roadside agents could see each booking&rsquo;s specific coverage without reaching the rest of the system.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Design constraints -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Design Constraints</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Not a visual redesign</h2>
+        <p class="text-muted leading-relaxed mb-6">Internal tools followed an existing Google-based style guide, so this wasn&rsquo;t a visual redesign. The design work was information hierarchy: what an agent needs to see first, with a renter stranded at the roadside, to make a coverage call without phoning us.</p>
+      </div>
+    </section>
+
+    <!-- My role -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">My Role</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">From the phone calls to the code</h2>
+        <p class="text-muted leading-relaxed mb-6">I led roadside operations, identified the problem, and shipped the new dashboard and the permission changes. One other engineer worked alongside me, reviewing the code and making sure the backend stayed in sync.</p>
+      </div>
+    </section>
+
+    <section class="mt-22 reveal" id="after-launch">
+      <div class="section-divider mb-8">
+        <span class="tag">After Launch</span>
+      </div>
+      <h2 class="font-display text-2xl font-bold mb-8 max-w-3xl">Contact between Customer Success and roadside, cut in half</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div>
+          <h3 class="font-display text-lg font-bold mb-3">What we measured</h3>
+          <p class="text-sm text-muted leading-relaxed">Back-and-forth between Customer Success and roadside dropped significantly. Contact between the two teams was cut in half.</p>
+        </div>
+        <div>
+          <h3 class="font-display text-lg font-bold mb-3">What we learned</h3>
+          <p class="text-sm text-muted leading-relaxed">The disputes were a data problem, not a knowledge problem. Agents already knew the tiers. Once they could see which tier a booking had, they could make the call themselves.</p>
+        </div>
+        <div>
+          <h3 class="font-display text-lg font-bold mb-3">What it didn&rsquo;t fix</h3>
+          <p class="text-sm text-muted leading-relaxed">Billing. Access Roadside still emailed us an invoice for every ticket they handled.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reflection -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Reflection</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">What I&rsquo;d do differently</h2>
+        <p class="text-muted leading-relaxed mb-6">Fix billing at the same time. Access Roadside emailed us an invoice for every ticket they handled. I&rsquo;d have built a way for them to submit invoices into our system and for finance to review them there.</p>
+        <p class="text-muted leading-relaxed mb-6">I raised it, others did too, and engineering built it after I&rsquo;d moved off the team.</p>
+      </div>
+    </section>
+
+    <nav class="mt-22 flex items-end justify-between gap-6 border-t border-border pt-8" aria-label="More case studies">
+      <a href="/case-studies/datenight.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; DateNight</a>
+      <a href="/case-studies/pay-in-full.html" class="group text-right">
+        <span class="tag block mb-2">Next case study</span>
+        <span class="font-display text-xl md:text-2xl font-bold text-ink group-hover:text-accent transition-colors">Pay-in-Full Pricing &rarr;</span>
+      </a>
+    </nav>
+
+  </article>
+
+  <footer class="border-t border-border px-8 md:px-12 py-10">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
+      <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
+      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Canada</span></p>
+      <div class="flex gap-6">
+        <a href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
+        <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>
+      </div>
+    </div>
+    <p class="footer-alt max-w-7xl mx-auto">
+      <a href="/de/" hreflang="de" lang="de">Deutsch</a><span aria-hidden="true">&middot;</span><a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a><span aria-hidden="true">&middot;</span><a href="/llms.txt">For AI assistants</a>
+    </p>
+  </footer>
+  <!-- Cloudflare Web Analytics (cookieless) --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7efe87006c69468396ae56c5120a8e95"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

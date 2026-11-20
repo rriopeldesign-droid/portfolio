@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="/img/favicon.png" />
   <title>AI Figma Plugin | Robert Riopel, UX Case Study</title>
-  <meta name="description" content="Case study by Robert Riopel: an AI Figma plugin that turns plain-language prompts into production-ready Vue and Tailwind components from a live design system." />
-  <meta name="keywords" content="Robert Riopel, AI Figma plugin, Figma plugin case study, AI design tools, design system automation, Vue Tailwind components, natural language UI generation, UX case study, product designer, RVezy" />
+  <meta name="description" content="Case study: a Figma plugin on the Claude API that turns prompts into native components, synced 1:1 with RVezy's coded design system. Handoff time halved." />
+  <meta name="keywords" content="Robert Riopel, AI Figma plugin, Claude API, design systems, Tailwind CSS, Figma Plugin API, AI design tools, prompt to component, RVezy" />
   <meta name="author" content="Robert Riopel" />
   <meta name="robots" content="max-image-preview:large" />
   <link rel="canonical" href="https://robertriopel.ca/case-studies/ai-figma-plugin.html" />
@@ -14,30 +14,35 @@
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://robertriopel.ca/case-studies/ai-figma-plugin.html" />
   <meta property="og:title" content="AI Figma Plugin | Robert Riopel, UX Case Study" />
-  <meta property="og:description" content="Building an AI-powered Figma plugin that generates production-ready Vue and Tailwind components from natural language prompts, synced with the live design system." />
-  <meta property="og:image" content="https://robertriopel.ca/img/case-studies/figma-plugin05.png" />
-  <meta property="og:image:width" content="722" />
-  <meta property="og:image:height" content="1060" />
-  <meta property="og:image:alt" content="AI Figma Plugin, a case study by Robert Riopel" />
+  <meta property="og:description" content="A Figma plugin that uses the Claude API to generate native Figma components from prompts, synced 1:1 with RVezy's coded design system. It cut design-to-dev handoff time in half." />
+  <meta property="og:image" content="https://robertriopel.ca/img/og/og-ai-figma-plugin.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="AI Figma Plugin case study: prompt to native Figma component, synced with the coded design system" />
   <meta property="og:site_name" content="Robert Riopel, Senior Product Designer" />
   <meta property="og:locale" content="en_CA" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AI Figma Plugin | Robert Riopel, UX Case Study" />
-  <meta name="twitter:description" content="Building an AI-powered Figma plugin that generates production-ready Vue and Tailwind components from natural language prompts." />
-  <meta name="twitter:image" content="https://robertriopel.ca/img/case-studies/figma-plugin05.png" />
-  <meta name="twitter:image:alt" content="AI Figma Plugin, a case study by Robert Riopel" />
-  <!-- Schema.org: Article -->
+  <meta name="twitter:description" content="A Figma plugin that uses the Claude API to generate native Figma components from prompts, synced 1:1 with RVezy's coded design system. It cut design-to-dev handoff time in half." />
+  <meta name="twitter:image" content="https://robertriopel.ca/img/og/og-ai-figma-plugin.jpg" />
+  <meta name="twitter:image:alt" content="AI Figma Plugin case study: prompt to native Figma component, synced with the coded design system" />
+  <!-- Schema.org -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Article",
-        "headline": "AI Figma Plugin: Building a Design System-Aware Component Generator",
-        "description": "Building an AI-powered Figma plugin that generates production-ready Vue and Tailwind components from natural language prompts, synced with the live RVezy design system.",
+        "@id": "https://robertriopel.ca/case-studies/ai-figma-plugin.html#article",
+        "headline": "AI Figma Plugin: Prompt to Native Component, Synced 1:1 with Code",
+        "description": "A Figma plugin that uses the Claude API to generate native Figma components from prompts, synced 1:1 with RVezy's coded design system. It cut design-to-dev handoff time in half.",
         "url": "https://robertriopel.ca/case-studies/ai-figma-plugin.html",
-        "image": "https://robertriopel.ca/img/case-studies/figma-plugin05.png",
+        "mainEntityOfPage": "https://robertriopel.ca/case-studies/ai-figma-plugin.html",
+        "image": "https://robertriopel.ca/img/og/og-ai-figma-plugin.jpg",
+        "inLanguage": "en",
+        "datePublished": "2026-02-15T00:00:00+00:00",
+        "dateModified": "2026-10-06T13:54:39-04:00",
         "author": {
           "@type": "Person",
           "@id": "https://robertriopel.ca/#person",
@@ -50,12 +55,7 @@
           "name": "Robert Riopel",
           "url": "https://robertriopel.ca/"
         },
-        "keywords": "AI design tools, Figma plugin, design systems, Vue, Tailwind CSS, UX design",
-        "@id": "https://robertriopel.ca/case-studies/ai-figma-plugin.html#article",
-        "mainEntityOfPage": "https://robertriopel.ca/case-studies/ai-figma-plugin.html",
-        "inLanguage": "en",
-        "datePublished": "2026-02-15T00:00:00+00:00",
-        "dateModified": "2026-10-06T13:54:39-04:00"
+        "keywords": "AI design tools, Claude API, Figma plugin, design systems, Tailwind CSS"
       },
       {
         "@type": "BreadcrumbList",
@@ -100,7 +100,7 @@
       <div class="hidden md:flex gap-8 items-center">
         <a href="/work.html" class="nav-link">Work</a>
         <a href="/about.html" class="nav-link">About</a>
-        <a href="/death-of-figma/" class="nav-link">Figma</a>
+        <a href="/writing/" class="nav-link">Writing</a>
         <a href="/fun.html" class="nav-link">Fun</a>
         <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-peach hover:text-ink">
           Contact
@@ -118,7 +118,7 @@
     <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
       <a href="/work.html" class="block nav-link py-1">Work</a>
       <a href="/about.html" class="block nav-link py-1">About</a>
-      <a href="/death-of-figma/" class="block nav-link py-1">Figma</a>
+      <a href="/writing/" class="block nav-link py-1">Writing</a>
       <a href="/fun.html" class="block nav-link py-1">Fun</a>
       <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
     </div>
@@ -138,6 +138,7 @@
       </p>
       <div class="mt-6 flex flex-wrap gap-3">
         <span class="metric">Prompt &rarr; Component</span>
+        <span class="metric">Handoff time cut in half</span>
         <span class="metric">Design system synced</span>
         <span class="metric">Designed + Developed</span>
       </div>
@@ -152,7 +153,7 @@
         </div>
         <div>
           <p class="tag mb-2">Users</p>
-          <p class="text-sm text-ink font-medium">PMs, engineers, marketing</p>
+          <p class="text-sm text-ink font-medium">Mostly PMs and senior stakeholders</p>
         </div>
         <div>
           <p class="tag mb-2">Timeline</p>
@@ -167,13 +168,13 @@
 
     <div class="mt-14 reveal flex flex-col md:flex-row gap-4">
       <div class="case-img" style="flex:1">
-        <img class="cs-hero-img" width="702" height="1018" src="/img/case-studies/figma-plugin08.webp" alt="Plugin interface in Figma" fetchpriority="high" />
+        <img class="cs-hero-img" width="702" height="1018" src="/img/case-studies/figma-plugin08.webp" alt="The plugin&rsquo;s Pick mode in Figma: choose a design system component, from inputs and toggles to toasts and banners, then customize it" fetchpriority="high" />
       </div>
       <div class="case-img" style="flex:1">
-        <img width="694" height="1004" src="/img/case-studies/figma-plugin02.webp" alt="Plugin prompt and generation" loading="lazy" />
+        <img width="694" height="1004" src="/img/case-studies/figma-plugin02.webp" alt="Quick Create: describe any component in plain language, with starter prompts such as a primary &lsquo;Book Now&rsquo; button" loading="lazy" />
       </div>
       <div class="case-img" style="flex:1">
-        <img width="692" height="1010" src="/img/case-studies/figma-plugin01.webp" alt="Generated component on canvas" loading="lazy" />
+        <img width="692" height="1010" src="/img/case-studies/figma-plugin01.webp" alt="Variants mode: build a full component set, such as every button or toggle state, from one prompt" loading="lazy" />
       </div>
     </div>
 
@@ -198,7 +199,7 @@
     <!-- How it works -->
     <section class="mt-22">
       <div class="section-divider reveal mb-8">
-        <span class="tag">How It Works</span>
+        <h2 class="tag">How It Works</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-border reveal">
@@ -236,15 +237,15 @@
     <section class="mt-18 space-y-6">
       <div class="reveal">
         <div class="case-img">
-          <img width="1382" height="1092" src="/img/case-studies/figma-plugin03.webp" alt="Design system registry in action" loading="lazy" />
+          <img width="1382" height="1092" src="/img/case-studies/figma-plugin03.webp" alt="A prompt for a booking confirmation card with a check-in date, guest name and cancel button, and the generated card on the Figma canvas" loading="lazy" />
         </div>
       </div>
       <div class="reveal flex flex-col md:flex-row gap-6">
         <div class="case-img" style="flex:1">
-          <img width="702" height="1018" src="/img/case-studies/figma-plugin08.webp" alt="Plugin UI with prompt input" loading="lazy" />
+          <img width="702" height="1018" src="/img/case-studies/figma-plugin08.webp" alt="Pick mode again: the component picker grouped into form and feedback components, with a viewport size selector" loading="lazy" />
         </div>
         <div class="case-img" style="flex:1">
-          <img width="574" height="928" src="/img/case-studies/figma-plugin04.webp" alt="Component generation workflow" loading="lazy" />
+          <img width="574" height="928" src="/img/case-studies/figma-plugin04.webp" alt="The design system file the plugin loads: Vue 3 and Tailwind CSS v4, colour scales and component rules" loading="lazy" />
         </div>
       </div>
       <div class="reveal">
@@ -264,12 +265,39 @@
       </div>
     </section>
 
-    <!-- Technical -->
+    <!-- How it's built -->
     <section class="mt-22 reveal">
       <div class="section-divider mb-8">
-        <span class="tag">Under the Hood</span>
+        <span class="tag">How It&rsquo;s Built</span>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Claude does the composing. The design system does the deciding.</h2>
+        <p class="text-muted leading-relaxed">The plugin calls the Claude API to turn a prompt into native Figma components. The coded design system decides what Claude is allowed to use. Four steps, from prompt to canvas:</p>
+      </div>
+      <ol class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-px bg-border rounded-xl overflow-hidden border border-border" aria-label="From prompt to component">
+          <li class="bg-surface p-6 md:p-7">
+            <p class="tag mb-3">01 &middot; Prompt</p>
+            <p class="font-display text-lg font-bold mb-2">Describe it</p>
+            <p class="text-sm text-muted leading-relaxed">&ldquo;A booking confirmation card with check-in date, guest name and a cancel button.&rdquo;</p>
+          </li>
+          <li class="bg-surface p-6 md:p-7">
+            <p class="tag mb-3">02 &middot; Claude API</p>
+            <p class="font-display text-lg font-bold mb-2">Compose it</p>
+            <p class="text-sm text-muted leading-relaxed">Claude reads the prompt with the 90+ component registry as context and picks which components to compose and how to configure them.</p>
+          </li>
+          <li class="bg-surface p-6 md:p-7">
+            <p class="tag mb-3">03 &middot; Validate</p>
+            <p class="font-display text-lg font-bold mb-2">Check it</p>
+            <p class="text-sm text-muted leading-relaxed">Claude&rsquo;s structured JSON is checked against the registry before anything renders, which catches most made-up components or colors.</p>
+          </li>
+          <li class="bg-surface p-6 md:p-7">
+            <p class="tag mb-3">04 &middot; Figma</p>
+            <p class="font-display text-lg font-bold mb-2">Build it</p>
+            <p class="text-sm text-muted leading-relaxed">Plugin API calls draw native layers with the right colors, type, spacing and auto-layout. Editable like anything hand-built.</p>
+          </li>
+      </ol>
+      <p class="mt-6 text-muted leading-relaxed max-w-3xl">The 1:1 sync comes from where the registry lives. It&rsquo;s derived from the same Tailwind config that powers production, so when the coded system changes, the next generation changes with it. The brain is the design system; the plugin is just the hands.</p>
+      <div class="mt-14 grid grid-cols-1 md:grid-cols-2 gap-10">
         <div>
           <h3 class="font-display text-lg font-bold mb-2">Component registry</h3>
           <p class="text-sm text-muted leading-relaxed">
@@ -332,15 +360,26 @@
       </div>
     </section>
 
-    <section class="mt-22 reveal">
+    <section class="mt-22 reveal" id="after-launch">
       <div class="section-divider mb-8">
-        <span class="tag">Rollout</span>
+        <span class="tag">After Launch</span>
       </div>
-      <div class="max-w-3xl">
-        <h2 class="font-display text-2xl font-bold mb-5">Getting the team to actually use it</h2>
-        <p class="text-muted leading-relaxed mb-6">A tool nobody opens doesn’t scale anything. I introduced the plugin through short live demos with product managers and engineers, using real requests from their backlogs rather than toy examples, so the first thing people saw was a component they genuinely needed.</p>
-        <p class="text-muted leading-relaxed mb-6">For the first few weeks I ran informal office hours and kept a running list of prompts that failed. Those failures were the most valuable feedback in the project: each one pointed to a gap in the registry, a missing variant, or an instruction that needed to be more explicit. Fixing them improved the plugin and the design system at the same time.</p>
-        <p class="text-muted leading-relaxed mb-6">We also agreed on a simple guardrail. Anything generated with the plugin that was headed for production still came through design review. The plugin removed the waiting, not the judgement, which made it much easier for the team to trust it.</p>
+      <h2 class="font-display text-2xl font-bold mb-8 max-w-3xl">Getting the team to actually use it</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div>
+          <h3 class="font-display text-lg font-bold mb-3">What we measured</h3>
+          <p class="text-sm text-muted leading-relaxed">I introduced the plugin through short live demos, using real requests from people&rsquo;s backlogs rather than toy examples, so the first thing they saw was a component they needed.</p>
+          <p class="text-sm text-muted leading-relaxed mt-3">Most of the people using it were product managers, along with senior stakeholders who were less fluent with technical tools. Describing a component in plain English was easier for them than learning Figma. Design-to-dev handoff time was cut in half.</p>
+        </div>
+        <div>
+          <h3 class="font-display text-lg font-bold mb-3">What we learned</h3>
+          <p class="text-sm text-muted leading-relaxed">For the first few weeks I ran informal office hours and kept a running list of prompts that failed. Those failures were the most valuable feedback in the project.</p>
+          <p class="text-sm text-muted leading-relaxed mt-3">We also agreed on a guardrail: anything generated with the plugin that was headed for production still came through design review. The plugin removed the waiting, not the judgement, which made it much easier for the team to trust.</p>
+        </div>
+        <div>
+          <h3 class="font-display text-lg font-bold mb-3">What came next</h3>
+          <p class="text-sm text-muted leading-relaxed">Each failed prompt pointed to a gap in the registry, a missing variant, or an instruction that needed to be more explicit. Fixing them improved the plugin and the design system at the same time.</p>
+        </div>
       </div>
     </section>
 
@@ -361,7 +400,11 @@
       <p class="text-surface/60 text-base leading-relaxed max-w-2xl mb-10">
         This plugin doesn't replace the designer. It scales design thinking to the whole team. PMs can mock up ideas before requesting design time. Engineers can generate specs for edge cases. The design system stops being a reference doc and becomes a generative tool.
       </p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+        <div>
+          <p class="count-up font-display text-4xl font-extrabold text-accent">&minus;50%</p>
+          <p class="text-surface/60 text-sm mt-2">Design-to-dev handoff time</p>
+        </div>
         <div>
           <p class="count-up font-display text-4xl font-extrabold text-accent">90+</p>
           <p class="text-surface/60 text-sm mt-2">Components in the registry with full metadata</p>
@@ -373,16 +416,19 @@
       </div>
     </section>
 
-    <nav class="mt-22 flex items-center justify-between gap-4 border-t border-border pt-8">
-      <a href="/case-studies/lifecycle-campaigns.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Lifecycle Campaigns</a>
-      <a href="/case-studies/host-dashboard.html" class="text-sm text-muted hover:text-ink transition-colors">Host Dashboard &rarr;</a>
+    <nav class="mt-22 flex items-end justify-between gap-6 border-t border-border pt-8" aria-label="More case studies">
+      <a href="/case-studies/host-onboarding.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Host Onboarding Overhaul</a>
+      <a href="/case-studies/lifecycle-campaigns.html" class="group text-right">
+        <span class="tag block mb-2">Next case study</span>
+        <span class="font-display text-xl md:text-2xl font-bold text-ink group-hover:text-accent transition-colors">Lifecycle &amp; Email Campaigns &rarr;</span>
+      </a>
     </nav>
   </article>
 
   <footer class="border-t border-border px-8 md:px-12 py-10">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
       <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
-      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Ottawa</span><span aria-hidden="true">&middot;</span><span>Vienna</span></p>
+      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Canada</span></p>
       <div class="flex gap-6">
         <a href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
         <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>

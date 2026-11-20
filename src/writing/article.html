@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!--
+  Article template for /writing/. Not deployed (src/ is excluded from the site).
+  To publish an article:
+    1. Copy this file to writing/<slug>/index.html and replace every {{PLACEHOLDER}}.
+    2. Reading time: words / 230, rounded. Dates are ISO (2026-11-20) in datetime and JSON-LD.
+    3. Add a share card for <slug> to src/og/og-page.html and run `node scripts/build-og.mjs <slug>`.
+    4. Add a row to writing/index.html (newest first) and a BlogPosting to its JSON-LD.
+    5. Add the URL to sitemap.xml and llms.txt.
+  Body markup: <p>, <h2>, <h3>, <ul>/<ol>, <pre><code>, <p class="callout">, <figure> with <figcaption>.
+  Images below the fold get loading="lazy" plus width and height.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/img/favicon.png" />
+  <title>{{TITLE}} | Robert Riopel</title>
+  <meta name="description" content="{{DESCRIPTION, under 155 characters}}" />
+  <meta name="keywords" content="Robert Riopel, {{KEYWORDS}}" />
+  <meta name="author" content="Robert Riopel" />
+  <meta name="robots" content="max-image-preview:large" />
+  <link rel="canonical" href="https://robertriopel.ca/writing/{{SLUG}}/" />
+  <meta property="article:published_time" content="{{PUBLISHED, e.g. 2026-11-20T00:00:00-05:00}}" />
+  <meta property="article:author" content="https://robertriopel.ca/about.html" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://robertriopel.ca/writing/{{SLUG}}/" />
+  <meta property="og:title" content="{{TITLE}} | Robert Riopel" />
+  <meta property="og:description" content="{{SHARE DESCRIPTION}}" />
+  <meta property="og:image" content="https://robertriopel.ca/img/og/og-{{SLUG}}.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="{{SHARE IMAGE ALT TEXT}}" />
+  <meta property="og:site_name" content="Robert Riopel, Senior Product Designer" />
+  <meta property="og:locale" content="en_CA" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{TITLE}} | Robert Riopel" />
+  <meta name="twitter:description" content="{{SHARE DESCRIPTION}}" />
+  <meta name="twitter:image" content="https://robertriopel.ca/img/og/og-{{SLUG}}.jpg" />
+  <meta name="twitter:image:alt" content="{{SHARE IMAGE ALT TEXT}}" />
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "https://robertriopel.ca/writing/{{SLUG}}/#article",
+        "headline": "{{TITLE}}",
+        "description": "{{DESCRIPTION}}",
+        "url": "https://robertriopel.ca/writing/{{SLUG}}/",
+        "mainEntityOfPage": "https://robertriopel.ca/writing/{{SLUG}}/",
+        "image": "https://robertriopel.ca/img/og/og-{{SLUG}}.jpg",
+        "inLanguage": "en",
+        "datePublished": "{{PUBLISHED}}",
+        "dateModified": "{{PUBLISHED}}",
+        "wordCount": 0,
+        "timeRequired": "PT{{MINUTES}}M",
+        "author": { "@type": "Person", "@id": "https://robertriopel.ca/#person", "name": "Robert Riopel", "url": "https://robertriopel.ca/" },
+        "publisher": { "@type": "Person", "@id": "https://robertriopel.ca/#person", "name": "Robert Riopel", "url": "https://robertriopel.ca/" },
+        "isPartOf": { "@type": "Blog", "@id": "https://robertriopel.ca/writing/#blog", "name": "Writing by Robert Riopel", "url": "https://robertriopel.ca/writing/" },
+        "keywords": "{{KEYWORDS}}"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://robertriopel.ca/" },
+          { "@type": "ListItem", "position": 2, "name": "Writing", "item": "https://robertriopel.ca/writing/" },
+          { "@type": "ListItem", "position": 3, "name": "{{TITLE}}", "item": "https://robertriopel.ca/writing/{{SLUG}}/" }
+        ]
+      }
+    ]
+  }
+  </script>
+  <link href="/css/fonts.css" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
+</head>
+
+<body class="case-study bg-surface text-ink font-body">
+
+  <nav class="sticky top-0 z-50 nav-glass">
+    <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
+
+      <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
+        RR
+      </a>
+
+      <div class="hidden md:flex gap-8 items-center">
+        <a href="/work.html" class="nav-link">Work</a>
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/writing/" class="nav-link">Writing</a>
+        <a href="/fun.html" class="nav-link">Fun</a>
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-peach hover:text-ink">
+          Contact
+        </a>
+      </div>
+
+      <button id="navToggle" class="md:hidden text-ink" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="7" x2="20" y2="7" style="transition: all 0.3s ease"/>
+          <line x1="4" y1="17" x2="20" y2="17" style="transition: all 0.3s ease"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
+      <a href="/work.html" class="block nav-link py-1">Work</a>
+      <a href="/about.html" class="block nav-link py-1">About</a>
+      <a href="/writing/" class="block nav-link py-1">Writing</a>
+      <a href="/fun.html" class="block nav-link py-1">Fun</a>
+      <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
+    </div>
+  </nav>
+
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pt-10 pb-26">
+
+    <div class="flex items-center justify-between gap-4 pb-8 border-b border-border reveal">
+      <p class="tag">Writing &middot; {{KIND, e.g. Essay or Build notes}}</p>
+      <a href="/writing/" class="text-sm text-muted hover:text-ink transition-colors">&larr; All writing</a>
+    </div>
+
+    <header class="mt-12 max-w-3xl reveal">
+      <h1 class="font-display text-section md:text-[3.75rem] md:leading-[1.05]">{{TITLE}}</h1>
+      <p class="mt-5 text-muted text-lg leading-relaxed">{{DEK: one or two sentences}}</p>
+      <p class="mt-6 text-sm text-faint">By <a href="/about.html" class="text-ink underline underline-offset-4 hover:text-accent transition-colors">Robert Riopel</a> &middot; <time datetime="{{DATE}}">{{DATE, e.g. November 20, 2026}}</time> &middot; {{MINUTES}} min read</p>
+    </header>
+
+    <div class="article-body mt-14">
+<p>{{Opening paragraph.}}</p>
+
+<h2>{{Section heading}}</h2>
+<p>{{Body copy.}}</p>
+    </div>
+
+    <nav class="mt-22 max-w-3xl flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-t border-border pt-8" aria-label="More from Robert Riopel">
+      <a href="/work.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Back to the portfolio</a>
+      <a href="/writing/{{OTHER-SLUG}}/" class="group sm:text-right">
+        <span class="tag block mb-2">More writing</span>
+        <span class="font-display text-xl md:text-2xl font-bold text-ink group-hover:text-accent transition-colors">{{OTHER TITLE}} &rarr;</span>
+      </a>
+    </nav>
+
+  </article>
+
+  <!-- ====== Footer ====== -->
+  <footer class="border-t border-border px-8 md:px-12 py-10">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
+      <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
+      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Canada</span></p>
+      <div class="flex gap-6">
+        <a href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
+        <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>
+      </div>
+    </div>
+    <p class="footer-alt max-w-7xl mx-auto">
+      <a href="/de/" hreflang="de" lang="de">Deutsch</a><span aria-hidden="true">&middot;</span><a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a><span aria-hidden="true">&middot;</span><a href="/llms.txt">For AI assistants</a>
+    </p>
+  </footer>
+
+  <!-- Cloudflare Web Analytics (cookieless) --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7efe87006c69468396ae56c5120a8e95"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

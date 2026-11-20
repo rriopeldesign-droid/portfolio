@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="/img/favicon.png" />
   <title>Host Dashboard Redesign | Robert Riopel, UX Case Study</title>
-  <meta name="description" content="Case study by Robert Riopel: redesigning the RVezy host dashboard into an action-driven notification centre, driving +22% engagement and $1.5M in GMV." />
-  <meta name="keywords" content="Robert Riopel, host dashboard redesign, UX redesign case study, dashboard UX design, RVezy, product design, notification centre design, engagement optimization, GMV growth, SaaS UX design" />
+  <meta name="description" content="Case study: turning RVezy's static host home screen into a feed of next actions. A/B tested: +22% engagement and $1.5M in incremental GMV." />
+  <meta name="keywords" content="Robert Riopel, host dashboard redesign, dashboard UX, notification centre, B2B product design, marketplace, RVezy, A/B testing, engagement, GMV" />
   <meta name="author" content="Robert Riopel" />
   <meta name="robots" content="max-image-preview:large" />
   <link rel="canonical" href="https://robertriopel.ca/case-studies/host-dashboard.html" />
@@ -14,30 +14,35 @@
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://robertriopel.ca/case-studies/host-dashboard.html" />
   <meta property="og:title" content="Host Dashboard Redesign | Robert Riopel, UX Case Study" />
-  <meta property="og:description" content="Redesigning the RVezy host dashboard into an action-driven notification centre: +22% engagement and $1.5M in GMV." />
-  <meta property="og:image" content="https://robertriopel.ca/img/case-studies/host-dashboard01.png" />
-  <meta property="og:image:width" content="2880" />
-  <meta property="og:image:height" content="2087" />
-  <meta property="og:image:alt" content="Host Dashboard Redesign, a case study by Robert Riopel" />
+  <meta property="og:description" content="Replacing a static host home screen with an action-driven notification centre. Validated in a 50/50 A/B test: +22% engagement and $1.5M in incremental GMV." />
+  <meta property="og:image" content="https://robertriopel.ca/img/og/og-host-dashboard.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Host Dashboard Redesign case study: +22% engagement and $1.5M GMV" />
   <meta property="og:site_name" content="Robert Riopel, Senior Product Designer" />
   <meta property="og:locale" content="en_CA" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Host Dashboard Redesign | Robert Riopel, UX Case Study" />
-  <meta name="twitter:description" content="Redesigning the RVezy host dashboard: +22% engagement and $1.5M in GMV." />
-  <meta name="twitter:image" content="https://robertriopel.ca/img/case-studies/host-dashboard01.png" />
-  <meta name="twitter:image:alt" content="Host Dashboard Redesign, a case study by Robert Riopel" />
-  <!-- Schema.org: Article -->
+  <meta name="twitter:description" content="Replacing a static host home screen with an action-driven notification centre. Validated in a 50/50 A/B test: +22% engagement and $1.5M in incremental GMV." />
+  <meta name="twitter:image" content="https://robertriopel.ca/img/og/og-host-dashboard.jpg" />
+  <meta name="twitter:image:alt" content="Host Dashboard Redesign case study: +22% engagement and $1.5M GMV" />
+  <!-- Schema.org -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Article",
+        "@id": "https://robertriopel.ca/case-studies/host-dashboard.html#article",
         "headline": "Host Dashboard Redesign: +22% Engagement, $1.5M GMV",
-        "description": "Redesigning the RVezy host dashboard into an action-driven notification centre that drove +22% engagement and $1.5M in GMV.",
+        "description": "Redesigning the RVezy host dashboard into an action-driven notification centre that drove +22% engagement and $1.5M in incremental GMV.",
         "url": "https://robertriopel.ca/case-studies/host-dashboard.html",
-        "image": "https://robertriopel.ca/img/case-studies/host-dashboard01.png",
+        "mainEntityOfPage": "https://robertriopel.ca/case-studies/host-dashboard.html",
+        "image": "https://robertriopel.ca/img/og/og-host-dashboard.jpg",
+        "inLanguage": "en",
+        "datePublished": "2026-02-15T00:00:00+00:00",
+        "dateModified": "2026-10-06T13:54:39-04:00",
         "author": {
           "@type": "Person",
           "@id": "https://robertriopel.ca/#person",
@@ -50,12 +55,7 @@
           "name": "Robert Riopel",
           "url": "https://robertriopel.ca/"
         },
-        "keywords": "dashboard UX, product redesign, engagement optimization, RVezy, host experience",
-        "@id": "https://robertriopel.ca/case-studies/host-dashboard.html#article",
-        "mainEntityOfPage": "https://robertriopel.ca/case-studies/host-dashboard.html",
-        "inLanguage": "en",
-        "datePublished": "2026-02-15T00:00:00+00:00",
-        "dateModified": "2026-10-06T13:54:39-04:00"
+        "keywords": "dashboard UX, product redesign, engagement, RVezy, host experience, A/B testing"
       },
       {
         "@type": "BreadcrumbList",
@@ -100,7 +100,7 @@
       <div class="hidden md:flex gap-8 items-center">
         <a href="/work.html" class="nav-link">Work</a>
         <a href="/about.html" class="nav-link">About</a>
-        <a href="/death-of-figma/" class="nav-link">Figma</a>
+        <a href="/writing/" class="nav-link">Writing</a>
         <a href="/fun.html" class="nav-link">Fun</a>
         <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-peach hover:text-ink">
           Contact
@@ -118,7 +118,7 @@
     <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
       <a href="/work.html" class="block nav-link py-1">Work</a>
       <a href="/about.html" class="block nav-link py-1">About</a>
-      <a href="/death-of-figma/" class="block nav-link py-1">Figma</a>
+      <a href="/writing/" class="block nav-link py-1">Writing</a>
       <a href="/fun.html" class="block nav-link py-1">Fun</a>
       <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
     </div>
@@ -148,10 +148,10 @@
  <!-- Hero image -->
     <div class="mt-14 reveal flex flex-col md:flex-row gap-4 items-start">
       <div class="case-img" style="flex:3">
-        <img width="2880" height="2087" src="/img/case-studies/host-dashboard01.webp" alt="Host Dashboard desktop view" class="cs-hero-img w-full h-auto" fetchpriority="high" />
+        <img width="2880" height="2087" src="/img/case-studies/host-dashboard01.webp" alt="Redesigned host dashboard on desktop: a &lsquo;For today&rsquo; card to finish the listing, identity verification, an app prompt and tips" class="cs-hero-img w-full h-auto" fetchpriority="high" />
       </div>
       <div class="case-img" style="flex:1">
-        <img width="375" height="1029" src="/img/case-studies/host-dashboard-mobile.webp" alt="Host Dashboard mobile view" class="w-full h-auto" loading="lazy" />
+        <img width="375" height="1029" src="/img/case-studies/host-dashboard-mobile.webp" alt="Redesigned host dashboard on mobile: &lsquo;For today&rsquo; cards to add photos, verify identity and connect a bank account" class="w-full h-auto" loading="lazy" />
       </div>
     </div>
 
@@ -194,7 +194,7 @@
     <!-- Problem -->
     <section class="mt-22 reveal">
       <div class="section-divider mb-8">
-        <span class="tag">The Problem</span>
+        <h2 class="tag">The Problem</h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         <div>
@@ -215,7 +215,7 @@
     <!-- Before state -->
     <div class="mt-14 reveal">
       <div class="case-img">
-        <img class="w-full h-auto" width="2200" height="1665" src="/img/case-studies/host-dashboard-old.webp" alt="Old host dashboard" loading="lazy" />
+        <img class="w-full h-auto" width="2200" height="1665" src="/img/case-studies/host-dashboard-old.webp" alt="The old host dashboard: a review prompt, an app banner, listings and articles, with nothing telling hosts what needed attention" loading="lazy" />
       </div>
       <p class="mt-3 text-xs text-faint text-center">The old host home screen: static numbers, no actions, no targets</p>
     </div>
@@ -263,7 +263,7 @@
     <!-- Dashboard states -->
     <section class="mt-22 reveal">
       <div class="section-divider mb-8">
-        <span class="tag">Designing for Every State</span>
+        <h2 class="tag">Designing for Every State</h2>
       </div>
       <p class="text-muted leading-relaxed max-w-3xl mb-10">
         The dashboard needed to work for a brand-new host with a draft listing, a host who just published but has zero bookings, and a veteran host managing multiple RVs. I mapped three core states and designed each one to feel useful, not empty.
@@ -297,22 +297,22 @@
     <section class="mt-18 space-y-6">
       <div class="reveal">
         <div class="case-img">
-          <img width="2200" height="550" src="/img/case-studies/host-dashboard-next-steps.webp" alt="Dashboard next steps cards" class="w-full h-auto" loading="lazy" />
+          <img width="2200" height="550" src="/img/case-studies/host-dashboard-next-steps.webp" alt="Welcome cards for new hosts: update the calendar, add a profile photo, write a bio, offer delivery and set experience rules" class="w-full h-auto" loading="lazy" />
         </div>
       </div>
       <div class="reveal">
         <div class="case-img">
-          <img width="1440" height="682" src="/img/case-studies/host-dashboard-superhost.webp" alt="Superhost progress" class="w-full h-auto" loading="lazy" />
+          <img width="1440" height="682" src="/img/case-studies/host-dashboard-superhost.webp" alt="Superhost progress: a 98% response rate and 100% acceptance rate against their goals, plus cancellations and confirmed bookings" class="w-full h-auto" loading="lazy" />
         </div>
       </div>
       <div class="reveal">
         <div class="case-img">
-          <img width="1440" height="486" src="/img/case-studies/host-dashboard-earnings.webp" alt="Host earnings overview" class="w-full h-auto" loading="lazy" />
+          <img width="1440" height="486" src="/img/case-studies/host-dashboard-earnings.webp" alt="Earnings view: upcoming payouts, year-to-date and lifetime earnings" class="w-full h-auto" loading="lazy" />
         </div>
       </div>
       <div class="reveal">
         <div class="case-img">
-          <img width="1440" height="1170" src="/img/case-studies/host-dashboard-opportunities.webp" alt="Opportunities and actions" class="w-full h-auto" loading="lazy" />
+          <img width="1440" height="1170" src="/img/case-studies/host-dashboard-opportunities.webp" alt="Opportunity cards: complete your profile, enable notifications, turn on smart pricing, improve your listing and update your calendar" class="w-full h-auto" loading="lazy" />
         </div>
       </div>
     </section>
@@ -344,27 +344,27 @@
       </div>
     </section>
 
-    <!-- Experiment -->
-    <section class="mt-22 reveal">
+    <section class="mt-22 reveal" id="after-launch">
       <div class="section-divider mb-8">
-        <span class="tag">Validation</span>
+        <span class="tag">After Launch</span>
       </div>
-      <div class="max-w-3xl space-y-4 text-muted leading-relaxed">
-        <p>
-          We launched the dashboard behind a 50/50 A/B test, split by user ID to ensure clean data. The experiment tracked separately on iOS and Android, triggered when a host landed on their dashboard. We measured acceptance rate, response rate, onboarding completion, and overall engagement.
-        </p>
-      </div>
-    </section>
-
-    <section class="mt-22 reveal">
-      <div class="section-divider mb-8">
-        <span class="tag">Reflection</span>
-      </div>
-      <div class="max-w-3xl">
-        <h2 class="font-display text-2xl font-bold mb-5">What I’d do next</h2>
-        <p class="text-muted leading-relaxed mb-6">Two things. First, the cards are rule-based today. Ranking them by predicted impact for each host (a pending booking request should always outrank a photo tip) would keep the feed useful as more card types are added. Second, the performance benchmarks could become a progression system, with clear milestones toward top-host status, turning targets hosts used to ignore into goals they actively work toward.</p>
-        <p class="text-muted leading-relaxed mb-6">Running the redesign as a 50/50 test was worth the extra time. It gave the team a clean answer instead of a debate, and it made the next round of dashboard work much easier to get prioritized.</p>
-        <p class="text-muted leading-relaxed mb-6">The broader lesson: in a two-sided marketplace, the most valuable screen is the one that tells people what to do next. Data people can’t act on is just decoration.</p>
+      <h2 class="font-display text-2xl font-bold mb-8 max-w-3xl">A 50/50 test, so the team got an answer instead of a debate</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div>
+          <h3 class="font-display text-lg font-bold mb-3">What we measured</h3>
+          <p class="text-sm text-muted leading-relaxed">We launched the dashboard behind a 50/50 A/B test, split by user ID and tracked separately on iOS and Android, starting when a host landed on their dashboard. We measured acceptance rate, response rate, onboarding completion and overall engagement.</p>
+          <p class="text-sm text-muted leading-relaxed mt-3">Weekly active hosts rose 22% against the control. Faster booking acceptance added $1.5M in incremental GMV, and &ldquo;what do I do next?&rdquo; support tickets fell 31%.</p>
+        </div>
+        <div>
+          <h3 class="font-display text-lg font-bold mb-3">What we learned</h3>
+          <p class="text-sm text-muted leading-relaxed">Running the redesign as a 50/50 test was worth the extra time. It gave the team a clean answer instead of a debate, and it made the next round of dashboard work much easier to get prioritized.</p>
+          <p class="text-sm text-muted leading-relaxed mt-3">In a two-sided marketplace, the most valuable screen is the one that tells people what to do next. Data people can&rsquo;t act on is just decoration.</p>
+        </div>
+        <div>
+          <h3 class="font-display text-lg font-bold mb-3">What I&rsquo;d do next</h3>
+          <p class="text-sm text-muted leading-relaxed">The cards are rule-based today. Ranking them by predicted impact for each host (a pending booking request should always outrank a photo tip) would keep the feed useful as more card types are added.</p>
+          <p class="text-sm text-muted leading-relaxed mt-3">The performance benchmarks could become a progression system, with clear milestones toward top-host status, turning targets hosts used to ignore into goals they work toward.</p>
+        </div>
       </div>
     </section>
 
@@ -402,9 +402,12 @@
     </section>
 
     <!-- Nav -->
-    <nav class="mt-22 flex items-center justify-between gap-4 border-t border-border pt-8">
-      <a href="/case-studies/ai-figma-plugin.html" class="text-sm text-muted hover:text-ink transition-colors">← AI Figma Plugin</a>
-      <a href="/case-studies/pay-in-full.html" class="text-sm text-muted hover:text-ink transition-colors">Pay-in-Full Pricing →</a>
+    <nav class="mt-22 flex items-end justify-between gap-6 border-t border-border pt-8" aria-label="More case studies">
+      <a href="/case-studies/pay-in-full.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; Pay-in-Full Pricing</a>
+      <a href="/case-studies/host-onboarding.html" class="group text-right">
+        <span class="tag block mb-2">Next case study</span>
+        <span class="font-display text-xl md:text-2xl font-bold text-ink group-hover:text-accent transition-colors">Host Onboarding Overhaul &rarr;</span>
+      </a>
     </nav>
 
   </article>
@@ -412,7 +415,7 @@
   <footer class="border-t border-border px-8 md:px-12 py-10">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
       <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
-      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Ottawa</span><span aria-hidden="true">&middot;</span><span>Vienna</span></p>
+      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Canada</span></p>
       <div class="flex gap-6">
         <a href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
         <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>

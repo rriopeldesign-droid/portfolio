@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Share card</title>
+<!-- Open Graph / Twitter card images (1200x630) for every page except the homepage portrait
+     (that one is og-image.html). Each card is picked with ?id=<card>, e.g. og-page.html?id=pay-in-full.
+     To regenerate them all, serve the repo root on port 8123 and run: node scripts/build-og.mjs -->
+<link href="/css/fonts.css" rel="stylesheet" />
+<style>
+  :root { --cream: rgb(245 240 235); --peach: rgb(254 177 146); --jungle: rgb(1 179 108); --forest: rgb(1 43 29); --night: #010609; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--night); }
+  .card {
+    position: relative; width: 1200px; height: 630px; overflow: hidden;
+    background:
+      radial-gradient(620px 420px at 18% 108%, rgb(1 179 108 / 0.30), transparent 70%),
+      radial-gradient(900px 600px at 30% 40%, rgb(1 43 29 / 1), transparent 75%),
+      linear-gradient(160deg, rgb(1 43 29) 0%, #021a12 55%, var(--night) 100%);
+    font-family: "Inter Tight", system-ui, sans-serif; color: var(--cream);
+  }
+  .pines { position: absolute; left: 0; bottom: 0; width: 1200px; height: 120px; z-index: 1; opacity: 0.9; }
+  .grain { position: absolute; inset: 0; opacity: 0.10; mix-blend-mode: overlay; background-image: url("../../img/grain.png"); background-size: 256px; }
+  .copy { z-index: 2; position: absolute; left: 72px; top: 60px; bottom: 58px; width: 560px; display: flex; flex-direction: column; }
+  .logo { font-family: "Syne", sans-serif; font-weight: 800; font-size: 30px; letter-spacing: 0.02em; }
+  .main { margin-top: auto; margin-bottom: auto; }
+  .eyebrow { font-weight: 600; font-size: 18px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--peach); }
+  h1 { font-family: "Syne", sans-serif; font-weight: 800; font-size: 64px; line-height: 1.02; letter-spacing: -0.01em; margin-top: 16px; }
+  h1.long { font-size: 54px; }
+  .line { margin-top: 22px; font-size: 25px; line-height: 1.4; color: rgb(245 240 235 / 0.78); }
+  .by { font-size: 19px; color: rgb(245 240 235 / 0.62); }
+  .by strong { color: var(--cream); font-weight: 600; }
+  .art { z-index: 2; position: absolute; right: 64px; top: 0; bottom: 0; width: 470px; display: flex; flex-direction: column; justify-content: center; }
+
+  /* bars */
+  .bars { display: flex; flex-direction: column; gap: 26px; }
+  .bars .title { font-size: 15px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(245 240 235 / 0.55); }
+  .bar-row { display: grid; grid-template-columns: 1fr auto; gap: 10px 16px; align-items: end; }
+  .bar-row .label { font-size: 21px; color: rgb(245 240 235 / 0.75); }
+  .bar-row .value { font-family: "Syne", sans-serif; font-weight: 800; font-size: 34px; color: var(--cream); }
+  .bar-row .track { grid-column: 1 / -1; height: 16px; border-radius: 99px; background: rgb(245 240 235 / 0.08); overflow: hidden; }
+  .bar-row .fill { height: 100%; border-radius: 99px; background: rgb(245 240 235 / 0.4); }
+  .bar-row.hi .fill { background: var(--jungle); }
+  .bar-row.hi .value { color: var(--peach); }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .chip { font-size: 19px; font-weight: 600; padding: 9px 16px; border-radius: 99px; background: rgb(254 177 146 / 0.14); color: var(--peach); border: 1px solid rgb(254 177 146 / 0.3); }
+
+  /* big numbers */
+  .nums { display: flex; flex-direction: column; gap: 30px; }
+  .num b { display: block; font-family: "Syne", sans-serif; font-weight: 800; font-size: 96px; line-height: 0.95; color: var(--peach); }
+  .num span { display: block; margin-top: 8px; font-size: 21px; color: rgb(245 240 235 / 0.72); }
+
+  /* flow boxes */
+  .flow { display: flex; flex-direction: column; gap: 14px; }
+  .box { border: 1px solid rgb(245 240 235 / 0.16); background: rgb(245 240 235 / 0.05); border-radius: 18px; padding: 16px 20px; }
+  .box small { display: block; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(245 240 235 / 0.5); }
+  .box b { display: block; margin-top: 4px; font-size: 22px; font-weight: 600; }
+  .box.hi { border-color: rgb(1 179 108 / 0.6); background: rgb(1 179 108 / 0.12); }
+  .box.warn { border-color: rgb(254 177 146 / 0.6); background: rgb(254 177 146 / 0.12); }
+  .arrow { text-align: center; color: rgb(245 240 235 / 0.4); font-size: 22px; line-height: 1; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .pair .head { font-size: 14px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(245 240 235 / 0.55); margin-bottom: 10px; }
+
+  /* DateNight */
+  .dn { width: 340px; align-self: center; background: #0a0a0a; border-radius: 40px; padding: 26px 22px 24px; box-shadow: 0 0 0 9px rgb(63 63 70 / 0.8), 0 0 0 10px rgb(255 255 255 / 0.1), 0 30px 60px rgb(0 0 0 / 0.6); }
+  .dn .brand { font-weight: 800; font-size: 20px; background: linear-gradient(to right, oklch(71.2% 0.194 13.428), oklch(75% 0.183 55.934), oklch(83.7% 0.128 66.29)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .dn .scene { margin-top: 16px; height: 120px; border-radius: 18px 18px 0 0; background: linear-gradient(to bottom right, oklch(38% 0.189 293.745 / 0.75), oklch(35.9% 0.144 278.697 / 0.45), oklch(21% 0.006 285.885)); position: relative; }
+  .dn .scene i { position: absolute; top: 12px; left: 12px; font-style: normal; font-size: 12px; padding: 3px 10px; border-radius: 99px; background: rgb(0 0 0 / 0.6); }
+  .dn .body { background: oklch(21% 0.006 285.885); border-radius: 0 0 18px 18px; padding: 14px 16px 16px; }
+  .dn .t { font-size: 19px; font-weight: 600; }
+  .dn .w { font-size: 14px; color: rgb(255 255 255 / 0.6); margin-top: 4px; }
+  .dn .btn { margin-top: 16px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 17px; background: linear-gradient(to right, oklch(64.5% 0.246 16.439), oklch(75% 0.183 55.934)); }
+  .dn .tag { margin-top: 18px; font-weight: 800; font-size: 22px; line-height: 1.15; }
+  .dn .tag em { font-style: normal; background: linear-gradient(to right, oklch(71.2% 0.194 13.428), oklch(75% 0.183 55.934)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  /* forest layers */
+  .layers { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .layer { border-radius: 18px; padding: 18px; background: rgb(245 240 235 / 0.05); border: 1px solid rgb(245 240 235 / 0.14); }
+  .layer .sw { width: 100%; height: 86px; border-radius: 12px; }
+  .layer b { display: block; margin-top: 12px; font-family: "Syne", sans-serif; font-size: 22px; }
+  .layer span { font-size: 15px; color: rgb(245 240 235 / 0.65); }
+
+  /* posts */
+  .post { border-radius: 18px; padding: 20px 22px; background: rgb(245 240 235 / 0.05); border: 1px solid rgb(245 240 235 / 0.14); }
+  .post + .post { margin-top: 16px; }
+  .post small { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--peach); }
+  .post b { display: block; margin-top: 6px; font-family: "Syne", sans-serif; font-size: 27px; line-height: 1.15; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <svg class="pines" viewBox="0 0 1200 230" preserveAspectRatio="none" aria-hidden="true">
+      <g fill="#010d09"><path d="M0 230 L0 150 L18 120 L30 150 L44 92 L60 150 L72 128 L86 150 L102 70 L120 150 L134 118 L150 150 L168 100 L186 150 L200 136 L214 150 L232 84 L250 150 L266 126 L282 150 L300 110 L318 150 L334 138 L350 150 L368 96 L386 150 L402 130 L418 150 L436 118 L454 150 L470 140 L488 150 L506 106 L524 150 L540 132 L556 150 L574 120 L592 150 L610 142 L626 150 L644 112 L662 150 L680 136 L698 150 L716 124 L734 150 L778 120 L790 150 L804 92 L820 150 L832 128 L846 150 L862 70 L880 150 L894 118 L910 150 L928 100 L946 150 L960 136 L974 150 L992 84 L1010 150 L1026 126 L1042 150 L1060 110 L1078 150 L1094 138 L1110 150 L1128 96 L1146 150 L1162 130 L1178 150 L1196 118 L1200 150 L1200 230 Z"/></g>
+      <g fill="#010609"><path d="M0 230 L0 190 L22 168 L40 190 L58 150 L78 190 L96 176 L114 190 L134 140 L156 190 L176 178 L196 190 L218 160 L240 190 L262 180 L284 190 L306 150 L330 190 L352 182 L374 190 L398 166 L420 190 L444 178 L468 190 L492 156 L516 190 L540 184 L564 190 L590 170 L614 190 L640 182 L666 190 L692 168 L718 190 L782 168 L800 190 L818 150 L838 190 L856 176 L874 190 L894 140 L916 190 L936 178 L956 190 L978 160 L1000 190 L1022 180 L1044 190 L1066 150 L1090 190 L1112 182 L1134 190 L1158 166 L1180 190 L1200 190 L1200 230 Z"/></g>
+    </svg>
+    <div class="grain"></div>
+    <div class="copy">
+      <div class="logo">RR</div>
+      <div class="main">
+        <p class="eyebrow" id="eyebrow"></p>
+        <h1 id="title"></h1>
+        <p class="line" id="line"></p>
+      </div>
+      <p class="by"><strong>Robert Riopel</strong> &middot; robertriopel.ca</p>
+    </div>
+    <div class="art" id="art"></div>
+  </div>
+<script>
+  // Every card's words and picture come from its page; keep them in step with the site.
+  const bars = (title, rows, chips = []) => `<div class="bars"><p class="title">${title}</p>${rows.map(([label, value, w, hi]) =>
+    `<div class="bar-row${hi ? " hi" : ""}"><span class="label">${label}</span><span class="value">${value}</span><span class="track"><span class="fill" style="width:${w}%"></span></span></div>`).join("")}${chips.length ? `<div class="chips">${chips.map((c) => `<span class="chip">${c}</span>`).join("")}</div>` : ""}</div>`;
+  const nums = (items) => `<div class="nums">${items.map(([b, s]) => `<div class="num"><b>${b}</b><span>${s}</span></div>`).join("")}</div>`;
+  const box = (small, b, cls = "") => `<div class="box ${cls}"><small>${small}</small><b>${b}</b></div>`;
+  const CARDS = {
+    work: { eyebrow: "The work", title: "Everything here shipped.", line: "Seven case studies, from checkout to AI tooling. $8M+ in measured impact.",
+      art: bars("Impact by project", [["Pay-in-Full", "$4M", 100, true], ["Host Onboarding", "$3.4M", 85], ["Host Dashboard", "$1.5M", 37.5], ["Lifecycle Email", "$1.2M", 30]]) },
+    "pay-in-full": { eyebrow: "Case study &middot; 2025", title: "Pay-in-Full Pricing", line: "A pay-upfront checkout option, designed in a 5-week sprint.",
+      art: bars("GMV from pay-in-full bookings", [["Month one", "+$1M", 25], ["By end of Q1 2026", "$4M", 100, true]], ["40% of eligible bookings"]) },
+    "host-dashboard": { eyebrow: "Case study &middot; 2024", title: "Host Dashboard Redesign", line: "A feed of next actions instead of a static summary. A/B tested.", long: true,
+      art: bars("Weekly active hosts, indexed", [["Control", "100", 82], ["Redesign", "122", 100, true]], ["+22% engagement", "$1.5M GMV"]) },
+    "host-onboarding": { eyebrow: "Case study &middot; 2022&ndash;23", title: "Host Onboarding Overhaul", line: "An almost 30-step flow, rebuilt from landing page to first listing approval.", long: true,
+      art: bars("Landing page to sign-up", [["Before", "34%", 34], ["After", "52%", 52, true]], ["+27% activation", "Est. $3.4M a year"]) },
+    "lifecycle-campaigns": { eyebrow: "Case study &middot; 2022&ndash;24", title: "Lifecycle &amp; Email Campaigns", line: "The guest and host email lifecycle, and a Braze template system.", long: true,
+      art: nums([["+13%", "email engagement"], ["$1.2M", "incremental GMV"]]) },
+    "ai-figma-plugin": { eyebrow: "Case study &middot; 2025", title: "AI Figma Plugin", line: "Prompt to native Figma component, synced 1:1 with the coded design system.",
+      art: `<div class="flow">${box("01 &middot; Prompt", "&ldquo;A booking card with a cancel button&rdquo;")}<p class="arrow">&darr;</p>${box("02 &middot; Claude API", "Composed from the 90+ component registry")}<p class="arrow">&darr;</p>${box("03 &middot; Figma", "Native, editable layers", "hi")}<div class="chips"><span class="chip">Handoff time cut in half</span></div></div>` },
+    "roadside-portal": { eyebrow: "Case study &middot; 2022&ndash;23", title: "Roadside Assistance Portal", line: "Each booking&rsquo;s coverage in the portal, instead of a phone call.", long: true,
+      art: `<div class="pair"><div><p class="head">Before</p><div class="flow">${box("Agent", "Unclear coverage")}<p class="arrow">&darr;</p>${box("Phone call", "To Customer Success", "warn")}</div></div><div><p class="head">After</p><div class="flow">${box("Agent", "Opens the booking")}<p class="arrow">&darr;</p>${box("Portal", "Shows its coverage", "hi")}</div></div></div><div class="chips" style="margin-top:22px"><span class="chip">Contact cut in half</span></div>` },
+    datenight: { eyebrow: "Case study &middot; 2026", title: "DateNight", line: "Dating built around real plans instead of swiping. In public beta in Toronto.",
+      art: `<div class="dn"><span class="brand">DateNight</span><div class="scene"><i>Drinks</i></div><div class="body"><p class="t">Jazz Night Downtown</p><p class="w">Fri, 8:00 PM &middot; The Rex Hotel</p></div><div class="btn">RSVP</div><p class="tag">Browse. RSVP. Date.<br /><em>No Swiping.</em></p></div>` },
+    writing: { eyebrow: "Writing", title: "Notes from the work.", line: "Essays and build notes on product design, AI design tools and how this site was made.",
+      art: `<div><div class="post"><small>Build notes</small><b>How I built the forest</b></div><div class="post"><small>Essay</small><b>The End of Figma</b></div></div>` },
+    "how-i-built-the-forest": { eyebrow: "Writing &middot; Build notes", title: "How I built the forest", line: "three.js, no framework, no texture files. Every tree is painted in code.",
+      art: `<div class="layers">${[["#f5f0eb", "A &middot; Mask", "the silhouette"], ["#feb192", "R &middot; Warm", "lanterns, windows"], ["#01b36c", "G &middot; Glow", "fungi, eyes, spores"], ["#55615b", "B &middot; Detail", "bark and grain"]].map(([c, b, s]) => `<div class="layer"><div class="sw" style="background:${c}"></div><b>${b}</b><span>${s}</span></div>`).join("")}</div>` },
+  };
+  const c = CARDS[new URLSearchParams(location.search).get("id")] || CARDS.work;
+  document.getElementById("eyebrow").innerHTML = c.eyebrow;
+  const t = document.getElementById("title");
+  t.innerHTML = c.title;
+  if (c.long) t.classList.add("long");
+  document.getElementById("line").innerHTML = c.line;
+  document.getElementById("art").innerHTML = c.art;
+</script>
+</body>
+</html>
