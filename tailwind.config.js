@@ -28,8 +28,8 @@ module.exports = {
       },
 
       fontSize: {
-        'hero': ['clamp(3rem, 8vw, 7.5rem)', { lineHeight: '1', letterSpacing: '-0.03em', fontWeight: '800' }],
-        'section': ['clamp(2rem, 4vw, 3.5rem)', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
+        'hero': ['clamp(3rem, 8vw, 6.75rem)', { lineHeight: '1', letterSpacing: '-0.03em', fontWeight: '800' }],
+        'section': ['clamp(2rem, 4vw, 3rem)', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
       },
       spacing: {
         '18': '4.5rem',

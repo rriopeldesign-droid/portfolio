@@ -157,7 +157,7 @@
   .project-title {
     font-family: 'Syne', sans-serif;
     font-weight: 700;
-    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
     color: rgb(var(--c-ink));
     line-height: 1.15;
     transition: color 0.3s ease;
@@ -371,7 +371,7 @@ body::after {
 @layer components {
   .article-body { max-width: 42rem; font-size: 1.0625rem; line-height: 1.75; color: rgb(var(--c-muted)); }
   .article-body > * + * { margin-top: 1.25em; }
-  .article-body h2 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: clamp(1.5rem, 2.6vw, 1.875rem); line-height: 1.2; letter-spacing: -0.01em; color: rgb(var(--c-ink)); margin-top: 3.25rem; }
+  .article-body h2 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: clamp(1.5rem, 2.6vw, 1.625rem); line-height: 1.2; letter-spacing: -0.01em; color: rgb(var(--c-ink)); margin-top: 3.25rem; }
   .article-body h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; line-height: 1.3; color: rgb(var(--c-ink)); margin-top: 2.25rem; }
   .article-body h2 + *, .article-body h3 + * { margin-top: 0.75em; }
   .article-body .kicker { display: block; margin-bottom: 0.6rem; font-family: 'Inter Tight', system-ui, sans-serif; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(var(--c-faint)); }
@@ -449,7 +449,7 @@ body::after {
 .page-hero-back:hover { color: rgb(245 240 235); }
 .page-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3rem; margin-top: 1.25rem; }
 @media (min-width: 900px) { .page-hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 27rem); gap: 4.5rem; align-items: center; } }
-.page-hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.25rem, 5vw, 4rem); line-height: 1.02; letter-spacing: -0.01em; color: rgb(245 240 235); text-wrap: balance; }
+.page-hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.25rem, 5vw, 3.5rem); line-height: 1.02; letter-spacing: -0.01em; color: rgb(245 240 235); text-wrap: balance; }
 .page-hero-line { margin-top: 1.4rem; max-width: 36rem; font-size: 1.125rem; line-height: 1.55; color: rgb(245 240 235 / 0.78); }
 @media (min-width: 768px) { .page-hero-line { font-size: 1.25rem; } }
 .page-hero-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.75rem; }
@@ -487,7 +487,7 @@ body::after {
   .js .page-hero .hero-bar-fill { transform: none !important; transition: none !important; }
 }
 
-.page-hero-title.is-long { font-size: clamp(2.1rem, 4.3vw, 3.4rem); }
+.page-hero-title.is-long { font-size: clamp(2.1rem, 4.3vw, 2.9rem); }
 
 /* Hero graphics, one per share-card type */
 .page-hero-meta { margin-top: 1.5rem; font-size: 0.875rem; color: rgb(245 240 235 / 0.72); }
