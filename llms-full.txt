@@ -9,10 +9,10 @@ Contents:
 2. Homepage (the forest walk)
 3. About
 4. Work (all projects)
-5. Case study: Roadside Assistance Portal
-6. Case study: Pay-in-Full Pricing
-7. Case study: Host Dashboard Redesign
-8. Case study: Host Onboarding Overhaul
+5. Case study: Pay-in-Full Pricing
+6. Case study: Host Dashboard Redesign
+7. Case study: Host Onboarding Overhaul
+8. Case study: Roadside Assistance Portal
 9. Case study: AI Figma Plugin
 10. Case study: Lifecycle and Email Campaigns
 11. Case study: DateNight
@@ -117,10 +117,10 @@ URL: https://robertriopel.ca/work.html
 Everything here shipped. Every metric is real. These projects helped move the company from a $6M deficit to profitability.
 
 Product design
-- Roadside Assistance Portal (2022 to 2023): Helped rebuild the portal our 24/7 roadside partner used, so their agents could see each booking's coverage instead of calling us to ask. Phone call to portal.
 - Pay-in-Full Pricing (2025): Designed a new checkout flow letting guests pay upfront at a discount. Mapped edge cases across deposits, insurance, and cancellation. +$1M month one, $4M by end of Q1 2026.
 - Host Dashboard Redesign (2024): Rebuilt the host portal from a static summary into a data-rich dashboard surfacing booking trends, earnings, and optimization levers. Designed end to end from research through shipped product. +22% engagement, $1.5M GMV.
 - Host Onboarding Overhaul (2022 to 2023): Rebuilt an almost 30-step host flow, from landing page to first listing approval. Reduced friction, improved listing quality, and established the framework still in use today. +27% activation, an estimated $3.4M in annual booking revenue.
+- Roadside Assistance Portal (2022 to 2023): Helped rebuild the portal our 24/7 roadside partner used, so their agents could see each booking's coverage instead of calling us to ask. Phone call to portal.
 
 Systems and AI tooling
 - AI Figma Plugin (2025 to 2026): Designed and built a plugin that generates production-ready components from natural language prompts. Synced 1:1 with the coded design system so anyone can design on-brand without touching Figma. Prompt to component; handoff time cut in half.
@@ -134,36 +134,7 @@ Personal projects
 
 ---
 
-## 5. Case study: Roadside Assistance Portal
-
-URL: https://robertriopel.ca/case-studies/roadside-portal.html
-
-Helped rebuild the portal RVezy's 24/7 roadside partner used, so their agents could see each booking's coverage instead of calling us to ask. 2022 to 2023, early in Robert's time at RVezy.
-
-- Role: led roadside operations; designed and shipped the fix
-- Scope: roadside dashboard in the internal ops system, partner permissions
-- Team: Robert and one engineer, who reviewed the code and kept the backend in sync
-- Partner: Access Roadside, a Canadian company providing 24/7 roadside coverage
-
-Context: RVezy partners with Access Roadside. Their agents handled RVezy cases through a portal connected to the internal operations dashboard.
-
-Problem: constant disputes over what was covered. Coverage depended on the insurance tier each renter chose at booking: tire replacement, for example, was covered on some bookings and not others. The portal didn't show which tier applied to the booking an agent was working on, so every unclear case became a phone call.
-
-Research: leading roadside operations, Robert handled cases directly with renters broken down on the side of the road, and Access Roadside's service providers called his cell about specific cases. Most calls weren't about the repair; they were about whether that booking covered it. Over 50% of roadside cases had some sort of dispute where Customer Success (Robert) had to get involved.
-
-The decision, from a guide to the actual data: the first instinct was a clearer coverage guide (a PDF or FAQ explaining each tier). But agents already understood the tiers in general. What they lacked was which tier this booking had. So the fix moved from writing a guide to showing each booking's coverage in the portal.
-
-Solution: a new dashboard for the roadside team inside the internal ops system, and revised permissions so Access Roadside agents could see each booking's specific coverage without reaching the rest of the system.
-
-Design constraints: internal tools followed an existing Google-based style guide, so this wasn't a visual redesign. The design work was information hierarchy: what an agent needs to see first, with a renter stranded at the roadside, to make a coverage call without phoning us.
-
-After launch: back-and-forth between Customer Success and roadside dropped significantly; contact between the two teams was cut in half. Billing stayed manual: Access Roadside emailed an invoice for every ticket.
-
-What he'd do differently: fix billing at the same time, with a way for Access Roadside to submit invoices into the system and for finance to review them there. He raised it, others did too, and engineering built it after he'd moved off the team.
-
----
-
-## 6. Case study: Pay-in-Full Pricing
+## 5. Case study: Pay-in-Full Pricing
 
 URL: https://robertriopel.ca/case-studies/pay-in-full.html
 
@@ -191,7 +162,7 @@ After launch: launched to a portion of traffic first, watching adoption, checkou
 
 ---
 
-## 7. Case study: Host Dashboard Redesign
+## 6. Case study: Host Dashboard Redesign
 
 URL: https://robertriopel.ca/case-studies/host-dashboard.html
 
@@ -211,7 +182,7 @@ After launch: the 50/50 test measured acceptance rate, response rate, onboarding
 
 ---
 
-## 8. Case study: Host Onboarding Overhaul
+## 7. Case study: Host Onboarding Overhaul
 
 URL: https://robertriopel.ca/case-studies/host-onboarding.html
 
@@ -233,6 +204,35 @@ What shipped:
 Approach: instrumented the full funnel with the data analyst, interviewed hosts who had abandoned a listing, and shipped in phases behind feature flags, each A/B tested against the old experience.
 
 After launch: each phase was measured against a control group, which separated the effect of the design from seasonality and marketing. A minimum viable listing first and a complete listing over time worked because it was paired with persistent reminders; those reminders later grew into the onboarding cards in the Host Dashboard redesign, and the framework is still in use today. Next: personalize the flow by RV type and bring the earnings calculator into retargeting emails.
+
+---
+
+## 8. Case study: Roadside Assistance Portal
+
+URL: https://robertriopel.ca/case-studies/roadside-portal.html
+
+Helped rebuild the portal RVezy's 24/7 roadside partner used, so their agents could see each booking's coverage instead of calling us to ask. 2022 to 2023, early in Robert's time at RVezy.
+
+- Role: led roadside operations; designed and shipped the fix
+- Scope: roadside dashboard in the internal ops system, partner permissions
+- Team: Robert and one engineer, who reviewed the code and kept the backend in sync
+- Partner: Access Roadside, a Canadian company providing 24/7 roadside coverage
+
+Context: RVezy partners with Access Roadside. Their agents handled RVezy cases through a portal connected to the internal operations dashboard.
+
+Problem: constant disputes over what was covered. Coverage depended on the insurance tier each renter chose at booking: tire replacement, for example, was covered on some bookings and not others. The portal didn't show which tier applied to the booking an agent was working on, so every unclear case became a phone call.
+
+Research: leading roadside operations, Robert handled cases directly with renters broken down on the side of the road, and Access Roadside's service providers called his cell about specific cases. Most calls weren't about the repair; they were about whether that booking covered it. Over 50% of roadside cases had some sort of dispute where Customer Success (Robert) had to get involved.
+
+The decision, from a guide to the actual data: the first instinct was a clearer coverage guide (a PDF or FAQ explaining each tier). But agents already understood the tiers in general. What they lacked was which tier this booking had. So the fix moved from writing a guide to showing each booking's coverage in the portal.
+
+Solution: a new dashboard for the roadside team inside the internal ops system, and revised permissions so Access Roadside agents could see each booking's specific coverage without reaching the rest of the system.
+
+Design constraints: internal tools followed an existing Google-based style guide, so this wasn't a visual redesign. The design work was information hierarchy: what an agent needs to see first, with a renter stranded at the roadside, to make a coverage call without phoning us.
+
+After launch: back-and-forth between Customer Success and roadside dropped significantly; contact between the two teams was cut in half. Billing stayed manual: Access Roadside emailed an invoice for every ticket.
+
+What he'd do differently: fix billing at the same time, with a way for Access Roadside to submit invoices into the system and for finance to review them there. He raised it, others did too, and engineering built it after he'd moved off the team.
 
 ---
 
