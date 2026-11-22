@@ -112,7 +112,7 @@
   const nums = (items) => `<div class="nums">${items.map(([b, s]) => `<div class="num"><b>${b}</b><span>${s}</span></div>`).join("")}</div>`;
   const box = (small, b, cls = "") => `<div class="box ${cls}"><small>${small}</small><b>${b}</b></div>`;
   const CARDS = {
-    work: { eyebrow: "The work", title: "Everything here shipped.", line: "Seven case studies, from checkout to AI tooling. $8M+ in measured impact.",
+    work: { eyebrow: "The work", title: "Everything here shipped.", line: "Eight case studies, from checkout to AI tooling. $8M+ in measured impact.",
       art: bars("Impact by project", [["Pay-in-Full", "$4M", 100, true], ["Host Onboarding", "$3.4M", 85], ["Host Dashboard", "$1.5M", 37.5], ["Lifecycle Email", "$1.2M", 30]]) },
     "pay-in-full": { eyebrow: "Case study &middot; 2025", title: "Pay-in-Full Pricing", line: "A pay-upfront checkout option, designed in a 5-week sprint.",
       art: bars("GMV from pay-in-full bookings", [["Month one", "+$1M", 25], ["By end of Q1 2026", "$4M", 100, true]], ["40% of eligible bookings"]) },
@@ -124,6 +124,8 @@
       art: nums([["+13%", "email engagement"], ["$1.2M", "incremental GMV"]]) },
     "ai-figma-plugin": { eyebrow: "Case study &middot; 2025", title: "AI Figma Plugin", line: "Prompt to native Figma component, synced 1:1 with the coded design system.",
       art: `<div class="flow">${box("01 &middot; Prompt", "&ldquo;A booking card with a cancel button&rdquo;")}<p class="arrow">&darr;</p>${box("02 &middot; Claude API", "Composed from the 90+ component registry")}<p class="arrow">&darr;</p>${box("03 &middot; Figma", "Native, editable layers", "hi")}<div class="chips"><span class="chip">Handoff time cut in half</span></div></div>` },
+    "email-builder": { eyebrow: "Case study &middot; 2025&ndash;26", title: "Email Builder", line: "On-brand emails without Figma or code. Template, edit, preview, copy.",
+      art: `<div class="flow">${box("01 &middot; Template", "Eight campaigns, ready to edit")}<p class="arrow">&darr;</p>${box("02 &middot; Blocks", "17 blocks, already on brand")}<p class="arrow">&darr;</p>${box("03 &middot; Copy", "HTML for Braze, light or dark", "hi")}<div class="chips"><span class="chip">No Figma, no code</span></div></div>` },
     "roadside-portal": { eyebrow: "Case study &middot; 2022&ndash;23", title: "Roadside Assistance Portal", line: "Each booking&rsquo;s coverage in the portal, instead of a phone call.", long: true,
       art: `<div class="pair"><div><p class="head">Before</p><div class="flow">${box("Agent", "Unclear coverage")}<p class="arrow">&darr;</p>${box("Phone call", "To Customer Success", "warn")}</div></div><div><p class="head">After</p><div class="flow">${box("Agent", "Opens the booking")}<p class="arrow">&darr;</p>${box("Portal", "Shows its coverage", "hi")}</div></div></div><div class="chips" style="margin-top:22px"><span class="chip">Contact cut in half</span></div>` },
     datenight: { eyebrow: "Case study &middot; 2026", title: "DateNight", line: "Dating built around real plans instead of swiping. In public beta in Toronto.",

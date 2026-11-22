@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/img/favicon.png" />
+  <title>Email Builder | Robert Riopel, Senior Product Designer</title>
+  <meta name="description" content="Case study: an internal email builder I designed and built for RVezy's marketing team. Templates, 17 on-brand blocks, light and dark previews, and HTML ready for Braze. No Figma, no code." />
+  <meta name="keywords" content="Robert Riopel, email builder, internal tool, Braze, HTML email, dark mode email, Next.js, React, Tailwind CSS, marketing tools, product design case study, RVezy" />
+  <meta name="author" content="Robert Riopel" />
+  <meta name="robots" content="max-image-preview:large" />
+  <link rel="canonical" href="https://robertriopel.ca/case-studies/email-builder.html" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://robertriopel.ca/case-studies/email-builder.html" />
+  <meta property="og:title" content="Email Builder | Robert Riopel, Senior Product Designer" />
+  <meta property="og:description" content="Pick a template, edit it in place, preview it in light and dark, copy HTML that's ready for Braze. An internal tool Robert Riopel designed and built for RVezy's marketing team." />
+  <meta property="og:image" content="https://robertriopel.ca/img/og/og-email-builder.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Email Builder case study: template, edit, preview, copy. No Figma, no code." />
+  <meta property="og:site_name" content="Robert Riopel, Senior Product Designer" />
+  <meta property="og:locale" content="en_CA" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Email Builder | Robert Riopel, Senior Product Designer" />
+  <meta name="twitter:description" content="Pick a template, edit it in place, preview it in light and dark, copy HTML that's ready for Braze. An internal tool Robert Riopel designed and built for RVezy's marketing team." />
+  <meta name="twitter:image" content="https://robertriopel.ca/img/og/og-email-builder.jpg" />
+  <meta name="twitter:image:alt" content="Email Builder case study: template, edit, preview, copy. No Figma, no code." />
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "https://robertriopel.ca/case-studies/email-builder.html#article",
+        "headline": "Email Builder: On-Brand Emails Without Figma or Code",
+        "description": "An internal Next.js tool for RVezy's marketing team: eight campaign templates, 17 on-brand blocks, light and dark previews, and one-click HTML for Braze. It replaced a Figma, export plugin and hand-fix workflow.",
+        "url": "https://robertriopel.ca/case-studies/email-builder.html",
+        "mainEntityOfPage": "https://robertriopel.ca/case-studies/email-builder.html",
+        "image": "https://robertriopel.ca/img/og/og-email-builder.jpg",
+        "inLanguage": "en",
+        "datePublished": "2026-11-22T00:00:00-05:00",
+        "dateModified": "2026-11-22T00:00:00-05:00",
+        "author": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "publisher": {
+          "@type": "Person",
+          "@id": "https://robertriopel.ca/#person",
+          "name": "Robert Riopel",
+          "url": "https://robertriopel.ca/"
+        },
+        "keywords": "email builder, internal tool, Braze, HTML email, dark mode, Next.js, React, Tailwind CSS",
+        "about": {
+          "@type": "SoftwareApplication",
+          "name": "RVezy Email Builder",
+          "url": "https://rvezy-email-builder.vercel.app/",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web",
+          "creator": {
+            "@id": "https://robertriopel.ca/#person"
+          }
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://robertriopel.ca/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Work",
+            "item": "https://robertriopel.ca/work.html"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Email Builder",
+            "item": "https://robertriopel.ca/case-studies/email-builder.html"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <link href="/css/fonts.css" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/script.js" defer></script>
+  <script type="module" src="/js/enhance.js"></script>
+  <link rel="stylesheet" href="/css/email-builder.css" />
+  <script src="/js/email-builder.js" defer></script>
+</head>
+<body class="case-study has-hero bg-surface text-ink font-body">
+  <nav class="sticky top-0 z-50 nav-glass">
+    <div class="max-w-7xl mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
+
+      <a href="/" class="font-display font-extrabold text-2xl tracking-tight text-ink hover:text-accent transition-colors duration-300">
+        RR
+      </a>
+
+      <div class="hidden md:flex gap-8 items-center">
+        <a href="/work.html" class="nav-link">Work</a>
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/writing/" class="nav-link">Writing</a>
+        <a href="/fun.html" class="nav-link">Fun</a>
+        <a href="mailto:rriopel.design@gmail.com" class="btn-magnetic text-xs font-semibold uppercase tracking-widest text-surface bg-ink px-4 py-2 rounded-full hover:bg-peach hover:text-ink">
+          Contact
+        </a>
+      </div>
+
+      <button id="navToggle" class="md:hidden text-ink" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="7" x2="20" y2="7" style="transition: all 0.3s ease"/>
+          <line x1="4" y1="17" x2="20" y2="17" style="transition: all 0.3s ease"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden hidden px-8 pb-6 space-y-4">
+      <a href="/work.html" class="block nav-link py-1">Work</a>
+      <a href="/about.html" class="block nav-link py-1">About</a>
+      <a href="/writing/" class="block nav-link py-1">Writing</a>
+      <a href="/fun.html" class="block nav-link py-1">Fun</a>
+      <a href="mailto:rriopel.design@gmail.com" class="block nav-link py-1">Contact</a>
+    </div>
+  </nav>
+
+  <header class="page-hero">
+    <div class="max-w-6xl mx-auto px-8 md:px-12">
+      <div class="page-hero-top reveal">
+        <p class="page-hero-eyebrow">Case Study &middot; 2025&ndash;26</p>
+        <a href="/work.html" class="page-hero-back">&larr; Back to Work</a>
+      </div>
+      <div class="page-hero-grid">
+        <div class="reveal">
+          <h1 class="page-hero-title" style="view-transition-name: cs-title-email-builder">Email Builder</h1>
+          <p class="page-hero-line">An internal tool I designed and built for RVezy&rsquo;s marketing team. Pick a template, edit it in place, preview it in light and dark, then copy HTML that&rsquo;s ready for Braze.</p>
+          <div class="page-hero-chips">
+            <span class="hero-chip">No Figma, no code</span>
+            <span class="hero-chip">8 templates &middot; 17 blocks</span>
+            <span class="hero-chip">Light and dark</span>
+          </div>
+          <div class="page-hero-cta">
+        <a href="https://rvezy-email-builder.vercel.app/" target="_blank" rel="noopener" class="btn-magnetic group inline-flex items-center gap-3 bg-peach text-forest text-sm font-semibold uppercase tracking-widest py-3.5 px-8 rounded-full hover:bg-surface">
+          Open the builder
+          <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+          </div>
+        </div>
+        <div class="reveal page-hero-phone eb-scope">
+          <div class="eb-app" data-theme="dark" data-view="desktop">
+            <div class="eb-bar">
+              <span class="eb-mark" aria-hidden="true">RV</span>
+              <b>Email Builder</b>
+              <span class="eb-dim">Internal</span>
+              <span class="eb-count">3 blocks</span>
+            </div>
+            <div class="eb-tools">
+              <div class="eb-seg" role="group" aria-label="Preview width">
+                <button type="button" data-set="view" data-value="desktop" aria-pressed="true">Desktop</button>
+                <button type="button" data-set="view" data-value="mobile" aria-pressed="false">Mobile</button>
+              </div>
+              <div class="eb-seg" role="group" aria-label="Email theme">
+                <button type="button" data-set="theme" data-value="light" aria-pressed="false">Light</button>
+                <button type="button" data-set="theme" data-value="dark" aria-pressed="true">Dark</button>
+              </div>
+            </div>
+            <div class="eb-canvas">
+              <div class="eb-mail" aria-live="polite">
+                <div class="eb-m-head"><span class="eb-m-logo">RVezy</span></div>
+                <div class="eb-m-hero">
+                  <p class="eb-m-h" data-k="h">Welcome to RVezy, Explorer!</p>
+                  <p class="eb-m-sub" data-k="sub">Canada&rsquo;s largest RV rental marketplace is ready for you. Find your perfect home on wheels.</p>
+                  <span class="eb-m-btn" data-k="btn">Start Exploring</span>
+                </div>
+                <div class="eb-m-strip" data-k="strip">50,000+ RVs across Canada &middot; Instant booking &middot; $1M liability included</div>
+                <div class="eb-m-stats">
+                  <div><b data-k="s1">50K+</b><span data-k="l1">RVs listed</span></div>
+                  <div><b data-k="s2">500K+</b><span data-k="l2">Happy renters</span></div>
+                  <div><b data-k="s3">4.9&#9733;</b><span data-k="l3">Avg rating</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="eb-tpls" role="group" aria-label="Load a template">
+            <button type="button" data-set="tpl" data-value="welcome" aria-pressed="true">Welcome</button>
+            <button type="button" data-set="tpl" data-value="promo" aria-pressed="false">Flash sale</button>
+            <button type="button" data-set="tpl" data-value="host" aria-pressed="false">Host</button>
+          </div>
+          <p class="page-hero-note">Try the toggles and templates. Rebuilt in code from the builder&rsquo;s own colours and template copy.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <article class="max-w-6xl mx-auto px-8 md:px-12 pb-26">
+
+    <!-- Project snapshot -->
+    <section class="mt-14 reveal" aria-label="Project snapshot">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 rounded-xl border border-border p-6">
+        <div>
+          <p class="tag mb-2">Role</p>
+          <p class="text-sm text-ink font-medium">Designer and developer</p>
+        </div>
+        <div>
+          <p class="tag mb-2">Built</p>
+          <p class="text-sm text-ink font-medium">In a few days</p>
+        </div>
+        <div>
+          <p class="tag mb-2">For</p>
+          <p class="text-sm text-ink font-medium">RVezy&rsquo;s marketing team</p>
+        </div>
+        <div>
+          <p class="tag mb-2">Output</p>
+          <p class="text-sm text-ink font-medium">HTML email for Braze</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- The problem -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">The Problem</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">One email, four tools</h2>
+        <p class="text-muted leading-relaxed mb-6">Every campaign took the same route. Design it in Figma, export the HTML with a plugin, hand it off to Braze, then fix everything that broke on the way. Four tools and three hand-offs, for every single email.</p>
+        <p class="text-muted leading-relaxed mb-10">So I built a tool that replaces the whole chain. It&rsquo;s a small Next.js app that does one job: let anyone on marketing build an on-brand, production-ready email without design or engineering support.</p>
+      </div>
+      <div class="eb-chains">
+        <p class="tag eb-chain-label">Before</p>
+        <ol class="eb-chain is-before" aria-label="The old way to build an email">
+          <li><span>01</span><b>Figma</b><small>Design the email</small></li>
+          <li><span>02</span><b>Export plugin</b><small>Turn it into HTML</small></li>
+          <li><span>03</span><b>Braze</b><small>Paste it in</small></li>
+          <li><span>04</span><b>Fix it</b><small>Repair what broke</small></li>
+        </ol>
+        <p class="tag eb-chain-label">After</p>
+        <ol class="eb-chain is-after" aria-label="Building an email with the Email Builder">
+          <li><span>01</span><b>Template</b><small>Start from a campaign</small></li>
+          <li><span>02</span><b>Edit</b><small>Type in the preview</small></li>
+          <li><span>03</span><b>Preview</b><small>Light, dark, phone</small></li>
+          <li><span>04</span><b>Copy</b><small>Paste into Braze</small></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- The design decision -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Design Decision</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Blocks, not a blank canvas</h2>
+        <p class="text-muted leading-relaxed mb-6">A free-form editor would have moved the problem, not solved it. Anyone could drag a box anywhere, and every email would need a designer to check it again.</p>
+        <p class="text-muted leading-relaxed mb-6">So the builder has no blank canvas. Every email is a stack of blocks, and every block is already built from RVezy&rsquo;s email styles: the type, the spacing, the blue buttons, the light and dark palettes. People choose blocks and write the words, and the design comes with the block.</p>
+        <p class="text-muted leading-relaxed mb-10">The hard parts of HTML email live inside the blocks too, so nobody has to think about them: table layouts, Outlook fallbacks, phone sizes and tracking links.</p>
+      </div>
+      <div class="eb eb-flow" data-step="0">
+        <div class="eb-device" aria-hidden="true">
+          <div class="eb-bar">
+            <span class="eb-mark">RV</span>
+            <b>Email Builder</b>
+            <span class="eb-dim">Internal</span>
+          </div>
+          <div class="eb-tools">
+            <div class="eb-seg"><span class="eb-f-desk">Desktop</span><span class="eb-f-mob">Mobile</span></div>
+            <div class="eb-seg"><span class="eb-f-light">Light</span><span class="eb-f-dark">Dark</span></div>
+            <span class="eb-copy"><span class="eb-copy-a">Copy HTML</span><span class="eb-copy-b">&#10003; Copied</span></span>
+          </div>
+          <div class="eb-body">
+            <div class="eb-s eb-s-pick">
+              <p class="eb-label">Load template</p>
+              <div class="eb-select">Choose a template&hellip;</div>
+              <ul class="eb-options">
+                <li class="eb-pick">Welcome</li>
+                <li>Re-engagement</li>
+                <li>Booking Confirmation</li>
+                <li>Promotional</li>
+                <li>Host Acquisition</li>
+                <li>Insurance &amp; Protection</li>
+                <li>Anniversary / Birthday</li>
+                <li>Newsletter</li>
+              </ul>
+            </div>
+            <div class="eb-s eb-s-mail">
+              <div class="eb-mail">
+                <div class="eb-m-head"><span class="eb-m-logo">RVezy</span></div>
+                <div class="eb-m-hero">
+                  <p class="eb-m-h"><span class="eb-edit">Welcome to RVezy, Explorer!</span></p>
+                  <p class="eb-m-sub">Canada&rsquo;s largest RV rental marketplace is ready for you. Find your perfect home on wheels.</p>
+                  <span class="eb-m-btn">Start Exploring</span>
+                </div>
+                <div class="eb-m-strip">50,000+ RVs across Canada &middot; Instant booking &middot; $1M liability included</div>
+                <div class="eb-m-stats eb-new">
+                  <div><b>50K+</b><span>RVs listed</span></div>
+                  <div><b>500K+</b><span>Happy renters</span></div>
+                  <div><b>4.9&#9733;</b><span>Avg rating</span></div>
+                </div>
+              </div>
+              <div class="eb-pop">
+                <p class="eb-label">Add block</p>
+                <ul>
+                  <li>Hero</li>
+                  <li>Cards (2 col)</li>
+                  <li>Image</li>
+                  <li class="eb-pick">Stats</li>
+                  <li>Trust Badges</li>
+                </ul>
+              </div>
+              <div class="eb-liquid"><code>{{ ${first_name} | default: &quot;Explorer&quot; }}</code></div>
+              <pre class="eb-code"><code><span class="t">&lt;table</span> role="presentation" width="100%"<span class="t">&gt;</span>
+  <span class="t">&lt;td</span> class="mobile-pad"<span class="t">&gt;</span>
+    <span class="t">&lt;a</span> href="https://www.rvezy.com/rv-rentals
+      <span class="u">?utm_source=braze&amp;utm_medium=email
+      &amp;utm_campaign=welcome_series</span>"<span class="t">&gt;</span>
+      Start Exploring<span class="t">&lt;/a&gt;</span></code></pre>
+            </div>
+          </div>
+        </div>
+        <div>
+          <ol class="eb-steps" aria-label="How an email gets built">
+            <li><button type="button" class="eb-step" data-go="0" aria-current="step"><span class="n">01</span><b>Template</b><small>Start from one of eight campaigns, from Welcome to Host Acquisition. Each comes with its subject line, preheader and tracking already filled in.</small><span class="bar" aria-hidden="true"></span></button></li>
+            <li><button type="button" class="eb-step" data-go="1"><span class="n">02</span><b>Blocks</b><small>Add any of 17 blocks, then move them up or down. Each one is already on brand.</small><span class="bar" aria-hidden="true"></span></button></li>
+            <li><button type="button" class="eb-step" data-go="2"><span class="n">03</span><b>Edit</b><small>Click any text in the preview and type. Braze personalization keeps its fallback, so the preview reads like the real email.</small><span class="bar" aria-hidden="true"></span></button></li>
+            <li><button type="button" class="eb-step" data-go="3"><span class="n">04</span><b>Preview</b><small>Check it in light and dark, on desktop and on a phone, before anyone hits send.</small><span class="bar" aria-hidden="true"></span></button></li>
+            <li><button type="button" class="eb-step" data-go="4"><span class="n">05</span><b>Copy</b><small>One click copies HTML that&rsquo;s ready for Braze, with tracking already on every button.</small><span class="bar" aria-hidden="true"></span></button></li>
+          </ol>
+          <div class="eb-flow-foot"><span>Built from the builder&rsquo;s own palettes and Welcome template.</span><button type="button" class="eb-pause" aria-pressed="false" hidden>Pause</button></div>
+        </div>
+      </div>
+      <p class="mt-3 text-xs text-faint text-center">An email from template to Braze, step by step: the builder&rsquo;s navy workspace, its #276CF8 blue, and the light and dark palettes every email ships in.</p>
+    </section>
+
+    <!-- What's inside -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">What&rsquo;s Inside</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Eight templates, 17 blocks</h2>
+        <p class="text-muted leading-relaxed mb-8">The templates cover the emails RVezy sends most. The blocks cover everything else, grouped by the job they do in an email.</p>
+      </div>
+      <p class="tag mb-4">Templates</p>
+      <ul class="eb-tags mb-12" aria-label="Templates">
+        <li>Welcome</li>
+        <li>Re-engagement</li>
+        <li>Booking Confirmation</li>
+        <li>Promotional</li>
+        <li>Host Acquisition</li>
+        <li>Insurance &amp; Protection</li>
+        <li>Anniversary / Birthday</li>
+        <li>Newsletter</li>
+      </ul>
+      <p class="tag mb-4">Blocks</p>
+      <dl class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-px bg-border rounded-xl overflow-hidden border border-border">
+        <div class="bg-surface p-6"><dt class="tag mb-3">Layout</dt><dd class="eb-list">Hero<br />Overlay Hero<br />Split Block<br />Section Header</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-3">Content</dt><dd class="eb-list">Text<br />Cards in 1, 2 or 3 columns</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-3">Media</dt><dd class="eb-list">Image<br />Photo Grid</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-3">Conversion</dt><dd class="eb-list">CTA<br />Stats<br />Banner Strip</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-3">Trust</dt><dd class="eb-list">Trust Badges<br />Feature Rows<br />Info Callout<br />Divider</dd></div>
+      </dl>
+    </section>
+
+    <!-- Built for the inbox -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Built for the Inbox</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-8">What the builder handles, so nobody has to</h2>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-3 gap-px bg-border rounded-xl overflow-hidden border border-border">
+        <li class="bg-surface p-6 md:p-7">
+          <p class="font-display text-lg font-bold mb-2">Light and dark</p>
+          <p class="text-sm text-muted leading-relaxed">Every block has a light and a dark palette. You build in one, and copy the HTML for that one.</p>
+        </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="font-display text-lg font-bold mb-2">Desktop and phone</p>
+          <p class="text-sm text-muted leading-relaxed">Preview at the full 660&nbsp;px or at phone width. The exported HTML carries its own styles for small screens.</p>
+        </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="font-display text-lg font-bold mb-2">Email-safe HTML</p>
+          <p class="text-sm text-muted leading-relaxed">Table layouts and Outlook fallbacks, the markup inboxes still need, written by the tool instead of by hand.</p>
+        </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="font-display text-lg font-bold mb-2">Personalization</p>
+          <p class="text-sm text-muted leading-relaxed">Braze Liquid tags with fallbacks. A first name falls back to &ldquo;Explorer&rdquo;, and the preview shows the fallback.</p>
+        </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="font-display text-lg font-bold mb-2">Tracking</p>
+          <p class="text-sm text-muted leading-relaxed">A UTM builder adds source, medium, campaign and content to every button link, so no campaign goes out untracked.</p>
+        </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="font-display text-lg font-bold mb-2">AI copy assist</p>
+          <p class="text-sm text-muted leading-relaxed">Name a field, describe what you want, and the builder drafts the copy, with the subject line as context.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Stack -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">Stack</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-8">What it&rsquo;s built with</h2>
+      </div>
+      <dl class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-xl overflow-hidden border border-border">
+        <div class="bg-surface p-6"><dt class="tag mb-2">App</dt><dd class="text-sm text-ink font-medium">Next.js and React</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Styling</dt><dd class="text-sm text-ink font-medium">Tailwind CSS</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Output</dt><dd class="text-sm text-ink font-medium">Table-based HTML email</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Sends from</dt><dd class="text-sm text-ink font-medium">Braze, with Liquid personalization</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">AI</dt><dd class="text-sm text-ink font-medium">Copy assist, through its own API route</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Tracking</dt><dd class="text-sm text-ink font-medium">Built-in UTM builder</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Hosting</dt><dd class="text-sm text-ink font-medium">Vercel</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Replaced</dt><dd class="text-sm text-ink font-medium">Figma, an export plugin and hand fixes</dd></div>
+      </dl>
+      <p class="text-muted leading-relaxed mt-10 max-w-3xl">The builder is one of the two projects behind my essay, <a href="/writing/the-end-of-figma/" class="text-ink underline underline-offset-4 hover:text-accent transition-colors">The End of Figma</a>. The other is the <a href="/case-studies/ai-figma-plugin.html" class="text-ink underline underline-offset-4 hover:text-accent transition-colors">AI Figma plugin</a>.</p>
+    </section>
+
+    <!-- Try it -->
+    <section class="mt-22 px-8 md:px-14 py-14 bg-ink text-surface rounded-2xl reveal">
+      <p class="tag text-faint mb-4">Live demo</p>
+      <h2 class="font-display text-section text-surface mb-6">Build one yourself.</h2>
+      <p class="text-surface/70 text-base leading-relaxed max-w-2xl mb-10">The builder is live. Load a template, edit the copy right in the preview, and flip it between light and dark.</p>
+      <a href="https://rvezy-email-builder.vercel.app/" target="_blank" rel="noopener" class="btn-magnetic group inline-flex items-center gap-3 bg-peach text-forest text-sm font-semibold uppercase tracking-widest py-3.5 px-8 rounded-full hover:bg-surface">
+        Open the builder
+        <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        <span class="sr-only">(opens in a new tab)</span>
+      </a>
+    </section>
+
+    <nav class="mt-22 flex items-end justify-between gap-6 border-t border-border pt-8" aria-label="More case studies">
+      <a href="/case-studies/ai-figma-plugin.html" class="text-sm text-muted hover:text-ink transition-colors">&larr; AI Figma Plugin</a>
+      <a href="/case-studies/lifecycle-campaigns.html" class="group text-right">
+        <span class="tag block mb-2">Next case study</span>
+        <span class="font-display text-xl md:text-2xl font-bold text-ink group-hover:text-accent transition-colors">Lifecycle &amp; Email Campaigns &rarr;</span>
+      </a>
+    </nav>
+
+  </article>
+
+  <footer class="border-t border-border px-8 md:px-12 py-10">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-faint uppercase tracking-widest">
+      <p>&copy; 2026 Robert Riopel &middot; Senior Product Designer</p>
+      <p class="footer-loc"><svg class="footer-pin" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 14.5s-4.5-4.6-4.5-8a4.5 4.5 0 0 1 9 0c0 3.4-4.5 8-4.5 8z"/><circle cx="8" cy="6.5" r="1.6"/></svg><span>Canada</span></p>
+      <div class="flex gap-6">
+        <a href="https://www.linkedin.com/in/robert-riopel-product-design/" target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn</a>
+        <a href="mailto:rriopel.design@gmail.com" class="hover:text-ink transition-colors">Email</a>
+      </div>
+    </div>
+    <p class="footer-alt max-w-7xl mx-auto">
+      <a href="/de/" hreflang="de" lang="de">Deutsch</a><span aria-hidden="true">&middot;</span><a href="/fr/" hreflang="fr" lang="fr">Fran&ccedil;ais</a><span aria-hidden="true">&middot;</span><a href="/llms.txt">For AI assistants</a>
+    </p>
+  </footer>
+  <!-- Cloudflare Web Analytics (cookieless) --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7efe87006c69468396ae56c5120a8e95"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

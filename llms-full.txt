@@ -16,7 +16,7 @@ Contents:
 9. Case study: AI Figma Plugin
 10. Case study: Lifecycle and Email Campaigns
 11. Case study: DateNight
-12. Email Builder
+12. Case study: Email Builder
 13. Writing: How I built the forest
 14. Writing: The End of Figma
 15. Other pages and languages
@@ -126,7 +126,7 @@ Systems and AI tooling
 - AI Figma Plugin (2025 to 2026): Designed and built a plugin that generates production-ready components from natural language prompts. Synced 1:1 with the coded design system so anyone can design on-brand without touching Figma. Prompt to component; handoff time cut in half.
 
 Growth and marketing design
-- Email Builder (2025 to 2026): Designed and built a drag-and-drop email builder for RVezy's marketing team, enabling anyone to create on-brand, production-ready emails without engineering support. Live tool.
+- Email Builder (2025 to 2026): Designed and built a block-based email builder for RVezy's marketing team, enabling anyone to create on-brand, production-ready emails without engineering support. No Figma, no code; live tool.
 - Lifecycle and Email Campaigns (2022 to 2024): Designed retention emails, re-engagement campaigns, and transactional templates across the booking lifecycle. Built scalable systems in Braze with marketing. +13% engagement, $1.2M GMV.
 
 Personal projects
@@ -290,11 +290,30 @@ How he ships: daily, to staging and then production. Each change starts on its o
 
 ---
 
-## 12. Email Builder
+## 12. Case study: Email Builder
 
-URL: https://rvezy-email-builder.vercel.app/ (live demo)
+URL: https://robertriopel.ca/case-studies/email-builder.html
+Live demo: https://rvezy-email-builder.vercel.app/
 
-An internal Next.js tool Robert designed and built in a few days to replace RVezy's email production chain (design in Figma, export with a plugin, hand off to Braze, fix what broke). Pick a template, configure blocks, preview in dark and light mode, and copy the HTML. No Figma, no code.
+An internal tool Robert designed and built in a few days for RVezy's marketing team (2025 to 2026). Pick a template, edit it in place, preview it in light and dark, then copy HTML that's ready for Braze. No Figma, no code.
+
+- Role: designer and developer
+- For: RVezy's marketing team
+- Output: table-based HTML email for Braze
+
+Problem: every campaign took the same route. Design it in Figma, export the HTML with a plugin, hand it off to Braze, then fix everything that broke on the way. Four tools and three hand-offs, for every single email. The builder replaces the whole chain so anyone on marketing can build an on-brand, production-ready email without design or engineering support.
+
+Design decision: blocks, not a blank canvas. A free-form editor would have moved the problem, not solved it. Every email is a stack of blocks, and every block is already built from RVezy's email styles (type, spacing, blue buttons, light and dark palettes). People choose blocks and write the words, and the design comes with the block. The hard parts of HTML email live inside the blocks: table layouts, Outlook fallbacks, phone sizes and tracking links.
+
+How an email gets built: 1) Template: start from one of eight campaigns, each with its subject line, preheader and UTM campaign filled in. 2) Blocks: add any of 17 blocks and move them up or down. 3) Edit: click any text in the preview and type; Braze Liquid personalization keeps its fallback in the preview. 4) Preview: light and dark, desktop (660 px) and phone. 5) Copy: one click copies Braze-ready HTML, with UTM tags on every button.
+
+Templates: Welcome, Re-engagement, Booking Confirmation, Promotional, Host Acquisition, Insurance and Protection, Anniversary or Birthday, Newsletter.
+
+Blocks (17): Layout (Hero, Overlay Hero, Split Block, Section Header); Content (Text, Cards in 1, 2 or 3 columns); Media (Image, Photo Grid); Conversion (CTA, Stats, Banner Strip); Trust (Trust Badges, Feature Rows, Info Callout, Divider).
+
+Built for the inbox: light and dark palettes for every block; desktop and phone previews with phone styles in the exported HTML; table layouts and Outlook fallbacks; Braze Liquid tags with fallbacks (a first name falls back to "Explorer"); a UTM builder that adds source, medium, campaign and content to every button link; AI copy assist that drafts a field's copy with the subject line as context.
+
+Stack: Next.js and React, Tailwind CSS, table-based HTML email, Braze with Liquid personalization, AI copy assist through its own API route, a built-in UTM builder, hosted on Vercel. It replaced Figma, an export plugin and hand fixes. It is one of the two projects behind his essay The End of Figma; the other is the AI Figma plugin.
 
 ---
 

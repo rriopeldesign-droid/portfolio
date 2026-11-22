@@ -11,7 +11,7 @@ import { join } from "node:path";
 const CHROME = process.env.CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const BASE = process.env.OG_BASE || "http://localhost:8123";
 const CARDS = ["work", "pay-in-full", "host-dashboard", "host-onboarding", "lifecycle-campaigns", "ai-figma-plugin",
-  "roadside-portal", "datenight", "writing", "how-i-built-the-forest"];
+  "roadside-portal", "email-builder", "datenight", "writing", "how-i-built-the-forest"];
 
 const only = process.argv.slice(2);
 const tmp = mkdtempSync(join(tmpdir(), "og-"));
