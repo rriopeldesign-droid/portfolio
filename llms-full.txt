@@ -305,15 +305,17 @@ Problem: every campaign took the same route. Design it in Figma, export the HTML
 
 Design decision: blocks, not a blank canvas. A free-form editor would have moved the problem, not solved it. Every email is a stack of blocks, and every block is already built from RVezy's email styles (type, spacing, blue buttons, light and dark palettes). People choose blocks and write the words, and the design comes with the block. The hard parts of HTML email live inside the blocks: table layouts, Outlook fallbacks, phone sizes and tracking links.
 
-How an email gets built: 1) Template: start from one of eight campaigns, each with its subject line, preheader and UTM campaign filled in. 2) Blocks: add any of 17 blocks and move them up or down. 3) Edit: click any text in the preview and type; Braze Liquid personalization keeps its fallback in the preview. 4) Preview: light and dark, desktop (660 px) and phone. 5) Copy: one click copies Braze-ready HTML, with UTM tags on every button.
+How an email gets built: 1) Template: start from one of eight campaigns, each with its subject line, preheader and UTM campaign filled in. 2) Blocks: add any of 17 blocks and move them up or down. 3) Edit: click any text in the preview and type; Braze Liquid personalization keeps its fallback in the preview. 4) Preview: light and dark, desktop (660 px) and phone. 5) Copy: one click copies Braze-ready HTML, with UTM tags on every button, and the draft stays saved for next time.
 
 Templates: Welcome, Re-engagement, Booking Confirmation, Promotional, Host Acquisition, Insurance and Protection, Anniversary or Birthday, Newsletter.
 
 Blocks (17): Layout (Hero, Overlay Hero, Split Block, Section Header); Content (Text, Cards in 1, 2 or 3 columns); Media (Image, Photo Grid); Conversion (CTA, Stats, Banner Strip); Trust (Trust Badges, Feature Rows, Info Callout, Divider).
 
-Built for the inbox: light and dark palettes for every block; desktop and phone previews with phone styles in the exported HTML; table layouts and Outlook fallbacks; Braze Liquid tags with fallbacks (a first name falls back to "Explorer"); a UTM builder that adds source, medium, campaign and content to every button link; AI copy assist that drafts a field's copy with the subject line as context.
+Built for the inbox: light and dark palettes for every block; desktop and phone previews with phone styles in the exported HTML; table layouts and Outlook fallbacks; Braze Liquid tags with fallbacks (a first name falls back to "Explorer"); a UTM builder that adds source, medium, campaign and content to every button link; AI copy assist that drafts a field's copy with the subject line as context; drafts that save as you work and reopen from the Drafts panel; images hosted on RVezy's own CDN, sized for desktop and phone by every image block.
 
-Stack: Next.js and React, Tailwind CSS, table-based HTML email, Braze with Liquid personalization, AI copy assist through its own API route, a built-in UTM builder, hosted on Vercel. It replaced Figma, an export plugin and hand fixes. It is one of the two projects behind his essay The End of Figma; the other is the AI Figma plugin.
+In practice: campaigns on a deadline (a weekend flash sale goes from the Promotional template to Braze in one sitting, with AI copy assist for the headline, a dark mode and phone check, and tracking already on every button); lifecycle emails that run all year (welcome, booking confirmation and anniversary emails built once with Braze personalization, saved as drafts, and updated whenever an offer changes, without a request to design or engineering); host growth (host acquisition emails use feature rows, trust badges and an info callout to explain earnings and protection the same way in every send).
+
+Stack: Next.js and React, Tailwind CSS, table-based HTML email, Braze with Liquid personalization, AI copy assist through its own API route, a built-in UTM builder, drafts saved in Supabase as you work, hosted on Vercel. It replaced Figma, an export plugin and hand fixes. It is one of the two projects behind his essay The End of Figma; the other is the AI Figma plugin.
 
 ---
 

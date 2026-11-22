@@ -336,7 +336,7 @@
             <li><button type="button" class="eb-step" data-go="1"><span class="n">02</span><b>Blocks</b><small>Add any of 17 blocks, then move them up or down. Each one is already on brand.</small><span class="bar" aria-hidden="true"></span></button></li>
             <li><button type="button" class="eb-step" data-go="2"><span class="n">03</span><b>Edit</b><small>Click any text in the preview and type. Braze personalization keeps its fallback, so the preview reads like the real email.</small><span class="bar" aria-hidden="true"></span></button></li>
             <li><button type="button" class="eb-step" data-go="3"><span class="n">04</span><b>Preview</b><small>Check it in light and dark, on desktop and on a phone, before anyone hits send.</small><span class="bar" aria-hidden="true"></span></button></li>
-            <li><button type="button" class="eb-step" data-go="4"><span class="n">05</span><b>Copy</b><small>One click copies HTML that&rsquo;s ready for Braze, with tracking already on every button.</small><span class="bar" aria-hidden="true"></span></button></li>
+            <li><button type="button" class="eb-step" data-go="4"><span class="n">05</span><b>Copy</b><small>One click copies HTML that&rsquo;s ready for Braze, with tracking already on every button. The draft stays saved for next time.</small><span class="bar" aria-hidden="true"></span></button></li>
           </ol>
           <div class="eb-flow-foot"><span>Built from the builder&rsquo;s own palettes and Welcome template.</span><button type="button" class="eb-pause" aria-pressed="false" hidden>Pause</button></div>
         </div>
@@ -382,7 +382,7 @@
       <div class="max-w-3xl">
         <h2 class="font-display text-2xl font-bold mb-8">What the builder handles, so nobody has to</h2>
       </div>
-      <ul class="grid grid-cols-1 md:grid-cols-3 gap-px bg-border rounded-xl overflow-hidden border border-border">
+      <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-xl overflow-hidden border border-border">
         <li class="bg-surface p-6 md:p-7">
           <p class="font-display text-lg font-bold mb-2">Light and dark</p>
           <p class="text-sm text-muted leading-relaxed">Every block has a light and a dark palette. You build in one, and copy the HTML for that one.</p>
@@ -407,6 +407,42 @@
           <p class="font-display text-lg font-bold mb-2">AI copy assist</p>
           <p class="text-sm text-muted leading-relaxed">Name a field, describe what you want, and the builder drafts the copy, with the subject line as context.</p>
         </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="font-display text-lg font-bold mb-2">Saved drafts</p>
+          <p class="text-sm text-muted leading-relaxed">Every change saves as you work. The Drafts panel reopens any email right where you left it.</p>
+        </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="font-display text-lg font-bold mb-2">Hosted images</p>
+          <p class="text-sm text-muted leading-relaxed">Images live on RVezy&rsquo;s own CDN, and every image block sizes itself for desktop and phone.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- In practice -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">In Practice</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">How marketing uses it</h2>
+        <p class="text-muted leading-relaxed mb-8">The builder is made for the emails a marketplace sends every week, from one-off sales to the lifecycle emails that run all year.</p>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-3 gap-px bg-border rounded-xl overflow-hidden border border-border">
+        <li class="bg-surface p-6 md:p-7">
+          <p class="tag mb-3">Campaigns</p>
+          <p class="font-display text-lg font-bold mb-2">A sale on a deadline</p>
+          <p class="text-sm text-muted leading-relaxed">A weekend flash sale goes from the Promotional template to Braze in one sitting. AI copy assist drafts the headline, a quick check in dark mode and on a phone, and every button already carries the campaign&rsquo;s tracking.</p>
+        </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="tag mb-3">Lifecycle</p>
+          <p class="font-display text-lg font-bold mb-2">Emails that run all year</p>
+          <p class="text-sm text-muted leading-relaxed">Welcome, booking confirmation and anniversary emails are built once with Braze personalization, saved as drafts, and updated whenever an offer changes, without a request to design or engineering.</p>
+        </li>
+        <li class="bg-surface p-6 md:p-7">
+          <p class="tag mb-3">Host growth</p>
+          <p class="font-display text-lg font-bold mb-2">Making the case to hosts</p>
+          <p class="text-sm text-muted leading-relaxed">Host acquisition emails lean on the trust blocks. Feature rows, trust badges and an info callout explain earnings and protection the same way in every send.</p>
+        </li>
       </ul>
     </section>
 
@@ -424,7 +460,7 @@
         <div class="bg-surface p-6"><dt class="tag mb-2">Output</dt><dd class="text-sm text-ink font-medium">Table-based HTML email</dd></div>
         <div class="bg-surface p-6"><dt class="tag mb-2">Sends from</dt><dd class="text-sm text-ink font-medium">Braze, with Liquid personalization</dd></div>
         <div class="bg-surface p-6"><dt class="tag mb-2">AI</dt><dd class="text-sm text-ink font-medium">Copy assist, through its own API route</dd></div>
-        <div class="bg-surface p-6"><dt class="tag mb-2">Tracking</dt><dd class="text-sm text-ink font-medium">Built-in UTM builder</dd></div>
+        <div class="bg-surface p-6"><dt class="tag mb-2">Drafts</dt><dd class="text-sm text-ink font-medium">Supabase, saved as you work</dd></div>
         <div class="bg-surface p-6"><dt class="tag mb-2">Hosting</dt><dd class="text-sm text-ink font-medium">Vercel</dd></div>
         <div class="bg-surface p-6"><dt class="tag mb-2">Replaced</dt><dd class="text-sm text-ink font-medium">Figma, an export plugin and hand fixes</dd></div>
       </dl>
