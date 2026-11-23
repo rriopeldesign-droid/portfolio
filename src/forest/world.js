@@ -32,11 +32,11 @@ export const C = {
 // Where the walker stands at each stop, and how far the day has turned to night there
 export const STOPS = [
   { id: "arrival", cam: 9, look: 0, night: 0 },
-  { id: "trails", cam: -15, look: 1.8, night: 0.16 },
+  { id: "lookout", cam: -15, look: 3.4, night: 0.16 },
   { id: "grove", cam: -41, look: 2.2, lookPortrait: 3.6, night: 0.36 }, // portrait turns further, so the waypost is in frame
   { id: "sapling", cam: -69, look: 1.3, night: 0.56 },
   { id: "workshop", cam: -92, look: -2.4, night: 0.74 },
-  { id: "lookout", cam: -117, look: 3.4, night: 0.9 },
+  { id: "trails", cam: -117, look: 1.8, night: 0.9 },
   { id: "campfire", cam: -141, look: 0.4, night: 1 },
 ];
 const nightAt = (z) => {
@@ -237,12 +237,12 @@ export async function buildWorld({ quality = 1, onProgress = () => {}, note = ()
   const at = (dx, z) => pathX(z) + dx;
   const clearings = [
     { x: at(0, 4), z: 4, r: 12 },
-    { x: at(3.3, -24), z: -24, r: 3.4 },
+    { x: at(6.5, -25), z: -25, r: 6 },
     { x: at(8, -60), z: -60, r: 9.5 },
     { x: at(2.6, -79), z: -79, r: 4.5 },
     { x: at(-7.5, -104), z: -104, r: 7.5 },
-    { x: at(6.5, -127), z: -127, r: 6 },
-    { x: at(16, -160), z: -160, r: 19 }, // the valley seen from the lookout
+    { x: at(3.3, -126), z: -126, r: 3.4 },
+    { x: at(16, -160), z: -160, r: 19 }, // the valley seen from the signpost
     { x: at(0.5, -150), z: -150, r: 6.5 },
   ];
   const isClear = (x, z, pad = 0) => clearings.every((c) => Math.hypot(x - c.x, z - c.z) > c.r + pad);
@@ -348,16 +348,18 @@ export async function buildWorld({ quality = 1, onProgress = () => {}, note = ()
   for (let z = -1; z > -150; z -= 7.6) {
     // Leave room at the waypost (it has its own lantern) and around the sapling
     if (Math.abs(z - WAYPOST.z) < 3.5 || Math.abs(z + 79) < 3.5 || z < -140) { lside = -lside; continue; } // the fire lights the end
+    // The lantern that would stand in front of the signpost steps just behind it instead, and lights its boards
+    const lz = Math.abs(z + 126) < 3.5 ? -127.6 : z;
     const dx = 2.3 * lside; // far enough out that the lantern on its arm hangs at the path edge, not over it
-    const item = place("post", at(dx, z), 0, z, 2.9, { flip: -lside, sway: 0.15, glow: 0, shade: 1, rim: 0.4 });
+    const item = place("post", at(dx, lz), 0, lz, 2.9, { flip: -lside, sway: 0.15, glow: 0, shade: 1, rim: 0.4 });
     const pos = anchorPos(item, "lantern");
-    const l = addLight(pos, 1.0, { ignite: z, item });
+    const l = addLight(pos, 1.0, { ignite: lz, item });
     addHalo(pos, 2.6, C.warm, l);
     lside = -lside;
   }
 
-  // Trails signpost
-  place("signpost", at(3.3, -24), 0, -24, 3.6, { flip: 1, sway: 0, shade: 1.1 });
+  // The lookout (about), the first stop past the arrival
+  place("lookout", at(8.5, -24), 0, -24, 3.1, { flip: -1, sway: 0, glow: 1 });
 
   // The grove: one tree per project, its height grown from its impact
   const trees = {};
@@ -406,8 +408,8 @@ export async function buildWorld({ quality = 1, onProgress = () => {}, note = ()
   const hand = place("hand", trunkRight + 0.85, t20.y - 0.62, handTreeZ - 0.06, 1.25, { flip: -1, sway: 0, shade: 0.8, rim: 1.2 });
   const handState = { item: hand, baseX: hand.x, t: 0, gone: false };
 
-  // The lookout
-  place("lookout", at(8.5, -126), 0, -126, 3.1, { flip: -1, sway: 0, glow: 1 });
+  // Trails signpost, the last stop before the fire
+  place("signpost", at(3.3, -126), 0, -126, 3.6, { flip: 1, sway: 0, shade: 1.1 });
 
   // The campfire at the end of the path
   const fireX = at(0.6, -150);
@@ -593,7 +595,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {}, note = ()
   fireflies.renderOrder = 8;
   scene.add(fireflies);
 
-  // ── Watchers: eyes in the far canopy, seen from the lookout ──
+  // ── Watchers: eyes in the far canopy, seen from the signpost ──
   const WP = 170;
   const wPos = new Float32Array(WP * 2 * 3), wSeed = new Float32Array(WP * 2 * 4);
   for (let i = 0; i < WP; i++) {
@@ -778,7 +780,7 @@ export async function buildWorld({ quality = 1, onProgress = () => {}, note = ()
       }
     }
 
-    // Watchers open their eyes as you reach the lookout
+    // Watchers open their eyes as you near the signpost
     if (camZ < -104) revealT = Math.min(1, revealT + dt / 7);
     wMat.uniforms.uReveal.value = revealT;
 

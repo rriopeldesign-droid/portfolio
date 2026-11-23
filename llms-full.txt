@@ -51,11 +51,7 @@ The homepage is a walk along a path through a 3D forest. Each stop on the path i
 
 Arrival. Senior product designer, Canada. "I design products that move metrics, and build the AI tools that make the work faster. $8M+ in measured impact."
 
-The trails: what I do. Four paths, one walker.
-- Product design: End-to-end UX and UI for web and native mobile, from research to shipped, measured features.
-- Growth and conversion: Checkout, onboarding and lifecycle work tied to revenue, tested and measured in GMV.
-- Design systems: Token-based systems built in code first, mirrored in Figma, so design and engineering never drift.
-- AI tooling: Custom tools that let PMs, engineers and marketers design on-brand without waiting on design.
+The lookout: about. The view from here. "I was the sole product designer at Canada's largest RV rental marketplace, where my work helped turn a $6M deficit into profit. I studied design, I'm now doing a master's in technical management, and I learn by building. I work in English and French."
 
 The grove: selected work. Every tree here grew from shipped work. The taller the tree, the bigger the impact: $8M+ in all, measured as revenue, GMV or savings.
 - Pay-in-Full: $4M
@@ -71,7 +67,11 @@ The workshop: tools. Where the tools get made. "I build the things that make a d
 - Email builder: on-brand, no code
 - The End of Figma: an essay
 
-The lookout: about. The view from here. "I was the sole product designer at Canada's largest RV rental marketplace, where my work helped turn a $6M deficit into profit. I studied design, I'm now doing a master's in technical management, and I learn by building. I work in English and French."
+The trails: what I do. Four paths, one walker.
+- Product design: End-to-end UX and UI for web and native mobile, from research to shipped, measured features.
+- Growth and conversion: Checkout, onboarding and lifecycle work tied to revenue, tested and measured in GMV.
+- Design systems: Token-based systems built in code first, mirrored in Figma, so design and engineering never drift.
+- AI tooling: Custom tools that let PMs, engineers and marketers design on-brand without waiting on design.
 
 The campfire: contact. "Building something, or hiring? Either way, I'd like to hear about it. I'm open to freelance projects and full-time roles."
 
