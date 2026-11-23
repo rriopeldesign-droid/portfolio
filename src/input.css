@@ -525,3 +525,80 @@ a.hero-post:hover { background: rgb(245 240 235 / 0.09); border-color: rgb(var(-
 /* DateNight's phone in the hero */
 .page-hero-phone { display: flex; flex-direction: column; align-items: center; }
 .page-hero-note { margin-top: 2.25rem; max-width: 20rem; text-align: center; font-size: 0.75rem; line-height: 1.5; color: rgb(245 240 235 / 0.65); }
+
+/* ============================
+   FEATURED WORK: the work page's top four, as small share-card tiles
+   (forest gradient, grain, a pine line, peach eyebrow, Syne title, one hook).
+   Just enough to make someone click; the case study tells the rest.
+   The link (.feat-card) only reveals; the face inside it carries the look and the hover,
+   so hover stays quick while the reveal keeps its slower spring.
+   ============================ */
+.feat-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+@media (min-width: 640px) { .feat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; } }
+@media (min-width: 1280px) { .feat-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.feat-card { display: flex; border-radius: 24px; text-decoration: none; color: rgb(245 240 235); }
+.feat-card:focus-visible { outline: none; }
+
+.feat-face {
+  position: relative; isolation: isolate; overflow: hidden; container-type: inline-size;
+  flex: 1 1 auto; display: flex; flex-direction: column; min-height: 12rem;
+  padding: 1.5rem 1.5rem 2.25rem;
+  border-radius: 24px;
+  border: 1px solid rgb(245 240 235 / 0.10);
+  background:
+    radial-gradient(260px 200px at 10% 115%, rgb(1 179 108 / 0.26), transparent 70%),
+    linear-gradient(160deg, rgb(1 43 29) 0%, #021a12 58%, #010609 100%);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--dur-ui) var(--spring-snappy), border-color 0.3s ease, box-shadow 0.4s ease;
+}
+@media (min-width: 1280px) { .feat-face { min-height: 13.5rem; } }
+.feat-face::before { /* grain */
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  opacity: 0.10; mix-blend-mode: overlay; background: url("/img/grain.png") repeat; background-size: 256px;
+}
+.feat-face::after { /* the pine line along the bottom */
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 34px; z-index: -1; pointer-events: none;
+  background: url("/img/hero-pines.svg") no-repeat bottom / 100% 100%; opacity: 0.5;
+}
+
+/* Hover (and keyboard focus): a peach border, a slight grow and lift, a deeper shadow */
+.feat-card:hover .feat-face,
+.feat-card:focus-visible .feat-face {
+  border-color: rgb(var(--c-peach) / 0.9);
+  box-shadow:
+    inset 0 0 0 1px rgb(var(--c-peach) / 0.35),
+    0 2px 4px rgb(var(--c-ink) / 0.06),
+    0 22px 44px -18px rgb(var(--c-ink) / 0.45);
+}
+@media (hover: hover) and (pointer: fine) {
+  .feat-card:hover .feat-face { transform: translateY(-4px) scale(1.025); }
+}
+.feat-card:focus-visible .feat-face { transform: translateY(-4px) scale(1.025); outline: 2px solid rgb(var(--c-peach)); outline-offset: 3px; }
+
+.feat-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.feat-eyebrow { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(var(--c-peach)); }
+.feat-arrow {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 2.25rem; height: 2.25rem; border-radius: 999px;
+  border: 1px solid rgb(245 240 235 / 0.2); color: rgb(245 240 235 / 0.85);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+.feat-arrow svg { transition: transform 0.45s var(--spring-snappy); }
+.feat-card:hover .feat-arrow,
+.feat-card:focus-visible .feat-arrow { background: rgb(var(--c-peach)); border-color: rgb(var(--c-peach)); color: rgb(var(--c-forest)); }
+.feat-card:hover .feat-arrow svg,
+.feat-card:focus-visible .feat-arrow svg { transform: translateX(3px); }
+
+/* Every title stays on one line: its size follows the card's width, set by the longest
+   ("Pay-in-Full Pricing" is about 14.3 times its font size wide in Syne) */
+.feat-title { margin-top: auto; padding-top: 1.75rem; font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(0.8125rem, 6.6cqi, 1.75rem); line-height: 1.1; color: rgb(245 240 235); }
+.feat-hook { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.4; color: rgb(245 240 235 / 0.75); transition: color 0.3s ease; }
+.feat-card:hover .feat-hook, .feat-card:focus-visible .feat-hook { color: rgb(245 240 235 / 0.92); }
+
+/* More work: the discipline label above each row's title */
+.row-kind { margin-bottom: 0.45rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .feat-face, .feat-arrow svg { transform: none !important; }
+}

@@ -48,6 +48,9 @@ jobs:
             --exclude='/package.json' --exclude='/package-lock.json' \
             --exclude='/tailwind.config.js' --exclude='/README.md' \
             ./ _site/
+      - name: Version stylesheets and scripts
+        # Each page links its CSS and JS as /css/x.css?v=<hash>, so a cached older copy is never mixed in
+        run: python3 .github/scripts/stamp_assets.py _site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
