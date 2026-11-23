@@ -2,7 +2,7 @@
   <link href="/css/fonts.css" rel="stylesheet" />
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
-  <link rel="stylesheet" href="/css/forest.css" />
+  <link rel="stylesheet" href="/css/forest.css?v={{forestCssV}}" />
   <script src="/js/script.js" defer></script>
 </head>
 
@@ -171,7 +171,7 @@
       root.classList.add('forest-on');
       // Let the text paint first: the scene (three.js) loads once the page is idle.
       var boot = function () {
-        import('/js/forest.js').then(function (m) { return m.start(); }).catch(function (err) {
+        import('/js/forest.js?v={{forestV}}').then(function (m) { return m.start(); }).catch(function (err) {
           console.warn('[forest]', err);
           root.classList.remove('forest-on');
           root.classList.add('forest-off');

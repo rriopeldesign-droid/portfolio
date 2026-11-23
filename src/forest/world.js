@@ -93,6 +93,7 @@ const idle = () => {
 function paintInWorkers(jobs, onEach) {
   if (!jobs.length || typeof Worker === "undefined" || typeof OffscreenCanvas === "undefined") return Promise.reject();
   const url = new URL("./forest-paint.js", import.meta.url);
+  url.search = new URL(import.meta.url).search; // the same version stamp as this bundle, so an older cached worker is never mixed in
   const count = Math.max(1, Math.min(3, (navigator.hardwareConcurrency || 2) - 1));
   return new Promise((resolve, reject) => {
     const out = new Array(jobs.length);
