@@ -84,16 +84,38 @@
     color: rgb(var(--c-ink));
   }
 
-  /* --- Footer location + language links --- */
+  /* --- Footer: two rows on one grid, so both rows share the same left and right edges ---
+     Row one: who (name and role) and how to reach me. Row two: where, and the other versions.
+     One type size throughout; row one is a step darker. Phones get one centered column. */
+  .footer-grid {
+    display: grid; justify-items: center; row-gap: 0.875rem; text-align: center;
+    font-size: 0.75rem; line-height: 1.25rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgb(var(--c-faint));
+  }
+  .footer-id { color: rgb(var(--c-muted)); }
+  /* On phones, name and role sit on their own lines instead of wrapping mid-phrase */
+  .footer-id > span:not(.footer-dot) { display: block; }
+  .footer-dot { display: none; }
   .footer-loc { display: inline-flex; align-items: center; gap: 0.4rem; }
   .footer-pin { flex: none; color: rgb(var(--c-accent)); }
-  .footer-alt {
-    margin-top: 1.25rem; display: flex; justify-content: center; gap: 0.6rem;
-    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(var(--c-faint));
+  .footer-links, .footer-alt { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; }
+  .footer-links { gap: 0.5rem 1.75rem; }
+  .footer-alt { gap: 0.5rem 0.6rem; }
+  .footer-links a, .footer-alt a { color: inherit; text-decoration: none; transition: color 0.3s; }
+  .footer-links a { color: rgb(var(--c-muted)); }
+  .footer-links a:hover, .footer-alt a:hover { color: rgb(var(--c-ink)); }
+  @media (min-width: 640px) {
+    .footer-grid {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "id links" "loc alt";
+      justify-items: start; align-items: center; column-gap: 2rem; row-gap: 1rem; text-align: left;
+    }
+    .footer-id { grid-area: id; }
+    .footer-id > span:not(.footer-dot), .footer-dot { display: inline; }
+    .footer-loc { grid-area: loc; }
+    .footer-links { grid-area: links; justify-self: end; }
+    .footer-alt { grid-area: alt; justify-self: end; }
   }
-  .footer-alt a { color: inherit; text-decoration: none; transition: color 0.3s; }
-  .footer-alt a:hover { color: rgb(var(--c-ink)); }
-  @media (min-width: 640px) { .footer-alt { justify-content: flex-end; } }
 
   /* --- Scroll reveal (only when JS runs, so crawlers and no-JS readers see everything) --- */
   .js .reveal {

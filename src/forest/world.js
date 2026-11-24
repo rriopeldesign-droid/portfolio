@@ -765,7 +765,6 @@ export async function buildWorld({ quality = 1, onProgress = () => {}, note = ()
       const target = !figState.gone && d < 46 && camZ < DEEP + 2 ? 1 : 0;
       figState.op += (target - figState.op) * Math.min(1, dt * (figState.gone ? 7 : 0.6));
       setP2(figure, 0, figState.op);
-      if (figState.op > 0.55 && toScreen(anchorPos(figure, "eyes"), cam).on) once("figure");
     }
 
     // The hand lets go of the tree

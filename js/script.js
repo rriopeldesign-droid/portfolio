@@ -31,10 +31,10 @@ function initHeroNav() {
 // ── Field notes ──────────────────────────────────────────────────────────────
 // A quiet log of things found around the site, kept in this browser only (localStorage).
 // Any page can add a note with window.fieldNotes.add(id); the homepage shows the log in its HUD.
-// Finding the Hollow unlocks the maze as a secret level; finding the saucer unlocks the Void.
+// Finding the cave (the Hollow) unlocks the maze as a secret level; finding the saucer unlocks the Void.
 window.fieldNotes = (function () {
   var KEY = 'field-notes', READ = 'field-notes-read';
-  var IDS = ['lanterns', 'case', 'figure', 'campfire', 'wander', 'hollow', 'ufo'];
+  var IDS = ['lanterns', 'case', 'campfire', 'wander', 'hollow', 'ufo'];
   function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
   function save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
   return {
@@ -65,13 +65,12 @@ var FIELD_NOTES_TEXT = {
     title: 'Field notes', count: '{n} of {t} found', secret: 'Secret levels', locked: 'Locked', fresh: 'New field note',
     forget: 'Start over', close: 'Close', maze: 'The maze', void: 'The Void',
     notes: {
-      lanterns: ['Watched the lanterns light', 'Walk on until dusk.'],
+      lanterns: ['Watched the lanterns light', 'Walk until dusk.'],
       case: ['Read a case study', 'Follow one of the signs.'],
-      figure: ['Saw something between the trees', 'Past the sapling, watch the treeline.'],
       campfire: ['Reached the campfire', 'Walk to the end of the path.'],
-      wander: ['Stepped off the path', 'Not every walk keeps to the path.'],
-      hollow: ['Found the Hollow', 'Something breathes, deep past the sapling.'],
-      ufo: ['Saw a light that was not a star', 'Off the path, look back the way you came.']
+      wander: ['Stepped off the path', 'Wander.'],
+      hollow: ['Found the cave', 'Off the path, follow the green glow.'],
+      ufo: ['Saw something strange', 'Off the path, look back the way you came.']
     }
   },
   de: {
@@ -80,11 +79,10 @@ var FIELD_NOTES_TEXT = {
     notes: {
       lanterns: ['Die Laternen angehen sehen', 'Gehen Sie weiter bis zur Dämmerung.'],
       case: ['Eine Fallstudie gelesen', 'Folgen Sie einem der Wegweiser.'],
-      figure: ['Etwas zwischen den Bäumen gesehen', 'Achten Sie hinter dem Setzling auf den Waldrand.'],
       campfire: ['Das Lagerfeuer erreicht', 'Gehen Sie bis ans Ende des Weges.'],
-      wander: ['Vom Weg abgekommen', 'Nicht jeder Spaziergang bleibt auf dem Weg.'],
-      hollow: ['Die Höhle gefunden', 'Tief hinter dem Setzling atmet etwas.'],
-      ufo: ['Ein Licht gesehen, das kein Stern war', 'Abseits des Weges: Schauen Sie zurück, woher Sie kamen.']
+      wander: ['Vom Weg abgekommen', 'Umherstreifen.'],
+      hollow: ['Die Höhle gefunden', 'Abseits des Weges: Folgen Sie dem grünen Schimmer.'],
+      ufo: ['Etwas Seltsames gesehen', 'Abseits des Weges: Schauen Sie zurück, woher Sie kamen.']
     }
   },
   fr: {
@@ -93,11 +91,10 @@ var FIELD_NOTES_TEXT = {
     notes: {
       lanterns: ['Vu les lanternes s’allumer', 'Marchez jusqu’au crépuscule.'],
       case: ['Lu une étude de cas', 'Suivez l’un des panneaux.'],
-      figure: ['Vu quelque chose entre les arbres', 'Après la pousse, surveillez la lisière.'],
       campfire: ['Atteint le feu de camp', 'Marchez jusqu’au bout du sentier.'],
-      wander: ['Quitté le sentier', 'Toutes les promenades ne suivent pas le sentier.'],
-      hollow: ['Trouvé le creux', 'Quelque chose respire, loin après la pousse.'],
-      ufo: ['Vu une lumière qui n’était pas une étoile', 'Hors du sentier, regardez derrière vous.']
+      wander: ['Quitté le sentier', 'Flânez.'],
+      hollow: ['Trouvé la grotte', 'Hors du sentier, suivez la lueur verte.'],
+      ufo: ['Vu quelque chose d’étrange', 'Hors du sentier, regardez derrière vous.']
     }
   }
 };

@@ -2,7 +2,7 @@
 
 > The complete text of robertriopel.ca in one plain-text file, for AI assistants, search tools and anyone who prefers reading without the 3D forest. A shorter index is at https://robertriopel.ca/llms.txt.
 
-Robert Riopel: Senior Product Designer | Product Design, Design Systems & AI Tooling | Co-founder, DateNight. He is based in Canada and works in English and French (both native). He designs digital products end to end (product UX and UI for web and native mobile, design systems, growth and conversion, onboarding, internal tools, lifecycle and CRM email) and builds AI design tooling. As the sole product designer at RVezy, Canada's largest RV rental marketplace, his shipped work across the guest (B2C) and host (B2B) sides contributed $8M+ in measurable business impact and helped move the company from a $6M deficit to $1.5M EBITDA positive. In 2026 he co-founded DateNight, a dating app built around real plans instead of swiping, now in public beta in Toronto. He is open to freelance projects and to senior product design roles, in Canada or remote.
+Robert Riopel: Senior Product Designer | Product Design, Design Systems & AI Tools | Co-founder, DateNight. He is based in Canada and works in English and French (both native). He designs digital products end to end (product UX and UI for web and native mobile, design systems, growth and conversion, onboarding, internal tools, lifecycle and CRM email) and builds AI design tooling. As the sole product designer at RVezy, Canada's largest RV rental marketplace, his shipped work across the guest (B2C) and host (B2B) sides contributed $8M+ in measurable business impact and helped move the company from a $6M deficit to $1.5M EBITDA positive. In 2026 he co-founded DateNight, a dating app built around real plans instead of swiping, now in public beta in Toronto. He is open to freelance projects and to senior product design roles, in Canada or remote.
 
 Contents:
 1. Profile and keywords
@@ -26,7 +26,7 @@ Contents:
 ## 1. Profile and keywords
 
 - Name: Robert Riopel
-- Positioning: Senior Product Designer | Product Design, Design Systems & AI Tooling | Co-founder, DateNight
+- Positioning: Senior Product Designer | Product Design, Design Systems & AI Tools | Co-founder, DateNight
 - Location: Canada
 - Work arrangement: open to freelance projects and full-time roles, in Canada or remote
 - Languages: English and French (native)
@@ -49,11 +49,11 @@ URL: https://robertriopel.ca/ (also in German at /de/ and French at /fr/)
 
 The homepage is a walk along a path through a 3D forest. Each stop on the path is a part of Robert's work.
 
-Arrival. Senior product designer, Canada. "I design products that move metrics, and build the AI tools that make the work faster. $8M+ in measured impact."
+Arrival. Senior product designer, Canada. "I design products that drive real business results, and build AI tools that make work faster. My work has contributed to over $8M in tangible impact."
 
-The lookout: about. The view from here. "I was the sole product designer at Canada's largest RV rental marketplace, where my work helped turn a $6M deficit into profit. I studied design, I'm now doing a master's in technical management, and I learn by building. I work in English and French."
+The lookout: about. The overview. "I was the sole product designer at Canada's largest RV rental marketplace, where my work helped us go from a $6M deficit to profitability. I studied design and technical management, and I learn by building. I work in English and French."
 
-The grove: selected work. Every tree here grew from shipped work. The taller the tree, the bigger the impact: $8M+ in all, measured as revenue, GMV or savings.
+The grove: selected work. Every metric here comes from shipped work. Each tree represents a project's impact: $8M+ in all, measured as revenue, GMV or savings.
 - Pay-in-Full: $4M
 - Host Onboarding: $3.4M
 - Host Dashboard: $1.5M
@@ -67,7 +67,7 @@ The workshop: tools. Where the tools get made. "I build the things that make a d
 - Email builder: on-brand, no code
 - The End of Figma: an essay
 
-The trails: what I do. Four paths, one walker.
+The trails: skills. What I do.
 - Product design: End-to-end UX and UI for web and native mobile, from research to shipped, measured features.
 - Growth and conversion: Checkout, onboarding and lifecycle work tied to revenue, tested and measured in GMV.
 - Design systems: Token-based systems built in code first, mirrored in Figma, so design and engineering never drift.
@@ -114,13 +114,13 @@ Let's talk about building something that matters. Open to freelance projects, fu
 
 URL: https://robertriopel.ca/work.html
 
-Everything here shipped. Every metric is real. These projects helped move the company from a $6M deficit to profitability.
+Everything here shipped. These projects contributed to moving the company from a deficit to profitability.
 
 Product design
 - Pay-in-Full Pricing (2025): Designed a new checkout flow letting guests pay upfront at a discount. Mapped edge cases across deposits, insurance, and cancellation. +$1M month one, $4M by end of Q1 2026.
-- Host Dashboard Redesign (2024): Rebuilt the host portal from a static summary into a data-rich dashboard surfacing booking trends, earnings, and optimization levers. Designed end to end from research through shipped product. +22% engagement, $1.5M GMV.
-- Host Onboarding Overhaul (2022 to 2023): Rebuilt an almost 30-step host flow, from landing page to first listing approval. Reduced friction, improved listing quality, and established the framework still in use today. +27% activation, an estimated $3.4M in annual booking revenue.
-- Roadside Assistance Portal (2022 to 2023): Helped rebuild the portal our 24/7 roadside partner used, so their agents could see each booking's coverage instead of calling us to ask. Phone call to portal.
+- Host Dashboard Redesign (2024): Rebuilt the host portal from a static summary into a data-rich dashboard that shows booking trends, earnings, and optimization levers. Designed end to end from research through shipped product. +22% engagement, $1.5M GMV.
+- Host Onboarding Overhaul (2022 to 2023): Rebuilt an almost 30-step host onboarding flow, from the landing page to the approval of a host's first listing. The goal was to reduce friction and improve listing quality. The framework is still in use today. +27% activation, an estimated $3.4M in annual booking revenue.
+- Roadside Assistance Portal (2022 to 2023): Helped rebuild the portal used by our 24/7 roadside partner, so their agents could see each booking's coverage instead of calling us to ask. Phone call to portal.
 
 Systems and AI tooling
 - AI Figma Plugin (2025 to 2026): Designed and built a plugin that generates production-ready components from natural language prompts. Synced 1:1 with the coded design system so anyone can design on-brand without touching Figma. Prompt to component; handoff time cut in half.
@@ -243,9 +243,9 @@ URL: https://robertriopel.ca/case-studies/ai-figma-plugin.html
 A Figma plugin that uses the Claude API to generate native Figma components from prompts, synced 1:1 with RVezy's coded design system. Designed and developed by Robert. 2025.
 
 - Role: designer and developer
-- Users: mostly PMs and senior stakeholders who were less fluent with technical tools
+- Users: mostly PMs and engineers, plus senior stakeholders who were less fluent with technical tools
 - Stack: Figma Plugin API, TypeScript, Claude API
-- Results: design-to-dev handoff time cut in half; 90+ components in the registry with full metadata; 3 interaction modes (generate, iterate, explore)
+- Results: design-to-dev handoff time cut in half; 90+ components in the registry with full metadata; 3 modes (Pick, Quick Create and Variants)
 
 How it's built: each prompt is sent to the Claude API with the full component registry as context. Claude replies with structured JSON that maps directly to Figma plugin API calls (createFrame, createText, setFills); the plugin validates the response against the registry, then builds native, editable Figma layers with correct colors, type, spacing and auto-layout. The registry is derived from the same Tailwind config that powers production, so when the coded system changes, the next generation changes with it. That is the 1:1 sync.
 
@@ -295,15 +295,15 @@ How he ships: daily, to staging and then production. Each change starts on its o
 URL: https://robertriopel.ca/case-studies/email-builder.html
 Live demo: https://rvezy-email-builder.vercel.app/
 
-An internal tool Robert designed and built in a few days for RVezy's marketing team (2025 to 2026). Pick a template, edit it in place, preview it in light and dark, then copy HTML that's ready for Braze. No Figma, no code.
+An internal tool Robert designed and built in a few days for RVezy's marketing team (2025 to 2026). Pick an email template, edit it in one place, preview it in light and dark mode, then copy HTML that's ready for Braze. No Figma, no code.
 
 - Role: designer and developer
 - For: RVezy's marketing team
 - Output: table-based HTML email for Braze
 
-Problem: every campaign took the same route. Design it in Figma, export the HTML with a plugin, hand it off to Braze, then fix everything that broke on the way. Four tools and three hand-offs, for every single email. The builder replaces the whole chain so anyone on marketing can build an on-brand, production-ready email without design or engineering support.
+Problem: every email campaign had to go through the same cycle: design it in Figma, export the HTML with a plugin, hand it off to Braze, then fix everything that broke on the way. Four tools and three hand-offs, for every single email. The builder replaces this entire chain so anyone on the marketing team can build an on-brand, production-ready email without design or engineering support.
 
-Design decision: blocks, not a blank canvas. A free-form editor would have moved the problem, not solved it. Every email is a stack of blocks, and every block is already built from RVezy's email styles (type, spacing, blue buttons, light and dark palettes). People choose blocks and write the words, and the design comes with the block. The hard parts of HTML email live inside the blocks: table layouts, Outlook fallbacks, phone sizes and tracking links.
+Design decision: blocks, not a blank canvas. A free-form editor would have moved the problem, not solved it (Braze already has one), and every email would still need a designer to double-check it. Every email is made up of blocks, each built around RVezy's existing email styles, so there's no need to think about typography, spacing, buttons or light and dark palettes. People choose the blocks, write the content, and the design takes care of itself. The hardest parts of HTML emails are built into the blocks too: table layouts, Outlook fallbacks, phone sizes and tracking links.
 
 How an email gets built: 1) Template: start from one of eight campaigns, each with its subject line, preheader and UTM campaign filled in. 2) Blocks: add any of 17 blocks and move them up or down. 3) Edit: click any text in the preview and type; Braze Liquid personalization keeps its fallback in the preview. 4) Preview: light and dark, desktop (660 px) and phone. 5) Copy: one click copies Braze-ready HTML, with UTM tags on every button, and the draft stays saved for next time.
 
