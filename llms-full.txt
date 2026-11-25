@@ -305,7 +305,7 @@ An internal tool Robert designed and built in a few days for RVezy's marketing t
 - For: RVezy's marketing team
 - Output: table-based HTML email for Braze
 
-Problem: every email campaign had to go through the same cycle: design it in Figma, export the HTML with a plugin, hand it off to Braze, then fix everything that broke on the way. Four tools and three hand-offs, for every single email. The builder replaces this entire chain so anyone on the marketing team can build an on-brand, production-ready email without design or engineering support.
+Backstory: from 2022 to 2024 Robert designed every RVezy email and the block system behind them (case study 10). It made every email consistent but never fixed how emails got made. Problem: every email campaign had to go through the same cycle: design it in Figma, export the HTML with a plugin, hand it off to Braze, then fix everything that broke on the way. Four tools and three hand-offs, for every single email. The builder replaces this entire chain so anyone on the marketing team can build an on-brand, production-ready email without design or engineering support.
 
 Design decision: blocks, not a blank canvas. A free-form editor would have moved the problem, not solved it (Braze already has one), and every email would still need a designer to double-check it. Every email is made up of blocks, each built around RVezy's existing email styles, so there's no need to think about typography, spacing, buttons or light and dark palettes. People choose the blocks, write the content, and the design takes care of itself. The hardest parts of HTML emails are built into the blocks too: table layouts, Outlook fallbacks, phone sizes and tracking links.
 
