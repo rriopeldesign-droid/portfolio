@@ -14,7 +14,7 @@
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://robertriopel.ca/case-studies/lifecycle-campaigns.html" />
   <meta property="og:title" content="Lifecycle &amp; Email Campaigns | Robert Riopel, UX Case Study" />
-  <meta property="og:description" content="Designing the full email lifecycle at RVezy, from welcome sequences to re-engagement, plus a Braze template system: +13% engagement, $1.2M in incremental GMV, 4x faster production." />
+  <meta property="og:description" content="Designing the full email lifecycle at RVezy, from welcome sequences to re-engagement, and the Braze template system behind it. +13% engagement, $1.2M in incremental GMV and 4x faster production." />
   <meta property="og:image" content="https://robertriopel.ca/img/og/og-lifecycle-campaigns.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -24,7 +24,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Lifecycle &amp; Email Campaigns | Robert Riopel, UX Case Study" />
-  <meta name="twitter:description" content="Designing the full email lifecycle at RVezy, from welcome sequences to re-engagement, plus a Braze template system: +13% engagement, $1.2M in incremental GMV, 4x faster production." />
+  <meta name="twitter:description" content="Designing the full email lifecycle at RVezy, from welcome sequences to re-engagement, and the Braze template system behind it. +13% engagement, $1.2M in incremental GMV and 4x faster production." />
   <meta name="twitter:image" content="https://robertriopel.ca/img/og/og-lifecycle-campaigns.jpg" />
   <meta name="twitter:image:alt" content="Lifecycle and Email Campaigns case study: +13% engagement and $1.2M in incremental GMV" />
   <!-- Schema.org -->
@@ -86,7 +86,9 @@
   <link href="/css/fonts.css" rel="stylesheet" />
   <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/email-builder.css" />
   <script src="/js/script.js" defer></script>
+  <script src="/js/email-builder.js" defer></script>
   <script type="module" src="/js/enhance.js"></script>
 </head>
 <body class="case-study has-hero bg-surface text-ink font-body">
@@ -169,7 +171,7 @@
         </div>
         <div>
           <p class="tag mb-2">Tools</p>
-          <p class="text-sm text-ink font-medium">Figma, Braze, HTML email</p>
+          <p class="text-sm text-ink font-medium">Figma, an HTML export plugin, Braze</p>
         </div>
       </div>
     </section>
@@ -191,10 +193,10 @@
       </div>
       <div class="max-w-3xl space-y-5 text-muted leading-relaxed">
         <p>
-          Over two years, I designed every customer-facing email. Transactional confirmations, marketing campaigns, seasonal promotions, host communications, re-engagement sequences, and referral flows. This wasn't a one-off project; it was an ongoing system that grew with the business.
+          Over two years, I designed every customer-facing email RVezy sent, from transactional confirmations and marketing campaigns to seasonal promotions, host communications, re-engagement sequences and referral flows. It was never a one-off project. It was an ongoing system that grew with the business.
         </p>
         <p>
-          Once everything was designed in Figma we built a modular email template system in Braze. Instead of designing each email from scratch, we created composable blocks, hero modules, listing cards, CTA patterns, testimonial strips. These could be assembled into new campaigns in hours instead of days with minimum design oversight.
+          Once everything was designed in Figma, we built a modular email template system in Braze. Instead of designing each email from scratch, we put every campaign together from the same set of blocks, like hero modules, listing cards, calls to action and testimonial strips. A new campaign took hours to assemble instead of days.
         </p>
       </div>
     </section>
@@ -218,7 +220,7 @@
           I mapped every touchpoint in the guest and host journeys where email played a role. The guest lifecycle alone had 23 distinct email touchpoints. The host side had another 18.
         </p>
         <p>
-          We identified the highest-leverage moments: the 48 hours after a search without booking (re-engagement), the day before a trip (anxiety reduction), and the first week after a host's listing goes live (activation coaching).
+          Three of them mattered more than the rest, so that&rsquo;s where we put most of our effort. Those were the 48 hours after a guest searched but didn&rsquo;t book, the day before a trip, and a new host&rsquo;s first week after their listing went live.
         </p>
       </div>
       <div class="mt-10">
@@ -237,13 +239,13 @@
         <div>
           <h3 class="font-display text-xl font-bold mb-3">Modular blocks</h3>
           <p class="text-sm text-muted leading-relaxed">
-            Every email is built from a library of 12 reusable blocks. Hero images, listing grids, single-CTA sections, testimonials, pricing callouts, and more. Each block is tested across 30+ email clients and has dark mode variants.
+            Every email was built from a library of 12 reusable blocks, including hero images, listing grids, single call-to-action sections, testimonials and pricing callouts. Each block was tested across 30+ email clients and had a dark mode version.
           </p>
         </div>
         <div>
           <h3 class="font-display text-xl font-bold mb-3">Brand consistency at scale</h3>
           <p class="text-sm text-muted leading-relaxed">
-            Before the system, each campaign was a one-off design. After, anyone on the marketing team could build a new email while maintaining visual consistency without design bottlenecks. This freed me up for higher-leverage product work.
+            Before the system, every campaign was a one-off design. After it, every email followed the same guidelines, no matter who on the marketing team put it together. Nobody had to start from a blank file anymore, though each email still came back to me for a design review.
           </p>
         </div>
       </div>
@@ -256,7 +258,7 @@
       <div class="max-w-3xl">
         <h2 class="font-display text-2xl font-bold mb-5">Designing for the inbox, not the browser</h2>
         <p class="text-muted leading-relaxed mb-6">Email is one of the most hostile design surfaces there is. Layouts are built with tables, many clients block images by default, some versions of Outlook render with a word-processor engine, and dark mode can invert your colors without asking. A polished Figma comp means nothing if half the audience sees a broken version of it.</p>
-        <p class="text-muted leading-relaxed mb-6">So the system was designed around those constraints from day one: single-column layouts that degrade gracefully, live text instead of text baked into images, alt text written as real copy, and colors chosen to survive automatic dark-mode inversion. Every block was tested across clients before it was allowed into the library.</p>
+        <p class="text-muted leading-relaxed mb-6">So we designed the system around those constraints from day one. Layouts were single-column so they&rsquo;d degrade gracefully, text stayed live instead of being baked into images, alt text was written as real copy, and colors were chosen to survive automatic dark-mode inversion. Every block was tested across clients before it went into the library.</p>
       </div>
     </section>
 
@@ -291,19 +293,9 @@
       </div>
       <div class="max-w-3xl">
         <h2 class="font-display text-2xl font-bold mb-5">Working with CRM, data and engineering</h2>
-        <p class="text-muted leading-relaxed mb-6">Design was only one part of each campaign. I worked with our CRM manager on segmentation and trigger logic in Braze, so the right email reached the right person at the right moment, and with a front-end developer who turned the Figma blocks into robust, tested HTML.</p>
+        <p class="text-muted leading-relaxed mb-6">Design was only one part of each campaign. I worked with our CRM manager on segmentation and trigger logic in Braze, so the right email reached the right person at the right moment. A front-end developer hand-coded some of the core blocks and stepped in whenever an email broke in Braze.</p>
         <p class="text-muted leading-relaxed mb-6">Compliance shaped the work too. Canadian anti-spam rules set clear expectations around consent, sender identification and unsubscribing, so those elements were designed into every template rather than added at the end.</p>
         <p class="text-muted leading-relaxed mb-6">Our data analyst set up the reporting that tied campaigns to bookings, and we reviewed results together after each major send. Those reviews decided which blocks stayed in the library, which were redesigned, and which quietly disappeared.</p>
-      </div>
-    </section>
-
-    <section class="mt-22 reveal">
-      <div class="section-divider mb-8">
-        <span class="tag">Handoff</span>
-      </div>
-      <div class="max-w-3xl">
-        <h2 class="font-display text-2xl font-bold mb-5">Designing myself out of the loop</h2>
-        <p class="text-muted leading-relaxed mb-6">The real deliverable wasn’t 50+ campaigns; it was a system the marketing team could run without me. I documented every block with usage notes, built starter templates for the most common campaign types, and reviewed the first campaigns the team built on their own. After that, design review became the exception rather than the rule, which is where the 4&times; faster production came from.</p>
       </div>
     </section>
 
@@ -329,6 +321,84 @@
         <p class="viz-title">Time to produce a campaign</p>
         <div class="viz-row"><span class="viz-label">Before</span><span class="viz-track"><span class="viz-bar" style="--w:100%"></span></span><span class="viz-value">1&times;</span></div>
         <div class="viz-row is-after"><span class="viz-label">With system</span><span class="viz-track"><span class="viz-bar" style="--w:25%"></span></span><span class="viz-value">4&times; faster</span></div>
+      </div>
+    </section>
+
+    <!-- What the system didn't fix -->
+    <section class="mt-22 reveal">
+      <div class="section-divider mb-8">
+        <span class="tag">The Gaps</span>
+      </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display text-2xl font-bold mb-5">Consistent, but far from solved</h2>
+        <p class="text-muted leading-relaxed mb-6">The system did what it was built to do. Every email followed the same guidelines and looked like it came from the same company, and building from blocks made campaigns about 4&times; faster to produce. The process around it was a different story.</p>
+        <p class="text-muted leading-relaxed mb-6">Most emails were still designed in Figma and exported with a plugin. The plugin gave us raw HTML we could take into Braze, but once it got there it often broke or didn&rsquo;t resize properly on phones, and we&rsquo;d need engineering to step in again. Every new block or custom component meant another trip through Figma and the plugin. Light and dark mode were never really solved either. An email that looked right in one inbox could be unreadable in the next.</p>
+        <p class="text-muted leading-relaxed mb-6">So even with every block documented and starter templates for the most common campaigns, each email still needed a designer to look it over before it went out. The work was standardized, but it still ran through me.</p>
+      </div>
+    </section>
+
+    <!-- What came next: the Email Builder -->
+    <section class="mt-22 reveal" id="email-builder">
+      <div class="section-divider mb-8">
+        <span class="tag">What Came Next</span>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="max-w-xl">
+          <h2 class="font-display text-2xl font-bold mb-5">The tool I couldn&rsquo;t build in 2022</h2>
+          <p class="text-muted leading-relaxed mb-6">Fixing the process meant replacing the whole chain, not just the templates, and in 2022 the AI tooling to build something like that on my own didn&rsquo;t exist yet. By 2025 it did, and I built the Email Builder in a few days.</p>
+          <p class="text-muted leading-relaxed mb-8">It keeps the idea that worked here, emails made from on-brand blocks, and drops everything around it that kept breaking. There&rsquo;s no Figma file and no export plugin. Every block has a light and a dark palette, and the HTML comes out ready for Braze. Marketing picks a template, edits it in one place, checks it in light and dark mode, then copies the HTML into Braze.</p>
+          <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
+            <a href="/case-studies/email-builder.html" class="btn-magnetic group inline-flex items-center gap-3 bg-ink text-surface text-sm font-semibold uppercase tracking-widest py-3.5 px-7 rounded-full hover:bg-peach hover:text-ink">
+              Read the case study
+              <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+            <a href="https://rvezy-email-builder.vercel.app/" target="_blank" rel="noopener" class="text-sm font-semibold uppercase tracking-widest text-muted hover:text-ink transition-colors">
+              Open the builder<span class="sr-only"> (opens in a new tab)</span>
+            </a>
+          </div>
+        </div>
+        <div class="eb-preview eb-scope page-hero-phone bg-ink rounded-2xl px-5 py-10 sm:px-10">
+          <div class="eb-app" data-theme="dark" data-view="desktop">
+            <div class="eb-bar">
+              <span class="eb-mark" aria-hidden="true">RV</span>
+              <b>Email Builder</b>
+              <span class="eb-dim">Internal</span>
+              <span class="eb-count">3 blocks</span>
+            </div>
+            <div class="eb-tools">
+              <div class="eb-seg" role="group" aria-label="Preview width">
+                <button type="button" data-set="view" data-value="desktop" aria-pressed="true">Desktop</button>
+                <button type="button" data-set="view" data-value="mobile" aria-pressed="false">Mobile</button>
+              </div>
+              <div class="eb-seg" role="group" aria-label="Email theme">
+                <button type="button" data-set="theme" data-value="light" aria-pressed="false">Light</button>
+                <button type="button" data-set="theme" data-value="dark" aria-pressed="true">Dark</button>
+              </div>
+            </div>
+            <div class="eb-canvas">
+              <div class="eb-mail" aria-live="polite">
+                <div class="eb-m-head"><span class="eb-m-logo">RVezy</span></div>
+                <div class="eb-m-hero">
+                  <p class="eb-m-h" data-k="h">Welcome to RVezy, Explorer!</p>
+                  <p class="eb-m-sub" data-k="sub">Canada&rsquo;s largest RV rental marketplace is ready for you. Find your perfect home on wheels.</p>
+                  <span class="eb-m-btn" data-k="btn">Start Exploring</span>
+                </div>
+                <div class="eb-m-strip" data-k="strip">50,000+ RVs across Canada &middot; Instant booking &middot; $1M liability included</div>
+                <div class="eb-m-stats">
+                  <div><b data-k="s1">50K+</b><span data-k="l1">RVs listed</span></div>
+                  <div><b data-k="s2">500K+</b><span data-k="l2">Happy renters</span></div>
+                  <div><b data-k="s3">4.9&#9733;</b><span data-k="l3">Avg rating</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="eb-tpls" role="group" aria-label="Load a template">
+            <button type="button" data-set="tpl" data-value="welcome" aria-pressed="true">Welcome</button>
+            <button type="button" data-set="tpl" data-value="promo" aria-pressed="false">Flash sale</button>
+            <button type="button" data-set="tpl" data-value="host" aria-pressed="false">Host</button>
+          </div>
+          <p class="page-hero-note">Try the toggles and templates. Rebuilt in code from the builder&rsquo;s own colors and template copy.</p>
+        </div>
       </div>
     </section>
 

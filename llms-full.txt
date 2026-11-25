@@ -266,9 +266,13 @@ Designing the full email lifecycle at RVezy, from welcome sequences to re-engage
 - Results: +13% overall email engagement; $1.2M incremental GMV attributed to lifecycle campaigns (measured with holdout groups); 4x faster campaign production with the template system; 50+ campaign designs.
 - Role: Sole designer (lifecycle, brand and product)
 - Team: CRM manager, lifecycle marketer, data analyst, front-end developer
-- Tools: Figma, Braze, HTML email
+- Tools: Figma, an HTML export plugin, Braze
 
 Scope: every customer-facing email. The designs became a modular template system in Braze: 12 reusable blocks, each tested across 30+ email clients with dark mode variants. Lifecycle map: 23 email touchpoints on the guest side and 18 on the host side; the highest-leverage moments were the 48 hours after a search without booking, the day before a trip, and a host's first week after going live. Measurement moved from open rates to clicks, bookings and GMV per campaign, with holdout groups on key flows.
+
+What the system didn't fix: every email followed the same guidelines and building from blocks made production about 4x faster, but the process stayed fragile. Most emails were still designed in Figma and exported as raw HTML with a plugin; in Braze that HTML often broke or didn't resize on phones, and engineering had to step in. New blocks and custom components went back through Figma and the plugin, light and dark mode were never solved, and every email still needed a design review before it went out.
+
+What came next: in 2025, with AI coding tools, Robert built the Email Builder in a few days (case study 12). It keeps the on-brand blocks and replaces the Figma, export plugin and hand-fix chain; every block has light and dark palettes and the HTML comes out ready for Braze. The Lifecycle case study ends with a working preview of it.
 
 ---
 
